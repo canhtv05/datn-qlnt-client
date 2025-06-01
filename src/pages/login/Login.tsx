@@ -2,11 +2,10 @@ import { Link } from "react-router-dom";
 
 import { svg } from "@/assets/svg";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import RenderIf from "@/components/RenderIf";
 import { Viewport } from "@/enums";
 import { useLogin } from "./useLogin";
+import InputLabel from "@/components/InputLabel";
 
 const Login = () => {
   const { width, handleSubmitForm, value, setValue } = useLogin();
@@ -26,32 +25,23 @@ const Login = () => {
             Bất động sản, tài chính, khách hàng... và hơn thế nữa
           </p>
           <form className="w-full mt-5" onSubmit={(e) => handleSubmitForm(e)}>
-            <Label htmlFor="email" className="mb-2 text-[#6e6b7b]">
-              Email:
-            </Label>
-            <Input
-              value={value.email}
-              validate
-              id="email"
+            <InputLabel
               type="text"
-              placeholder="0987645862"
-              className="mt-0.5 text-[#6e6b7b]"
+              label="Email:"
+              required
+              id="email"
+              placeholder="abc@xyz.com"
               onChange={(e) => setValue((prev) => ({ ...prev, email: e.target.value }))}
             />
-            <div className="mt-4">
-              <Label htmlFor="pw" className="mb-2 text-[#6e6b7b]">
-                Mật khẩu
-              </Label>
-              <Input
-                value={value.password}
-                validate
-                id="pw"
-                type="text"
-                placeholder="Mật khẩu"
-                className="mt-0.5 text-[#6e6b7b"
-                onChange={(e) => setValue((prev) => ({ ...prev, password: e.target.value }))}
-              />
-            </div>
+            <div className="my-3"></div>
+            <InputLabel
+              type="password"
+              label="Mật khẩu:"
+              required
+              id="pw"
+              placeholder="Mật khẩu"
+              onChange={(e) => setValue((prev) => ({ ...prev, password: e.target.value }))}
+            />
             <Link to={``} className="w-full text-right block mt-3 mb-6">
               <span className="text-primary text-[13px]">Quên mật khẩu?</span>
             </Link>
