@@ -5,7 +5,7 @@ import { useLogin } from "./useLogin";
 import InputLabel from "@/components/InputLabel";
 
 const Login = () => {
-  const { handleSubmitForm, value, setValue } = useLogin();
+  const { handleSubmitForm, value, setValue, errors } = useLogin();
 
   return (
     <>
@@ -15,21 +15,25 @@ const Login = () => {
       </p>
       <form className="w-full mt-5" onSubmit={(e) => handleSubmitForm(e)}>
         <InputLabel
+          name="email"
           type="text"
           label="Email:"
           required
           id="email"
           placeholder="abc@xyz.com"
           onChange={(e) => setValue((prev) => ({ ...prev, email: e.target.value }))}
+          errorText={errors.email}
         />
         <div className="my-3"></div>
         <InputLabel
+          name="password"
           type="password"
           label="Mật khẩu:"
           required
           id="pw"
           placeholder="Mật khẩu"
           onChange={(e) => setValue((prev) => ({ ...prev, password: e.target.value }))}
+          errorText={errors.password}
         />
         <div className="w-full text-right block mt-3 mb-6">
           <Link to={`/forgot-password`}>
@@ -43,7 +47,7 @@ const Login = () => {
       </form>
       <span className="mt-5 text-[14px] text-[#6e6b7b]">
         Bạn chưa có tài khoản?
-        <Link to={``} className="ml-2 text-primary hover:text-primary-hover">
+        <Link to={`/register`} className="ml-2 text-primary hover:text-primary-hover">
           Đăng ký miễn phí
         </Link>
       </span>

@@ -8,10 +8,11 @@ interface InputLabelProps extends React.InputHTMLAttributes<HTMLInputElement> {
   required?: boolean;
   errorText?: string;
   onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 const InputLabel = React.forwardRef<HTMLInputElement, InputLabelProps>(
-  ({ id, label, required, className, errorText, onFocus, ...props }, ref) => {
+  ({ id, label, required = false, className, errorText, onFocus, onBlur, ...props }, ref) => {
     return (
       <div className="flex flex-col">
         <Label htmlFor={id} className="mb-1 text-[#6e6b7b] text-sm flex gap-1">
@@ -24,6 +25,7 @@ const InputLabel = React.forwardRef<HTMLInputElement, InputLabelProps>(
           id={id}
           ref={ref}
           onFocus={onFocus}
+          onBlur={onBlur}
           className={`mt-0.5 text-[#6e6b7b] text-sm ${className}`}
           {...props}
         />
