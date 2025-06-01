@@ -1,10 +1,7 @@
 import { toast } from "sonner";
 import { FormEvent, useState } from "react";
 
-import useViewport from "@/hooks/useViewport";
-
 export const useLogin = () => {
-  const { width } = useViewport();
   const [value, setValue] = useState<{ email: string; password: string }>({
     email: "",
     password: "",
@@ -18,5 +15,5 @@ export const useLogin = () => {
     }
   };
 
-  return { width, value, setValue, handleSubmitForm };
+  return { value, setValue, handleSubmitForm };
 };

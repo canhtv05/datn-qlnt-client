@@ -6,6 +6,10 @@ const Home = lazy(() => import("@/pages/home"));
 
 /* AUTH */
 const Login = lazy(() => import("@/pages/login"));
+const ForgotPassword = lazy(() => import("@/pages/forgot-password"));
+
+/* AUTH LAYOUT */
+const AuthLayout = lazy(() => import("@/layouts/AuthLayout"));
 
 const publicRoutes = [
   /* HOME */
@@ -15,9 +19,14 @@ const publicRoutes = [
   },
   /* AUTH */
   {
-    path: configs.routes.login,
+    path: configs.routes.auth.login,
     component: Login,
-    layout: null,
+    layout: AuthLayout,
+  },
+  {
+    path: configs.routes.auth.forgotPassword,
+    component: ForgotPassword,
+    layout: AuthLayout,
   },
 ];
 
