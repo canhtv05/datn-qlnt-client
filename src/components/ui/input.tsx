@@ -9,9 +9,15 @@ function Input({
   validate,
   errorText,
   onFocus,
+  onBlur,
   type,
   ...props
-}: React.ComponentProps<"input"> & { validate?: boolean; errorText?: string; onFocus?: () => void }) {
+}: React.ComponentProps<"input"> & {
+  validate?: boolean;
+  errorText?: string;
+  onFocus?: () => void;
+  onBlur?: () => void;
+}) {
   const [isEmpty, setIsEmpty] = React.useState(false);
   const [typeInput, setTypeInput] = React.useState(type);
 
@@ -21,6 +27,7 @@ function Input({
     if (!value.trim() || value.startsWith(" ")) {
       setIsEmpty(true);
     }
+    onBlur?.();
   };
 
   const togglePasswordVisibility = () => {
@@ -53,7 +60,7 @@ function Input({
           {...props}
         />
 
-        <RenderIf value={isEmpty}>
+        <RenderIf value={isEmpty && !!validate}>
           <CircleAlert
             className={`absolute ${
               typeInput === "password" || prevType === "password" ? "right-12" : "right-4"
@@ -75,7 +82,7 @@ function Input({
         )}
       </div>
 
-      <RenderIf value={isEmpty}>
+      <RenderIf value={isEmpty && !!validate}>
         <span className="text-[12px] text-red-500 font-light">Thông tin bắt buộc</span>
       </RenderIf>
       <RenderIf value={!!errorText?.trim() && !isEmpty}>

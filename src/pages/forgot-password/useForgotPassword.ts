@@ -25,12 +25,12 @@ export const useForgotPassword = () => {
       if (isTabOTP) {
         await emailSchema.parseAsync({ email: value.email });
         setErrors({});
-        toast.success("Mã OTP đã được gửi đến email của bạn.");
+        toast.success("Mã OTP đã được gửi đến email của bạn");
         setIsTabOTP(false);
       } else {
         await forgotPassSchema.parseAsync(value);
         setErrors({});
-        toast.success("Đổi mật khẩu thành công.");
+        toast.success("Đổi mật khẩu thành công");
         navigate("/login");
       }
     } catch (error) {
@@ -38,7 +38,7 @@ export const useForgotPassword = () => {
         const newErrors: Record<string, string> = {};
         for (const issue of error.issues) {
           const field = issue.path[0] as string;
-          if (!newErrors[field]) newErrors[field] = issue.message;
+          newErrors[field] = issue.message;
         }
         setErrors(newErrors);
       }

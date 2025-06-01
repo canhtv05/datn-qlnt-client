@@ -3,6 +3,7 @@ const routes = {
   auth: {
     login: "/login",
     forgotPassword: "/forgot-password",
+    register: "/register",
   },
   modals: {},
 };

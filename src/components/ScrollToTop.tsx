@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { ChevronsUp } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import { ChevronsUp } from "lucide-react";
 
 const ScrollToTop = () => {
   const [showButton, setShowButton] = useState(false);
@@ -20,13 +20,13 @@ const ScrollToTop = () => {
   };
 
   const onScrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, []);
@@ -37,8 +37,8 @@ const ScrollToTop = () => {
     <button
       onClick={onScrollToTop}
       className={`${
-        isScrolling ? 'bg-background' : 'bg-background/40'
-      } fixed bottom-3 right-3 z-50 rounded-full p-2 cursor-pointer border hover:bg-accent duration-200 transition-colors`}
+        isScrolling ? "bg-primary/40" : "bg-primary"
+      } fixed bottom-3 right-3 z-50 rounded-full hover:shadow-primary p-2 cursor-pointer border duration-200 transition-colors`}
     >
       <ChevronsUp className="size-5" />
     </button>

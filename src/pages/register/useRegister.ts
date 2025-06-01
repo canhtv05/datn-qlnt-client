@@ -1,14 +1,18 @@
+import { toast } from "sonner";
+import { FormEvent, useState } from "react";
 import { z } from "zod/v4";
 import { useNavigate } from "react-router-dom";
-import { FormEvent, useState } from "react";
 
-import { emailSchema } from "@/lib/validation";
+import { registerSchema, formatFullName } from "@/lib/validation";
 
-export const useLogin = () => {
+export const useRegister = () => {
   const navigate = useNavigate();
-  const [value, setValue] = useState<{ email: string; password: string }>({
+  const [value, setValue] = useState({
+    fullName: "",
+    phone: "",
     email: "",
     password: "",
+    confirm: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -17,10 +21,10 @@ export const useLogin = () => {
     e.preventDefault();
 
     try {
-      await emailSchema.parseAsync({ email: value.email });
+      await registerSchema.parse(value);
       setErrors({});
-      navigate("/");
-      window.location.reload();
+      toast.success("Đăng ký thành công");
+      navigate("/login");
     } catch (error) {
       if (error instanceof z.ZodError) {
         const newErrors: Record<string, string> = {};
@@ -33,5 +37,12 @@ export const useLogin = () => {
     }
   };
 
-  return { value, setValue, handleSubmitForm, errors, setErrors };
+  const handleBlur = () => {
+    setValue((prev) => ({
+      ...prev,
+      fullName: formatFullName(prev.fullName),
+    }));
+  };
+
+  return { value, setValue, handleSubmitForm, errors, handleBlur };
 };
