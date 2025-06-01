@@ -1,5 +1,5 @@
 const routes = {
-  home: "/admin/chart",
+  home: "/",
   login: "/login",
   modals: {},
 };
