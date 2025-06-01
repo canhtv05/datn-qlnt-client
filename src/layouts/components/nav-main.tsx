@@ -46,7 +46,7 @@ export function NavMain({
                   >
                     {item.icon && <item.icon className={`${isActive ? "stroke-white" : ""}`} />}
                     <span className={`${isActive ? "text-white" : ""}`}>{item.title}</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 stroke-white" />
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
                 <CollapsibleContent>

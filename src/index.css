@@ -132,7 +132,7 @@
   --font-roboto: "Roboto", sans-serif;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
-  --foreground: oklch(0.141 0.005 285.823);
+  --foreground: #6e6b7b;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
@@ -223,7 +223,6 @@
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
     font-family: "Roboto", sans-serif;
-    color: var(--foreground);
   }
 
   *::-webkit-scrollbar {
@@ -236,14 +235,5 @@
 
   *::-webkit-scrollbar-thumb {
     @apply bg-border rounded-full;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }
