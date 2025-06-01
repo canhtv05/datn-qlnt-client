@@ -10,7 +10,7 @@ const HeaderLayout = () => {
 
   return (
     <header className="flex items-center">
-      <Button onClick={toggleTheme}>
+      <Button onClick={toggleTheme} className="shadow-none">
         <RenderIf value={theme === "dark"}>
           <Moon className="size-5 stroke-white" />
         </RenderIf>
@@ -20,7 +20,7 @@ const HeaderLayout = () => {
       </Button>
       <div className="flex items-center gap-2 mr-4">
         <div className="relative">
-          <Button size="icon">
+          <Button size="icon" className="shadow-none">
             <BellIcon className="size-5 stroke-white" />
           </Button>
           <span className="absolute top-2 right-0 px-1 min-w-4 translate-x-1/2 -translate-y-1/2 origin-center flex items-center justify-center rounded-full text-xs bg-destructive text-white">

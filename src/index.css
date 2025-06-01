@@ -126,6 +126,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   --color-primary-shadow: var(--primary-shadow);
+  --color-primary-hover: var(--primary-hover);
 }
 
 :root {
@@ -137,7 +138,7 @@
   --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: rgb(36, 143, 85);
+  --primary: #248f55;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: #ebebec;
   --secondary-foreground: oklch(0.21 0.006 285.885);
@@ -164,6 +165,7 @@
   --sidebar-ring: oklch(0.705 0.015 286.067);
 
   --primary-shadow: 0 8px 25px -8px #248f55;
+  --primary-hover: #1f7b49;
 }
 
 .dark {
@@ -173,7 +175,7 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.21 0.006 285.885);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: rgb(36, 143, 85);
+  --primary: #248f55;
   --primary-foreground: oklch(0.21 0.006 285.885);
   --secondary: #44475a;
   --secondary-foreground: oklch(0.985 0 0);
@@ -200,6 +202,7 @@
   --sidebar-ring: oklch(0.552 0.016 285.938);
 
   --primary-shadow: 0 8px 25px -8px #248f55;
+  --primary-hover: #1f7b49;
 }
 
 @layer base {

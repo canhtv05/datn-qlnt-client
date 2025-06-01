@@ -12,7 +12,7 @@ const DefaultLayout = ({ children }: { children: ReactNode }) => {
       <SidebarInset>
         <header className="flex bg-primary justify-between items-center px-4">
           <div className="flex items-center gap-2 h-14 shrink-0 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-14">
-            <SidebarTrigger className="-ml-1" />
+            <SidebarTrigger className="-ml-1 shadow-none" />
             <Logo />
           </div>
           <HeaderLayout />

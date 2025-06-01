@@ -1,6 +1,9 @@
 const routes = {
   home: "/",
-  login: "/login",
+  auth: {
+    login: "/login",
+    forgotPassword: "/forgot-password",
+  },
   modals: {},
 };
 
