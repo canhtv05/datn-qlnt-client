@@ -1,33 +1,70 @@
-import { Link, useLocation } from "react-router-dom";
+"use client";
 
-import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
-import type { MenuSidebarChildType } from "@/types";
-import RenderIf from "@/components/RenderIf";
+import { ChevronRight, type LucideIcon } from "lucide-react";
 
-export function NavMain({ items }: { items: MenuSidebarChildType[] }) {
-  const location = useLocation();
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+} from "@/components/ui/sidebar";
 
+export function NavMain({
+  items,
+}: {
+  items: {
+    title: string;
+    url: string;
+    icon?: LucideIcon;
+    isActive?: boolean;
+    items?: {
+      title: string;
+      url: string;
+    }[];
+  }[];
+}) {
   return (
     <SidebarGroup>
+      <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
-          const isActive = location.pathname.includes(item.to);
+          const isActive = true;
 
           return (
-            <Collapsible key={item.label} asChild className="group/collapsible">
-              <SidebarMenuItem className={`${isActive ? "bg-customize/30 relative" : ""} rounded-lg`}>
-                <RenderIf value={isActive}>
-                  <span className="absolute bg-customize-hover/30 w-[10px] h-full rounded-l-lg left-[0.3px] bg-[]"></span>
-                </RenderIf>
+            <Collapsible key={item.title} asChild defaultOpen={item.isActive} className="group/collapsible">
+              <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
-                  <Link to={item.to}>
-                    <SidebarMenuButton tooltip={item.label}>
-                      {item.icon && <item.icon className="text-foreground !size-5" />}
-                      <span className="text-foreground text-left text-[14px] font-medium">{item.label}</span>
-                    </SidebarMenuButton>
-                  </Link>
+                  <SidebarMenuButton
+                    isActive={isActive}
+                    tooltip={item.title}
+                    className={`${isActive ? "shadow-primary" : ""}`}
+                  >
+                    {item.icon && <item.icon className={`${isActive ? "stroke-white" : ""}`} />}
+                    <span className={`${isActive ? "text-white" : ""}`}>{item.title}</span>
+                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                  </SidebarMenuButton>
                 </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    {item.items?.map((subItem) => (
+                      <SidebarMenuSubItem key={subItem.title}>
+                        <SidebarMenuSubButton asChild>
+                          <a
+                            href={subItem.url}
+                            className="hover:bg-primary hover:shadow-primary duration-300 transition-all ease-in-out"
+                          >
+                            <span className="hover:text-white w-full h-full flex items-center">{subItem.title}</span>
+                          </a>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    ))}
+                  </SidebarMenuSub>
+                </CollapsibleContent>
               </SidebarMenuItem>
             </Collapsible>
           );

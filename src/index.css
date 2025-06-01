@@ -3,66 +3,87 @@
 @import "tw-animate-css";
 
 @font-face {
-  font-family: Geist;
-  src: url(./assets/fonts/Geist-Black.ttf) format("ttf");
+  font-family: Roboto;
+  src: url(./assets/fonts/Roboto-Black.ttf) format("ttf");
   font-weight: 900;
   font-style: normal;
 }
 
 @font-face {
-  font-family: Geist;
-  src: url(./assets/fonts/Geist-ExtraBold.ttf) format("ttf");
-  font-weight: 800;
-  font-style: normal;
+  font-family: Roboto;
+  src: url(./assets/fonts/Roboto-BlackItalic.ttf) format("ttf");
+  font-weight: 900;
+  font-style: italic;
 }
 
 @font-face {
-  font-family: Geist;
-  src: url(./assets/fonts/Geist-Bold.ttf) format("ttf");
+  font-family: Roboto;
+  src: url(./assets/fonts/Roboto-Bold.ttf) format("ttf");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: Geist;
-  src: url(./assets/fonts/Geist-SemiBold.ttf) format("ttf");
-  font-weight: 600;
-  font-style: normal;
+  font-family: Roboto;
+  src: url(./assets/fonts/Roboto-BoldItalic.ttf) format("ttf");
+  font-weight: 700;
+  font-style: italic;
 }
 
 @font-face {
-  font-family: Geist;
-  src: url(./assets/fonts/Geist-Medium.ttf) format("ttf");
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: Geist;
-  src: url(./assets/fonts/Geist-Regular.ttf) format("ttf");
+  font-family: Roboto;
+  src: url(./assets/fonts/Roboto-Italic.ttf) format("ttf");
   font-weight: 400;
-  font-style: normal;
+  font-style: italic;
 }
 
 @font-face {
-  font-family: Geist;
-  src: url(./assets/fonts/Geist-Light.ttf) format("ttf");
+  font-family: Roboto;
+  src: url(./assets/fonts/Roboto-Light.ttf) format("ttf");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
-  font-family: Geist;
-  src: url(./assets/fonts/Geist-ExtraLight.ttf) format("ttf");
-  font-weight: 200;
+  font-family: Roboto;
+  src: url(./assets/fonts/Roboto-LightItalic.ttf) format("ttf");
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url(./assets/fonts/Roboto-Medium.ttf) format("ttf");
+  font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: Geist;
-  src: url(./assets/fonts/Geist-Thin.ttf) format("ttf");
+  font-family: Roboto;
+  src: url(./assets/fonts/Roboto-MediumItalic.ttf) format("ttf");
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url(./assets/fonts/Roboto-Regular.ttf) format("ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url(./assets/fonts/Roboto-Thin.ttf) format("ttf");
   font-weight: 100;
   font-style: normal;
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url(./assets/fonts/Roboto-ThinItalic.ttf) format("ttf");
+  font-weight: 100;
+  font-style: italic;
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -104,15 +125,11 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --color-customize: var(--customize);
-  --color-customize-hover: var(--customize-hover);
-  --color-customize-border: var(--customize-border);
-  --color-customize-btn-shadow: var(--customize-btn-shadow);
-  --color-customize-btn-shadow-hover: var(--customize-btn-shadow-hover);
+  --color-primary-shadow: var(--primary-shadow);
 }
 
 :root {
-  --font-geist: "Geist", sans-serif;
+  --font-roboto: "Roboto", sans-serif;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -122,7 +139,7 @@
   --popover-foreground: oklch(0.141 0.005 285.823);
   --primary: rgb(36, 143, 85);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.967 0.001 286.375);
+  --secondary: #ebebec;
   --secondary-foreground: oklch(0.21 0.006 285.885);
   --muted: oklch(0.967 0.001 286.375);
   --muted-foreground: oklch(0.552 0.016 285.938);
@@ -141,18 +158,12 @@
   --sidebar-foreground: oklch(0.141 0.005 285.823);
   --sidebar-primary: oklch(0.21 0.006 285.885);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  /* --sidebar-accent: oklch(0.967 0.001 286.375); */
-  --sidebar-accent: oklch(0.21 0.006 285.885 / 0.09);
+  --sidebar-accent: var(--primary);
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
 
-  --customize: #22bab3;
-  --customize-hover: #57cbf5;
-  --customize-border: #22bab3;
-  --customize-border-hover: #3ec2bc;
-  --customize-btn-shadow: 0 3px 6px 0 rgba(62, 194, 188, 0.3);
-  --customize-btn-shadow-hover: 0 3px 8px 0 rgba(50, 179, 103, 0.3);
+  --primary-shadow: 0 8px 25px -8px #248f55;
 }
 
 .dark {
@@ -164,7 +175,7 @@
   --popover-foreground: oklch(0.985 0 0);
   --primary: rgb(36, 143, 85);
   --primary-foreground: oklch(0.21 0.006 285.885);
-  --secondary: oklch(0.274 0.006 286.033);
+  --secondary: #44475a;
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.274 0.006 286.033);
   --muted-foreground: oklch(0.705 0.015 286.067);
@@ -183,18 +194,12 @@
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  /* --sidebar-accent: oklch(0.274 0.006 286.033); */
-  --sidebar-accent: oklch(0.21 0.006 285.885 / 0.5);
+  --sidebar-accent: var(--primary);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.552 0.016 285.938);
 
-  --customize: #22bab3;
-  --customize-hover: #57cbf5;
-  --customize-border: #22bab3;
-  --customize-border-hover: #3ec2bc;
-  --customize-btn-shadow: 0 3px 6px 0 rgba(62, 194, 188, 0.3);
-  --customize-btn-shadow-hover: 0 3px 8px 0 rgba(50, 179, 103, 0.3);
+  --primary-shadow: 0 8px 25px -8px #248f55;
 }
 
 @layer base {
@@ -203,16 +208,22 @@
   }
 
   body {
-    @apply bg-background text-foreground font-geist !pointer-events-auto;
+    @apply bg-background text-foreground font-roboto !pointer-events-auto;
   }
 
   img {
     @apply rounded-sm object-contain;
   }
 
+  body:not(.dark):not(.light) {
+    visibility: hidden;
+  }
+
   * {
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
+    font-family: "Roboto", sans-serif;
+    color: var(--foreground);
   }
 
   *::-webkit-scrollbar {
@@ -225,44 +236,6 @@
 
   *::-webkit-scrollbar-thumb {
     @apply bg-border rounded-full;
-  }
-}
-
-@layer utilities {
-  .font-black {
-    @apply font-geist font-black;
-  }
-
-  .font-extrabold {
-    @apply font-geist font-extrabold;
-  }
-
-  .font-bold {
-    @apply font-geist font-bold;
-  }
-
-  .font-semibold {
-    @apply font-geist font-semibold;
-  }
-
-  .font-medium {
-    @apply font-geist font-medium;
-  }
-
-  .font-normal {
-    @apply font-geist font-normal;
-  }
-
-  .font-light {
-    @apply font-geist font-light;
-  }
-
-  .font-extralight {
-    @apply font-geist font-extralight;
-  }
-
-  .font-thin {
-    @apply font-geist font-thin;
   }
 }
 
