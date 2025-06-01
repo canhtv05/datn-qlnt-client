@@ -1,12 +1,14 @@
 import * as React from "react";
-import { CircleAlert } from "lucide-react";
-
+import { CircleAlert, Eye, EyeClosed } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RenderIf from "../RenderIf";
+import usePrevious from "@/hooks/usePrevious";
 
-function Input({ className, type, validate, ...props }: React.ComponentProps<"input"> & { validate?: boolean }) {
-  const [isEmpty, setIsEmpty] = React.useState<boolean>(false);
-  const typeIsPassword = type === "password";
+function Input({ className, validate, type, ...props }: React.ComponentProps<"input"> & { validate?: boolean }) {
+  const [isEmpty, setIsEmpty] = React.useState(false);
+  const [typeInput, setTypeInput] = React.useState(type);
+
+  const prevType = usePrevious(typeInput || "text");
 
   const handleBlur = (value: string) => {
     if (!value.trim() || value.startsWith(" ")) {
@@ -14,11 +16,15 @@ function Input({ className, type, validate, ...props }: React.ComponentProps<"in
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setTypeInput((prev) => (prev === "password" ? "text" : "password"));
+  };
+
   return (
     <>
       <div className="relative">
         <input
-          type={type}
+          type={typeInput}
           data-slot="input"
           className={cn(
             "file:text-foreground placeholder:text-foreground/50 dark:bg-input/30 border-[oklch(1 0 0 / 15%)] flex h-9 w-full min-w-0 rounded-sm border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
@@ -33,13 +39,29 @@ function Input({ className, type, validate, ...props }: React.ComponentProps<"in
           onFocus={() => setIsEmpty(false)}
           {...props}
         />
+
         <RenderIf value={isEmpty}>
-          <CircleAlert className="absolute right-2 top-1/2 -translate-y-1/2 size-[14px] stroke-red-500" />
+          <CircleAlert
+            className={`absolute ${
+              typeInput === "password" || prevType === "password" ? "right-12" : "right-4"
+            } top-1/2 -translate-y-1/2 size-[14px] stroke-red-500`}
+          />
         </RenderIf>
-        <RenderIf value={typeIsPassword}>
-          <CircleAlert className="absolute right-2 top-1/2 -translate-y-1/2 size-[14px] stroke-red-500" />
-        </RenderIf>
+
+        {type === "password" && (
+          <div
+            className="absolute right-4 top-1/2 -translate-y-1/2 size-[16px] cursor-pointer"
+            onClick={togglePasswordVisibility}
+          >
+            {typeInput === "password" ? (
+              <Eye className="absolute right-0 top-1/2 -translate-y-1/2 size-[16px] cursor-pointer" />
+            ) : (
+              <EyeClosed className="absolute right-0 top-1/2 -translate-y-1/2 size-[16px] cursor-pointer" />
+            )}
+          </div>
+        )}
       </div>
+
       <RenderIf value={isEmpty}>
         <span className="text-[12px] text-red-500 font-light">Thông tin bắt buộc</span>
       </RenderIf>
