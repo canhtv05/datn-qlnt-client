@@ -63,7 +63,7 @@ function Input({
         <RenderIf value={isEmpty && !!validate}>
           <CircleAlert
             className={`absolute ${
-              typeInput === "password" || prevType === "password" ? "right-12" : "right-4"
+              typeInput === "password" || prevType === "password" || type === "password" ? "right-12" : "right-4"
             } top-1/2 -translate-y-1/2 size-[14px] stroke-red-500`}
           />
         </RenderIf>

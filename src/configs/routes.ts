@@ -4,6 +4,7 @@ const routes = {
     login: "/login",
     forgotPassword: "/forgot-password",
     register: "/register",
+    authenticate: "/authenticate",
   },
   modals: {},
 };

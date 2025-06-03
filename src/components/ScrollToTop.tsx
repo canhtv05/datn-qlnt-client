@@ -40,7 +40,7 @@ const ScrollToTop = () => {
         isScrolling ? "bg-primary/40" : "bg-primary"
       } fixed bottom-3 right-3 z-50 rounded-full hover:shadow-primary p-2 cursor-pointer border duration-200 transition-colors`}
     >
-      <ChevronsUp className="size-5" />
+      <ChevronsUp className="size-5 text-white" />
     </button>
   );
 };

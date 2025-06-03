@@ -9,6 +9,7 @@ const Home = lazy(() => import("@/pages/home"));
 const Login = lazy(() => import("@/pages/login"));
 const ForgotPassword = lazy(() => import("@/pages/forgot-password"));
 const Register = lazy(() => import("@/pages/register"));
+const Authenticate = lazy(() => import("@/pages/authenticate"));
 
 /* AUTH LAYOUT */
 const AuthLayout = lazy(() => import("@/layouts/AuthLayout"));
@@ -34,6 +35,11 @@ const publicRoutes = [
     path: configs.routes.auth.register,
     component: Register,
     layout: AuthLayout,
+  },
+  {
+    path: configs.routes.auth.authenticate,
+    component: Authenticate,
+    layout: null,
   },
 ];
 

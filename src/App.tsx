@@ -9,10 +9,12 @@ import useTheme from "./hooks/useTheme";
 import ScrollToTop from "./components/ScrollToTop";
 import { modals, privateRoutes, publicRoutes } from "./routers/router";
 import { Toaster } from "./components/ui/sonner";
+import { useMyInfo } from "./hooks/useMyInfo";
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 function App() {
   useTheme();
+  useMyInfo();
   const location = useLocation();
   const background = location.state && location.state.background;
 

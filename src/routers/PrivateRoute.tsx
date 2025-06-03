@@ -1,9 +1,12 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from "react-router-dom";
+
+import { useAuthStore } from "@/zustand/authStore";
 
 const PrivateRoute = () => {
-  const isAuth: boolean = true;
+  const user = useAuthStore((state) => state.user);
 
-  return isAuth ? <Outlet /> : <Navigate to={`/login`} replace />;
+  // Nếu chưa đăng nhập thì chuyển sang login
+  return user ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export default PrivateRoute;

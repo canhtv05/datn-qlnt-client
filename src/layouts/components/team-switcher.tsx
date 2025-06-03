@@ -1,14 +1,15 @@
-import images from "@/assets/imgs";
-import Image from "@/components/Image";
-import { SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
+import Logo from "@/components/Logo";
+import RenderIf from "@/components/RenderIf";
+import { SidebarMenu, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 
 export function TeamSwitcher() {
+  const { open } = useSidebar();
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <div className="flex gap-1">
-          <Image src={images.react} className="size-[30px] object-contain" />
-        </div>
+        <RenderIf value={open}>
+          <Logo />
+        </RenderIf>
       </SidebarMenuItem>
     </SidebarMenu>
   );
