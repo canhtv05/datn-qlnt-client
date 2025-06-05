@@ -10,6 +10,8 @@ export const useMyInfo = () => {
   const navigate = useNavigate();
   const setUser = useAuthStore((state) => state.setUser);
   const clearUser = useAuthStore((state) => state.clearUser);
+  const setIsLoading = useAuthStore((state) => state.setIsLoading);
+  const user = useAuthStore((state) => state.user);
 
   useEffect(() => {
     const token = cookieUtil.getStorage().accessToken;
@@ -22,22 +24,19 @@ export const useMyInfo = () => {
     }
 
     const fetchUser = async () => {
+      setIsLoading(true);
       try {
-        const res = await httpRequest.get(`/auth/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setUser(res.data.data);
+        const res = await httpRequest.get(`/auth/me`);
+        setUser(res.data.data, true);
       } catch {
         toast.error("Phiên đăng nhập hết hạn");
         clearUser();
         cookieUtil.deleteStorage();
-        navigate("/login");
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchUser();
-  }, [clearUser, navigate, setUser]);
+    if (!user) fetchUser();
+  }, [clearUser, navigate, setIsLoading, setUser, user]);
 };

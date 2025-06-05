@@ -1,7 +1,4 @@
-"use client";
-
 import { ChevronRight, type LucideIcon } from "lucide-react";
-
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
@@ -13,6 +10,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
 
 export function NavMain({
   items,
@@ -33,7 +31,7 @@ export function NavMain({
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
-          const isActive = true;
+          const isActive = false;
 
           return (
             <Collapsible key={item.title} asChild defaultOpen={item.isActive} className="group/collapsible">
@@ -42,11 +40,14 @@ export function NavMain({
                   <SidebarMenuButton
                     isActive={isActive}
                     tooltip={item.title}
-                    className={`${isActive ? "shadow-primary" : ""}`}
+                    className={cn(isActive && "shadow-primary", "text-black dark:text-white")}
                   >
-                    {item.icon && <item.icon className={`${isActive ? "stroke-white" : ""}`} />}
-                    <span className={`${isActive ? "text-white" : ""}`}>{item.title}</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 stroke-white" />
+                    {item.icon && <item.icon className={cn(isActive && "stroke-white")} />}
+                    <span className={cn(isActive && "text-white")}>{item.title}</span>
+                    <ChevronRight
+                      className={cn("ml-auto group-data-[state=open]/collapsible:rotate-90 ", isActive && "text-white")}
+                      style={{ transition: "none" }}
+                    />
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
@@ -54,11 +55,8 @@ export function NavMain({
                     {item.items?.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
                         <SidebarMenuSubButton asChild>
-                          <a
-                            href={subItem.url}
-                            className="hover:bg-primary hover:shadow-primary duration-300 transition-all ease-in-out"
-                          >
-                            <span className="hover:text-white w-full h-full flex items-center">{subItem.title}</span>
+                          <a href={subItem.url}>
+                            <span className="w-full h-full flex items-center">{subItem.title}</span>
                           </a>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>

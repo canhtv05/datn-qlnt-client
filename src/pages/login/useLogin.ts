@@ -1,9 +1,17 @@
 import { z } from "zod/v4";
 import { useNavigate } from "react-router-dom";
 import { FormEvent, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { toast } from "sonner";
 
 import { emailSchema } from "@/lib/validation";
 import configs from "@/configs";
+import { httpRequest } from "@/utils/httpRequest";
+import { ApiResponse, UserResponse } from "@/types";
+import { useAuthStore } from "@/zustand/authStore";
+import cookieUtil from "@/utils/cookieUtil";
+import { Status } from "@/enums";
 
 export const useLogin = () => {
   const navigate = useNavigate();
@@ -11,17 +19,41 @@ export const useLogin = () => {
     email: "",
     password: "",
   });
-
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleSubmitForm = async (e: FormEvent) => {
-    e.preventDefault();
+  const setUser = useAuthStore((s) => s.setUser);
+  const setIsLoading = useAuthStore((s) => s.setIsLoading);
 
+  const loginMutation = useMutation({
+    mutationFn: async (): Promise<ApiResponse<UserResponse>> => {
+      const data = await httpRequest.post("/auth/login", { email: value.email, password: value.password });
+      return data.data;
+    },
+    onSuccess: (data: ApiResponse<UserResponse>) => {
+      setUser(data.data, true);
+      const token = {
+        accessToken: data.meta?.tokenInfo?.accessToken,
+        refreshToken: data.meta?.tokenInfo?.refreshToken,
+      };
+      cookieUtil.setStorage(token);
+      navigate("/");
+    },
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.message);
+      } else {
+        toast.error(Status.ERROR);
+      }
+    },
+  });
+
+  const handleSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
+      setIsLoading(true);
       await emailSchema.parseAsync({ email: value.email });
       setErrors({});
-      navigate("/");
-      window.location.reload();
+      loginMutation.mutate();
     } catch (error) {
       if (error instanceof z.ZodError) {
         const newErrors: Record<string, string> = {};
@@ -31,6 +63,8 @@ export const useLogin = () => {
         }
         setErrors(newErrors);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 

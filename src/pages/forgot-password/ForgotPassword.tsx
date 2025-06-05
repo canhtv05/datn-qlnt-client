@@ -12,8 +12,8 @@ const ForgotPassword = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3 className="text-[#6e6b7b] text-left w-full text-[24px] mt-2">Quên mật khẩu? 🔒</h3>
-      <p className="text-[#6e6b7b] mb-2 text-[14px] text-left w-full mt-2">
+      <h3 className="text-label text-left w-full text-[24px] mt-2">Quên mật khẩu? 🔒</h3>
+      <p className="text-label mb-2 text-[14px] text-left w-full mt-2">
         Nhập email mà bạn đã đăng ký và sử dụng. Sau đó vui lòng nhập <span className="font-bold">mã OTP</span> gửi đến
         cho bạn.
       </p>

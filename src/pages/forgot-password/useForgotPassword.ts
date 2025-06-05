@@ -4,6 +4,7 @@ import { z } from "zod/v4";
 import { useNavigate } from "react-router-dom";
 
 import { emailSchema, forgotPassSchema } from "@/lib/validation";
+import { Status } from "@/enums";
 
 export const useForgotPassword = () => {
   const navigate = useNavigate();
@@ -41,6 +42,8 @@ export const useForgotPassword = () => {
           newErrors[field] = issue.message;
         }
         setErrors(newErrors);
+      } else {
+        toast.error(Status.ERROR);
       }
     }
   };

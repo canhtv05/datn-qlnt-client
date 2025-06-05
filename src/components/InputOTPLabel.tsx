@@ -20,7 +20,7 @@ const InputOTPLabel = forwardRef<HTMLDivElement, InputOTPProps>(
   ({ id, label, required, errorText, maxLength = 4, onFocus, onChange, onBlur, ...props }, ref) => {
     return (
       <div className="flex flex-col" ref={ref}>
-        <Label htmlFor={id} className="mb-1 text-[#6e6b7b] text-sm flex gap-1">
+        <Label htmlFor={id} className="mb-1 text-label text-sm flex gap-1">
           {label}
           {required && <span className="text-[10px] text-red-500">(*)</span>}
         </Label>
@@ -32,7 +32,7 @@ const InputOTPLabel = forwardRef<HTMLDivElement, InputOTPProps>(
                 <InputOTPSlot
                   key={index}
                   index={index}
-                  className="rounded-md border border-[#00000026] bg-white text-[#6e6b7b] text-sm w-10 h-10"
+                  className="rounded-md border border-border bg-white text-label text-sm w-10 h-10"
                 />
               ))}
           </InputOTPGroup>

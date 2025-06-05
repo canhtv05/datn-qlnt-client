@@ -6,7 +6,9 @@ const routes = {
     register: "/register",
     authenticate: "/authenticate",
   },
-  modals: {},
+  modals: {
+    profile: "/profile",
+  },
 };
 
 export default routes;

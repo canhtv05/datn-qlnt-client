@@ -14,12 +14,10 @@ const Authenticate = lazy(() => import("@/pages/authenticate"));
 /* AUTH LAYOUT */
 const AuthLayout = lazy(() => import("@/layouts/AuthLayout"));
 
+/* MODALS */
+const Profile = lazy(() => import("@/pages/profile"));
+
 const publicRoutes = [
-  /* HOME */
-  {
-    path: configs.routes.home,
-    component: Home,
-  },
   /* AUTH */
   {
     path: configs.routes.auth.login,
@@ -52,8 +50,8 @@ const privateRoutes = [
 
 const modals = [
   {
-    path: configs.routes.home,
-    component: Home,
+    path: configs.routes.modals.profile,
+    component: Profile,
   },
 ];
 

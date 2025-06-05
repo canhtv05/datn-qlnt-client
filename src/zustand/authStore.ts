@@ -1,26 +1,26 @@
+import { UserResponse } from "@/types";
 import { create } from "zustand";
-import { Gender } from "@/enums";
-
-export interface AuthUser {
-  id: string;
-  fullName: string;
-  gender: typeof Gender;
-  dob: string;
-  email: string;
-  phoneNumber: string;
-  profilePicture: string | undefined;
-  createdAt: string;
-  updatedAt: string;
-}
 
 interface AuthState {
-  user: AuthUser | null;
-  setUser: (user: AuthUser) => void;
+  user: UserResponse | null;
+  isAuth: boolean;
+  isLoading: boolean;
+  setUser: (user: UserResponse, isAuth: boolean) => void;
+  setIsLoading: (value: boolean) => void;
   clearUser: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
-  setUser: (user) => set({ user }),
-  clearUser: () => set({ user: null }),
+  isAuth: true,
+  isLoading: false,
+  setUser: (user, isAuth) => {
+    set({ user, isAuth });
+  },
+  setIsLoading: (value) => {
+    set({ isLoading: value });
+  },
+  clearUser: () => {
+    set({ user: null, isAuth: false });
+  },
 }));

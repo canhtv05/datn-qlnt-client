@@ -1,7 +1,7 @@
 import { BellIcon, CircleUserRound, LogOut, Moon, Settings, Sun } from "lucide-react";
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import useTheme from "@/hooks/useTheme";
 import RenderIf from "@/components/RenderIf";
@@ -13,8 +13,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Image from "@/components/Image";
 
 const HeaderLayout = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { theme, toggleTheme } = useTheme();
   const user = useAuthStore((state) => state.user);
 
@@ -40,15 +43,16 @@ const HeaderLayout = () => {
       </div>
       <div className="flex gap-2 items-center">
         <div className="flex flex-col md:max-w-[200px] sm:max-w-[200px] max-w-[100px]">
-          <h2 className="font-semibold text-[14px] truncate text-white">{user?.fullName}</h2>
+          <h2 className="font-semibold text-[14px] truncate text-white">
+            {!user?.fullName ? <span className="inline-block opacity-0">Chủ nhà</span> : user?.fullName}
+          </h2>
           <h2 className="font-normal truncate text-right text-white/80 text-[14px]">Chủ nhà</h2>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Avatar className="size-[40px] cursor-pointer">
-              <AvatarImage src={user?.profilePicture} alt={`@${user?.fullName}`} />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+            <div className="cursor-pointer">
+              <Image src={user?.profilePicture} alt={user?.fullName} />
+            </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
@@ -58,10 +62,7 @@ const HeaderLayout = () => {
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user?.profilePicture} alt={user?.fullName} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                </Avatar>
+                <Image src={user?.profilePicture} alt={user?.fullName} />
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user?.fullName}</span>
                   <span className="truncate text-xs">{user?.email}</span>
@@ -69,7 +70,7 @@ const HeaderLayout = () => {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate("/profile", { state: { background: location } })}>
               <CircleUserRound className="text-light" />
               Hồ sơ cá nhân
             </DropdownMenuItem>

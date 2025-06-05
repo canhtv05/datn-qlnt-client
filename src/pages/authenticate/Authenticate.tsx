@@ -8,6 +8,7 @@ import axios from "axios";
 import { httpRequest } from "@/utils/httpRequest";
 import RenderIf from "@/components/RenderIf";
 import { useAuthStore } from "@/zustand/authStore";
+import { Status } from "@/enums";
 
 const Authenticate = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Authenticate = () => {
   const [showSuccessScreen, setShowSuccessScreen] = useState(false);
 
   const setUser = useAuthStore((state) => state.setUser);
+  const clearUser = useAuthStore((state) => state.clearUser);
 
   const { data, error } = useQuery({
     queryKey: ["authenticate", authCode],
@@ -26,6 +28,7 @@ const Authenticate = () => {
 
   useEffect(() => {
     if (!authCode) {
+      toast.error(Status.ERROR);
       navigate("/login");
     }
   }, [authCode, navigate]);
@@ -33,15 +36,16 @@ const Authenticate = () => {
   useEffect(() => {
     if (data) {
       setShowSuccessScreen(true);
-      setUser(data.data.data);
 
       const timer = setTimeout(() => {
+        setUser(data.data.data, true);
         navigate("/");
       }, 1000);
 
       return () => clearTimeout(timer);
     } else if (error) {
       const timer = setTimeout(() => {
+        clearUser();
         navigate("/login");
       }, 1000);
 
@@ -52,11 +56,11 @@ const Authenticate = () => {
           toast.error(error.message);
         }
       } else {
-        toast.error("Có lỗi xảy ra");
+        toast.error(Status.ERROR);
       }
       return () => clearTimeout(timer);
     }
-  }, [data, error, navigate, setUser]);
+  }, [clearUser, data, error, navigate, setUser]);
 
   let authStatus: "authenticating" | "success" | "error" = "authenticating";
   if (error) authStatus = "error";

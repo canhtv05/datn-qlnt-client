@@ -1,72 +1,33 @@
-import { Fragment } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
-import DefaultLayout from "./layouts/DefaultLayout";
-import type { LayoutComponent, RouteType } from "./types";
 import PublicRoute from "./routers/PublicRoute";
 import PrivateRoute from "./routers/PrivateRoute";
-import useTheme from "./hooks/useTheme";
-import ScrollToTop from "./components/ScrollToTop";
 import { modals, privateRoutes, publicRoutes } from "./routers/router";
-import { Toaster } from "./components/ui/sonner";
-import { useMyInfo } from "./hooks/useMyInfo";
-// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import RenderIf from "./components/RenderIf";
+import LoadingPage from "./components/LoadingPage";
+import { useAppProvider } from "./provider/useAppProvider";
+import AppProvider from "./provider";
 
 function App() {
-  useTheme();
-  useMyInfo();
-  const location = useLocation();
-  const background = location.state && location.state.background;
-
-  const loadRoute = (route: RouteType, index: number) => {
-    const Page = route.component;
-
-    let Layout: LayoutComponent = DefaultLayout;
-
-    if (route.layout === null) {
-      Layout = Fragment;
-    } else if (route.layout) {
-      Layout = route.layout;
-    }
-
-    return (
-      <Route
-        key={index}
-        path={route.path}
-        element={
-          <Layout>
-            <Page />
-          </Layout>
-        }
-      >
-        {route.children?.map((child, index) => {
-          const ChildPage = child.component;
-          return <Route key={index} path={child.path} element={<ChildPage />} />;
-        })}
-      </Route>
-    );
-  };
-
-  const loadModalRoute = (route: RouteType, index: number) => {
-    const Page = route.component;
-    return <Route key={index} path={route.path} element={<Page />} />;
-  };
+  const { background, isLoading, loadModalRoute, loadRoute, location } = useAppProvider();
 
   return (
-    <>
-      <Routes location={background || location}>
-        <Route element={<PublicRoute />}>{publicRoutes.map(loadRoute)}</Route>
-        <Route element={<PrivateRoute />}>{privateRoutes.map(loadRoute)}</Route>
-      </Routes>
-      {background && (
-        <Routes>
-          <Route element={<PrivateRoute />}>{modals.map(loadModalRoute)}</Route>
+    <AppProvider>
+      <RenderIf value={!isLoading}>
+        <Routes location={background || location}>
+          <Route element={<PublicRoute />}>{publicRoutes.map(loadRoute)}</Route>
+          <Route element={<PrivateRoute />}>{privateRoutes.map(loadRoute)}</Route>
         </Routes>
-      )}
-      <ScrollToTop />
-      <Toaster richColors position="top-right" closeButton />
-      {/* <ReactQueryDevtools /> */}
-    </>
+        {background && (
+          <Routes>
+            <Route element={<PrivateRoute />}>{modals.map(loadModalRoute)}</Route>
+          </Routes>
+        )}
+      </RenderIf>
+      <RenderIf value={isLoading}>
+        <LoadingPage />
+      </RenderIf>
+    </AppProvider>
   );
 }
 

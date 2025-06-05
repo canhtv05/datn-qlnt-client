@@ -9,8 +9,8 @@ const Register = () => {
 
   return (
     <>
-      <h3 className="text-[#6e6b7b] text-left w-full text-[24px] mt-2">Đăng ký tài khoản 🚀</h3>
-      <p className="text-[#6e6b7b] mb-2 text-[14px] text-left w-full mt-2">Đẹp trai có gì sai</p>
+      <h3 className="text-label text-left w-full text-[24px] mt-2">Đăng ký tài khoản 🚀</h3>
+      <p className="text-label mb-2 text-[14px] text-left w-full mt-2">Đẹp trai có gì sai</p>
 
       <form className="w-full mt-5" onSubmit={handleSubmitForm}>
         <InputLabel
@@ -88,21 +88,21 @@ const Register = () => {
         </Button>
         <div className="relative my-2 flex items-center justify-center">
           <div className="absolute top-1/2 left-0 w-full h-px bg-[#6e6b7b] transform -translate-y-1/2"></div>
-          <span className="bg-white text-[#6e6b7b] px-2 relative z-10 text-[12px]">Hoặc đăng nhập với Google</span>
+          <span className="bg-white text-label px-2 relative z-10 text-[12px]">Hoặc đăng nhập với Google</span>
         </div>
 
         <Button
           type="submit"
           variant={"outline"}
-          className="w-full hover:bg-transparent hover:shadow-sm border-[#00000026]"
+          className="w-full hover:bg-transparent hover:shadow-sm dark:border-border"
           // onClick={handleLoginWithGoogle}
         >
           <img src={svg.googleIcon} alt="logo google" className="size-[20px]" />
-          <span className="text-[#6e6b7b]">Đăng ký với Google</span>
+          <span className="text-label">Đăng ký với Google</span>
         </Button>
       </form>
 
-      <span className="mt-5 text-[14px] text-[#6e6b7b]">
+      <span className="mt-5 text-[14px] text-label">
         Bạn đã có tài khoản?
         <Link to={`/login`} className="ml-2 text-primary hover:text-primary-hover">
           Đăng nhập
