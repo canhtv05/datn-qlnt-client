@@ -4,8 +4,11 @@ const routes = {
     login: "/login",
     forgotPassword: "/forgot-password",
     register: "/register",
+    authenticate: "/authenticate",
   },
-  modals: {},
+  modals: {
+    profile: "/profile",
+  },
 };
 
 export default routes;

@@ -1,29 +1,34 @@
-import type { LucideIcon } from "lucide-react";
-import type { ComponentType, ReactNode } from "react";
+import { Gender } from "@/enums";
 
-export type LayoutComponent = ComponentType<{ children: ReactNode }>;
+/* API RESPONSE */
+export interface TokenInfo {
+  accessToken: string;
+  accessTokenTTL: number;
+  refreshToken: string;
+  refreshTokenTTL: number;
+}
 
-export type RouteComponent = ComponentType<unknown>;
+export interface AbstractEntity {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
-export type MenuSidebarChildType = {
-  label: string;
-  to: string;
-  type: string;
-  icon: LucideIcon;
-};
+export interface ApiResponse<T> {
+  code: number;
+  message: string;
+  data: T;
+  meta?: {
+    tokenInfo?: TokenInfo;
+  };
+}
 
-export type MenuSidebarItemType = {
-  label: string;
-  type: string;
-  children: MenuSidebarChildType[];
-};
-
-export type RouteType = {
-  path: string;
-  component: RouteComponent;
-  layout?: null | LayoutComponent;
-  children?: {
-    path: string;
-    component: RouteComponent;
-  }[];
-};
+/* ENTITY RESPONSE */
+export interface UserResponse extends AbstractEntity {
+  fullName: string;
+  gender: Gender;
+  dob: string;
+  email: string;
+  phoneNumber: string;
+  profilePicture: string;
+}

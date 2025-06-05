@@ -9,16 +9,15 @@ const Home = lazy(() => import("@/pages/home"));
 const Login = lazy(() => import("@/pages/login"));
 const ForgotPassword = lazy(() => import("@/pages/forgot-password"));
 const Register = lazy(() => import("@/pages/register"));
+const Authenticate = lazy(() => import("@/pages/authenticate"));
 
 /* AUTH LAYOUT */
 const AuthLayout = lazy(() => import("@/layouts/AuthLayout"));
 
+/* MODALS */
+const Profile = lazy(() => import("@/pages/profile"));
+
 const publicRoutes = [
-  /* HOME */
-  {
-    path: configs.routes.home,
-    component: Home,
-  },
   /* AUTH */
   {
     path: configs.routes.auth.login,
@@ -35,6 +34,11 @@ const publicRoutes = [
     component: Register,
     layout: AuthLayout,
   },
+  {
+    path: configs.routes.auth.authenticate,
+    component: Authenticate,
+    layout: null,
+  },
 ];
 
 const privateRoutes = [
@@ -46,8 +50,8 @@ const privateRoutes = [
 
 const modals = [
   {
-    path: configs.routes.home,
-    component: Home,
+    path: configs.routes.modals.profile,
+    component: Profile,
   },
 ];
 

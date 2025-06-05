@@ -1,5 +1,5 @@
 const storage = {
-  key: "QLNT",
+  key: "SHOP_SERVICE",
 };
 
 export default storage;

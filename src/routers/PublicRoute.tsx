@@ -1,9 +1,9 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuthStore } from "@/zustand/authStore";
 
 const PublicRoute = () => {
-  const isAuth: boolean = false;
-
-  return isAuth ? <Navigate to={`/`} replace /> : <Outlet />;
+  const isAuth = useAuthStore((state) => state.isAuth);
+  return !isAuth ? <Outlet /> : <Navigate to="/" replace />;
 };
 
 export default PublicRoute;
