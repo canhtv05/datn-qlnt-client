@@ -1,45 +1,41 @@
+// pages/UserProfile.tsx
 import { FormEvent, useRef, useState } from "react";
-import { Camera } from "lucide-react";
 import { toast } from "sonner";
 
-import { DatePickerDemo } from "@/components/DatePicker";
 import DialogLink from "@/components/DialogLink";
-import FieldsSelectLabel from "@/components/FieldsSelectLabel";
-import Image from "@/components/Image";
-import InputLabel from "@/components/InputLabel";
-import { Button } from "@/components/ui/button";
-import { DialogClose } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Gender, Status } from "@/enums";
-import { useAuthStore } from "@/zustand/authStore";
 import ConfirmDialog, { AlertDialogRef } from "@/components/ConfirmDialog";
+import { useAuthStore } from "@/zustand/authStore";
 import { formatFullName, updateUserSchema } from "@/lib/validation";
-import { z } from "zod/v4";
 import { useFormErrors } from "@/hooks/useFormErrors";
+import { updateUser } from '@/api/userUpdate';
+import { Gender, Status } from "@/enums";
+import UserAvatar from "@/pages/profile/UserAvatar";
+import UserInfoForm from "@/pages/profile/UserInfoForm";
+import type { UserResponse } from "@/types";
 
-interface UserProfileValue {
-  fullName: string | undefined;
-  profilePicture: string | undefined;
-  gender: Gender | undefined;
-  dob: string | undefined;
-  phoneNumber: string | undefined;
+
+export interface UserProfileValue {
+  fullName: string;
+  profilePicture: string;
+  gender: Gender;
+  dob: string;
+  phoneNumber: string;
+  email: string;
 }
-
-const genderData = [
-  { label: "Nam", value: Gender.MALE },
-  { label: "Nữ", value: Gender.FEMALE },
-];
 
 const UserProfile = () => {
   const dialogRef = useRef<AlertDialogRef>(null);
   const user = useAuthStore((state) => state.user);
+  const setUser = useAuthStore((state) => state.setUser);
 
+  const [loading, setLoading] = useState(false);
   const [value, setValue] = useState<UserProfileValue>({
     dob: user?.dob ?? "",
     fullName: user?.fullName ?? "",
     gender: user?.gender ?? Gender.UNKNOWN,
     profilePicture: user?.profilePicture ?? "",
     phoneNumber: user?.phoneNumber ?? "",
+    email: user?.email ?? "",
   });
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<UserProfileValue>();
@@ -51,12 +47,72 @@ const UserProfile = () => {
 
   const handleUpdate = async () => {
     try {
-      await updateUserSchema.parseAsync(value);
+      setLoading(true);
+
+      const rawDob = value.dob ? new Date(value.dob) : undefined;
+      if (rawDob && isNaN(rawDob.getTime())) {
+        toast.error("Ngày sinh không hợp lệ.");
+        setLoading(false);
+        return;
+      }
+
+      const parsed = updateUserSchema.safeParse({
+        ...value,
+        dob: rawDob,
+      });
+
+      if (!parsed.success) {
+        handleZodErrors(parsed.error);
+        setLoading(false);
+        return;
+      }
+
       clearErrors();
+
+      const dob = parsed.data.dob!;
+      const dobFormatted = `${dob.getFullYear()}-${(dob.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}-${dob.getDate().toString().padStart(2, "0")}`;
+
+      const payload = {
+        fullName: parsed.data.fullName,
+        profilePicture: parsed.data.profilePicture,
+        gender: parsed.data.gender,
+        dob: dobFormatted,
+        phoneNumber: parsed.data.phoneNumber,
+      };
+
+      await updateUser(payload);
+      console.log("Update done"); // thử in ra
+      const updatedUser = {
+      ...user,
+      ...payload,
+} as UserResponse;
+
+setUser(updatedUser, true);
       toast.success(Status.UPDATE_SUCCESS);
-    } catch (error) {
-      handleZodErrors(error);
+    } catch (error: any) {
+      toast.error(error.message || "Cập nhật thất bại");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleChange = (key: keyof UserProfileValue, val: any) => {
+    setValue((prev) => ({ ...prev, [key]: val }));
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (reader.result) {
+        handleChange("profilePicture", reader.result as string);
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleBlur = () => {
@@ -72,85 +128,24 @@ const UserProfile = () => {
         className="px-5 py-5 flex md:flex-row flex-col md:gap-20 gap-10 justify-between"
         onSubmit={handleShowDialog}
       >
-        <div className="flex flex-col gap-5 items-center">
-          <div className="relative">
-            <Image
-              src={value?.profilePicture}
-              alt={value?.fullName}
-              className="md:size-[140px] sm:size-[120px] size-[100px]"
-            />
-            <Button variant={"round"} size={"icon"} type="button" className="absolute bottom-0 right-0">
-              <Camera className="text-foreground size-4" />
-            </Button>
-          </div>
-        </div>
-        <div className="flex-1 flex flex-col gap-3">
-          <InputLabel
-            type="text"
-            id="email"
-            name="email"
-            label="Email:"
-            placeholder="Nhập email:"
-            value={user?.email ?? ""}
-            disabled
-          />
-          <InputLabel
-            type="text"
-            id="name"
-            name="name"
-            label="Tên người dùng:"
-            placeholder="Nhập tên người dùng"
-            value={value?.fullName ?? ""}
-            onChange={(e) => {
-              setValue((prev) => ({
-                ...prev,
-                fullName: e.target.value,
-              }));
-            }}
-            onBlur={handleBlur}
-            errorText={errors.fullName}
-          />
-          <FieldsSelectLabel
-            id="gender"
-            placeholder="Giới tính"
-            label="Giới tính:"
-            labelSelect="Giới tính"
-            data={genderData}
-            value={value?.gender ?? Gender.UNKNOWN}
-            onChange={(val) => setValue((prev) => ({ ...prev, gender: val as Gender }))}
-          />
-          <div className="flex flex-col">
-            <Label htmlFor="gender" className="mb-1 text-label text-sm flex gap-1">
-              Ngày sinh:
-            </Label>
-            <DatePickerDemo />
-          </div>
-          <InputLabel
-            type="text"
-            id="phone"
-            name="phone"
-            label="Số điện thoại:"
-            placeholder="Nhập số điện thoại"
-            value={value?.phoneNumber ?? ""}
-            onChange={(e) => {
-              setValue((prev) => ({
-                ...prev,
-                phoneNumber: e.target.value,
-              }));
-            }}
-            errorText={errors.phoneNumber}
-          />
-          <div className="flex justify-end gap-3">
-            <DialogClose asChild>
-              <Button variant={"ghost"}>Hủy</Button>
-            </DialogClose>
-            <Button type="submit">
-              <span className="text-white">Cập nhật</span>
-            </Button>
-          </div>
-        </div>
+        <UserAvatar
+          profilePicture={value.profilePicture}
+          fullName={value.fullName}
+          onImageChange={handleImageChange}
+        />
+        <UserInfoForm
+          value={value}
+          errors={errors}
+          loading={loading}
+          onChange={handleChange}
+          onBlurFullName={handleBlur}
+        />
       </form>
-      <ConfirmDialog ref={dialogRef} typeTitle="chỉnh sửa" onContinue={handleUpdate} />
+      <ConfirmDialog
+        ref={dialogRef}
+        typeTitle="chỉnh sửa"
+        onContinue={handleUpdate}
+      />
     </DialogLink>
   );
 };

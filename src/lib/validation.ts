@@ -103,9 +103,14 @@ export const updateUserSchema = z.object({
 
   gender: z.enum([Gender.FEMALE, Gender.MALE, Gender.UNKNOWN], "Giới tính không hợp lệ"),
 
-  dob: z.date().refine((date) => {
-    isValidDob(date);
-  }, "Tuổi của bạn phải lớn hơn hoặc bằng 18"),
+  dob: z.date().refine((date) => isValidDob(date), "Tuổi của bạn phải lớn hơn hoặc bằng 18"),
 
-  phoneNumber: z.string().min(10, "Số điện thoại ít nhất là 10 số").max(11, "Số điện thoại tối đa là 11 số"),
+  phoneNumber: z
+    .string()
+    .min(10, "Số điện thoại ít nhất là 10 số")
+    .max(11, "Số điện thoại tối đa là 11 số"),
+
+  profilePicture: z.string().optional().nullable(),
+  
 });
+
