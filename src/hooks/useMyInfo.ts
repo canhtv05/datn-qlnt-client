@@ -1,42 +1,51 @@
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+
 import { useAuthStore } from "@/zustand/authStore";
 import cookieUtil from "@/utils/cookieUtil";
 import { httpRequest } from "@/utils/httpRequest";
 
 export const useMyInfo = () => {
-  const navigate = useNavigate();
   const setUser = useAuthStore((state) => state.setUser);
   const clearUser = useAuthStore((state) => state.clearUser);
   const setIsLoading = useAuthStore((state) => state.setIsLoading);
   const user = useAuthStore((state) => state.user);
   const location = useLocation();
+
+  const token = cookieUtil.getStorage().accessToken;
+
+  const { isLoading, isError } = useQuery({
+    queryKey: ["current-user"],
+    queryFn: async () => {
+      const res = await httpRequest.get("/user/me");
+      setUser(res.data.data, true);
+      return res.data.data;
+    },
+    enabled: !!token && location.pathname !== "/authenticate" && !user,
+    staleTime: 5 * 6 * 1000,
+    retry: false,
+  });
+
   useEffect(() => {
-    if(location.pathname === "/authenticate") return;
-    const token = cookieUtil.getStorage().accessToken;
+    setIsLoading(isLoading);
+  }, [isLoading, setIsLoading]);
+
+  useEffect(() => {
+    if (location.pathname === "/authenticate") return;
 
     if (!token) {
       cookieUtil.deleteStorage();
       clearUser();
-      navigate("/login");
+      // navigate("/login");
       return;
     }
 
-    const fetchUser = async () => {
-      setIsLoading(true);
-      try {
-        const res = await httpRequest.get(`/auth/me`);
-        setUser(res.data.data, true);
-      } catch {
-        toast.error("Phiên đăng nhập hết hạn");
-        clearUser();
-        cookieUtil.deleteStorage();
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (!user) fetchUser();
-  }, [clearUser, navigate, setIsLoading, setUser, user]);
+    if (isError) {
+      toast.error("Phiên đăng nhập hết hạn");
+      clearUser();
+      cookieUtil.deleteStorage();
+    }
+  }, [clearUser, isError, location.pathname, token]);
 };

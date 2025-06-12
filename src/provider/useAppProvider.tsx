@@ -1,8 +1,6 @@
 import { ComponentType, Fragment, ReactNode } from "react";
 import { Route, useLocation } from "react-router-dom";
 
-import { useMyInfo } from "@/hooks/useMyInfo";
-import useTheme from "@/hooks/useTheme";
 import DefaultLayout from "@/layouts/DefaultLayout";
 import { useAuthStore } from "@/zustand/authStore";
 
@@ -21,9 +19,6 @@ interface RouteType {
 }
 
 export const useAppProvider = () => {
-  useTheme();
-  useMyInfo();
-
   const location = useLocation();
   const background = location.state && location.state.background;
   const isLoading = useAuthStore((s) => s.isLoading);

@@ -50,7 +50,7 @@ function Input({
             "focus-visible:border-primary focus-visible:ring-primary/50 focus-visible:ring-[0.5px]",
             "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
             "focus-visible:transform focus-visible:placeholder:translate-x-[2px] not-focus-visible:placeholder:-translate-x-[2px] focus-visible:placeholder:transition-transform focus-visible:placeholder:duration-150 not-focus-visible:placeholder:duration-150",
-            "focus-visible:shadow-lg placeholder:pl-1 disabled:border-[oklch(1 0 0 / 15%)] disabled:bg-[#efefef] placeholder:text-[rgb(110,107,123)/50] border-border",
+            "focus-visible:shadow-lg placeholder:pl-1 text-foreground dark:text-secondary-foreground disabled:border-[oklch(1 0 0 / 15%)] disabled:bg-[#efefef] placeholder:text-[rgb(110,107,123)/50] border-border",
             validate && isEmpty && "border-red-500",
             (typeInput === "password" || prevType === "password") && "pr-11",
             className
@@ -85,9 +85,7 @@ function Input({
       <RenderIf value={isEmpty && !!validate}>
         <span className="text-[12px] text-red-500 font-light">Thông tin bắt buộc</span>
       </RenderIf>
-      <RenderIf value={!!errorText?.trim() && !isEmpty}>
-        <span className="text-[12px] text-red-500 font-light">{errorText}</span>
-      </RenderIf>
+      <span className="text-[12px] text-red-500 font-light">{errorText}</span>
     </>
   );
 }

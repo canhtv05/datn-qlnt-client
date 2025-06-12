@@ -1,126 +1,46 @@
-// pages/UserProfile.tsx
-import { FormEvent, useRef, useState } from "react";
-import { toast } from "sonner";
+import { FormEvent, useRef } from "react";
+import { Camera, X } from "lucide-react";
 
 import DialogLink from "@/components/DialogLink";
+import FieldsSelectLabel from "@/components/FieldsSelectLabel";
+import Image from "@/components/Image";
+import InputLabel from "@/components/InputLabel";
+import { Button } from "@/components/ui/button";
+import { DialogClose } from "@/components/ui/dialog";
+import { Gender } from "@/enums";
 import ConfirmDialog, { AlertDialogRef } from "@/components/ConfirmDialog";
-import { useAuthStore } from "@/zustand/authStore";
-import { formatFullName, updateUserSchema } from "@/lib/validation";
-import { useFormErrors } from "@/hooks/useFormErrors";
-import { updateUser } from '@/api/userUpdate';
-import { Gender, Status } from "@/enums";
-import UserAvatar from "@/pages/profile/UserAvatar";
-import UserInfoForm from "@/pages/profile/UserInfoForm";
-import type { UserResponse } from "@/types";
+import DatePickerLabel from "@/components/DatePickerLabel";
+import { useProfile } from "./useProfile";
+import RenderIf from "@/components/RenderIf";
 
-
-export interface UserProfileValue {
-  fullName: string;
-  profilePicture: string;
-  gender: Gender;
-  dob: string;
-  phoneNumber: string;
-  email: string;
-}
+const genderData = [
+  { label: "Nam", value: Gender.MALE },
+  { label: "Nữ", value: Gender.FEMALE },
+];
 
 const UserProfile = () => {
   const dialogRef = useRef<AlertDialogRef>(null);
-  const user = useAuthStore((state) => state.user);
-  const setUser = useAuthStore((state) => state.setUser);
-
-  const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState<UserProfileValue>({
-    dob: user?.dob ?? "",
-    fullName: user?.fullName ?? "",
-    gender: user?.gender ?? Gender.UNKNOWN,
-    profilePicture: user?.profilePicture ?? "",
-    phoneNumber: user?.phoneNumber ?? "",
-    email: user?.email ?? "",
-  });
-
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<UserProfileValue>();
 
   const handleShowDialog = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dialogRef.current?.open();
   };
 
-  const handleUpdate = async () => {
-    try {
-      setLoading(true);
-
-      const rawDob = value.dob ? new Date(value.dob) : undefined;
-      if (rawDob && isNaN(rawDob.getTime())) {
-        toast.error("Ngày sinh không hợp lệ.");
-        setLoading(false);
-        return;
-      }
-
-      const parsed = updateUserSchema.safeParse({
-        ...value,
-        dob: rawDob,
-      });
-
-      if (!parsed.success) {
-        handleZodErrors(parsed.error);
-        setLoading(false);
-        return;
-      }
-
-      clearErrors();
-
-      const dob = parsed.data.dob!;
-      const dobFormatted = `${dob.getFullYear()}-${(dob.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}-${dob.getDate().toString().padStart(2, "0")}`;
-
-      const payload = {
-        fullName: parsed.data.fullName,
-        profilePicture: parsed.data.profilePicture,
-        gender: parsed.data.gender,
-        dob: dobFormatted,
-        phoneNumber: parsed.data.phoneNumber,
-      };
-
-      await updateUser(payload);
-      console.log("Update done"); // thử in ra
-      const updatedUser = {
-      ...user,
-      ...payload,
-} as UserResponse;
-
-setUser(updatedUser, true);
-      toast.success(Status.UPDATE_SUCCESS);
-    } catch (error: any) {
-      toast.error(error.message || "Cập nhật thất bại");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleChange = (key: keyof UserProfileValue, val: any) => {
-    setValue((prev) => ({ ...prev, [key]: val }));
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      if (reader.result) {
-        handleChange("profilePicture", reader.result as string);
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleBlur = () => {
-    setValue((prev) => ({
-      ...prev,
-      fullName: formatFullName(String(prev.fullName)),
-    }));
-  };
+  const {
+    errors,
+    user,
+    handleBlur,
+    handleChange,
+    handleUpdate,
+    setValue,
+    value,
+    handleChangeImg,
+    handleClearImage,
+    handleFileChange,
+    tmpImg,
+    inputRef,
+    isDataUpdateEqual,
+  } = useProfile();
 
   return (
     <DialogLink title="Hồ sơ cá nhân">
@@ -128,24 +48,87 @@ setUser(updatedUser, true);
         className="px-5 py-5 flex md:flex-row flex-col md:gap-20 gap-10 justify-between"
         onSubmit={handleShowDialog}
       >
-        <UserAvatar
-          profilePicture={value.profilePicture}
-          fullName={value.fullName}
-          onImageChange={handleImageChange}
-        />
-        <UserInfoForm
-          value={value}
-          errors={errors}
-          loading={loading}
-          onChange={handleChange}
-          onBlurFullName={handleBlur}
-        />
+        <div className="flex flex-col gap-5 items-center">
+          <div className="relative">
+            <Image src={tmpImg} alt={value?.fullName} className="md:size-[140px] sm:size-[120px] size-[100px]" />
+            <input type="file" className="hidden" accept="image/*" ref={inputRef} onChange={handleFileChange} />
+            <Button
+              variant={"round"}
+              size={"icon"}
+              type="button"
+              className="absolute bottom-0 right-0"
+              onClick={handleChangeImg}
+            >
+              <Camera className="text-foreground size-4" />
+            </Button>
+            <RenderIf value={tmpImg !== value.profilePicture}>
+              <button
+                type="button"
+                className="absolute top-2 right-2 bg-background cursor-pointer p-1 rounded-full"
+                onClick={handleClearImage}
+              >
+                <X className="text-foreground size-3" />
+              </button>
+            </RenderIf>
+          </div>
+        </div>
+        <div className="flex-1 flex flex-col gap-3">
+          <InputLabel
+            type="text"
+            id="email"
+            name="email"
+            label="Email:"
+            placeholder="Nhập email:"
+            value={user?.email ?? ""}
+            disabled
+          />
+          <InputLabel
+            type="text"
+            id="name"
+            name="fullName"
+            label="Tên người dùng:"
+            placeholder="Nhập tên người dùng"
+            value={value?.fullName ?? ""}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            errorText={errors.fullName}
+          />
+          <FieldsSelectLabel
+            id="gender"
+            placeholder="Giới tính"
+            label="Giới tính:"
+            labelSelect="Giới tính"
+            data={genderData}
+            value={value?.gender ?? Gender.UNKNOWN}
+            onChange={(val) => setValue((prev) => ({ ...prev, gender: val as Gender }))}
+          />
+          <DatePickerLabel
+            date={value?.dob ? new Date(value?.dob) : new Date()}
+            setDate={(d) => setValue((prev) => ({ ...prev, dob: d.toISOString() }))}
+            label="Ngày sinh:"
+            errorText={errors.dob}
+          />
+          <InputLabel
+            type="text"
+            id="phone"
+            name="phoneNumber"
+            label="Số điện thoại:"
+            placeholder="Nhập số điện thoại"
+            value={value?.phoneNumber ?? ""}
+            onChange={handleChange}
+            errorText={errors.phoneNumber}
+          />
+          <div className="flex justify-end gap-3">
+            <DialogClose asChild>
+              <Button variant={"ghost"}>Hủy</Button>
+            </DialogClose>
+            <Button type="submit" disabled={isDataUpdateEqual()}>
+              <span className="text-white">Cập nhật</span>
+            </Button>
+          </div>
+        </div>
       </form>
-      <ConfirmDialog
-        ref={dialogRef}
-        typeTitle="chỉnh sửa"
-        onContinue={handleUpdate}
-      />
+      <ConfirmDialog ref={dialogRef} typeTitle="chỉnh sửa" onContinue={handleUpdate} />
     </DialogLink>
   );
 };
