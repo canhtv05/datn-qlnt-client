@@ -9,18 +9,21 @@ import { httpRequest } from "@/utils/httpRequest";
 import RenderIf from "@/components/RenderIf";
 import { useAuthStore } from "@/zustand/authStore";
 import { Status } from "@/enums";
+import { ApiResponse, UserResponse } from "@/types";
+import cookieUtil from "@/utils/cookieUtil";
 
 const Authenticate = () => {
   const navigate = useNavigate();
   const authCode = new URLSearchParams(window.location.search).get("code");
   const [showSuccessScreen, setShowSuccessScreen] = useState(false);
 
-  const setUser = useAuthStore((state) => state.setUser);
   const clearUser = useAuthStore((state) => state.clearUser);
+  const setUser = useAuthStore((state) => state.setUser);
 
   const { data, error } = useQuery({
     queryKey: ["authenticate", authCode],
-    queryFn: () => httpRequest.post(`/auth/login/oauth2/google/authentication?code=${authCode}`),
+    queryFn: () =>
+      httpRequest.post<ApiResponse<UserResponse>>(`/auth/login/oauth2/google/authentication?code=${authCode}`),
     enabled: !!authCode,
     retry: false,
     staleTime: Infinity,
@@ -36,18 +39,20 @@ const Authenticate = () => {
   useEffect(() => {
     if (data) {
       setShowSuccessScreen(true);
+      setUser(data.data.data, true);
+      const tokenInfo = data.data.meta?.tokenInfo;
 
-      const timer = setTimeout(() => {
-        setUser(data.data.data, true);
-        navigate("/");
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    } else if (error) {
-      const timer = setTimeout(() => {
-        clearUser();
+      if (tokenInfo) {
+        const { accessToken, refreshToken } = tokenInfo;
+        cookieUtil.setStorage({ accessToken, refreshToken });
+      } else {
+        toast.error(Status.ERROR);
         navigate("/login");
-      }, 1000);
+      }
+      navigate("/");
+    } else if (error) {
+      clearUser();
+      navigate("/login");
 
       if (axios.isAxiosError(error)) {
         if (error.response?.data?.code === 404) {
@@ -58,9 +63,8 @@ const Authenticate = () => {
       } else {
         toast.error(Status.ERROR);
       }
-      return () => clearTimeout(timer);
     }
-  }, [clearUser, data, error, navigate, setUser]);
+  }, [clearUser, data, error, navigate]);
 
   let authStatus: "authenticating" | "success" | "error" = "authenticating";
   if (error) authStatus = "error";
