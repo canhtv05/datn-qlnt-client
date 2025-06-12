@@ -1,13 +1,21 @@
 import { toast } from "sonner";
-import { FormEvent, useState } from "react";
-import { z } from "zod/v4";
+import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { registerSchema, formatFullName } from "@/lib/validation";
+import { useFormErrors } from "@/hooks/useFormErrors";
+
+interface RegisterValue {
+  fullName: string;
+  phone: string;
+  email: string;
+  password: string;
+  confirm: string;
+}
 
 export const useRegister = () => {
   const navigate = useNavigate();
-  const [value, setValue] = useState({
+  const [value, setValue] = useState<RegisterValue>({
     fullName: "",
     phone: "",
     email: "",
@@ -15,27 +23,23 @@ export const useRegister = () => {
     confirm: "",
   });
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<RegisterValue>();
 
-  const handleSubmitForm = async (e: FormEvent) => {
-    e.preventDefault();
+  const handleSubmitForm = useCallback(
+    async (e: FormEvent) => {
+      e.preventDefault();
 
-    try {
-      await registerSchema.parse(value);
-      setErrors({});
-      toast.success("Đăng ký thành công");
-      navigate("/login");
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const newErrors: Record<string, string> = {};
-        for (const issue of error.issues) {
-          const field = issue.path[0] as string;
-          newErrors[field] = issue.message;
-        }
-        setErrors(newErrors);
+      try {
+        await registerSchema.parse(value);
+        clearErrors();
+        toast.success("Đăng ký thành công");
+        navigate("/login");
+      } catch (error) {
+        handleZodErrors(error);
       }
-    }
-  };
+    },
+    [clearErrors, handleZodErrors, navigate, value]
+  );
 
   const handleBlur = () => {
     setValue((prev) => ({
@@ -44,5 +48,12 @@ export const useRegister = () => {
     }));
   };
 
-  return { value, setValue, handleSubmitForm, errors, handleBlur };
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue((prev) => ({
+      ...prev,
+      [e.target.name]: [e.target.value],
+    }));
+  };
+
+  return { value, setValue, handleSubmitForm, errors, handleBlur, handleChange };
 };

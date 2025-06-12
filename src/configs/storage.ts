@@ -1,5 +1,5 @@
 const storage = {
-  key: "SHOP_SERVICE",
+  key: "TRO_HUB_SERVICE",
 };
 
 export default storage;

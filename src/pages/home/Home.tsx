@@ -1,5 +1,5 @@
 const Home = () => {
-  return <div>rgb(68, 71, 90)</div>;
+  return <div></div>;
 };
 
 export default Home;

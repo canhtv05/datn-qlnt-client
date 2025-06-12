@@ -8,7 +8,7 @@ import RenderIf from "@/components/RenderIf";
 import InputOTPLabel from "@/components/InputOTPLabel";
 
 const ForgotPassword = () => {
-  const { setValue, errors, isTabOTP, value, handleSubmit, setErrors, handleBlur } = useForgotPassword();
+  const { setValue, errors, isTabOTP, value, handleSubmit, setErrors, handleBlur, handleChange } = useForgotPassword();
 
   return (
     <form onSubmit={handleSubmit}>
@@ -28,14 +28,10 @@ const ForgotPassword = () => {
             required
             placeholder="abc@xyz.com"
             value={value.email}
-            onChange={(e) =>
-              setValue((prev) => ({
-                ...prev,
-                email: e.target.value,
-              }))
-            }
+            onChange={handleChange}
             onFocus={() => setErrors((prev) => ({ ...prev, email: "" }))}
-            errorText={errors["email"]}
+            errorText={errors.email}
+            className="placeholder:text-[#6e6b7b] text-[#6e6b7b] dark:text-[#6e6b7b] border-border"
           />
 
           <Button type="submit" className="w-full mt-5">
@@ -53,8 +49,8 @@ const ForgotPassword = () => {
               placeholder="abc@xyz.com"
               value={value.email}
               disabled
-              className="!bg-[#efefef]"
-              errorText={errors["email"]}
+              className="placeholder:text-[#6e6b7b] text-[#6e6b7b] dark:text-[#6e6b7b] border-border"
+              errorText={errors.email}
             />
             <InputOTPLabel
               label="Mã OTP:"
@@ -78,13 +74,9 @@ const ForgotPassword = () => {
               required
               placeholder="Mật khẩu"
               value={value.password}
-              onChange={(e) =>
-                setValue((prev) => ({
-                  ...prev,
-                  password: e.target.value,
-                }))
-              }
-              errorText={errors["password"]}
+              onChange={handleChange}
+              errorText={errors.password}
+              className="placeholder:text-[#6e6b7b] text-[#6e6b7b] dark:text-[#6e6b7b] border-border"
             />
             <InputLabel
               type="password"
@@ -94,13 +86,9 @@ const ForgotPassword = () => {
               required
               placeholder="Xác nhận mật khẩu"
               value={value.confirm}
-              onChange={(e) =>
-                setValue((prev) => ({
-                  ...prev,
-                  confirm: e.target.value,
-                }))
-              }
-              errorText={errors["confirm"]}
+              onChange={handleChange}
+              errorText={errors.confirm}
+              className="placeholder:text-[#6e6b7b] text-[#6e6b7b] dark:text-[#6e6b7b] border-border"
             />
 
             <Button type="submit" className="w-full mt-2">

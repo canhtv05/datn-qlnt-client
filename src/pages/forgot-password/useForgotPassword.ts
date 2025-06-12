@@ -1,23 +1,30 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { toast } from "sonner";
-import { z } from "zod/v4";
 import { useNavigate } from "react-router-dom";
 
 import { emailSchema, forgotPassSchema } from "@/lib/validation";
-import { Status } from "@/enums";
+import { useFormErrors } from "@/hooks/useFormErrors";
+
+interface ForgotPasswordValue {
+  confirm: string;
+  email: string;
+  otp: string;
+  password: string;
+}
 
 export const useForgotPassword = () => {
   const navigate = useNavigate();
 
-  const [value, setValue] = useState({
+  const [value, setValue] = useState<ForgotPasswordValue>({
     confirm: "",
     email: "",
     otp: "",
     password: "",
   });
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const [isTabOTP, setIsTabOTP] = useState(true);
+
+  const { errors, clearErrors, handleZodErrors, setErrors } = useFormErrors<ForgotPasswordValue>();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,26 +32,18 @@ export const useForgotPassword = () => {
     try {
       if (isTabOTP) {
         await emailSchema.parseAsync({ email: value.email });
-        setErrors({});
+        clearErrors();
         toast.success("Mã OTP đã được gửi đến email của bạn");
         setIsTabOTP(false);
       } else {
         await forgotPassSchema.parseAsync(value);
-        setErrors({});
+        clearErrors();
         toast.success("Đổi mật khẩu thành công");
         navigate("/login");
       }
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        const newErrors: Record<string, string> = {};
-        for (const issue of error.issues) {
-          const field = issue.path[0] as string;
-          newErrors[field] = issue.message;
-        }
-        setErrors(newErrors);
-      } else {
-        toast.error(Status.ERROR);
-      }
+      handleZodErrors(error);
+      console.log(error, value.email);
     }
   };
 
@@ -62,6 +61,13 @@ export const useForgotPassword = () => {
     }
   };
 
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
   return {
     handleSubmit,
     value,
@@ -70,5 +76,6 @@ export const useForgotPassword = () => {
     setErrors,
     isTabOTP,
     handleBlur,
+    handleChange,
   };
 };

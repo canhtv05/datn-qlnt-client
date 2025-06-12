@@ -138,7 +138,7 @@ function DropdownMenuSeparator({ className, ...props }: React.ComponentProps<typ
   return (
     <DropdownMenuPrimitive.Separator
       data-slot="dropdown-menu-separator"
-      className={cn("bg-border -mx-1 my-1 h-px", className)}
+      className={cn("bg-input -mx-1 my-1 h-px", className)}
       {...props}
     />
   );

@@ -1,25 +1,30 @@
-import { z } from "zod/v4";
 import { useNavigate } from "react-router-dom";
-import { FormEvent, useState } from "react";
+import { FormEvent, useCallback, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "sonner";
 
 import { emailSchema } from "@/lib/validation";
-import configs from "@/configs";
 import { httpRequest } from "@/utils/httpRequest";
 import { ApiResponse, UserResponse } from "@/types";
 import { useAuthStore } from "@/zustand/authStore";
 import cookieUtil from "@/utils/cookieUtil";
 import { Status } from "@/enums";
+import { useFormErrors } from "@/hooks/useFormErrors";
+
+interface LoginValue {
+  email: string;
+  password: string;
+}
 
 export const useLogin = () => {
   const navigate = useNavigate();
-  const [value, setValue] = useState<{ email: string; password: string }>({
+  const [value, setValue] = useState<LoginValue>({
     email: "",
     password: "",
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const { clearErrors, errors, handleZodErrors, setErrors } = useFormErrors<LoginValue>();
 
   const setUser = useAuthStore((s) => s.setUser);
   const setIsLoading = useAuthStore((s) => s.setIsLoading);
@@ -47,33 +52,33 @@ export const useLogin = () => {
     },
   });
 
-  const handleSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      setIsLoading(true);
-      await emailSchema.parseAsync({ email: value.email });
-      setErrors({});
-      loginMutation.mutate();
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const newErrors: Record<string, string> = {};
-        for (const issue of error.issues) {
-          const field = issue.path[0] as string;
-          newErrors[field] = issue.message;
-        }
-        setErrors(newErrors);
+  const handleSubmitForm = useCallback(
+    async (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      try {
+        setIsLoading(true);
+        await emailSchema.parseAsync({ email: value.email });
+        clearErrors();
+        loginMutation.mutate();
+      } catch (error) {
+        handleZodErrors(error);
+      } finally {
+        setIsLoading(false);
       }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+    [clearErrors, handleZodErrors, loginMutation, setIsLoading, value.email]
+  );
 
   const handleLoginWithGoogle = (e: FormEvent) => {
     e.preventDefault();
 
-    const callbackUrl = configs.oauth2.redirectUri;
-    const authUrl = configs.oauth2.authUri;
-    const googleClientId = configs.oauth2.clientId;
+    // const callbackUrl = configs.oauth2.redirectUri;
+    // const authUrl = configs.oauth2.authUri;
+    // const googleClientId = configs.oauth2.clientId;
+
+    const callbackUrl = "http://localhost:5173/authenticate";
+    const authUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+    const googleClientId = "635634641386-m0df7i4nnulj2jn27qtr0qk1l8e0hk2l.apps.googleusercontent.com";
 
     const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
       callbackUrl

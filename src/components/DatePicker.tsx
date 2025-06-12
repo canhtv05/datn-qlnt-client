@@ -1,4 +1,3 @@
-import * as React from "react";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
@@ -7,25 +6,38 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
-export function DatePickerDemo() {
-  const [date, setDate] = React.useState<Date>(new Date("2000-01-01"));
+interface DatePickerDemoProps {
+  value?: Date;
+  onChange?: (date: Date | undefined) => void;
+}
 
+export function DatePicker({ value, onChange }: DatePickerDemoProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant={"none"}
+          variant="none"
           className={cn(
             "w-full border focus:border-primary shadow-sm justify-start text-left font-normal",
-            !date && "text-muted-foreground"
+            !value && "text-muted-foreground"
           )}
+          aria-label="Chọn ngày sinh"
         >
-          <CalendarIcon className="text-foreground" />
-          <span className="text-foreground">{date ? format(date, "yyyy/MM/dd") : "Chọn ngày sinh"}</span>
+          <CalendarIcon className="text-foreground mr-2" />
+          <span className="text-foreground">
+            {value ? format(value, "yyyy/MM/dd") : "Chọn ngày sinh"}
+          </span>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
-        <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+        <Calendar
+          mode="single"
+          selected={value}
+          onSelect={onChange}
+          initialFocus
+          fromYear={1900}
+          toYear={new Date().getFullYear()}
+        />
       </PopoverContent>
     </Popover>
   );

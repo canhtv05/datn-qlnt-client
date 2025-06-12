@@ -1,45 +1,36 @@
-import { useEffect, useState } from "react";
-import RenderIf from "./RenderIf";
+import { ImgHTMLAttributes, useEffect, useState } from "react";
 import images from "@/assets/imgs";
 import { cn } from "@/lib/utils";
 
-type ImageProps = React.ImgHTMLAttributes<HTMLImageElement> & {
+type ImageProps = ImgHTMLAttributes<HTMLImageElement> & {
   fallback?: string;
 };
 
 const Image = ({ src, alt = "Image not available", fallback, className, ...props }: ImageProps) => {
-  const [imgSrc, setImgSrc] = useState(src);
-  const [isError, setIsError] = useState(false);
+  const [imgSrc, setImgSrc] = useState<string | undefined>(src);
 
   useEffect(() => {
-    if (!imgSrc || !src) {
-      setIsError(true);
+    if (src) {
+      setImgSrc(src);
     }
-  }, [imgSrc, src]);
+  }, [src]);
 
   const handleError = () => {
-    if (fallback) {
+    if (fallback && imgSrc !== fallback) {
       setImgSrc(fallback);
     } else {
-      setIsError(true);
+      setImgSrc(images.profile);
     }
   };
 
   return (
-    <>
-      <RenderIf value={!isError}>
-        <img
-          src={imgSrc}
-          alt={alt}
-          onError={handleError}
-          className={cn("rounded-full size-[40px]", className)}
-          {...props}
-        />
-      </RenderIf>
-      <RenderIf value={isError}>
-        <img src={images.profile} alt="profile" className={cn("rounded-full size-[40px]", className)} />
-      </RenderIf>
-    </>
+    <img
+      src={imgSrc || images.profile}
+      alt={alt}
+      onError={handleError}
+      className={cn("rounded-full size-[40px] object-cover", className)}
+      {...props}
+    />
   );
 };
 

@@ -25,6 +25,12 @@ const isValidFullName = (value: string) => {
   const words = value.trim().split(/\s+/);
   return words.every((word) => word.length >= 1) && words.length > 1;
 };
+
+const isValidPhoneNumber = (number: string) => {
+  const regex = /^\d+$/;
+  return regex.test(number);
+};
+
 /* CHECK */
 
 /*
@@ -103,9 +109,19 @@ export const updateUserSchema = z.object({
 
   gender: z.enum([Gender.FEMALE, Gender.MALE, Gender.UNKNOWN], "Giới tính không hợp lệ"),
 
-  dob: z.date().refine((date) => {
-    isValidDob(date);
-  }, "Tuổi của bạn phải lớn hơn hoặc bằng 18"),
+  dob: z
+    .string()
+    .refine((val) => !isNaN(Date.parse(val)), "Ngày sinh không hợp lệ")
+    .transform((val) => new Date(val))
+    .refine((date) => isValidDob(date), "Tuổi của bạn phải lớn hơn hoặc bằng 18"),
 
-  phoneNumber: z.string().min(10, "Số điện thoại ít nhất là 10 số").max(11, "Số điện thoại tối đa là 11 số"),
+  phoneNumber: z
+    .string()
+    .refine(
+      (val) => /^(?:\+84|0)(3|5|7|8|9)[0-9]{8}$/.test(val),
+      "Số điện thoại không hợp lệ, VD: 03xx, 05xx, 07xx, 08xx, 09xx"
+    )
+    .refine(isValidPhoneNumber, "Số điện thoại chỉ chứa số")
+    .min(10, "Số điện thoại ít nhất là 10 số")
+    .max(11, "Số điện thoại tối đa là 11 số"),
 });

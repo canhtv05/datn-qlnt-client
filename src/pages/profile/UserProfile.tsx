@@ -1,29 +1,17 @@
-import { FormEvent, useRef, useState } from "react";
-import { Camera } from "lucide-react";
-import { toast } from "sonner";
+import { FormEvent, useRef } from "react";
+import { Camera, X } from "lucide-react";
 
-import { DatePickerDemo } from "@/components/DatePicker";
 import DialogLink from "@/components/DialogLink";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import Image from "@/components/Image";
 import InputLabel from "@/components/InputLabel";
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Gender, Status } from "@/enums";
-import { useAuthStore } from "@/zustand/authStore";
+import { Gender } from "@/enums";
 import ConfirmDialog, { AlertDialogRef } from "@/components/ConfirmDialog";
-import { formatFullName, updateUserSchema } from "@/lib/validation";
-import { z } from "zod/v4";
-import { useFormErrors } from "@/hooks/useFormErrors";
-
-interface UserProfileValue {
-  fullName: string | undefined;
-  profilePicture: string | undefined;
-  gender: Gender | undefined;
-  dob: string | undefined;
-  phoneNumber: string | undefined;
-}
+import DatePickerLabel from "@/components/DatePickerLabel";
+import { useProfile } from "./useProfile";
+import RenderIf from "@/components/RenderIf";
 
 const genderData = [
   { label: "Nam", value: Gender.MALE },
@@ -32,39 +20,27 @@ const genderData = [
 
 const UserProfile = () => {
   const dialogRef = useRef<AlertDialogRef>(null);
-  const user = useAuthStore((state) => state.user);
-
-  const [value, setValue] = useState<UserProfileValue>({
-    dob: user?.dob ?? "",
-    fullName: user?.fullName ?? "",
-    gender: user?.gender ?? Gender.UNKNOWN,
-    profilePicture: user?.profilePicture ?? "",
-    phoneNumber: user?.phoneNumber ?? "",
-  });
-
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<UserProfileValue>();
 
   const handleShowDialog = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dialogRef.current?.open();
   };
 
-  const handleUpdate = async () => {
-    try {
-      await updateUserSchema.parseAsync(value);
-      clearErrors();
-      toast.success(Status.UPDATE_SUCCESS);
-    } catch (error) {
-      handleZodErrors(error);
-    }
-  };
-
-  const handleBlur = () => {
-    setValue((prev) => ({
-      ...prev,
-      fullName: formatFullName(String(prev.fullName)),
-    }));
-  };
+  const {
+    errors,
+    user,
+    handleBlur,
+    handleChange,
+    handleUpdate,
+    setValue,
+    value,
+    handleChangeImg,
+    handleClearImage,
+    handleFileChange,
+    tmpImg,
+    inputRef,
+    isDataUpdateEqual,
+  } = useProfile();
 
   return (
     <DialogLink title="Hồ sơ cá nhân">
@@ -74,14 +50,26 @@ const UserProfile = () => {
       >
         <div className="flex flex-col gap-5 items-center">
           <div className="relative">
-            <Image
-              src={value?.profilePicture}
-              alt={value?.fullName}
-              className="md:size-[140px] sm:size-[120px] size-[100px]"
-            />
-            <Button variant={"round"} size={"icon"} type="button" className="absolute bottom-0 right-0">
+            <Image src={tmpImg} alt={value?.fullName} className="md:size-[140px] sm:size-[120px] size-[100px]" />
+            <input type="file" className="hidden" accept="image/*" ref={inputRef} onChange={handleFileChange} />
+            <Button
+              variant={"round"}
+              size={"icon"}
+              type="button"
+              className="absolute bottom-0 right-0"
+              onClick={handleChangeImg}
+            >
               <Camera className="text-foreground size-4" />
             </Button>
+            <RenderIf value={tmpImg !== value.profilePicture}>
+              <button
+                type="button"
+                className="absolute top-2 right-2 bg-background cursor-pointer p-1 rounded-full"
+                onClick={handleClearImage}
+              >
+                <X className="text-foreground size-3" />
+              </button>
+            </RenderIf>
           </div>
         </div>
         <div className="flex-1 flex flex-col gap-3">
@@ -97,16 +85,11 @@ const UserProfile = () => {
           <InputLabel
             type="text"
             id="name"
-            name="name"
+            name="fullName"
             label="Tên người dùng:"
             placeholder="Nhập tên người dùng"
             value={value?.fullName ?? ""}
-            onChange={(e) => {
-              setValue((prev) => ({
-                ...prev,
-                fullName: e.target.value,
-              }));
-            }}
+            onChange={handleChange}
             onBlur={handleBlur}
             errorText={errors.fullName}
           />
@@ -119,32 +102,27 @@ const UserProfile = () => {
             value={value?.gender ?? Gender.UNKNOWN}
             onChange={(val) => setValue((prev) => ({ ...prev, gender: val as Gender }))}
           />
-          <div className="flex flex-col">
-            <Label htmlFor="gender" className="mb-1 text-label text-sm flex gap-1">
-              Ngày sinh:
-            </Label>
-            <DatePickerDemo />
-          </div>
+          <DatePickerLabel
+            date={value?.dob ? new Date(value?.dob) : new Date()}
+            setDate={(d) => setValue((prev) => ({ ...prev, dob: d.toISOString() }))}
+            label="Ngày sinh:"
+            errorText={errors.dob}
+          />
           <InputLabel
             type="text"
             id="phone"
-            name="phone"
+            name="phoneNumber"
             label="Số điện thoại:"
             placeholder="Nhập số điện thoại"
             value={value?.phoneNumber ?? ""}
-            onChange={(e) => {
-              setValue((prev) => ({
-                ...prev,
-                phoneNumber: e.target.value,
-              }));
-            }}
+            onChange={handleChange}
             errorText={errors.phoneNumber}
           />
           <div className="flex justify-end gap-3">
             <DialogClose asChild>
               <Button variant={"ghost"}>Hủy</Button>
             </DialogClose>
-            <Button type="submit">
+            <Button type="submit" disabled={isDataUpdateEqual()}>
               <span className="text-white">Cập nhật</span>
             </Button>
           </div>

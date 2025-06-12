@@ -5,7 +5,7 @@ import { useRegister } from "./useRegister";
 import { svg } from "@/assets/svg";
 
 const Register = () => {
-  const { handleSubmitForm, value, setValue, errors, handleBlur } = useRegister();
+  const { handleSubmitForm, value, errors, handleBlur, handleChange } = useRegister();
 
   return (
     <>
@@ -21,9 +21,10 @@ const Register = () => {
           id="fullName"
           placeholder="Nguyễn Văn A"
           value={value.fullName}
-          onChange={(e) => setValue((prev) => ({ ...prev, fullName: e.target.value }))}
           onBlur={handleBlur}
           errorText={errors.fullName}
+          onChange={handleChange}
+          className="placeholder:text-[#6e6b7b] text-[#6e6b7b] dark:text-[#6e6b7b] border-border"
         />
         <div className="my-3"></div>
 
@@ -35,8 +36,9 @@ const Register = () => {
           id="email"
           placeholder="abc@xyz.com"
           value={value.email}
-          onChange={(e) => setValue((prev) => ({ ...prev, email: e.target.value }))}
           errorText={errors.email}
+          onChange={handleChange}
+          className="placeholder:text-[#6e6b7b] text-[#6e6b7b] dark:text-[#6e6b7b] border-border"
         />
         <div className="my-3"></div>
 
@@ -47,8 +49,9 @@ const Register = () => {
           id="phone"
           placeholder="0987654321"
           value={value.phone}
-          onChange={(e) => setValue((prev) => ({ ...prev, phone: e.target.value }))}
           errorText={errors.phone}
+          onChange={handleChange}
+          className="placeholder:text-[#6e6b7b] text-[#6e6b7b] dark:text-[#6e6b7b] border-border"
         />
         <div className="my-3"></div>
 
@@ -60,8 +63,9 @@ const Register = () => {
           id="pw"
           placeholder="Mật khẩu"
           value={value.password}
-          onChange={(e) => setValue((prev) => ({ ...prev, password: e.target.value }))}
           errorText={errors.password}
+          onChange={handleChange}
+          className="placeholder:text-[#6e6b7b] text-[#6e6b7b] dark:text-[#6e6b7b] border-border"
         />
         <div className="my-3"></div>
 
@@ -73,8 +77,9 @@ const Register = () => {
           id="confirm"
           placeholder="Xác nhận mật khẩu"
           value={value.confirm}
-          onChange={(e) => setValue((prev) => ({ ...prev, confirm: e.target.value }))}
           errorText={errors.confirm}
+          onChange={handleChange}
+          className="placeholder:text-[#6e6b7b] text-[#6e6b7b] dark:text-[#6e6b7b] border-border"
         />
 
         <div className="w-full text-right block mt-3 mb-6">

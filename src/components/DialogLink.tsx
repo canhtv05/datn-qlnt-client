@@ -28,7 +28,7 @@ function DialogLink({ children, title, outline = false, component }: DialogLinkP
   return (
     <Dialog open={true} onOpenChange={handleClose}>
       <DialogContent
-        className={`bg-card text-card-foreground w-[80vw]
+        className={`bg-card text-card-foreground w-[80vw] z-40
           ${outline ? "border-2 border-border" : "border-none"}
           rounded-lg font-geist md:w-[70%] w-full
         `}

@@ -24,6 +24,7 @@ const Login = () => {
           placeholder="abc@xyz.com"
           onChange={(e) => setValue((prev) => ({ ...prev, email: e.target.value }))}
           errorText={errors.email}
+          className="placeholder:text-[#6e6b7b] text-[#6e6b7b] dark:text-[#6e6b7b] border-border"
         />
         <div className="my-3"></div>
         <InputLabel
@@ -35,6 +36,7 @@ const Login = () => {
           placeholder="Mật khẩu"
           onChange={(e) => setValue((prev) => ({ ...prev, password: e.target.value }))}
           errorText={errors.password}
+          className="placeholder:text-[#6e6b7b] text-[#6e6b7b] dark:text-[#6e6b7b] border-border"
         />
         <div className="w-full text-right block mt-3 mb-6">
           <Link to={`/forgot-password`}>
