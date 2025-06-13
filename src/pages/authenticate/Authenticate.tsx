@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Check, CircleAlert, Loader } from "lucide-react";
-import axios from "axios";
 
 import { httpRequest } from "@/utils/httpRequest";
 import RenderIf from "@/components/RenderIf";
 import { useAuthStore } from "@/zustand/authStore";
 import { Status } from "@/enums";
+import { handleMutationError } from "@/utils/handleMutationError";
 
 const Authenticate = () => {
   const navigate = useNavigate();
@@ -44,21 +44,9 @@ const Authenticate = () => {
 
       return () => clearTimeout(timer);
     } else if (error) {
-      const timer = setTimeout(() => {
-        clearUser();
-        navigate("/login");
-      }, 1000);
-
-      if (axios.isAxiosError(error)) {
-        if (error.response?.data?.code === 404) {
-          toast.error("Bạn chưa có tài khoản vui lòng đăng ký");
-        } else {
-          toast.error(error.message);
-        }
-      } else {
-        toast.error(Status.ERROR);
-      }
-      return () => clearTimeout(timer);
+      clearUser();
+      navigate("/login");
+      handleMutationError(error);
     }
   }, [clearUser, data, error, navigate, setUser]);
 

@@ -3,14 +3,15 @@ import { Button } from "@/components/ui/button";
 import InputLabel from "@/components/InputLabel";
 import { useRegister } from "./useRegister";
 import { svg } from "@/assets/svg";
+import DatePickerLabel from "@/components/DatePickerLabel";
 
 const Register = () => {
-  const { handleSubmitForm, value, errors, handleBlur, handleChange } = useRegister();
+  const { handleSubmitForm, value, errors, handleBlur, handleChange, setValue } = useRegister();
 
   return (
     <>
       <h3 className="text-label text-left w-full text-[24px] mt-2">Đăng ký tài khoản 🚀</h3>
-      <p className="text-label mb-2 text-[14px] text-left w-full mt-2">Đẹp trai có gì sai</p>
+      <p className="text-label mb-2 text-[14px] text-left w-full mt-2">Đăng ký để sử dụng dịch vụ</p>
 
       <form className="w-full mt-5" onSubmit={handleSubmitForm}>
         <InputLabel
@@ -55,6 +56,14 @@ const Register = () => {
         />
         <div className="my-3"></div>
 
+        <DatePickerLabel
+          date={value?.dob ? new Date(value?.dob) : new Date()}
+          setDate={(d) => setValue((prev) => ({ ...prev, dob: d.toISOString() }))}
+          label="Ngày sinh:"
+          errorText={errors.dob}
+        />
+
+        <div className="my-3"></div>
         <InputLabel
           name="password"
           type="password"

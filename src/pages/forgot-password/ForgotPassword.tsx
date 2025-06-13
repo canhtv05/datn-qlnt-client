@@ -6,9 +6,23 @@ import { Button } from "@/components/ui/button";
 import { useForgotPassword } from "./useForgotPassword";
 import RenderIf from "@/components/RenderIf";
 import InputOTPLabel from "@/components/InputOTPLabel";
+import { formatTime } from "@/utils/formatTime";
 
 const ForgotPassword = () => {
-  const { setValue, errors, isTabOTP, value, handleSubmit, setErrors, handleBlur, handleChange } = useForgotPassword();
+  const {
+    setValue,
+    errors,
+    isTabOTP,
+    value,
+    handleSubmit,
+    setErrors,
+    handleBlur,
+    handleChange,
+    isClickSendFirstTime,
+    timeResendEmail,
+    timeExpiredOTP,
+    handleRequestSendOTP,
+  } = useForgotPassword();
 
   return (
     <form onSubmit={handleSubmit}>
@@ -34,8 +48,17 @@ const ForgotPassword = () => {
             className="placeholder:text-[#6e6b7b] text-[#6e6b7b] dark:text-[#6e6b7b] border-border"
           />
 
-          <Button type="submit" className="w-full mt-5">
-            <span className="text-white">Gửi mã OTP</span>
+          <Button
+            type="submit"
+            className="w-full mt-5"
+            disabled={(timeResendEmail !== 0 && !value.email) || isClickSendFirstTime}
+          >
+            <span className="text-white">
+              Gửi mã OTP
+              {timeResendEmail !== 0 && isClickSendFirstTime && (
+                <span className="ml-1">{formatTime(timeResendEmail)}</span>
+              )}
+            </span>
           </Button>
         </RenderIf>
         <RenderIf value={!isTabOTP}>
@@ -52,24 +75,39 @@ const ForgotPassword = () => {
               className="placeholder:text-[#6e6b7b] text-[#6e6b7b] dark:text-[#6e6b7b] border-border"
               errorText={errors.email}
             />
-            <InputOTPLabel
-              label="Mã OTP:"
-              required
-              id="otp"
-              errorText={errors["otp"]}
-              value={value.otp}
-              onChange={(newVal) =>
-                setValue((prev) => ({
-                  ...prev,
-                  otp: newVal,
-                }))
-              }
-              onBlur={handleBlur}
-            />
+            <div className="flex md:items-end  gap-2 md:flex-row flex-col">
+              <InputOTPLabel
+                desc={timeExpiredOTP !== 0 ? `Hết hạn trong: ${formatTime(timeExpiredOTP)}` : undefined}
+                maxLength={6}
+                label="Mã OTP:"
+                required
+                id="otp"
+                errorText={errors["otp"]}
+                value={value.otp}
+                onChange={(newVal) =>
+                  setValue((prev) => ({
+                    ...prev,
+                    otp: newVal,
+                  }))
+                }
+                onBlur={handleBlur}
+              />
+              <Button
+                type="button"
+                variant={"secondary"}
+                disabled={timeResendEmail !== 0}
+                onClick={handleRequestSendOTP}
+              >
+                <span>
+                  Gửi lại OTP
+                  {timeResendEmail !== 0 && <span className="ml-2">{formatTime(timeResendEmail)}</span>}
+                </span>
+              </Button>
+            </div>
             <InputLabel
               type="password"
               id="pw"
-              name="pw"
+              name="password"
               label="Mật khẩu:"
               required
               placeholder="Mật khẩu"
