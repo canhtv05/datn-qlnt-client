@@ -61,7 +61,7 @@ function Calendar({
           defaultClassNames.dropdown_root
         ),
         dropdown: cn(
-          "absolute inset-0 appearance-none text-black pl-3 dark:text-white bg-white dark:bg-card",
+          "absolute inset-0 appearance-none rounded-md text-black pl-3 dark:text-white bg-white dark:bg-card",
           defaultClassNames.dropdown
         ),
 

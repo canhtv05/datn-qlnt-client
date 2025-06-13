@@ -12,7 +12,7 @@ const Login = () => {
     <>
       <h3 className="text-label text-left w-full text-[24px] mt-2">Đăng nhập! 👋</h3>
       <p className="text-label mb-2 text-[14px] text-left w-full mt-2">
-        Bất động sản, tài chính, khách hàng... và hơn thế nữa
+        Chào mừng bạn trở lại với TroHub, đăng nhập và tận hưởng
       </p>
       <form className="w-full mt-5" onSubmit={handleSubmitForm}>
         <InputLabel

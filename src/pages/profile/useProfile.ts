@@ -1,13 +1,14 @@
+import { toast } from "sonner";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ChangeEvent, useCallback, useRef, useState } from "react";
+
 import { Gender, Status } from "@/enums";
 import { useFormErrors } from "@/hooks/useFormErrors";
 import { formatFullName, updateUserSchema } from "@/lib/validation";
 import { ApiResponse, UserResponse } from "@/types";
+import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { useAuthStore } from "@/zustand/authStore";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { ChangeEvent, useCallback, useRef, useState } from "react";
-import { toast } from "sonner";
 
 interface UserProfileValue {
   fullName: string | undefined;
@@ -61,11 +62,7 @@ export const useProfile = () => {
       setTmpImg(data.data.data.profilePicture ?? "");
     },
     onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.message ?? Status.UPDATE_FAILED);
-      } else {
-        toast.error(Status.UPDATE_FAILED);
-      }
+      handleMutationError(error);
     },
   });
 

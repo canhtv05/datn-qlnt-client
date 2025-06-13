@@ -9,6 +9,7 @@ interface RegisterValue {
   fullName: string;
   phone: string;
   email: string;
+  dob: string;
   password: string;
   confirm: string;
 }
@@ -19,6 +20,7 @@ export const useRegister = () => {
     fullName: "",
     phone: "",
     email: "",
+    dob: "",
     password: "",
     confirm: "",
   });
