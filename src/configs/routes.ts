@@ -9,6 +9,7 @@ const routes = {
   modals: {
     profile: "/profile",
   },
+  dashboard: "/dashboard",
 };
 
 export default routes;

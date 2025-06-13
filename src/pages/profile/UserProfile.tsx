@@ -53,10 +53,9 @@ const UserProfile = () => {
             <Image src={tmpImg} alt={value?.fullName} className="md:size-[140px] sm:size-[120px] size-[100px]" />
             <input type="file" className="hidden" accept="image/*" ref={inputRef} onChange={handleFileChange} />
             <Button
-              variant={"round"}
               size={"icon"}
               type="button"
-              className="absolute bottom-0 right-0"
+              className="absolute bottom-0 right-0 rounded-full cursor-pointer border bg-background hover:bg-muted"
               onClick={handleChangeImg}
             >
               <Camera className="text-foreground size-4" />

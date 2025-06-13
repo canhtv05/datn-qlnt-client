@@ -40,7 +40,7 @@ export const useLogin = () => {
         refreshToken: data.meta?.tokenInfo?.refreshToken,
       };
       cookieUtil.setStorage(token);
-      navigate("/");
+      navigate("/dashboard");
     },
     onError: (error) => {
       handleMutationError(error);

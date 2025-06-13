@@ -9,6 +9,7 @@ import RenderIf from "@/components/RenderIf";
 import { useAuthStore } from "@/zustand/authStore";
 import { Status } from "@/enums";
 import { handleMutationError } from "@/utils/handleMutationError";
+import { ApiResponse, UserResponse } from "@/types";
 
 const Authenticate = () => {
   const navigate = useNavigate();
@@ -38,10 +39,9 @@ const Authenticate = () => {
     if (data) {
       setShowSuccessScreen(true);
       setUser(data.data.data, true);
-      const tokenInfo = data.data.meta?.tokenInfo;
       const timer = setTimeout(() => {
         setUser(data.data.data, true);
-        navigate("/");
+        navigate("/dashboard");
       }, 1000);
 
       return () => clearTimeout(timer);
@@ -50,7 +50,7 @@ const Authenticate = () => {
       navigate("/login");
       handleMutationError(error);
     }
-  }, [clearUser, data, error, navigate]);
+  }, [clearUser, data, error, navigate, setUser]);
 
   let authStatus: "authenticating" | "success" | "error" = "authenticating";
   if (error) authStatus = "error";

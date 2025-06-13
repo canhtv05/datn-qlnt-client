@@ -8,7 +8,7 @@ type LayoutComponent = ComponentType<{ children: ReactNode }>;
 
 type RouteComponent = ComponentType<unknown>;
 
-interface RouteType {
+export interface RouteType {
   path: string;
   component: RouteComponent;
   layout?: null | LayoutComponent;

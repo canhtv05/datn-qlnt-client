@@ -2,7 +2,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/s
 import type { ReactNode } from "react";
 import { AppSidebar } from "../components/app-sidebar";
 import HeaderLayout from "../components/HeaderLayout";
-import FooterLayout from "../components/FooterLayout";
+// import FooterLayout from "../components/FooterLayout";
 
 const DefaultLayout = ({ children }: { children: ReactNode }) => {
   return (
@@ -16,7 +16,7 @@ const DefaultLayout = ({ children }: { children: ReactNode }) => {
           <HeaderLayout />
         </header>
         <div className="w-full h-full px-4 py-[0.5px] pb-2 bg-secondary">{children}</div>
-        <FooterLayout />
+        {/* <FooterLayout /> */}
       </SidebarInset>
     </SidebarProvider>
   );
