@@ -1,16 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { FormEvent, useCallback, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import { toast } from "sonner";
 
 import { emailSchema } from "@/lib/validation";
 import { httpRequest } from "@/utils/httpRequest";
 import { ApiResponse, UserResponse } from "@/types";
 import { useAuthStore } from "@/zustand/authStore";
 import cookieUtil from "@/utils/cookieUtil";
-import { Status } from "@/enums";
 import { useFormErrors } from "@/hooks/useFormErrors";
+import { handleMutationError } from "@/utils/handleMutationError";
+import configs from "@/configs";
 
 interface LoginValue {
   email: string;
@@ -44,11 +43,7 @@ export const useLogin = () => {
       navigate("/");
     },
     onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.message);
-      } else {
-        toast.error(Status.ERROR);
-      }
+      handleMutationError(error);
     },
   });
 
@@ -72,13 +67,9 @@ export const useLogin = () => {
   const handleLoginWithGoogle = (e: FormEvent) => {
     e.preventDefault();
 
-    // const callbackUrl = configs.oauth2.redirectUri;
-    // const authUrl = configs.oauth2.authUri;
-    // const googleClientId = configs.oauth2.clientId;
-
-    const callbackUrl = "http://localhost:5173/authenticate";
-    const authUrl = "https://accounts.google.com/o/oauth2/v2/auth";
-    const googleClientId = "635634641386-m0df7i4nnulj2jn27qtr0qk1l8e0hk2l.apps.googleusercontent.com";
+    const callbackUrl = configs.oauth2.redirectUri;
+    const authUrl = configs.oauth2.authUri;
+    const googleClientId = configs.oauth2.clientId;
 
     const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
       callbackUrl

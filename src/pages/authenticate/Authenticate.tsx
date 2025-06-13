@@ -3,14 +3,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Check, CircleAlert, Loader } from "lucide-react";
-import axios from "axios";
 
 import { httpRequest } from "@/utils/httpRequest";
 import RenderIf from "@/components/RenderIf";
 import { useAuthStore } from "@/zustand/authStore";
 import { Status } from "@/enums";
-import { ApiResponse, UserResponse } from "@/types";
-import cookieUtil from "@/utils/cookieUtil";
+import { handleMutationError } from "@/utils/handleMutationError";
 
 const Authenticate = () => {
   const navigate = useNavigate();
@@ -41,28 +39,16 @@ const Authenticate = () => {
       setShowSuccessScreen(true);
       setUser(data.data.data, true);
       const tokenInfo = data.data.meta?.tokenInfo;
+      const timer = setTimeout(() => {
+        setUser(data.data.data, true);
+        navigate("/");
+      }, 1000);
 
-      if (tokenInfo) {
-        const { accessToken, refreshToken } = tokenInfo;
-        cookieUtil.setStorage({ accessToken, refreshToken });
-      } else {
-        toast.error(Status.ERROR);
-        navigate("/login");
-      }
-      navigate("/");
+      return () => clearTimeout(timer);
     } else if (error) {
       clearUser();
       navigate("/login");
-
-      if (axios.isAxiosError(error)) {
-        if (error.response?.data?.code === 404) {
-          toast.error("Bạn chưa có tài khoản vui lòng đăng ký");
-        } else {
-          toast.error(error.message);
-        }
-      } else {
-        toast.error(Status.ERROR);
-      }
+      handleMutationError(error);
     }
   }, [clearUser, data, error, navigate]);
 

@@ -14,15 +14,17 @@ interface InputOTPProps {
   maxLength?: number;
   value?: string;
   onChange?: (value: string) => void;
+  desc?: string;
 }
 
 const InputOTPLabel = forwardRef<HTMLDivElement, InputOTPProps>(
-  ({ id, label, required, errorText, maxLength = 4, onFocus, onChange, onBlur, ...props }, ref) => {
+  ({ id, label, required, errorText, maxLength = 4, onFocus, onChange, onBlur, desc, ...props }, ref) => {
     return (
       <div className="flex flex-col" ref={ref}>
         <Label htmlFor={id} className="mb-1 text-label text-sm flex gap-1">
           {label}
           {required && <span className="text-[10px] text-red-500">(*)</span>}
+          <span className="text-foreground text-[13px] ml-3">{desc}</span>
         </Label>
         <InputOTP maxLength={maxLength} {...props} id={id} onChange={onChange} onFocus={onFocus} onBlur={onBlur}>
           <InputOTPGroup className="space-x-2">
