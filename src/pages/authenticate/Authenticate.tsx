@@ -15,12 +15,13 @@ const Authenticate = () => {
   const authCode = new URLSearchParams(window.location.search).get("code");
   const [showSuccessScreen, setShowSuccessScreen] = useState(false);
 
-  const setUser = useAuthStore((state) => state.setUser);
   const clearUser = useAuthStore((state) => state.clearUser);
+  const setUser = useAuthStore((state) => state.setUser);
 
   const { data, error } = useQuery({
     queryKey: ["authenticate", authCode],
-    queryFn: () => httpRequest.post(`/auth/login/oauth2/google/authentication?code=${authCode}`),
+    queryFn: () =>
+      httpRequest.post<ApiResponse<UserResponse>>(`/auth/login/oauth2/google/authentication?code=${authCode}`),
     enabled: !!authCode,
     retry: false,
     staleTime: Infinity,
@@ -36,7 +37,8 @@ const Authenticate = () => {
   useEffect(() => {
     if (data) {
       setShowSuccessScreen(true);
-
+      setUser(data.data.data, true);
+      const tokenInfo = data.data.meta?.tokenInfo;
       const timer = setTimeout(() => {
         setUser(data.data.data, true);
         navigate("/");
@@ -48,7 +50,7 @@ const Authenticate = () => {
       navigate("/login");
       handleMutationError(error);
     }
-  }, [clearUser, data, error, navigate, setUser]);
+  }, [clearUser, data, error, navigate]);
 
   let authStatus: "authenticating" | "success" | "error" = "authenticating";
   if (error) authStatus = "error";

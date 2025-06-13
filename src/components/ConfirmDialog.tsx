@@ -21,7 +21,7 @@ export type AlertDialogRef = {
 const ConfirmDialog = forwardRef<
   AlertDialogRef,
   {
-    typeTitle: "thêm" | "chỉnh sửa" | "xóa";
+    typeTitle: "thêm" | "chỉnh sửa" | "xóa" | "đăng xuất";
     onContinue: () => void;
     children?: ReactNode;
   }

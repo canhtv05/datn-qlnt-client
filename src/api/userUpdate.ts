@@ -19,7 +19,7 @@ export async function updateUser(payload: UpdateUserPayload) {
     const cleanedPayload = removeNullOrUndefined(payload);
     console.log("Payload đã được làm sạch:", cleanedPayload);
 
-    const response = await httpRequest.patch('/auth/me/update', cleanedPayload);
+    const response = await httpRequest.patch('/user/me/update', cleanedPayload);
     console.log("Cập nhật thành công:", response.data);
 
     return response.data;
