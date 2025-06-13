@@ -20,4 +20,6 @@ export enum Status {
   REMOVE_SUCCESS = "Xóa thành công",
   REMOVE_FAILED = "Xóa thất bại",
   ERROR = "Có lỗi xảy ra",
+  LOGOUT_FAILED = "Đăng xuất thất bại",
+  LOGOUT_SUCCESS = "Đăng xuất thành công",
 }
