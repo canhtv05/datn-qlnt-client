@@ -49,7 +49,10 @@ const StatisticCard = ({ data }: { data: StatisticCardType[] }) => {
   return (
     <div
       className={`flex flex-col items-end ${
-        (width - WIDTH_SIDEBAR <= Viewport.SM && !sidebarOpen) || width < Viewport.SM ? "pt-5" : ""
+        (width - WIDTH_SIDEBAR <= Viewport.SM && !sidebarOpen) ||
+        (width - WIDTH_SIDEBAR <= Viewport.SM && !sidebarOpen && width > Viewport.MD)
+          ? "pt-5"
+          : ""
       }`}
     >
       <RenderIf value={width <= Viewport.MD || (width - WIDTH_SIDEBAR <= Viewport.SM && sidebarOpen)}>
