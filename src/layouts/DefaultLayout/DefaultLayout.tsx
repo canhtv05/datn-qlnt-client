@@ -2,9 +2,14 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/s
 import type { ReactNode } from "react";
 import { AppSidebar } from "../components/app-sidebar";
 import HeaderLayout from "../components/HeaderLayout";
+import useViewport from "@/hooks/useViewport";
+import { Viewport } from "@/enums";
 // import FooterLayout from "../components/FooterLayout";
 
+const WIDTH_SIDEBAR = 255.22;
 const DefaultLayout = ({ children }: { children: ReactNode }) => {
+  const { width } = useViewport();
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -15,7 +20,13 @@ const DefaultLayout = ({ children }: { children: ReactNode }) => {
           </div>
           <HeaderLayout />
         </header>
-        <div className="w-full h-full px-4 py-[0.5px] pb-2 bg-secondary">{children}</div>
+        <div
+          className={`${
+            width <= Viewport.MD || width - WIDTH_SIDEBAR <= Viewport.SM ? "pb-5 px-5" : "p-5"
+          } w-full h-full bg-secondary`}
+        >
+          {children}
+        </div>
         {/* <FooterLayout /> */}
       </SidebarInset>
     </SidebarProvider>

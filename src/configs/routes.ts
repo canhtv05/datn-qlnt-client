@@ -10,6 +10,9 @@ const routes = {
     profile: "/profile",
   },
   dashboard: "/dashboard",
+  dataCategories: {
+    buildings: "/data-categories/buildings",
+  },
 };
 
 export default routes;

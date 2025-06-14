@@ -1,23 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronsUp } from "lucide-react";
+import { throttle } from "lodash";
 
 const ScrollToTop = () => {
   const [showButton, setShowButton] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleScroll = () => {
+  const handleScroll = throttle(() => {
     const scrollTop = window.scrollY;
-
     setShowButton(scrollTop >= 100);
-
     setIsScrolling(true);
-
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
       setIsScrolling(false);
     }, 500);
-  };
+  }, 100);
 
   const onScrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -29,7 +27,7 @@ const ScrollToTop = () => {
       window.removeEventListener("scroll", handleScroll);
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, []);
+  }, [handleScroll]);
 
   if (!showButton) return null;
 
