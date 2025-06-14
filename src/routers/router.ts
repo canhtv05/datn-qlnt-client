@@ -1,6 +1,9 @@
 import { lazy } from "react";
 
 import configs from "@/configs";
+import { RouteType } from "@/provider/useAppProvider";
+
+type ModalRoute = Omit<RouteType, "children" | "layout">;
 
 /* HOME */
 const Home = lazy(() => import("@/pages/home"));
@@ -17,7 +20,10 @@ const AuthLayout = lazy(() => import("@/layouts/AuthLayout"));
 /* MODALS */
 const Profile = lazy(() => import("@/pages/profile"));
 
-const publicRoutes = [
+/* DASHBOARD */
+const DashBoard = lazy(() => import("@/pages/dashboard"));
+
+const publicRoutes: RouteType[] = [
   /* AUTH */
   {
     path: configs.routes.auth.login,
@@ -41,14 +47,20 @@ const publicRoutes = [
   },
 ];
 
-const privateRoutes = [
+const privateRoutes: RouteType[] = [
+  /* HOME */
   {
     path: configs.routes.home,
     component: Home,
   },
+  /* DASHBOARD */
+  {
+    path: configs.routes.dashboard,
+    component: DashBoard,
+  },
 ];
 
-const modals = [
+const modals: ModalRoute[] = [
   {
     path: configs.routes.modals.profile,
     component: Profile,
