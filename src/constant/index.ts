@@ -16,7 +16,6 @@ import {
   PenTool,
   PieChart,
   Scale,
-  Star,
   UsersRound,
 } from "lucide-react";
 
@@ -77,11 +76,6 @@ export const sidebarItems: SideBarType[] = [
     url: "/customers",
     icon: BookOpen,
     items: [
-      {
-        title: "Khách hẹn xem",
-        url: "/customers/viewing-appointments",
-        icon: Star,
-      },
       {
         title: "Đặt cọc",
         url: "/customers/deposits",
