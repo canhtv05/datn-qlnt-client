@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import ScrollToTop from "@/components/ScrollToTop";
+// import ScrollToTop from "@/components/ScrollToTop";
 import { Toaster } from "@/components/ui/sonner";
 import Loading from "@/components/Loading";
 import { useMutationState } from "@tanstack/react-query";
@@ -30,7 +30,7 @@ const AppProvider = ({ children }: AppProviderProps) => {
         <Loading />
       </RenderIf>
       {children}
-      <ScrollToTop />
+      {/* <ScrollToTop /> */}
       <Toaster richColors position="top-right" closeButton theme="light" />
       {/* <ReactQueryDevtools /> */}
     </>

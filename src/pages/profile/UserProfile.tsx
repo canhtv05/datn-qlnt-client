@@ -1,4 +1,3 @@
-import { FormEvent, useRef } from "react";
 import { Camera, X } from "lucide-react";
 
 import DialogLink from "@/components/DialogLink";
@@ -8,10 +7,10 @@ import InputLabel from "@/components/InputLabel";
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@/components/ui/dialog";
 import { Gender } from "@/enums";
-import ConfirmDialog, { AlertDialogRef } from "@/components/ConfirmDialog";
 import DatePickerLabel from "@/components/DatePickerLabel";
 import { useProfile } from "./useProfile";
 import RenderIf from "@/components/RenderIf";
+import { useConfirmDialog } from "@/hooks/useConfirmDialog";
 
 const genderData = [
   { label: "Nam", value: Gender.MALE },
@@ -19,13 +18,6 @@ const genderData = [
 ];
 
 const UserProfile = () => {
-  const dialogRef = useRef<AlertDialogRef>(null);
-
-  const handleShowDialog = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    dialogRef.current?.open();
-  };
-
   const {
     errors,
     user,
@@ -42,12 +34,14 @@ const UserProfile = () => {
     isDataUpdateEqual,
   } = useProfile();
 
+  const { ConfirmDialog, openDialog } = useConfirmDialog({
+    typeTitle: "chỉnh sửa",
+    onConfirm: handleUpdate,
+  });
+
   return (
     <DialogLink title="Hồ sơ cá nhân">
-      <form
-        className="px-5 py-5 flex md:flex-row flex-col md:gap-20 gap-10 justify-between"
-        onSubmit={handleShowDialog}
-      >
+      <form className="px-5 py-5 flex md:flex-row flex-col md:gap-20 gap-10 justify-between" onSubmit={openDialog}>
         <div className="flex flex-col gap-5 items-center">
           <div className="relative">
             <Image src={tmpImg} alt={value?.fullName} className="md:size-[140px] sm:size-[120px] size-[100px]" />
@@ -127,7 +121,7 @@ const UserProfile = () => {
           </div>
         </div>
       </form>
-      <ConfirmDialog ref={dialogRef} typeTitle="chỉnh sửa" onContinue={handleUpdate} />
+      <ConfirmDialog />
     </DialogLink>
   );
 };
