@@ -19,7 +19,7 @@ export const useMyInfo = () => {
   const { isLoading, isError } = useQuery({
     queryKey: ["current-user"],
     queryFn: async () => {
-      const res = await httpRequest.get("/user/me");
+      const res = await httpRequest.get("/users/me");
       setUser(res.data.data, true);
       return res.data.data;
     },

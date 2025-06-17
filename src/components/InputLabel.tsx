@@ -4,7 +4,7 @@ import React from "react";
 
 interface InputLabelProps extends React.InputHTMLAttributes<HTMLInputElement> {
   id: string;
-  label: string;
+  label?: string;
   required?: boolean;
   errorText?: string;
   onFocus?: () => void;

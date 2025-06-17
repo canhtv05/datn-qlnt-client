@@ -1,11 +1,23 @@
-import { useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
-import BuildingComp from "@/components/data-category/building/BuildingComp";
+import { useMemo, useState } from "react";
 import StatisticCard from "@/components/StatisticCard";
-import DataTableDemo, { Payment, CustomColumnDef } from "@/components/table-09";
-import { PenTool, ArrowUpDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import DataTable from "@/components/DataTable";
+import { PenTool } from "lucide-react";
+import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
+import BuildingButton from "@/components/data-category/building/BuildingButton";
+import BuildingFilter from "@/components/data-category/building/BuildingFilter";
+import { useSearchParams } from "react-router-dom";
+
+interface Payment {
+  id: string;
+  amount: number;
+  status: "pending" | "processing" | "success" | "failed";
+  email: string;
+}
+
+interface FilterValues {
+  status: string;
+  search: string;
+}
 
 const dataBuildings = [
   {
@@ -37,118 +49,48 @@ const generateFakePayments = (count: number, page: number): Payment[] => {
   }));
 };
 
-const columns: CustomColumnDef<Payment>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "status",
-    header: ({ column }) => {
-      const colDef = column.columnDef as CustomColumnDef<Payment>;
-      return colDef.isSort ? (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          {colDef.label ?? "Status"}
-          <ArrowUpDown />
-        </Button>
-      ) : (
-        colDef.label ?? "Status"
-      );
-    },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>,
-    isSort: true,
-    label: "Trạng thái",
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      const colDef = column.columnDef as CustomColumnDef<Payment>;
-      return colDef.isSort ? (
-        <Button variant="ghost" onClick={() => column.toggleSorting()}>
-          {colDef.label ?? "Email"}
-          <ArrowUpDown />
-        </Button>
-      ) : (
-        colDef.label ?? "Email"
-      );
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-    isSort: true,
-    label: "Email",
-  },
-  {
-    accessorKey: "amount",
-    header: ({ column }) => {
-      const colDef = column.columnDef as CustomColumnDef<Payment>;
-      return colDef.isSort ? (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          {colDef.label ?? "Amount"}
-          <ArrowUpDown />
-        </Button>
-      ) : (
-        <div className="text-right">{colDef.label ?? "Amount"}</div>
-      );
-    },
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-      const formatted = new Intl.NumberFormat("vi-VN", {
-        style: "currency",
-        currency: "VND",
-      }).format(amount);
-      return <div className="text-right font-medium">{formatted}</div>;
-    },
-    isSort: false,
-    label: "Số tiền",
-  },
+const columnConfigs: { label: string; accessorKey: keyof Payment; isSort: boolean }[] = [
+  { label: "Trạng thái", accessorKey: "status", isSort: true },
+  { label: "Email", accessorKey: "email", isSort: true },
+  { label: "Số tiền", accessorKey: "amount", isSort: true },
 ];
 
 const Building = () => {
+  const totalRecords = 1000;
+  const dataPayments = useMemo(() => generateFakePayments(totalRecords, 15), []);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const page = Number(searchParams.get("page") || 1);
-  const size = Number(searchParams.get("size") || 15);
-  const totalRecords = 100;
+  const [filterValues, setFilterValues] = useState<FilterValues>({
+    search: "",
+    status: "",
+  });
 
-  const handlePageChange = (newPage: number) => {
-    searchParams.set("page", newPage.toString());
-    setSearchParams(searchParams);
+  const handleClear = () => {
+    setFilterValues({
+      search: "",
+      status: "",
+    });
+    setSearchParams({});
   };
 
-  const handleSizeChange = (newSize: number) => {
-    searchParams.set("size", newSize.toString());
-    searchParams.set("page", "1");
-    setSearchParams(searchParams);
+  const props = {
+    filterValues,
+    setFilterValues,
+    onClear: handleClear,
   };
-
-  const dataPayments = useMemo(() => generateFakePayments(size, page), [page, size]);
 
   return (
     <div className="flex flex-col">
       <StatisticCard data={dataBuildings} />
-      <BuildingComp />
-      <DataTableDemo
+      <BuildingButton />
+      <BuildingFilter props={props} />
+      <DataTable<Payment>
         data={dataPayments}
-        columns={columns}
-        page={page}
-        size={size}
-        total={totalRecords}
-        onPageChange={handlePageChange}
-        onSizeChange={handleSizeChange}
+        columns={buildColumnsFromConfig(columnConfigs)}
+        page={1}
+        size={15}
+        totalElements={totalRecords}
+        totalPages={Math.ceil(totalRecords / Number(searchParams.get("size") ?? 15))}
       />
     </div>
   );

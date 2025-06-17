@@ -41,7 +41,13 @@ const UserProfile = () => {
 
   return (
     <DialogLink title="Hồ sơ cá nhân">
-      <form className="px-5 py-5 flex md:flex-row flex-col md:gap-20 gap-10 justify-between" onSubmit={openDialog}>
+      <form
+        className="px-5 py-5 flex md:flex-row flex-col md:gap-20 gap-10 justify-between"
+        onSubmit={(e) => {
+          e.preventDefault();
+          openDialog();
+        }}
+      >
         <div className="flex flex-col gap-5 items-center">
           <div className="relative">
             <Image src={tmpImg} alt={value?.fullName} className="md:size-[140px] sm:size-[120px] size-[100px]" />
@@ -113,10 +119,12 @@ const UserProfile = () => {
           />
           <div className="flex justify-end gap-3">
             <DialogClose asChild>
-              <Button variant={"ghost"}>Hủy</Button>
+              <Button variant={"ghost"} className="cursor-pointer">
+                Hủy
+              </Button>
             </DialogClose>
             <Button type="submit" disabled={isDataUpdateEqual()}>
-              <span className="text-white">Cập nhật</span>
+              <span className="text-white cursor-pointer">Cập nhật</span>
             </Button>
           </div>
         </div>

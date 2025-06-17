@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { registerSchema, formatFullName } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
+import configs from "@/configs";
 
 interface RegisterValue {
   fullName: string;
@@ -57,5 +58,18 @@ export const useRegister = () => {
     }));
   };
 
-  return { value, setValue, handleSubmitForm, errors, handleBlur, handleChange };
+  const handleLoginWithGoogle = (e: FormEvent) => {
+    e.preventDefault();
+
+    const callbackUrl = configs.oauth2.redirectUri;
+    const authUrl = configs.oauth2.authUri;
+    const googleClientId = configs.oauth2.clientId;
+
+    const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
+      callbackUrl
+    )}&response_type=code&client_id=${googleClientId}&scope=openid%20email%20profile`;
+    window.location.href = targetUrl;
+  };
+
+  return { value, setValue, handleSubmitForm, errors, handleBlur, handleChange, handleLoginWithGoogle };
 };

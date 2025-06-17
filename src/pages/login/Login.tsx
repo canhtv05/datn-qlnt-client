@@ -59,7 +59,7 @@ const Login = () => {
         <Button
           type="button"
           variant={"outline"}
-          className="w-full hover:bg-transparent hover:shadow-sm dark:border-border"
+          className="w-full hover:bg-transparent hover:shadow-sm dark:border-border cursor-pointer"
           onClick={handleLoginWithGoogle}
         >
           <img src={svg.googleIcon} alt="logo google" className="size-[20px]" />

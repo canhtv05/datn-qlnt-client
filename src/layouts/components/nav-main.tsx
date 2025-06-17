@@ -21,15 +21,20 @@ const NavBarParent = ({ props, isActive }: { props: SideBarType; isActive: boole
   return (
     <CollapsibleTrigger asChild>
       <SidebarMenuButton
-        isActive={isActive}
         tooltip={title}
-        className={cn(isActive && "shadow-primary", "text-black dark:text-white")}
+        className={cn(
+          isActive && "shadow-none bg-muted",
+          "text-black hover:[&_.icon]:stroke-white hover:[&_.icon]:text-white dark:text-white"
+        )}
       >
-        {ItemIcon && <ItemIcon className={cn(isActive && "stroke-white")} />}
-        <span className={cn(isActive && "text-white")}>{title}</span>
+        {ItemIcon && <ItemIcon className={cn(isActive && "stroke-black dark:stroke-white icon")} />}
+        <span className={cn(isActive && "text-black dark:text-white icon")}>{title}</span>
         {items && (
           <ChevronRight
-            className={cn("ml-auto group-data-[state=open]/collapsible:rotate-90 ", isActive && "text-white")}
+            className={cn(
+              "ml-auto group-data-[state=open]/collapsible:rotate-90 icon",
+              isActive && "text-black dark:text-white"
+            )}
             style={{ transition: "none" }}
           />
         )}
@@ -59,8 +64,15 @@ export function NavMain() {
                     <CollapsibleContent>
                       <SidebarMenuSub>
                         {item.items.map((subItem) => (
-                          <SidebarMenuSubItem key={subItem.title} className="hover:[&_.icon]:!text-white">
-                            <SidebarMenuSubButton asChild>
+                          <SidebarMenuSubItem key={subItem.title}>
+                            <SidebarMenuSubButton
+                              asChild
+                              className={cn(
+                                "hover:[&_.icon]:!text-white",
+                                location.pathname.split("/")[2] === subItem.url.split("/")[2] &&
+                                  "bg-primary [&_.icon]:!text-white shadow-primary"
+                              )}
+                            >
                               <Link to={subItem.url} className="group flex items-center gap-2">
                                 <subItem.icon className="icon !size-3 dark:!text-white !text-black icon transition-colors duration-200" />
                                 <span className="w-full h-full flex items-center dark:!text-white !text-black icon">

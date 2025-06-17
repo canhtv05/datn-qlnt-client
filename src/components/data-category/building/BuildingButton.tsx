@@ -44,7 +44,7 @@ const btns: BtnType[] = [
   },
 ];
 
-const BuildingComp = () => {
+const BuildingButton = () => {
   return (
     <div className="h-full bg-background rounded-t-sm mt-4">
       <div className="flex px-4 py-3 justify-between items-center">
@@ -83,4 +83,4 @@ const BuildingComp = () => {
   );
 };
 
-export default BuildingComp;
+export default BuildingButton;
