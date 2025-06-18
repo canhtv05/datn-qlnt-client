@@ -1,4 +1,3 @@
-import { FormEvent, useRef } from "react";
 import { Camera, X } from "lucide-react";
 
 import DialogLink from "@/components/DialogLink";
@@ -8,10 +7,10 @@ import InputLabel from "@/components/InputLabel";
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@/components/ui/dialog";
 import { Gender } from "@/enums";
-import ConfirmDialog, { AlertDialogRef } from "@/components/ConfirmDialog";
 import DatePickerLabel from "@/components/DatePickerLabel";
 import { useProfile } from "./useProfile";
 import RenderIf from "@/components/RenderIf";
+import { useConfirmDialog } from "@/hooks/useConfirmDialog";
 
 const genderData = [
   { label: "Nam", value: Gender.MALE },
@@ -19,13 +18,6 @@ const genderData = [
 ];
 
 const UserProfile = () => {
-  const dialogRef = useRef<AlertDialogRef>(null);
-
-  const handleShowDialog = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    dialogRef.current?.open();
-  };
-
   const {
     errors,
     user,
@@ -42,11 +34,19 @@ const UserProfile = () => {
     isDataUpdateEqual,
   } = useProfile();
 
+  const { ConfirmDialog, openDialog } = useConfirmDialog({
+    typeTitle: "chỉnh sửa",
+    onConfirm: handleUpdate,
+  });
+
   return (
     <DialogLink title="Hồ sơ cá nhân">
       <form
         className="px-5 py-5 flex md:flex-row flex-col md:gap-20 gap-10 justify-between"
-        onSubmit={handleShowDialog}
+        onSubmit={(e) => {
+          e.preventDefault();
+          openDialog();
+        }}
       >
         <div className="flex flex-col gap-5 items-center">
           <div className="relative">
@@ -119,15 +119,17 @@ const UserProfile = () => {
           />
           <div className="flex justify-end gap-3">
             <DialogClose asChild>
-              <Button variant={"ghost"}>Hủy</Button>
+              <Button variant={"ghost"} className="cursor-pointer">
+                Hủy
+              </Button>
             </DialogClose>
             <Button type="submit" disabled={isDataUpdateEqual()}>
-              <span className="text-white">Cập nhật</span>
+              <span className="text-white cursor-pointer">Cập nhật</span>
             </Button>
           </div>
         </div>
       </form>
-      <ConfirmDialog ref={dialogRef} typeTitle="chỉnh sửa" onContinue={handleUpdate} />
+      <ConfirmDialog />
     </DialogLink>
   );
 };

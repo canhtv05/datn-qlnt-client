@@ -23,6 +23,9 @@ const Profile = lazy(() => import("@/pages/profile"));
 /* DASHBOARD */
 const DashBoard = lazy(() => import("@/pages/dashboard"));
 
+/* DATA CATEGORIES*/
+const Building = lazy(() => import("@/pages/data-category/building"));
+
 const publicRoutes: RouteType[] = [
   /* AUTH */
   {
@@ -57,6 +60,11 @@ const privateRoutes: RouteType[] = [
   {
     path: configs.routes.dashboard,
     component: DashBoard,
+  },
+  /* DATA CATEGORIES */
+  {
+    path: configs.routes.dataCategories.buildings,
+    component: Building,
   },
 ];
 

@@ -6,7 +6,7 @@ import { svg } from "@/assets/svg";
 import DatePickerLabel from "@/components/DatePickerLabel";
 
 const Register = () => {
-  const { handleSubmitForm, value, errors, handleBlur, handleChange, setValue } = useRegister();
+  const { handleSubmitForm, value, errors, handleBlur, handleChange, setValue, handleLoginWithGoogle } = useRegister();
 
   return (
     <>
@@ -102,14 +102,14 @@ const Register = () => {
         </Button>
         <div className="relative my-2 flex items-center justify-center">
           <div className="absolute top-1/2 left-0 w-full h-px bg-[#6e6b7b] transform -translate-y-1/2"></div>
-          <span className="bg-white text-label px-2 relative z-10 text-[12px]">Hoặc đăng nhập với Google</span>
+          <span className="bg-white text-label px-2 relative z-10 text-[12px]">Hoặc đăng ký với Google</span>
         </div>
 
         <Button
           type="submit"
           variant={"outline"}
-          className="w-full hover:bg-transparent hover:shadow-sm dark:border-border"
-          // onClick={handleLoginWithGoogle}
+          className="w-full hover:bg-transparent hover:shadow-sm dark:border-border cursor-pointer"
+          onClick={handleLoginWithGoogle}
         >
           <img src={svg.googleIcon} alt="logo google" className="size-[20px]" />
           <span className="text-label">Đăng ký với Google</span>

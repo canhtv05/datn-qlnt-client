@@ -1,5 +1,4 @@
 import { BellIcon, CircleUserRound, LogOut, Moon, Settings, Sun } from "lucide-react";
-import { useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
@@ -15,21 +14,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Image from "@/components/Image";
-import ConfirmDialog, { AlertDialogRef } from "@/components/ConfirmDialog";
 import { useLogout } from "./useLogout";
+import { useConfirmDialog } from "@/hooks/useConfirmDialog";
 
 const HeaderLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
   const user = useAuthStore((state) => state.user);
-  const dialogRef = useRef<AlertDialogRef>(null);
 
   const { handleLogout } = useLogout();
-
-  const handleShowConfirmLogout = () => {
-    dialogRef.current?.open();
-  };
+  const { ConfirmDialog, openDialog } = useConfirmDialog({
+    typeTitle: "đăng xuất",
+    onConfirm: handleLogout,
+  });
 
   return (
     <header className="flex items-center">
@@ -89,13 +87,13 @@ const HeaderLayout = () => {
               Cài đặt
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleShowConfirmLogout}>
+            <DropdownMenuItem onClick={openDialog}>
               <LogOut className="text-light" />
               Đăng xuất
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <ConfirmDialog ref={dialogRef} typeTitle="đăng xuất" onContinue={handleLogout} />
+        <ConfirmDialog />
       </div>
     </header>
   );

@@ -2,21 +2,21 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/s
 import type { ReactNode } from "react";
 import { AppSidebar } from "../components/app-sidebar";
 import HeaderLayout from "../components/HeaderLayout";
-// import FooterLayout from "../components/FooterLayout";
+import FooterLayout from "../components/FooterLayout";
 
 const DefaultLayout = ({ children }: { children: ReactNode }) => {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        <header className="flex bg-primary justify-between items-center px-4">
+      <SidebarInset className="relative">
+        <header className="sticky left-0 top-0 z-40 flex bg-primary justify-between items-center px-4 h-14 w-full">
           <div className="flex items-center gap-2 h-14 shrink-0 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-14">
             <SidebarTrigger className="-ml-1 shadow-none" />
           </div>
           <HeaderLayout />
         </header>
-        <div className="w-full h-full px-4 py-[0.5px] pb-2 bg-secondary">{children}</div>
-        {/* <FooterLayout /> */}
+        <div className="p-4 w-full h-full bg-secondary">{children}</div>
+        <FooterLayout />
       </SidebarInset>
     </SidebarProvider>
   );
