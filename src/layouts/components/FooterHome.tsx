@@ -1,4 +1,4 @@
-import React from "react";
+
 
 const Footer  = () => {
   return (
@@ -28,8 +28,6 @@ const Footer  = () => {
             <li>Địa chỉ: Tự tìm</li>
           </ul>
         </div>
-
-        {/* Social */}
         <div>
           <h4 className="font-semibold mb-3">Mạng xã hội</h4>
           <div className="flex gap-4 text-gray-600 text-xl">

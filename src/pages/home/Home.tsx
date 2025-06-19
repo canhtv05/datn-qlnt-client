@@ -1,13 +1,10 @@
-import React from "react";
-
-
-import Navbar from "@/layouts/components/nav-home";
-import Slider from "@/layouts/components/slider-home";
-import HeroSection from "@/layouts/components/hero-section-home";
-import FeaturesSection  from "@/layouts/components/features-section-home";
-import HowltWorks from "@/layouts/components/how-it-works-home";
-import CallToAction from "@/layouts/components/call-to-action-home";
-import Footer from "@/layouts/components/footer-home";
+import Navbar from "@/layouts/components/nav-Home";
+import Slider from "@/layouts/components/SliderHome";
+import HeroSection from "@/layouts/components/HeroSectionHome";
+import FeaturesSection  from "@/layouts/components/FeatureSectionHome";
+import HowltWorks from "@/layouts/components/HowItWorksHome";
+import CallToAction from "@/layouts/components/CallToActionHome";
+import Footer from "@/layouts/components/FooterHome";
 import MotionFadeIn from "@/components/ui/MotionFadeIn";
 
 const Home  = () => {

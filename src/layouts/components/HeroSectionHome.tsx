@@ -1,5 +1,4 @@
-import React from "react";
-import heroImage from "@/assets/imgs/admin.webp"; // Bạn đổi ảnh tùy ý
+import heroImage from "@/assets/imgs/admin.webp";
 
 const HeroSection  = () => {
   return (

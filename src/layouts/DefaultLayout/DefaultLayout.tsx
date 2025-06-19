@@ -1,6 +1,6 @@
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import type { ReactNode } from "react";
-import { AppSidebar } from "../components/app-sidebar";
+import { AppSidebar } from "../components/AppSidebar";
 import HeaderLayout from "../components/HeaderLayout";
 import FooterLayout from "../components/FooterLayout";
 
