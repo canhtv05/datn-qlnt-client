@@ -1,6 +1,6 @@
-import Contact from "@/layouts/components/contact-home";
-import Navbar from "@/layouts/components/nav-home";
-import Footer from "@/layouts/components/footer-home";
+import Contact from "@/layouts/components/ContactHome";
+import Navbar from "@/layouts/components/NavHome";
+import Footer from "@/layouts/components/FooterHome";
 const contactPage = () => {
   return (
     <div>
