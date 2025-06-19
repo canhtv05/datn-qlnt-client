@@ -7,7 +7,9 @@ type ModalRoute = Omit<RouteType, "children" | "layout">;
 
 /* HOME */
 const Home = lazy(() => import("@/pages/home"));
-
+const FeaturesPage = lazy(() => import("@/components/home/Features"));
+const ServicesPage = lazy(() => import("@/components/home/service"));
+const ContactPage = lazy(() => import("@/components/home/Contact"));
 /* AUTH */
 const Login = lazy(() => import("@/pages/login"));
 const ForgotPassword = lazy(() => import("@/pages/forgot-password"));
@@ -27,6 +29,27 @@ const DashBoard = lazy(() => import("@/pages/dashboard"));
 const Building = lazy(() => import("@/pages/data-category/building"));
 
 const publicRoutes: RouteType[] = [
+  /* ✅ HOME là public */
+  {
+    path: configs.routes.home.home, 
+    component: Home,
+    layout: null, 
+  },
+  {
+    path: configs.routes.home.features, 
+    component: FeaturesPage,
+    layout: null,
+  },
+  {
+    path: configs.routes.home.services,
+    component: ServicesPage,
+    layout: null,
+  },
+  {
+    path: configs.routes.home.contact,
+    component: ContactPage,
+    layout: null,
+  },
   /* AUTH */
   {
     path: configs.routes.auth.login,
@@ -51,11 +74,6 @@ const publicRoutes: RouteType[] = [
 ];
 
 const privateRoutes: RouteType[] = [
-  /* HOME */
-  {
-    path: configs.routes.home,
-    component: Home,
-  },
   /* DASHBOARD */
   {
     path: configs.routes.dashboard,

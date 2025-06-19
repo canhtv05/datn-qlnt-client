@@ -1,5 +1,10 @@
 const routes = {
-  home: "/",
+  home: {
+    home: "/",
+    features: "/features",
+    services: "/services",
+    contact: "/contact",
+  },
   auth: {
     login: "/login",
     forgotPassword: "/forgot-password",
