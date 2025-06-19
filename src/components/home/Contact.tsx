@@ -1,5 +1,5 @@
 import Contact from "@/layouts/components/ContactHome";
-import Navbar from "@/layouts/components/NavHome";
+import Navbar from "@/layouts/components/nav-Home";
 import Footer from "@/layouts/components/FooterHome";
 const contactPage = () => {
   return (

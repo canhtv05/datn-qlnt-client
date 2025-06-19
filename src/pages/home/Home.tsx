@@ -1,4 +1,4 @@
-import Navbar from "@/layouts/components/NavHome";
+import Navbar from "@/layouts/components/nav-Home";
 import Slider from "@/layouts/components/SliderHome";
 import HeroSection from "@/layouts/components/HeroSectionHome";
 import FeaturesSection  from "@/layouts/components/FeatureSectionHome";
