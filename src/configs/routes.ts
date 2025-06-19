@@ -1,5 +1,8 @@
 const routes = {
   home: "/",
+  features: "/tinh-nang",
+  services: "/dich-vu",     // ✅ Thêm
+  contact: "/lien-he",
   auth: {
     login: "/login",
     forgotPassword: "/forgot-password",
@@ -9,6 +12,7 @@ const routes = {
   modals: {
     profile: "/profile",
   },
+
 };
 
 export default routes;
