@@ -1,4 +1,3 @@
-import React from "react";
 import { ShieldCheck, FileText, Users, Home } from "lucide-react";
 
 const features = [

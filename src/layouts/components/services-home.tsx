@@ -1,5 +1,3 @@
-import React from "react";
-
 const ServicesPage  = () => {
   return (
     <section className="bg-white py-20">

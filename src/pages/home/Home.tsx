@@ -1,6 +1,3 @@
-import React from "react";
-
-
 import Navbar from "@/layouts/components/nav-home";
 import Slider from "@/layouts/components/slider-home";
 import HeroSection from "@/layouts/components/hero-section-home";
