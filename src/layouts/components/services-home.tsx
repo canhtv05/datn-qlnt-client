@@ -1,6 +1,6 @@
 import React from "react";
 
-const ServicesPage: React.FC = () => {
+const ServicesPage  = () => {
   return (
     <section className="bg-white py-20">
       <div className="max-w-6xl mx-auto px-4 text-center">

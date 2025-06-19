@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Logo from "@/components/Logo";
 import { Menu, X } from "lucide-react";
 
-const Navbar: React.FC = () => {
+const Navbar  = () => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -20,9 +20,9 @@ const Navbar: React.FC = () => {
           {/* Desktop nav */}
           <nav className="space-x-6 hidden md:flex text-white text-sm font-medium">
             <a href="/" className="hover:text-gray-100">Trang chủ</a>
-            <a href="/tinh-nang" className="hover:text-gray-100">Tính năng</a>
-            <a href="/dich-vu" className="hover:text-gray-100">Dịch vụ</a>
-            <a href="/lien-he" className="hover:text-gray-100">Liên hệ</a>
+            <a href="/features" className="hover:text-gray-100">Tính năng</a>
+            <a href="/services" className="hover:text-gray-100">Dịch vụ</a>
+            <a href="/contact" className="hover:text-gray-100">Liên hệ</a>
           </nav>
 
           {/* Desktop buttons */}

@@ -1,4 +1,5 @@
 import { Gender } from "@/enums";
+import { ColumnDef } from "@tanstack/react-table";
 
 /* API RESPONSE */
 export interface TokenInfo {
@@ -32,3 +33,9 @@ export interface UserResponse extends AbstractEntity {
   phoneNumber: string;
   profilePicture: string;
 }
+
+/* CUSTOM COLUMN Tanstack Table */
+export type CustomColumnDef<T> = ColumnDef<T> & {
+  isSort?: boolean;
+  label?: string;
+};

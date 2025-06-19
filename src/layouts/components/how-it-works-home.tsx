@@ -1,6 +1,6 @@
 import React from "react";
 
-const HowItWorks: React.FC = () => {
+const HowItWorks  = () => {
   const steps = [
     {
       title: "Đăng ký tài khoản",

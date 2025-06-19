@@ -12,7 +12,7 @@ const Login = () => {
     <>
       <h3 className="text-label text-left w-full text-[24px] mt-2">Đăng nhập! 👋</h3>
       <p className="text-label mb-2 text-[14px] text-left w-full mt-2">
-        Bất động sản, tài chính, khách hàng... và hơn thế nữa
+        Chào mừng bạn trở lại với TroHub, đăng nhập và tận hưởng
       </p>
       <form className="w-full mt-5" onSubmit={handleSubmitForm}>
         <InputLabel
@@ -59,7 +59,7 @@ const Login = () => {
         <Button
           type="button"
           variant={"outline"}
-          className="w-full hover:bg-transparent hover:shadow-sm dark:border-border"
+          className="w-full hover:bg-transparent hover:shadow-sm dark:border-border cursor-pointer"
           onClick={handleLoginWithGoogle}
         >
           <img src={svg.googleIcon} alt="logo google" className="size-[20px]" />

@@ -4,6 +4,7 @@ import { svg } from "@/assets/svg";
 import RenderIf from "@/components/RenderIf";
 import { Viewport } from "@/enums";
 import useViewport from "@/hooks/useViewport";
+import Logo from "@/components/Logo";
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {
   const { width } = useViewport();
@@ -16,7 +17,7 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
       </RenderIf>
       <aside className="flex min-h-screen h-full justify-center items-center float-end lg:w-[35%] w-full bg-white lg:px-12 py-15 md:px-40 sm:px-12 px-10">
         <div className="flex items-center h-full flex-col w-full justify-center">
-          <img src={svg.react} alt="logo" className="object-contain w-[100px] h-[100px]" loading="lazy" />
+          <Logo className="text-[40px] pb-5" tro="!text-black" hub="!text-white" />
           {children}
         </div>
       </aside>

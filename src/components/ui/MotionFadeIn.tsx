@@ -10,12 +10,12 @@ interface MotionFadeInProps {
   duration?: number;
 }
 
-const MotionFadeIn: React.FC<MotionFadeInProps> = ({
+const MotionFadeIn= ({
   children,
   y = 40,
   delay = 0,
   duration = 0.8,
-}) => {
+}: MotionFadeInProps) => {
   const [ref, inView] = useInView({ threshold: 0.3, triggerOnce: false });
 
   return (

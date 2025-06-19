@@ -1,7 +1,7 @@
 import React from "react";
 import heroImage from "@/assets/imgs/admin.webp"; // Bạn đổi ảnh tùy ý
 
-const HeroSection: React.FC = () => {
+const HeroSection  = () => {
   return (
     <section className="bg-white py-24 font-roboto">
       <div className="container mx-auto px-4 flex flex-col-reverse md:flex-row items-center justify-between">

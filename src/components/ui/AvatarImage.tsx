@@ -6,7 +6,7 @@ interface AvatarImageProps {
   className?: string;
 }
 
-const AvatarImage: React.FC<AvatarImageProps> = ({ src, alt, className }) => {
+const AvatarImage <AvatarImageProps> = ({ src, alt, className }) => {
   if (!src) {
     return (
       <div

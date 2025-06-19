@@ -1,10 +1,13 @@
 import { lazy } from "react";
 
 import configs from "@/configs";
+import { RouteType } from "@/provider/useAppProvider";
+
+type ModalRoute = Omit<RouteType, "children" | "layout">;
 
 /* HOME */
 const Home = lazy(() => import("@/pages/home"));
-const TinhNangPage = lazy(() => import("@/components/home/Features"));
+const FeaturesPage = lazy(() => import("@/components/home/Features"));
 const ServicesPage = lazy(() => import("@/components/home/service"));
 const ContactPage = lazy(() => import("@/components/home/Contact"));
 /* AUTH */
@@ -19,26 +22,31 @@ const AuthLayout = lazy(() => import("@/layouts/AuthLayout"));
 /* MODALS */
 const Profile = lazy(() => import("@/pages/profile"));
 
+/* DASHBOARD */
+const DashBoard = lazy(() => import("@/pages/dashboard"));
 
-const publicRoutes = [
+/* DATA CATEGORIES*/
+const Building = lazy(() => import("@/pages/data-category/building"));
+
+const publicRoutes: RouteType[] = [
   /* ✅ HOME là public */
   {
-    path: configs.routes.home, 
+    path: configs.routes.home.home, 
     component: Home,
     layout: null, 
   },
   {
-    path: configs.routes.features, 
-    component: TinhNangPage,
-    layout: null, // hoặc layout riêng nếu muốn
+    path: configs.routes.home.features, 
+    component: FeaturesPage,
+    layout: null,
   },
   {
-    path: configs.routes.services,
+    path: configs.routes.home.services,
     component: ServicesPage,
     layout: null,
   },
   {
-    path: configs.routes.contact,
+    path: configs.routes.home.contact,
     component: ContactPage,
     layout: null,
   },
@@ -65,9 +73,20 @@ const publicRoutes = [
   },
 ];
 
-const privateRoutes = [];
+const privateRoutes: RouteType[] = [
+  /* DASHBOARD */
+  {
+    path: configs.routes.dashboard,
+    component: DashBoard,
+  },
+  /* DATA CATEGORIES */
+  {
+    path: configs.routes.dataCategories.buildings,
+    component: Building,
+  },
+];
 
-const modals = [
+const modals: ModalRoute[] = [
   {
     path: configs.routes.modals.profile,
     component: Profile,

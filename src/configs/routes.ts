@@ -1,8 +1,10 @@
 const routes = {
-  home: "/",
-  features: "/tinh-nang",
-  services: "/dich-vu",     // ✅ Thêm
-  contact: "/lien-he",
+  home: {
+    home: "/",
+    features: "/features",
+    services: "/services",
+    contact: "/contact",
+  },
   auth: {
     login: "/login",
     forgotPassword: "/forgot-password",
@@ -12,7 +14,10 @@ const routes = {
   modals: {
     profile: "/profile",
   },
-
+  dashboard: "/dashboard",
+  dataCategories: {
+    buildings: "/data-categories/buildings",
+  },
 };
 
 export default routes;

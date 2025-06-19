@@ -34,7 +34,7 @@ const FooterLayout = () => {
               size="sm"
               className={`group hover:text-white ${
                 item.style === "primary"
-                  ? "hover:shadow-primary dark:border-primary dark:hover:bg-primary"
+                  ? "hover:shadow-primary dark:hover:bg-primary hover:bg-primary border-primary dark:border-primary"
                   : "hover:shadow-[0_8px_25px_-8px_#ff9f43] hover:bg-[#ff9f43] border-[#ff9f43] dark:border-[#ff9f43] dark:hover:bg-[#ff9f43]"
               } flex items-center gap-2`}
             >

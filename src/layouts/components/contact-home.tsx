@@ -1,6 +1,6 @@
 import React from "react";
 
-const ContactPage: React.FC = () => {
+const ContactPage  = () => {
   return (
     <section className="bg-gradient-to-br from-green-50 via-white to-green-100 py-20 min-h-screen">
       <div className="max-w-4xl mx-auto px-4">

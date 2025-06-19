@@ -47,9 +47,9 @@ export const forgotPassSchema = z
   .object({
     otp: z
       .string()
-      .min(4, "OTP phải có 4 chữ số")
-      .max(4, "OTP chỉ được 4 chữ số")
-      .regex(/^\d{4}$/, "OTP phải là 4 chữ số"),
+      .min(6, "OTP phải có 6 chữ số")
+      .max(6, "OTP chỉ được 6 chữ số")
+      .regex(/^\d{6}$/, "OTP phải là 6 chữ số"),
 
     password: z
       .string()
@@ -76,6 +76,12 @@ export const registerSchema = z
     fullName: z.string().min(3, "Họ tên phải có ít nhất 3 ký tự").refine(isValidFullName, {
       message: "Mỗi từ trong họ tên phải có ít nhất 3 ký tự",
     }),
+
+    dob: z
+      .string()
+      .refine((val) => !isNaN(Date.parse(val)), "Ngày sinh không hợp lệ")
+      .transform((val) => new Date(val))
+      .refine((date) => isValidDob(date), "Tuổi của bạn phải lớn hơn hoặc bằng 18"),
 
     phone: z
       .string()

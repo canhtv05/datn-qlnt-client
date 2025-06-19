@@ -10,7 +10,7 @@ import CallToAction from "@/layouts/components/call-to-action-home";
 import Footer from "@/layouts/components/footer-home";
 import MotionFadeIn from "@/components/ui/MotionFadeIn";
 
-const Home: React.FC = () => {
+const Home  = () => {
   return (
     <div >
       <Navbar />

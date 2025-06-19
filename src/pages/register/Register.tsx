@@ -3,14 +3,15 @@ import { Button } from "@/components/ui/button";
 import InputLabel from "@/components/InputLabel";
 import { useRegister } from "./useRegister";
 import { svg } from "@/assets/svg";
+import DatePickerLabel from "@/components/DatePickerLabel";
 
 const Register = () => {
-  const { handleSubmitForm, value, errors, handleBlur, handleChange } = useRegister();
+  const { handleSubmitForm, value, errors, handleBlur, handleChange, setValue, handleLoginWithGoogle } = useRegister();
 
   return (
     <>
       <h3 className="text-label text-left w-full text-[24px] mt-2">Đăng ký tài khoản 🚀</h3>
-      <p className="text-label mb-2 text-[14px] text-left w-full mt-2">Đẹp trai có gì sai</p>
+      <p className="text-label mb-2 text-[14px] text-left w-full mt-2">Đăng ký để sử dụng dịch vụ</p>
 
       <form className="w-full mt-5" onSubmit={handleSubmitForm}>
         <InputLabel
@@ -55,6 +56,14 @@ const Register = () => {
         />
         <div className="my-3"></div>
 
+        <DatePickerLabel
+          date={value?.dob ? new Date(value?.dob) : new Date()}
+          setDate={(d) => setValue((prev) => ({ ...prev, dob: d.toISOString() }))}
+          label="Ngày sinh:"
+          errorText={errors.dob}
+        />
+
+        <div className="my-3"></div>
         <InputLabel
           name="password"
           type="password"
@@ -93,14 +102,14 @@ const Register = () => {
         </Button>
         <div className="relative my-2 flex items-center justify-center">
           <div className="absolute top-1/2 left-0 w-full h-px bg-[#6e6b7b] transform -translate-y-1/2"></div>
-          <span className="bg-white text-label px-2 relative z-10 text-[12px]">Hoặc đăng nhập với Google</span>
+          <span className="bg-white text-label px-2 relative z-10 text-[12px]">Hoặc đăng ký với Google</span>
         </div>
 
         <Button
           type="submit"
           variant={"outline"}
-          className="w-full hover:bg-transparent hover:shadow-sm dark:border-border"
-          // onClick={handleLoginWithGoogle}
+          className="w-full hover:bg-transparent hover:shadow-sm dark:border-border cursor-pointer"
+          onClick={handleLoginWithGoogle}
         >
           <img src={svg.googleIcon} alt="logo google" className="size-[20px]" />
           <span className="text-label">Đăng ký với Google</span>

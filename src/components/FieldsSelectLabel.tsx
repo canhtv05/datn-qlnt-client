@@ -5,6 +5,7 @@ import { Dispatch, SetStateAction, useEffect } from "react";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { Label } from "./ui/label";
+import RenderIf from "./RenderIf";
 
 interface FieldsSelectLabelType {
   label: string;
@@ -14,13 +15,14 @@ interface FieldsSelectLabelType {
 interface FieldsSelectLabelProps {
   data: FieldsSelectLabelType[];
   placeholder: string;
-  label: string;
-  id: string;
+  label?: string;
+  id?: string;
   defaultValue?: string;
   resetValue?: boolean;
   value: string | undefined;
   onChange: Dispatch<SetStateAction<string>>;
   labelSelect: string;
+  classNameTrigger?: string;
 }
 
 const FieldsSelectLabel = ({
@@ -33,6 +35,7 @@ const FieldsSelectLabel = ({
   value,
   onChange,
   labelSelect,
+  classNameTrigger,
 }: FieldsSelectLabelProps) => {
   useEffect(() => {
     if (defaultValue && !value) {
@@ -52,14 +55,17 @@ const FieldsSelectLabel = ({
 
   return (
     <div className="flex flex-col">
-      <Label htmlFor={id} className="mb-1 text-label text-sm flex gap-1">
-        {label}
-      </Label>
+      <RenderIf value={!!label}>
+        <Label htmlFor={id} className="mb-1 text-label text-sm flex gap-1">
+          {label}
+        </Label>
+      </RenderIf>
       <Select value={value} onValueChange={handleChange}>
         <SelectPrimitive.Trigger
           className={cn(
             "flex h-9 cursor-pointer !w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
-            "w-44 text-foreground"
+            "w-44 text-foreground",
+            classNameTrigger
           )}
           id={id}
         >

@@ -1,6 +1,6 @@
 import React from "react";
 
-const CallToAction: React.FC = () => {
+const CallToAction  = () => {
   return (
     <section className="bg-blue-900 py-20 text-white text-center">
       <div className="max-w-4xl mx-auto px-4">

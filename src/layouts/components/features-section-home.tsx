@@ -24,7 +24,7 @@ const features = [
   },
 ];
 
-const FeaturesSection: React.FC = () => {
+const FeaturesSection  = () => {
   return (
     <section className="bg-gray-50 py-24">
       <div className="container mx-auto px-4 text-center">
