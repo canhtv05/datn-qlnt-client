@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CustomColumnDef } from "@/types";
+import StatusBadge from "@/components/ui/StatusBadge";
+import { cn } from "@/lib/utils";
+import { ColumnConfig, CustomColumnDef } from "@/types";
+import { Row } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
-export default function buildColumnsFromConfig<T extends object>(
-  configs: { label: string; isSort: boolean; accessorKey: keyof T }[]
-): CustomColumnDef<T>[] {
+export default function buildColumnsFromConfig<T extends object>(configs: ColumnConfig[]): CustomColumnDef<T>[] {
   const select: CustomColumnDef<T> = {
     id: "select",
     accessorKey: "select" as keyof T,
@@ -27,36 +28,66 @@ export default function buildColumnsFromConfig<T extends object>(
     enableHiding: false,
   };
 
+  const renderCellContent = (config: ColumnConfig, value: string | number, row: Row<T>) => {
+    const isCenter = config.isCenter;
+    const hasHighlight = config.hasHighlight;
+
+    const wrapperClass = cn(
+      isCenter && "flex w-full items-center justify-center",
+      hasHighlight && "!text-primary font-bold"
+    );
+
+    if (config.render) {
+      return <div className={wrapperClass}>{config.render(row.original)}</div>;
+    }
+
+    if (config.accessorKey === "amount") {
+      const amount = parseFloat(row.getValue("amount"));
+      const formatted = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(amount);
+
+      return <div className={cn(wrapperClass, "text-right font-medium")}>{formatted}</div>;
+    }
+
+    if (config.accessorKey === "email") {
+      return <div className={cn(wrapperClass, "lowercase")}>{value}</div>;
+    }
+
+    if (config.hasBadge) {
+      return (
+        <div className={wrapperClass}>
+          <StatusBadge status={value} />
+        </div>
+      );
+    }
+
+    return <div className={wrapperClass}>{value}</div>;
+  };
+
   const res: CustomColumnDef<T>[] = configs.map((config) => ({
     accessorKey: config.accessorKey,
     label: config.label,
     isSort: config.isSort,
-    header: ({ column }) =>
-      config.isSort ? (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+    header: ({ column }) => {
+      const isCenter = config.isCenter;
+      return config.isSort ? (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className={cn(isCenter && "flex w-full items-center justify-center")}
+        >
           {config.label}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ) : (
         config.label
-      ),
+      );
+    },
     cell: ({ row }) => {
       const value = row.getValue(config.accessorKey as string) as string | number;
-      if (config.accessorKey === "amount") {
-        const amount = parseFloat(row.getValue("amount"));
-        const formatted = new Intl.NumberFormat("vi-VN", {
-          style: "currency",
-          currency: "VND",
-        }).format(amount);
-        return <div className="text-right font-medium">{formatted}</div>;
-      }
-      if (config.accessorKey === "email") {
-        return <div className="lowercase">{value}</div>;
-      }
-      if (config.accessorKey === "status") {
-        return <div className="capitalize">{value}</div>;
-      }
-      return <div>{value}</div>;
+      return renderCellContent(config, value, row);
     },
   }));
 

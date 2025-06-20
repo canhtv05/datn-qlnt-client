@@ -1,3 +1,4 @@
+import { BuildingStatus, BuildingType } from "@/enums";
 import {
   Banknote,
   BedDouble,
@@ -147,5 +148,43 @@ export const sidebarItems: SideBarType[] = [
         url: "/financial-reports/payment-schedule",
       },
     ],
+  },
+];
+
+export const STATUS_BADGE = [
+  {
+    value: BuildingStatus.HOAT_DONG,
+    label: "Hoạt động",
+    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+  },
+  {
+    value: BuildingStatus.TAM_KHOA,
+    label: "Tạm khóa",
+    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+  },
+  {
+    value: BuildingStatus.HUY_HOAT_DONG,
+    label: "Hủy hoạt động",
+    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+  },
+  {
+    value: BuildingType.NHA_TRO,
+    label: "Nhà trọ",
+    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+  },
+  {
+    value: BuildingType.CHUNG_CU_MINI,
+    label: "Chung cư mini",
+    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+  },
+  {
+    value: BuildingType.CAN_HO_DICH_VU,
+    label: "Căn hộ dịch vụ",
+    className: "text-indigo-600 bg-indigo-100 border border-indigo-200 hover:bg-indigo-200 hover:text-indigo-700",
+  },
+  {
+    value: BuildingType.KHAC,
+    label: "Khác",
+    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
   },
 ];

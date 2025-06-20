@@ -21,9 +21,8 @@ const DatePickerLabel = ({ date, setDate, label, errorText }: DateValue) => {
       <Popover>
         <PopoverTrigger asChild>
           <Button
-            variant={"none"}
             className={cn(
-              "w-full focus:border-primary shadow-sm justify-start text-left font-normal border border-input",
+              "w-full focus:border-primary bg-transparent hover:bg-transparent shadow-sm justify-start text-left font-normal border border-input",
               !date && "text-muted-foreground"
             )}
           >
