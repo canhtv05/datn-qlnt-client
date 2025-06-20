@@ -3,7 +3,7 @@ import InputLabel from "@/components/InputLabel";
 import Tooltip from "@/components/ToolTip";
 import { Button } from "@/components/ui/button";
 import { RefreshCw, Search } from "lucide-react";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, FormEvent, SetStateAction } from "react";
 
 export interface FilterValues {
   search: string;
@@ -14,6 +14,7 @@ export interface BuildingFilterProps {
   filterValues: FilterValues;
   setFilterValues: Dispatch<SetStateAction<FilterValues>>;
   onClear: () => void;
+  onFilter: () => void;
 }
 
 const BuildingFilter = ({ props }: { props: BuildingFilterProps }) => {
@@ -24,8 +25,13 @@ const BuildingFilter = ({ props }: { props: BuildingFilterProps }) => {
     setFilterValues((prev) => ({ ...prev, [key]: value }));
   };
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    props.onFilter();
+  };
+
   return (
-    <div className=" bg-background p-5 flex flex-col gap-2 items-end">
+    <form className=" bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
       <div className="flex gap-5 items-end w-full">
         <div className="w-1/2">
           <FieldsSelectLabel
@@ -52,17 +58,23 @@ const BuildingFilter = ({ props }: { props: BuildingFilterProps }) => {
       </div>
       <div className="flex gap-2">
         <Tooltip content="Làm mới">
-          <Button size={"icon"} variant={"ghost"} className="bg-secondary cursor-pointer" onClick={props?.onClear}>
+          <Button
+            size={"icon"}
+            variant={"ghost"}
+            type="button"
+            className="bg-secondary cursor-pointer"
+            onClick={props?.onClear}
+          >
             <RefreshCw />
           </Button>
         </Tooltip>
         <Tooltip content="Tìm kiếm">
-          <Button size={"icon"} className="cursor-pointer text-white">
+          <Button size={"icon"} type="submit" className="cursor-pointer text-white">
             <Search />
           </Button>
         </Tooltip>
       </div>
-    </div>
+    </form>
   );
 };
 

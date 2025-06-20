@@ -23,3 +23,17 @@ export enum Status {
   LOGOUT_FAILED = "Đăng xuất thất bại",
   LOGOUT_SUCCESS = "Đăng xuất thành công",
 }
+
+/* BUILDING */
+export enum BuildingType {
+  NHA_TRO = "NHA_TRO",
+  CHUNG_CU_MINI = "CHUNG_CU_MINI",
+  CAN_HO_DICH_VU = "CAN_HO_DICH_VU",
+  KHAC = "KHAC",
+}
+
+export enum BuildingStatus {
+  HOAT_DONG = "HOAT_DONG",
+  TAM_KHOA = "TAM_KHOA",
+  HUY_HOAT_DONG = "HUY_HOAT_DONG",
+}

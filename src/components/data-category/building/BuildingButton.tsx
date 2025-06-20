@@ -4,6 +4,8 @@ import { TooltipTrigger } from "@radix-ui/react-tooltip";
 
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
+import Modal from "@/components/Modal";
+import AddressForm from "@/components/AddressForm";
 
 interface BtnType {
   tooltipContent: string;
@@ -54,9 +56,16 @@ const BuildingButton = () => {
             <TooltipProvider key={index}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button size={"icon"} variant={btn.type} className="cursor-pointer">
-                    <btn.icon className="text-white" />
-                  </Button>
+                  <Modal
+                    title="Dự án/Tòa nhà"
+                    trigger={
+                      <Button size={"icon"} variant={btn.type} className="cursor-pointer">
+                        <btn.icon className="text-white" />
+                      </Button>
+                    }
+                  >
+                    <AddressForm />
+                  </Modal>
                 </TooltipTrigger>
                 <TooltipContent
                   className="text-white"
