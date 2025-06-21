@@ -20,6 +20,7 @@ const buttonVariants = cva(
         upload: "bg-amber-500 hover:bg-amber-400",
         download: "bg-emerald-500 hover:bg-emerald-400",
         delete: "bg-red-400 hover:bg-red-300",
+        none: "",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
