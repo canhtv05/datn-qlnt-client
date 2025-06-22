@@ -13,7 +13,7 @@ function App() {
     <AppProvider>
       <Routes location={background || location}>
         <Route element={<PublicRoute />}>{publicRoutes.map(loadRoute)}</Route>
-        <Route element={<PrivateRoute />}>{privateRoutes.map(loadRoute)}</Route>
+        {/* <Route element={<PrivateRoute />}>{privateRoutes.map(loadRoute)}</Route> */}
       </Routes>
       {background && (
         <Routes>
