@@ -26,6 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Input } from "./ui/input";
+import NoData from "./NoData";
 
 type DataTableProps<T> = {
   data: T[];
@@ -75,7 +76,7 @@ export default function DataTable<T>({
 
   const handleSizeChange = (newSize: number) => {
     searchParams.set("size", newSize.toString());
-    searchParams.set("page", "1");
+    if (page !== 1) searchParams.set("page", "1");
     setSearchParams(searchParams);
   };
 
@@ -186,10 +187,13 @@ export default function DataTable<T>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <Table className="border">
-        <TableHeader className="[&>*]:whitespace-nowrap sticky top-0 bg-background after:content-[''] after:inset-x-0 after:h-px after:bg-border after:absolute after:bottom-0">
+      <Table className="border border-input">
+        <TableHeader className="[&>*]:whitespace-nowrap sticky top-0 bg-background after:content-[''] after:inset-x-0 after:h-px after:bg-border after:border-input after:border after:absolute after:bottom-0">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="[&>th]:border-r last:border-r-0 [&>th:first-child]:border-r-0">
+            <TableRow
+              key={headerGroup.id}
+              className="[&>th]:border-r [&>th]:border-input last:border-r-0 [&>th:first-child]:border-r-0"
+            >
               {headerGroup.headers.map((header) => (
                 <TableHead key={header.id}>
                   {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
@@ -203,7 +207,7 @@ export default function DataTable<T>({
             Array.from({ length: 15 }).map((_, rowIndex) => (
               <TableRow
                 key={`skeleton-row-${rowIndex}`}
-                className="[&>td]:border-r last:border-r-0 h-12 [&>td:first-child]:border-r-0"
+                className="[&>td]:border-r last:border-r-0 h-12 [&>td]:border-input [&>td:first-child]:border-r-0"
               >
                 {columns.map((_, colIndex) => (
                   <TableCell key={`skeleton-cell-${colIndex}`}>
@@ -217,7 +221,7 @@ export default function DataTable<T>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="odd:bg-muted/50 [&>*]:whitespace-nowrap h-12 [&>td]:border-r last:border-r-0 [&>td:first-child]:border-r-0"
+                className="odd:bg-muted/50 [&>*]:whitespace-nowrap h-12 [&>td]:border-input [&>td]:border-r last:border-r-0 [&>td:first-child]:border-r-0"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
@@ -227,7 +231,7 @@ export default function DataTable<T>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                Không có kết quả.
+                <NoData />
               </TableCell>
             </TableRow>
           )}
@@ -257,7 +261,7 @@ export default function DataTable<T>({
             variant="ghost"
             className="rounded-full bg-secondary cursor-pointer"
             onClick={() => handlePageChange(pageNum - 1)}
-            disabled={pageNum === 1}
+            disabled={pageNum <= 1 || totalPages === 0 || data.length === 0}
           >
             <ChevronLeft className="text-foreground size-5" />
           </Button>
@@ -285,7 +289,7 @@ export default function DataTable<T>({
             variant="ghost"
             className="rounded-full bg-secondary cursor-pointer"
             onClick={() => handlePageChange(pageNum + 1)}
-            disabled={pageNum === totalPages}
+            disabled={pageNum >= totalPages || totalPages === 0 || data.length === 0}
           >
             <ChevronRight className="text-foreground size-5" />
           </Button>

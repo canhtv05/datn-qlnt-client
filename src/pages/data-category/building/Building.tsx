@@ -1,22 +1,14 @@
-import { useCallback, useEffect, useState } from "react";
 import StatisticCard from "@/components/StatisticCard";
 import DataTable from "@/components/DataTable";
 import { LucideIcon, PenTool, Plus, Trash2 } from "lucide-react";
 import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import BuildingButton from "@/components/data-category/building/BuildingButton";
 import BuildingFilter from "@/components/data-category/building/BuildingFilter";
-import { useSearchParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { httpRequest } from "@/utils/httpRequest";
-import { ApiResponse, BuildingResponse, ColumnConfig } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-
-interface FilterValues {
-  search: string;
-  status: string;
-}
+import { useBuilding } from "./useBuilding";
+import { BuildingResponse, ColumnConfig } from "@/types";
 
 interface BtnType {
   tooltipContent: string;
@@ -107,73 +99,8 @@ const columnConfigs: ColumnConfig[] = [
 ];
 
 const Building = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const pageFromUrl = Number(searchParams.get("page")) || 1;
-  const sizeFromUrl = Number(searchParams.get("size")) || 15;
-  const buildingCode = searchParams.get("buildingCode") || "";
-  const address = searchParams.get("address") || "";
-  const status = searchParams.get("status") || "";
-
-  const [currentPage, setCurrentPage] = useState(pageFromUrl);
-  const [perPage, setPerPage] = useState(sizeFromUrl);
-
-  const [filterValues, setFilterValues] = useState<FilterValues>({
-    search: "",
-    status: "",
-  });
-
-  useEffect(() => {
-    setFilterValues({
-      search: buildingCode,
-      status: status,
-    });
-
-    setCurrentPage(pageFromUrl);
-    setPerPage(sizeFromUrl);
-  }, [buildingCode, pageFromUrl, sizeFromUrl, status]);
-
-  const handleClear = () => {
-    setFilterValues({
-      search: "",
-      status: "",
-    });
-    setSearchParams({});
-  };
-
-  const handleFilter = useCallback(() => {
-    const params = new URLSearchParams();
-    if (filterValues.search) params.set("buildingCode", filterValues.search);
-    if (filterValues.status) params.set("status", filterValues.status);
-    params.set("page", "1");
-    setSearchParams(params);
-  }, [filterValues.search, filterValues.status, setSearchParams]);
-
-  const props = {
-    filterValues,
-    setFilterValues,
-    onClear: handleClear,
-    onFilter: handleFilter,
-  };
-
-  const { data, isLoading } = useQuery<ApiResponse<BuildingResponse[]>>({
-    queryKey: ["buildings", currentPage, perPage, buildingCode, address, status],
-    queryFn: async () => {
-      const params: Record<string, string> = {
-        page: currentPage.toString(),
-        size: perPage.toString(),
-      };
-
-      if (buildingCode) params["buildingCode"] = buildingCode;
-      if (address) params["address"] = address;
-      if (status) params["status"] = status;
-
-      const res = await httpRequest.get("/buildings", {
-        params,
-      });
-      return res.data;
-    },
-  });
+  const { props, data, isLoading, query } = useBuilding();
+  const { page, size } = query;
 
   return (
     <div className="flex flex-col">
@@ -183,8 +110,8 @@ const Building = () => {
       <DataTable<BuildingResponse>
         data={data?.data ?? []}
         columns={buildColumnsFromConfig(columnConfigs)}
-        page={currentPage}
-        size={perPage}
+        page={Number(page)}
+        size={Number(size)}
         totalElements={data?.meta?.pagination?.total || 0}
         totalPages={data?.meta?.pagination?.totalPages || 0}
         loading={isLoading}

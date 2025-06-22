@@ -25,8 +25,9 @@ const HeaderLayout = () => {
 
   const { handleLogout } = useLogout();
   const { ConfirmDialog, openDialog } = useConfirmDialog({
-    typeTitle: "đăng xuất",
     onConfirm: handleLogout,
+    type: "default",
+    desc: "Bạn sẽ được đăng xuất khỏi hệ thống. Hành động này sẽ kết thúc phiên làm việc hiện tại của bạn.",
   });
 
   return (

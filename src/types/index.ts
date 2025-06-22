@@ -2,6 +2,9 @@ import { BuildingStatus, BuildingType, Gender } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { ReactNode } from "react";
 
+/* FILTER */
+export type FilterObject = Record<string, string>;
+
 /* API RESPONSE */
 export interface TokenInfo {
   accessToken: string;
