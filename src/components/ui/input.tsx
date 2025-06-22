@@ -11,12 +11,14 @@ function Input({
   onFocus,
   onBlur,
   type,
+  icon,
   ...props
 }: React.ComponentProps<"input"> & {
   validate?: boolean;
   errorText?: string;
   onFocus?: () => void;
   onBlur?: () => void;
+  icon?: React.ReactNode;
 }) {
   const [isEmpty, setIsEmpty] = React.useState(false);
   const [typeInput, setTypeInput] = React.useState(type);
@@ -42,23 +44,32 @@ function Input({
   return (
     <>
       <div className="relative">
-        <input
-          type={typeInput}
-          data-slot="input"
+        <div
           className={cn(
-            "file:text-foreground placeholder:text-foreground/50 dark:bg-input/30 flex h-9 w-full min-w-0 rounded-sm border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-            "focus-visible:border-primary focus-visible:ring-primary/50 focus-visible:ring-[0.5px]",
-            "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
-            "focus-visible:transform focus-visible:placeholder:translate-x-[2px] not-focus-visible:placeholder:-translate-x-[2px] focus-visible:placeholder:transition-transform focus-visible:placeholder:duration-150 not-focus-visible:placeholder:duration-150",
-            "focus-visible:shadow-lg placeholder:pl-1 text-foreground dark:text-secondary-foreground disabled:border-[oklch(1 0 0 / 15%)] disabled:bg-[#efefef] placeholder:text-[rgb(110,107,123)/50] border-border",
-            validate && isEmpty && "border-red-500",
-            (typeInput === "password" || prevType === "password") && "pr-11",
-            className
+            icon &&
+              "flex items-center border border-input rounded-sm focus-within:ring-primary focus-within:ring-[0.5px] focus-within:shadow-lg focus-within:border-primary"
           )}
-          onBlur={(e) => handleBlur(e.target.value)}
-          onFocus={handleFocus}
-          {...props}
-        />
+        >
+          {icon && <div className="px-3 h-9 border-r grid place-items-center">{icon}</div>}
+          <input
+            type={typeInput}
+            data-slot="input"
+            className={cn(
+              "file:text-foreground placeholder:text-foreground/50 dark:bg-input/30 flex h-9 w-full min-w-0 rounded-sm border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+              "focus-visible:border-primary focus-visible:ring-primary/50 focus-visible:ring-[0.5px]",
+              "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+              "focus-visible:transform focus-visible:placeholder:translate-x-[2px] not-focus-visible:placeholder:-translate-x-[2px] focus-visible:placeholder:transition-transform focus-visible:placeholder:duration-150 not-focus-visible:placeholder:duration-150",
+              "focus-visible:shadow-lg placeholder:pl-1 text-foreground !mt-0 dark:text-secondary-foreground disabled:border-[oklch(1 0 0 / 15%)] disabled:bg-[#efefef] placeholder:text-[rgb(110,107,123)/50] border-border",
+              validate && isEmpty && "border-red-500",
+              (typeInput === "password" || prevType === "password") && "pr-11",
+              className,
+              icon && "border-none shadow-none focus-visible:ring-0 focus-visible:shadow-none py-0"
+            )}
+            onBlur={(e) => handleBlur(e.target.value)}
+            onFocus={handleFocus}
+            {...props}
+          />
+        </div>
 
         <RenderIf value={isEmpty && !!validate}>
           <CircleAlert
@@ -83,9 +94,9 @@ function Input({
       </div>
 
       <RenderIf value={isEmpty && !!validate}>
-        <span className="text-[12px] text-red-500 font-light">Thông tin bắt buộc</span>
+        <span className="text-[12px] text-red-500 font-light text-left">Thông tin bắt buộc</span>
       </RenderIf>
-      <span className="text-[12px] text-red-500 font-light">{errorText}</span>
+      <span className="text-[12px] text-red-500 font-light text-left">{errorText}</span>
     </>
   );
 }

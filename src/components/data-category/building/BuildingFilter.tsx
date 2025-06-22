@@ -1,8 +1,6 @@
+import ButtonFilter from "@/components/ButtonFilter";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
-import Tooltip from "@/components/ToolTip";
-import { Button } from "@/components/ui/button";
-import { RefreshCw, Search } from "lucide-react";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 
 export interface FilterValues {
@@ -38,8 +36,8 @@ const BuildingFilter = ({ props }: { props: BuildingFilterProps }) => {
             placeholder="-- Trạng thái hoạt động --"
             labelSelect="Trạng thái"
             data={[
-              { label: "Thành công", value: "Success" },
-              { label: "Thất bại", value: "Failed" },
+              { label: "Hoạt động", value: "HOAT_DONG" },
+              { label: "Tạm khóa", value: "TAM_KHOA" },
             ]}
             value={status}
             onChange={(value) => handleChange("status", String(value))}
@@ -56,24 +54,7 @@ const BuildingFilter = ({ props }: { props: BuildingFilterProps }) => {
           />
         </div>
       </div>
-      <div className="flex gap-2">
-        <Tooltip content="Làm mới">
-          <Button
-            size={"icon"}
-            variant={"ghost"}
-            type="button"
-            className="bg-secondary cursor-pointer"
-            onClick={props?.onClear}
-          >
-            <RefreshCw />
-          </Button>
-        </Tooltip>
-        <Tooltip content="Tìm kiếm">
-          <Button size={"icon"} type="submit" className="cursor-pointer text-white">
-            <Search />
-          </Button>
-        </Tooltip>
-      </div>
+      <ButtonFilter onClear={props.onClear} />
     </form>
   );
 };

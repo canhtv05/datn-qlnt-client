@@ -1,27 +1,54 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { useProvinces, useDistricts, useWards } from "@/hooks/useAddress";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 
-export default function AddressForm() {
+interface AddressFormProps {
+  provinceCode: string;
+  setProvinceCode: Dispatch<SetStateAction<string>>;
+  districtCode: string;
+  setDistrictCode: Dispatch<SetStateAction<string>>;
+  wardCode: string;
+  setWardCode: Dispatch<SetStateAction<string>>;
+  onLocationChange?: (provinceName: string, districtName: string, wardName: string) => void;
+}
+
+const AddressForm = ({
+  provinceCode,
+  setProvinceCode,
+  districtCode,
+  setDistrictCode,
+  wardCode,
+  setWardCode,
+  onLocationChange,
+}: AddressFormProps) => {
   const { data: provinces = [] } = useProvinces();
-  const [provinceCode, setProvinceCode] = useState<string>("");
   const { data: districts = [] } = useDistricts(Number(provinceCode));
-  const [districtCode, setDistrictCode] = useState<string>("");
   const { data: wards = [] } = useWards(Number(districtCode));
-  const [wardCode, setWardCode] = useState<string>("");
 
   useEffect(() => {
     setDistrictCode("");
     setWardCode("");
-  }, [provinceCode]);
+  }, [provinceCode, setDistrictCode, setWardCode]);
+
   useEffect(() => {
     setWardCode("");
-  }, [districtCode]);
+  }, [districtCode, setWardCode]);
+
+  useEffect(() => {
+    const provinceName = provinces.find((p: { code: number }) => p.code === Number(provinceCode))?.name || "";
+    const districtName = districts.find((d) => d.code === Number(districtCode))?.name || "";
+    const wardName = wards.find((w) => w.code === Number(wardCode))?.name || "";
+
+    if (onLocationChange) {
+      onLocationChange(provinceName, districtName, wardName);
+    }
+  }, [provinceCode, districtCode, wardCode, provinces, districts, wards, onLocationChange]);
 
   return (
     <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
       <FieldsSelectLabel
-        data={provinces.map((p: { name: string; code: number }) => ({ label: p.name, value: p.code }))}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        data={provinces.map((p: { name: any; code: any }) => ({ label: p.name, value: p.code }))}
         placeholder="Chọn tỉnh/thành"
         label="Tỉnh/Thành phố"
         id="province"
@@ -57,4 +84,6 @@ export default function AddressForm() {
       />
     </div>
   );
-}
+};
+
+export default AddressForm;

@@ -10,16 +10,15 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-
-type TypeTitle = "thêm" | "chỉnh sửa" | "xóa" | "đăng xuất";
+import { OctagonAlert } from "lucide-react";
 
 interface UseConfirmDialogProps {
-  typeTitle: TypeTitle;
   onConfirm: () => void;
+  desc?: string;
+  type?: "warn" | "default";
 }
 
-export const useConfirmDialog = ({ typeTitle, onConfirm }: UseConfirmDialogProps) => {
+export const useConfirmDialog = ({ onConfirm, desc, type = "warn" }: UseConfirmDialogProps) => {
   const [open, setOpen] = useState(false);
 
   const openDialog = () => setOpen(true);
@@ -27,25 +26,35 @@ export const useConfirmDialog = ({ typeTitle, onConfirm }: UseConfirmDialogProps
   const ConfirmDialog = () => (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Bạn có chắc chắn muốn {typeTitle} không?</AlertDialogTitle>
-          <AlertDialogDescription className="text-[15px]">
-            Không thể hoàn tác hành động này. Thao tác này sẽ {typeTitle} của bạn{" "}
-            {typeTitle === "xóa" ? "khỏi " : "vào "}máy chủ của chúng tôi.
+        <AlertDialogHeader className="items-center">
+          <AlertDialogTitle>
+            <div
+              className={`mb-2 mx-auto flex h-14 w-14 items-center justify-center rounded-full ${
+                type === "warn" ? "bg-orange-500/10" : "bg-primary/10"
+              }`}
+            >
+              <OctagonAlert className={`h-7 w-7 ${type === "warn" ? "text-orange-500" : "text-primary"}`} />
+            </div>
+            Bạn có chắc chắn muốn tiếp tục?
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-[15px] text-center">
+            {!desc
+              ? "Điều này sẽ làm thay đổi dữ liệu của bạn tại máy chủ của chúng tôi. Bạn có chắc chắn muốn tiếp tục?"
+              : desc}
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel className="cursor-pointer" onClick={() => setOpen(false)}>
+        <AlertDialogFooter className="mt-2 sm:justify-center">
+          <AlertDialogCancel className={buttonVariants({ variant: "outline" })} onClick={() => setOpen(false)}>
             Hủy
           </AlertDialogCancel>
           <AlertDialogAction
+            className={buttonVariants({ variant: type === "warn" ? "upload" : "default" })}
             onClick={() => {
               onConfirm();
               setOpen(false);
             }}
-            className={cn(buttonVariants({ variant: "default" }), "text-white cursor-pointer")}
           >
-            Tiếp tục
+            Xác nhận
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

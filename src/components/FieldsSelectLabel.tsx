@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Label } from "./ui/label";
 import RenderIf from "./RenderIf";
 
-interface FieldsSelectLabelType {
+export interface FieldsSelectLabelType {
   label: string;
   value: string | number;
 }
@@ -21,7 +21,7 @@ interface FieldsSelectLabelProps {
   resetValue?: boolean;
   value: string | undefined;
   onChange: Dispatch<SetStateAction<string>>;
-  labelSelect: string;
+  labelSelect?: string;
   classNameTrigger?: string;
   required?: boolean;
   errorText?: string;
@@ -133,6 +133,9 @@ const FieldsSelectLabel = ({
             </RenderIf>
           </Select>
         </div>
+        <RenderIf value={!!isInvalid || !!errorText}>
+          <span className="block pb-4"></span>
+        </RenderIf>
       </div>
     </div>
   );
