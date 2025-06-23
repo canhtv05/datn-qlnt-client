@@ -1,22 +1,21 @@
-import { useMemo, useState } from "react";
 import StatisticCard from "@/components/StatisticCard";
 import DataTable from "@/components/DataTable";
-import { PenTool } from "lucide-react";
+import { LucideIcon, PenTool, Plus, Trash2 } from "lucide-react";
 import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import BuildingButton from "@/components/data-category/building/BuildingButton";
 import BuildingFilter from "@/components/data-category/building/BuildingFilter";
-import { useSearchParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+import { useBuilding } from "./useBuilding";
+import { BuildingResponse, ColumnConfig } from "@/types";
 
-interface Payment {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-}
-
-interface FilterValues {
-  status: string;
-  search: string;
+interface BtnType {
+  tooltipContent: string;
+  icon: LucideIcon;
+  arrowColor: string;
+  type: "update" | "delete";
+  hasConfirm: boolean;
 }
 
 const dataBuildings = [
@@ -37,60 +36,85 @@ const dataBuildings = [
   },
 ];
 
-const generateFakePayments = (count: number, page: number): Payment[] => {
-  const statuses: Payment["status"][] = ["pending", "processing", "success", "failed"];
-  return Array.from({ length: count }, (_, index) => ({
-    id: `pay_${page}_${index}_${Math.random().toString(36).substring(2, 8)}`,
-    amount: Math.floor(Math.random() * 1000) + 100,
-    status: statuses[Math.floor(Math.random() * statuses.length)],
-    email: `user${(page - 1) * count + index + 1}@${
-      ["gmail.com", "yahoo.com", "hotmail.com"][Math.floor(Math.random() * 3)]
-    }`,
-  }));
-};
+const btns: BtnType[] = [
+  {
+    tooltipContent: "Chỉnh sửa",
+    icon: Plus,
+    arrowColor: "#44475A",
+    type: "update",
+    hasConfirm: true,
+  },
+  {
+    tooltipContent: "Xóa",
+    icon: Trash2,
+    arrowColor: "var(--color-red-400)",
+    type: "delete",
+    hasConfirm: true,
+  },
+];
 
-const columnConfigs: { label: string; accessorKey: keyof Payment; isSort: boolean }[] = [
-  { label: "Trạng thái", accessorKey: "status", isSort: true },
-  { label: "Email", accessorKey: "email", isSort: true },
-  { label: "Số tiền", accessorKey: "amount", isSort: true },
+const columnConfigs: ColumnConfig[] = [
+  { label: "Mã tòa nhà", accessorKey: "buildingCode", isSort: true, hasHighlight: true },
+  {
+    label: "Thao tác",
+    accessorKey: "actions",
+    isSort: false,
+    render: () => (
+      <div className="flex gap-2">
+        {btns.map((btn, index) => (
+          <TooltipProvider key={index}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button size={"icon"} variant={btn.type} className="cursor-pointer">
+                  <btn.icon className="text-white" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent
+                className="text-white"
+                style={{
+                  background: btn.arrowColor,
+                }}
+                arrow={false}
+              >
+                <p>{btn.tooltipContent}</p>
+                <TooltipPrimitive.Arrow
+                  style={{
+                    fill: btn.arrowColor,
+                    background: btn.arrowColor,
+                  }}
+                  className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                />
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ))}
+      </div>
+    ),
+  },
+  { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true },
+  { label: "Địa chỉ", accessorKey: "address", isSort: true },
+  { label: "Loại tòa nhà", accessorKey: "buildingType", isSort: true, hasBadge: true, isCenter: true },
+  { label: "Mô tả", accessorKey: "description" },
+  { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
 ];
 
 const Building = () => {
-  const totalRecords = 1000;
-  const dataPayments = useMemo(() => generateFakePayments(totalRecords, 15), []);
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const [filterValues, setFilterValues] = useState<FilterValues>({
-    search: "",
-    status: "",
-  });
-
-  const handleClear = () => {
-    setFilterValues({
-      search: "",
-      status: "",
-    });
-    setSearchParams({});
-  };
-
-  const props = {
-    filterValues,
-    setFilterValues,
-    onClear: handleClear,
-  };
+  const { props, data, isLoading, query } = useBuilding();
+  const { page, size } = query;
 
   return (
     <div className="flex flex-col">
       <StatisticCard data={dataBuildings} />
       <BuildingButton />
       <BuildingFilter props={props} />
-      <DataTable<Payment>
-        data={dataPayments}
+      <DataTable<BuildingResponse>
+        data={data?.data ?? []}
         columns={buildColumnsFromConfig(columnConfigs)}
-        page={1}
-        size={15}
-        totalElements={totalRecords}
-        totalPages={Math.ceil(totalRecords / Number(searchParams.get("size") ?? 15))}
+        page={Number(page)}
+        size={Number(size)}
+        totalElements={data?.meta?.pagination?.total || 0}
+        totalPages={data?.meta?.pagination?.totalPages || 0}
+        loading={isLoading}
       />
     </div>
   );

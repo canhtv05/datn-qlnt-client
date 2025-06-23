@@ -35,7 +35,6 @@ const UserProfile = () => {
   } = useProfile();
 
   const { ConfirmDialog, openDialog } = useConfirmDialog({
-    typeTitle: "chỉnh sửa",
     onConfirm: handleUpdate,
   });
 

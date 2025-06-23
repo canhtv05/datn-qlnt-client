@@ -1,5 +1,5 @@
 import Services from "@/layouts/components/ServicesHome";
-import Navbar from "@/layouts/components/nav-Home";
+import Navbar from "@/layouts/components/nav-home";
 import Footer from "@/layouts/components/FooterHome";
 const ServicesPage  = () => {
   return (

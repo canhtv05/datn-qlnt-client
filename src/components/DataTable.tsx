@@ -13,9 +13,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import FieldsSelectLabel from "./FieldsSelectLabel";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, Columns3, RefreshCcw, SearchIcon } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { CustomColumnDef } from "@/types";
+import { Skeleton } from "./ui/skeleton";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { Input } from "./ui/input";
+import NoData from "./NoData";
 
 type DataTableProps<T> = {
   data: T[];
@@ -24,9 +35,19 @@ type DataTableProps<T> = {
   size: number;
   totalElements: number;
   totalPages: number;
+  loading?: boolean;
 };
 
-export default function DataTable<T>({ data, columns, page, size, totalElements, totalPages }: DataTableProps<T>) {
+export default function DataTable<T>({
+  data,
+  columns,
+  page,
+  size,
+  totalElements,
+  totalPages,
+  loading,
+}: DataTableProps<T>) {
+  const [searchQuery, setSearchQuery] = React.useState<string>();
   const [searchParams, setSearchParams] = useSearchParams();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -55,32 +76,30 @@ export default function DataTable<T>({ data, columns, page, size, totalElements,
 
   const handleSizeChange = (newSize: number) => {
     searchParams.set("size", newSize.toString());
-    searchParams.set("page", "1");
+    if (page !== 1) searchParams.set("page", "1");
     setSearchParams(searchParams);
   };
 
   const getPageNumbers = (): (number | string)[] => {
-    const maxPagesToShow = 3;
     const pages: (number | string)[] = [];
-    let startPage = Math.max(1, pageNum - 2);
-    const endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
-    if (endPage - startPage < maxPagesToShow - 1) {
-      startPage = Math.max(1, endPage - maxPagesToShow + 1);
+    if (totalPages <= 3) {
+      // Hiện tất cả nếu tổng số trang nhỏ hơn hoặc bằng 3
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+      return pages;
     }
 
-    if (startPage > 1) {
-      pages.push(1);
-      if (startPage > 2) pages.push("ellipsis");
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
-    }
-
-    if (endPage < totalPages) {
-      if (endPage < totalPages - 1) pages.push("ellipsis");
-      pages.push(totalPages);
+    if (pageNum <= 2) {
+      // Trang đầu hoặc trang thứ 2
+      pages.push(1, 2, 3, "ellipsis", totalPages);
+    } else if (pageNum >= totalPages - 1) {
+      // Trang cuối hoặc áp chót
+      pages.push(1, "ellipsis", totalPages - 2, totalPages - 1, totalPages);
+    } else {
+      // Ở giữa
+      pages.push(1, "ellipsis", pageNum - 1, pageNum, pageNum + 1, "ellipsis", totalPages);
     }
 
     return pages;
@@ -108,14 +127,73 @@ export default function DataTable<T>({ data, columns, page, size, totalElements,
   });
 
   return (
-    <div className="w-full bg-background px-5 rounded-b-md">
-      <div className="flex-1 text-sm text-muted-foreground py-2">
+    <div className="bg-background px-5 rounded-b-md">
+      <div className="flex-1 text-sm text-muted-foreground py-2 flex justify-between items-center">
         {table.getFilteredSelectedRowModel().rows.length} trên {table.getFilteredRowModel().rows.length} dòng được chọn
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="ml-auto">
+              <Columns3 /> Cột <ChevronDown className="ml-3" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <div className="relative">
+              <Input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-8"
+                placeholder="Tìm kiếm"
+                onKeyDown={(e) => e.stopPropagation()}
+              />
+              <SearchIcon className="absolute inset-y-0 my-auto left-2 h-4 w-4" />
+            </div>
+            <DropdownMenuSeparator />
+            {table
+              .getAllColumns()
+              .filter((column) => column.getCanHide())
+              .map((column) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const isCustomColumnDef = (def: any): def is CustomColumnDef<T> => {
+                  return "label" in def && typeof def.label === "string";
+                };
+                const columnLabel = isCustomColumnDef(column.columnDef) ? column.columnDef.label : column.id;
+
+                if (searchQuery && !columnLabel!.toLowerCase().includes(searchQuery.toLowerCase())) {
+                  return null;
+                }
+
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize cursor-pointer hover:!bg-primary hover:!text-white"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                    onSelect={(e) => e.preventDefault()}
+                  >
+                    {columnLabel}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="hover:[&_.icon]:stroke-white"
+              onClick={() => {
+                table.resetColumnVisibility();
+                setSearchQuery("");
+              }}
+            >
+              <RefreshCcw className="icon" /> Làm mới
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
-      <Table className="border">
-        <TableHeader className="[&>*]:whitespace-nowrap sticky top-0 bg-background after:content-[''] after:inset-x-0 after:h-px after:bg-border after:absolute after:bottom-0">
+      <Table className="border border-input">
+        <TableHeader className="[&>*]:whitespace-nowrap sticky top-0 bg-background after:content-[''] after:inset-x-0 after:h-px after:bg-border after:border-input after:border after:absolute after:bottom-0">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow
+              key={headerGroup.id}
+              className="[&>th]:border-r [&>th]:border-input last:border-r-0 [&>th:first-child]:border-r-0"
+            >
               {headerGroup.headers.map((header) => (
                 <TableHead key={header.id}>
                   {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
@@ -125,12 +203,25 @@ export default function DataTable<T>({ data, columns, page, size, totalElements,
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {loading ? (
+            Array.from({ length: 15 }).map((_, rowIndex) => (
+              <TableRow
+                key={`skeleton-row-${rowIndex}`}
+                className="[&>td]:border-r last:border-r-0 h-12 [&>td]:border-input [&>td:first-child]:border-r-0"
+              >
+                {columns.map((_, colIndex) => (
+                  <TableCell key={`skeleton-cell-${colIndex}`}>
+                    <Skeleton className="h-4 w-full" />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="odd:bg-muted/50 [&>*]:whitespace-nowrap h-12"
+                className="odd:bg-muted/50 [&>*]:whitespace-nowrap h-12 [&>td]:border-input [&>td]:border-r last:border-r-0 [&>td:first-child]:border-r-0"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
@@ -140,14 +231,13 @@ export default function DataTable<T>({ data, columns, page, size, totalElements,
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                Không có kết quả.
+                <NoData />
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
 
-      {/* Phân trang */}
       <div className="flex md:flex-row flex-col items-center justify-between space-x-2 py-3">
         <div className="flex items-center gap-2 md:pb-0 pb-5">
           <span className="text-[13px]">Hiển thị</span>
@@ -171,7 +261,7 @@ export default function DataTable<T>({ data, columns, page, size, totalElements,
             variant="ghost"
             className="rounded-full bg-secondary cursor-pointer"
             onClick={() => handlePageChange(pageNum - 1)}
-            disabled={pageNum === 1}
+            disabled={pageNum <= 1 || totalPages === 0 || data.length === 0}
           >
             <ChevronLeft className="text-foreground size-5" />
           </Button>
@@ -199,7 +289,7 @@ export default function DataTable<T>({ data, columns, page, size, totalElements,
             variant="ghost"
             className="rounded-full bg-secondary cursor-pointer"
             onClick={() => handlePageChange(pageNum + 1)}
-            disabled={pageNum === totalPages}
+            disabled={pageNum >= totalPages || totalPages === 0 || data.length === 0}
           >
             <ChevronRight className="text-foreground size-5" />
           </Button>

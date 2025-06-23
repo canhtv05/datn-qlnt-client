@@ -4,6 +4,28 @@ import { TooltipTrigger } from "@radix-ui/react-tooltip";
 
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
+import Modal from "@/components/Modal";
+import AddBuilding from "./AddBuilding";
+import { useCallback, useState } from "react";
+import { handleMutationError } from "@/utils/handleMutationError";
+import { httpRequest } from "@/utils/httpRequest";
+import { useMutation } from "@tanstack/react-query";
+import { ChangeEvent } from "react";
+import { toast } from "sonner";
+import { BuildingType, Status } from "@/enums";
+import { useAuthStore } from "@/zustand/authStore";
+
+interface AddValue {
+  buildingCode: string;
+  buildingName: string;
+  address: string;
+  actualNumberOfFloors: number | undefined;
+  numberOfFloorsForRent: number | undefined;
+  buildingType: BuildingType | undefined;
+  description: string;
+}
+
+type AddData = AddValue & { userId: string | undefined };
 
 interface BtnType {
   tooltipContent: string;
@@ -45,6 +67,79 @@ const btns: BtnType[] = [
 ];
 
 const BuildingButton = () => {
+  const user = useAuthStore((s) => s.user);
+  const [value, setValue] = useState<AddValue>({
+    actualNumberOfFloors: undefined,
+    address: "",
+    buildingCode: "",
+    buildingName: "",
+    buildingType: undefined,
+    description: "",
+    numberOfFloorsForRent: undefined,
+  });
+
+  const [provinceCode, setProvinceCode] = useState<string>("");
+  const [districtCode, setDistrictCode] = useState<string>("");
+  const [wardCode, setWardCode] = useState<string>("");
+
+  const [provinceName, setProvinceName] = useState<string>("");
+  const [districtName, setDistrictName] = useState<string>("");
+  const [wardName, setWardName] = useState<string>("");
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setValue((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const fullAddress = `${value.address}, ${wardName}, ${districtName}, ${provinceName}`;
+
+  const addBuildingMutation = useMutation({
+    mutationKey: ["add-building"],
+    mutationFn: async (payload: AddData) => await httpRequest.post("/buildings", payload),
+    onError: (error) => {
+      handleMutationError(error);
+    },
+    onSuccess: () => {
+      toast.success(Status.ADD_SUCCESS);
+      setValue({
+        actualNumberOfFloors: undefined,
+        address: "",
+        buildingCode: "",
+        buildingName: "",
+        buildingType: undefined,
+        description: "",
+        numberOfFloorsForRent: undefined,
+      });
+      setProvinceCode("");
+      setDistrictCode("");
+      setWardCode("");
+      setProvinceName("");
+      setDistrictName("");
+      setWardName("");
+    },
+  });
+
+  const handleAddBuilding = useCallback(() => {
+    const { actualNumberOfFloors, buildingCode, buildingName, buildingType, description, numberOfFloorsForRent } =
+      value;
+
+    const data: AddData = {
+      userId: user?.id,
+      address: fullAddress,
+      buildingName,
+      buildingCode,
+      actualNumberOfFloors,
+      buildingType,
+      description,
+      numberOfFloorsForRent,
+    };
+
+    addBuildingMutation.mutate(data);
+  }, [addBuildingMutation, fullAddress, user?.id, value]);
+
   return (
     <div className="h-full bg-background rounded-t-sm mt-4">
       <div className="flex px-4 py-3 justify-between items-center">
@@ -53,11 +148,32 @@ const BuildingButton = () => {
           {btns.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button size={"icon"} variant={btn.type} className="cursor-pointer">
-                    <btn.icon className="text-white" />
-                  </Button>
-                </TooltipTrigger>
+                <Modal
+                  title="Dự án/Tòa nhà"
+                  trigger={
+                    <TooltipTrigger asChild>
+                      <Button size={"icon"} variant={btn.type} className="cursor-pointer">
+                        <btn.icon className="text-white" />
+                      </Button>
+                    </TooltipTrigger>
+                  }
+                  onConfirm={handleAddBuilding}
+                >
+                  <AddBuilding
+                    districtCode={districtCode}
+                    handleChange={handleChange}
+                    provinceCode={provinceCode}
+                    setDistrictCode={setDistrictCode}
+                    setDistrictName={setDistrictName}
+                    setProvinceCode={setProvinceCode}
+                    setProvinceName={setProvinceName}
+                    setWardCode={setWardCode}
+                    setWardName={setWardName}
+                    value={value}
+                    setValue={setValue}
+                    wardCode={wardCode}
+                  />
+                </Modal>
                 <TooltipContent
                   className="text-white"
                   style={{

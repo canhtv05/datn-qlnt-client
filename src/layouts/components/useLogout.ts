@@ -11,33 +11,38 @@ import { Status } from "@/enums";
 
 export const useLogout = () => {
   const clearUser = useAuthStore((state) => state.clearUser);
-    const navigate = useNavigate();
-  
-    const logoutMutation = useMutation({
-      mutationKey: ["logout"],
-      mutationFn: async () =>  await httpRequest.post("/auth/logout", {}, {
-        headers: {
-          Authorization: `Bearer ${cookieUtil.getStorage()?.accessToken}`,
-        },
-      }),
-      onSuccess: () => {
-        cookieUtil.deleteStorage();
-        clearUser();
-         toast.success(Status.LOGOUT_SUCCESS);
-        navigate("/login");
-      },
-      onError: (error:Error) => {
-        if (axios.isAxiosError(error)) {
-          toast.error(error.response?.data?.message ?? Status.LOGOUT_FAILED);
-        } else {
-          toast.error(Status.LOGOUT_FAILED);
+  const navigate = useNavigate();
+
+  const logoutMutation = useMutation({
+    mutationKey: ["logout"],
+    mutationFn: async () =>
+      await httpRequest.post(
+        "/auth/logout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${cookieUtil.getStorage()?.accessToken}`,
+          },
         }
-      },
-    });
+      ),
+    onSuccess: () => {
+      cookieUtil.deleteStorage();
+      clearUser();
+      toast.success(Status.LOGOUT_SUCCESS);
+      navigate("/login");
+    },
+    onError: (error: Error) => {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.message ?? Status.LOGOUT_FAILED);
+      } else {
+        toast.error(Status.LOGOUT_FAILED);
+      }
+    },
+  });
 
-    const handleLogout = useCallback(() => {
-      logoutMutation.mutate();
-    }, [logoutMutation]);
+  const handleLogout = useCallback(() => {
+    logoutMutation.mutate();
+  }, [logoutMutation]);
 
-  return { handleLogout};
+  return { handleLogout };
 };

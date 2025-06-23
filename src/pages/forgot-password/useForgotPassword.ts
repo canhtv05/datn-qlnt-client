@@ -115,8 +115,10 @@ export const useForgotPassword = () => {
     onError: (error) => {
       handleMutationError(error);
       if (axios.isAxiosError(error)) {
-        if (error.response?.data.code === 400) {
+        if (error.response?.data.message !== "OTP code is incorrect or expired.") {
           setIsTabOTP(true);
+        } else {
+          setIsTabOTP(false);
         }
       }
     },
