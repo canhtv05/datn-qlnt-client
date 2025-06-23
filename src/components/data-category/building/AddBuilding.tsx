@@ -2,24 +2,15 @@ import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSel
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
 import { BuildingType } from "@/enums";
+import { ICreateBuildingValue } from "@/types";
 import { MapPin } from "lucide-react";
 import { Dispatch, ReactNode } from "react";
 
-interface AddValue {
-  buildingCode: string;
-  buildingName: string;
-  address: string;
-  actualNumberOfFloors: number | undefined;
-  numberOfFloorsForRent: number | undefined;
-  buildingType: BuildingType | undefined;
-  description: string;
-}
-
 interface AddBuildingProps {
-  value: AddValue;
+  value: ICreateBuildingValue;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setValue: Dispatch<React.SetStateAction<AddValue>>;
-  errors: Partial<Record<keyof AddValue, string>>;
+  setValue: Dispatch<React.SetStateAction<ICreateBuildingValue>>;
+  errors: Partial<Record<keyof ICreateBuildingValue, string>>;
   address: ReactNode;
 }
 
@@ -45,7 +36,7 @@ const buildingType: FieldsSelectLabelType[] = [
 const AddBuilding = ({ value, handleChange, setValue, errors, address: AddressForm }: AddBuildingProps) => {
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex justify-between gap-5">
+      <div className="grid md:grid-cols-2 grid-cols-1 md:gap-5 gap-3">
         <InputLabel
           id="ten"
           name="buildingName"

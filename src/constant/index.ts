@@ -1,5 +1,7 @@
 import { BuildingStatus, BuildingType } from "@/enums";
+import { IBtnType } from "@/types";
 import {
+  Download,
   Banknote,
   BedDouble,
   Bell,
@@ -16,7 +18,10 @@ import {
   LucideIcon,
   PenTool,
   PieChart,
+  Plus,
   Scale,
+  Trash2,
+  Upload,
   UsersRound,
 } from "lucide-react";
 
@@ -186,5 +191,36 @@ export const STATUS_BADGE = [
     value: BuildingType.KHAC,
     label: "Khác",
     className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+  },
+];
+
+export const ACTION_BUTTONS: IBtnType[] = [
+  {
+    tooltipContent: "Thêm mới",
+    icon: Plus,
+    arrowColor: "var(--color-primary)",
+    type: "default",
+    hasConfirm: true,
+  },
+  {
+    tooltipContent: "Tải lên Excel",
+    icon: Upload,
+    arrowColor: "var(--color-amber-500)",
+    type: "upload",
+    hasConfirm: false,
+  },
+  {
+    tooltipContent: "Tải xuống Excel",
+    icon: Download,
+    arrowColor: "var(--color-emerald-500)",
+    type: "download",
+    hasConfirm: false,
+  },
+  {
+    tooltipContent: "Xóa",
+    icon: Trash2,
+    arrowColor: "var(--color-red-400)",
+    type: "delete",
+    hasConfirm: true,
   },
 ];

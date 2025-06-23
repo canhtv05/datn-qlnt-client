@@ -1,5 +1,4 @@
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { Download, LucideIcon, Plus, Trash2, Upload } from "lucide-react";
 import { TooltipTrigger } from "@radix-ui/react-tooltip";
 
 import { Button } from "@/components/ui/button";
@@ -12,66 +11,19 @@ import { httpRequest } from "@/utils/httpRequest";
 import { useMutation } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
-import { BuildingType, Status } from "@/enums";
+import { Status } from "@/enums";
 import { useAuthStore } from "@/zustand/authStore";
 import { createBuildingSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
 import { useFullAddress } from "@/hooks/useFullAddress";
+import { ICreateBuildingValue } from "@/types";
+import { ACTION_BUTTONS } from "@/constant";
 
-interface AddValue {
-  buildingCode: string;
-  buildingName: string;
-  address: string;
-  actualNumberOfFloors: number | undefined;
-  numberOfFloorsForRent: number | undefined;
-  buildingType: BuildingType | undefined;
-  description: string;
-}
-
-type AddData = AddValue & { userId: string | undefined };
-
-interface BtnType {
-  tooltipContent: string;
-  icon: LucideIcon;
-  arrowColor: string;
-  type: "default" | "upload" | "delete" | "download";
-  hasConfirm: boolean;
-}
-
-const btns: BtnType[] = [
-  {
-    tooltipContent: "Thêm mới",
-    icon: Plus,
-    arrowColor: "var(--color-primary)",
-    type: "default",
-    hasConfirm: true,
-  },
-  {
-    tooltipContent: "Tải lên Excel",
-    icon: Upload,
-    arrowColor: "var(--color-amber-500)",
-    type: "upload",
-    hasConfirm: false,
-  },
-  {
-    tooltipContent: "Tải xuống Excel",
-    icon: Download,
-    arrowColor: "var(--color-emerald-500)",
-    type: "download",
-    hasConfirm: false,
-  },
-  {
-    tooltipContent: "Xóa",
-    icon: Trash2,
-    arrowColor: "var(--color-red-400)",
-    type: "delete",
-    hasConfirm: true,
-  },
-];
+type AddData = ICreateBuildingValue & { userId: string | undefined };
 
 const BuildingButton = () => {
   const user = useAuthStore((s) => s.user);
-  const [value, setValue] = useState<AddValue>({
+  const [value, setValue] = useState<ICreateBuildingValue>({
     actualNumberOfFloors: undefined,
     address: "",
     buildingCode: "",
@@ -81,7 +33,7 @@ const BuildingButton = () => {
     numberOfFloorsForRent: undefined,
   });
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<AddValue>();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateBuildingValue>();
   const { fullAddress, Address } = useFullAddress();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -146,14 +98,12 @@ const BuildingButton = () => {
     }
   }, [addBuildingMutation, clearErrors, fullAddress, handleZodErrors, user?.id, value]);
 
-  console.log(value);
-
   return (
     <div className="h-full bg-background rounded-t-sm mt-4">
       <div className="flex px-4 py-3 justify-between items-center">
         <h3 className="font-semibold">Tòa nhà</h3>
         <div className="flex gap-2">
-          {btns.map((btn, index) => (
+          {ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <Modal
