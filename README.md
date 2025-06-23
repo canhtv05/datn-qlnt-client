@@ -43,6 +43,7 @@ src/
 | Radix UI         | ^1.x                      | Tooltip, Dialog, Select,... |
 | Zustand          | ^5.0.5                    | State management            |
 | React Query      | ^5.76.1                   | Fetch, caching, pagination  |
+| React Table      | ^8.21.3                   | Sort, hidden column,...     |
 | Zod              | ^3.25.46                  | Schema validation           |
 | Axios            | ^1.9.0                    | Gửi HTTP request            |
 | Sonner           | ^2.0.4                    | Toast message               |
