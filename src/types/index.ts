@@ -1,6 +1,16 @@
 import { BuildingStatus, BuildingType, Gender } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
+import { LucideIcon } from "lucide-react";
 import { ReactNode } from "react";
+
+/* BUTTONS*/
+export interface IBtnType {
+  tooltipContent: string;
+  icon: LucideIcon;
+  arrowColor: string;
+  type: "default" | "upload" | "delete" | "download" | "update";
+  hasConfirm: boolean;
+}
 
 /* FILTER */
 export type FilterObject = Record<string, string>;
@@ -64,7 +74,7 @@ export interface ColumnConfig {
   render?: (row: any) => ReactNode;
 }
 
-/* BUILDING RESPONSE */
+/* BUILDING */
 export interface BuildingResponse extends AbstractResponse {
   fullName: string;
   buildingCode: string;
@@ -74,5 +84,15 @@ export interface BuildingResponse extends AbstractResponse {
   numberOfFloorsForRent: number;
   buildingType: BuildingType;
   status: BuildingStatus;
+  description: string;
+}
+
+export interface ICreateBuildingValue {
+  buildingCode: string;
+  buildingName: string;
+  address: string;
+  actualNumberOfFloors: number | undefined;
+  numberOfFloorsForRent: number | undefined;
+  buildingType: BuildingType | undefined;
   description: string;
 }

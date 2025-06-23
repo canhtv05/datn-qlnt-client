@@ -1,6 +1,6 @@
 import StatisticCard from "@/components/StatisticCard";
 import DataTable from "@/components/DataTable";
-import { LucideIcon, PenTool, Plus, Trash2 } from "lucide-react";
+import { PenTool, Plus, Trash2 } from "lucide-react";
 import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import BuildingButton from "@/components/data-category/building/BuildingButton";
 import BuildingFilter from "@/components/data-category/building/BuildingFilter";
@@ -8,15 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { useBuilding } from "./useBuilding";
-import { BuildingResponse, ColumnConfig } from "@/types";
-
-interface BtnType {
-  tooltipContent: string;
-  icon: LucideIcon;
-  arrowColor: string;
-  type: "update" | "delete";
-  hasConfirm: boolean;
-}
+import { BuildingResponse, ColumnConfig, IBtnType } from "@/types";
 
 const dataBuildings = [
   {
@@ -36,7 +28,7 @@ const dataBuildings = [
   },
 ];
 
-const btns: BtnType[] = [
+const btns: IBtnType[] = [
   {
     tooltipContent: "Chỉnh sửa",
     icon: Plus,
