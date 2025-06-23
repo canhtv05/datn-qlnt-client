@@ -22,13 +22,22 @@ const Modal = ({
   trigger: ReactNode;
   title: string;
   children: ReactNode;
-  onConfirm: () => void;
+  onConfirm: () => Promise<boolean>;
 }) => {
   const [openMain, setOpenMain] = useState(false);
-  const handleConfirm = () => {
-    onConfirm();
-    setOpenMain(false);
-  };
+
+  const handleConfirm = useCallback(async (): Promise<boolean> => {
+    try {
+      const result = await onConfirm();
+      if (result) {
+        setOpenMain(false);
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  }, [onConfirm]);
 
   const { ConfirmDialog, openDialog } = useConfirmDialog({ onConfirm: handleConfirm });
 

@@ -1,4 +1,4 @@
-import { Gender } from "@/enums";
+import { BuildingType, Gender } from "@/enums";
 import { z } from "zod/v4";
 
 /*
@@ -34,6 +34,26 @@ const isValidPhoneNumber = (number: string) => {
   const regex = /^\d+$/;
   return regex.test(number);
 };
+
+const zSafeNumber = (fieldName: string) =>
+  z
+    .any()
+    .transform((val) => {
+      // parse value
+      if (typeof val === "number") return val;
+      if (typeof val === "string") {
+        const trimmed = val.trim();
+        const parsed = Number(trimmed);
+        return isNaN(parsed) ? NaN : parsed;
+      }
+      return NaN;
+    })
+    .refine((val) => !isNaN(val), {
+      message: `${fieldName} không hợp lệ`,
+    })
+    .refine((val) => val >= 1, {
+      message: `${fieldName} phải ≥ 1`,
+    });
 
 /* CHECK */
 
@@ -150,3 +170,30 @@ export const updateUserSchema = z.object({
     .min(10, "Số điện thoại ít nhất là 10 số")
     .max(11, "Số điện thoại tối đa là 11 số"),
 });
+
+/* BUILDINGS */
+export const createBuildingSchema = z
+  .object({
+    address: z.string().min(1, "Địa chỉ không được để trống"),
+    buildingName: z.string().min(1, "Tên tòa nhà không được để trống"),
+
+    actualNumberOfFloors: zSafeNumber("Số tầng thực tế"),
+    numberOfFloorsForRent: zSafeNumber("Số tầng cho thuê"),
+
+    buildingType: z.enum(
+      [BuildingType.CAN_HO_DICH_VU, BuildingType.CHUNG_CU_MINI, BuildingType.KHAC, BuildingType.NHA_TRO],
+      { message: "Loại tòa nhà không hợp lệ" }
+    ),
+
+    description: z.string().optional(),
+  })
+  .refine(
+    (data) =>
+      typeof data.actualNumberOfFloors === "number" &&
+      typeof data.numberOfFloorsForRent === "number" &&
+      data.actualNumberOfFloors >= data.numberOfFloorsForRent,
+    {
+      message: "Số tầng cho thuê không được lớn hơn số tầng thực tế",
+      path: ["numberOfFloorsForRent"],
+    }
+  );

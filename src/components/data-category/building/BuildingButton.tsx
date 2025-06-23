@@ -14,6 +14,9 @@ import { ChangeEvent } from "react";
 import { toast } from "sonner";
 import { BuildingType, Status } from "@/enums";
 import { useAuthStore } from "@/zustand/authStore";
+import { createBuildingSchema } from "@/lib/validation";
+import { useFormErrors } from "@/hooks/useFormErrors";
+import { useFullAddress } from "@/hooks/useFullAddress";
 
 interface AddValue {
   buildingCode: string;
@@ -78,13 +81,8 @@ const BuildingButton = () => {
     numberOfFloorsForRent: undefined,
   });
 
-  const [provinceCode, setProvinceCode] = useState<string>("");
-  const [districtCode, setDistrictCode] = useState<string>("");
-  const [wardCode, setWardCode] = useState<string>("");
-
-  const [provinceName, setProvinceName] = useState<string>("");
-  const [districtName, setDistrictName] = useState<string>("");
-  const [wardName, setWardName] = useState<string>("");
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<AddValue>();
+  const { fullAddress, Address } = useFullAddress();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -93,8 +91,6 @@ const BuildingButton = () => {
       [name]: value,
     }));
   };
-
-  const fullAddress = `${value.address}, ${wardName}, ${districtName}, ${provinceName}`;
 
   const addBuildingMutation = useMutation({
     mutationKey: ["add-building"],
@@ -113,32 +109,44 @@ const BuildingButton = () => {
         description: "",
         numberOfFloorsForRent: undefined,
       });
-      setProvinceCode("");
-      setDistrictCode("");
-      setWardCode("");
-      setProvinceName("");
-      setDistrictName("");
-      setWardName("");
     },
   });
 
-  const handleAddBuilding = useCallback(() => {
-    const { actualNumberOfFloors, buildingCode, buildingName, buildingType, description, numberOfFloorsForRent } =
-      value;
+  const handleAddBuilding = useCallback(async () => {
+    try {
+      const {
+        actualNumberOfFloors,
+        buildingCode,
+        buildingName,
+        buildingType,
+        description,
+        address,
+        numberOfFloorsForRent,
+      } = value;
 
-    const data: AddData = {
-      userId: user?.id,
-      address: fullAddress,
-      buildingName,
-      buildingCode,
-      actualNumberOfFloors,
-      buildingType,
-      description,
-      numberOfFloorsForRent,
-    };
+      await createBuildingSchema.parseAsync(value);
 
-    addBuildingMutation.mutate(data);
-  }, [addBuildingMutation, fullAddress, user?.id, value]);
+      const data: AddData = {
+        userId: user?.id,
+        address: `${address}, ${fullAddress}`,
+        buildingName,
+        buildingCode,
+        actualNumberOfFloors,
+        buildingType,
+        description,
+        numberOfFloorsForRent,
+      };
+
+      await addBuildingMutation.mutateAsync(data);
+      clearErrors();
+      return true;
+    } catch (error) {
+      handleZodErrors(error);
+      return false;
+    }
+  }, [addBuildingMutation, clearErrors, fullAddress, handleZodErrors, user?.id, value]);
+
+  console.log(value);
 
   return (
     <div className="h-full bg-background rounded-t-sm mt-4">
@@ -160,18 +168,11 @@ const BuildingButton = () => {
                   onConfirm={handleAddBuilding}
                 >
                   <AddBuilding
-                    districtCode={districtCode}
                     handleChange={handleChange}
-                    provinceCode={provinceCode}
-                    setDistrictCode={setDistrictCode}
-                    setDistrictName={setDistrictName}
-                    setProvinceCode={setProvinceCode}
-                    setProvinceName={setProvinceName}
-                    setWardCode={setWardCode}
-                    setWardName={setWardName}
                     value={value}
                     setValue={setValue}
-                    wardCode={wardCode}
+                    errors={errors}
+                    address={<Address />}
                   />
                 </Modal>
                 <TooltipContent
