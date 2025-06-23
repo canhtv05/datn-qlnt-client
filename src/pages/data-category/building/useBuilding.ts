@@ -42,7 +42,9 @@ export const useBuilding = () => {
     if (filterValues.search) params.set("buildingCode", filterValues.search);
     if (filterValues.status) params.set("status", filterValues.status);
     params.set("page", "1");
-    setSearchParams(params);
+    if (filterValues.status || filterValues.search) {
+      setSearchParams(params);
+    }
   }, [filterValues.search, filterValues.status, setSearchParams]);
 
   const props = {

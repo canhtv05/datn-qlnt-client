@@ -13,7 +13,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { OctagonAlert } from "lucide-react";
 
 interface UseConfirmDialogProps {
-  onConfirm: () => void;
+  onConfirm: () => Promise<boolean>;
   desc?: string;
   type?: "warn" | "default";
 }
@@ -49,9 +49,11 @@ export const useConfirmDialog = ({ onConfirm, desc, type = "warn" }: UseConfirmD
           </AlertDialogCancel>
           <AlertDialogAction
             className={buttonVariants({ variant: type === "warn" ? "upload" : "default" })}
-            onClick={() => {
-              onConfirm();
-              setOpen(false);
+            onClick={async () => {
+              const ok = await onConfirm();
+              if (ok) {
+                setOpen(false);
+              }
             }}
           >
             Xác nhận

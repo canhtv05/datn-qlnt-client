@@ -1,10 +1,9 @@
-import AddressForm from "@/components/data-category/building/AddressForm";
 import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
 import { BuildingType } from "@/enums";
 import { MapPin } from "lucide-react";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, ReactNode } from "react";
 
 interface AddValue {
   buildingCode: string;
@@ -19,16 +18,9 @@ interface AddValue {
 interface AddBuildingProps {
   value: AddValue;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  provinceCode: string;
-  districtCode: string;
-  wardCode: string;
-  setProvinceCode: Dispatch<SetStateAction<string>>;
-  setDistrictCode: Dispatch<SetStateAction<string>>;
-  setWardCode: Dispatch<SetStateAction<string>>;
-  setProvinceName: Dispatch<SetStateAction<string>>;
-  setDistrictName: Dispatch<SetStateAction<string>>;
-  setWardName: Dispatch<SetStateAction<string>>;
   setValue: Dispatch<React.SetStateAction<AddValue>>;
+  errors: Partial<Record<keyof AddValue, string>>;
+  address: ReactNode;
 }
 
 const buildingType: FieldsSelectLabelType[] = [
@@ -50,20 +42,7 @@ const buildingType: FieldsSelectLabelType[] = [
   },
 ];
 
-const AddBuilding = ({
-  value,
-  handleChange,
-  districtCode,
-  wardCode,
-  provinceCode,
-  setDistrictCode,
-  setWardCode,
-  setProvinceCode,
-  setProvinceName,
-  setWardName,
-  setDistrictName,
-  setValue,
-}: AddBuildingProps) => {
+const AddBuilding = ({ value, handleChange, setValue, errors, address: AddressForm }: AddBuildingProps) => {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex justify-between gap-5">
@@ -73,8 +52,9 @@ const AddBuilding = ({
           placeholder="Tên tòa nhà"
           required
           label="Tên tòa nhà:"
-          value={value.buildingName}
+          value={value.buildingName ?? ""}
           onChange={handleChange}
+          errorText={errors.buildingName}
         />
         <InputLabel
           id="ma"
@@ -82,24 +62,13 @@ const AddBuilding = ({
           placeholder="TN001"
           required
           label="Mã tòa nhà:"
-          value={value.buildingCode}
+          value={value.buildingCode ?? ""}
           onChange={handleChange}
+          errorText={errors.buildingCode}
         />
       </div>
 
-      <AddressForm
-        districtCode={districtCode}
-        provinceCode={provinceCode}
-        wardCode={wardCode}
-        setDistrictCode={setDistrictCode}
-        setProvinceCode={setProvinceCode}
-        setWardCode={setWardCode}
-        onLocationChange={(province, district, ward) => {
-          setProvinceName(province);
-          setDistrictName(district);
-          setWardName(ward);
-        }}
-      />
+      {AddressForm}
 
       <InputLabel
         id="address"
@@ -108,8 +77,9 @@ const AddBuilding = ({
         required
         label="Địa chỉ chi tiết:"
         icon={<MapPin className="size-4" />}
-        value={value.address}
+        value={value.address ?? ""}
         onChange={handleChange}
+        errorText={errors.address}
       />
 
       <FieldsSelectLabel
@@ -117,11 +87,12 @@ const AddBuilding = ({
         placeholder="-- Chọn loại tòa nhà --"
         label="Loại tòa nhà:"
         id="ward"
-        value={value.buildingType}
+        value={value.buildingType ?? ""}
         onChange={(val) => setValue((prev) => ({ ...prev, buildingType: val as BuildingType }))}
         labelSelect="Xã/Phường"
         required
         showClear
+        errorText={errors.buildingType}
       />
 
       <InputLabel
@@ -130,8 +101,9 @@ const AddBuilding = ({
         placeholder="1"
         required
         label="Số tầng thực tế:"
-        value={value.actualNumberOfFloors}
+        value={value.actualNumberOfFloors ?? ""}
         onChange={handleChange}
+        errorText={errors.actualNumberOfFloors?.toString()}
       />
 
       <InputLabel
@@ -140,16 +112,17 @@ const AddBuilding = ({
         placeholder="1"
         required
         label="Số tầng cho thuê:"
-        value={value.numberOfFloorsForRent}
+        value={value.numberOfFloorsForRent ?? ""}
         onChange={handleChange}
+        errorText={errors.numberOfFloorsForRent?.toString()}
       />
+
       <TextareaLabel
         id="description"
         name="description"
         placeholder="Nhập mô tả"
         label="Mô tả:"
-        value={value.description}
-        required
+        value={value.description ?? ""}
         onChange={(e) => setValue((prev) => ({ ...prev, description: e.target.value }))}
       />
     </div>

@@ -31,12 +31,12 @@ const Building = lazy(() => import("@/pages/data-category/building"));
 const publicRoutes: RouteType[] = [
   /* ✅ HOME là public */
   {
-    path: configs.routes.home.home, 
+    path: configs.routes.home.home,
     component: Home,
-    layout: null, 
+    layout: null,
   },
   {
-    path: configs.routes.home.features, 
+    path: configs.routes.home.features,
     component: FeaturesPage,
     layout: null,
   },

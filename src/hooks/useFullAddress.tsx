@@ -1,50 +1,41 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useProvinces, useDistricts, useWards } from "@/hooks/useAddress";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 
-interface AddressFormProps {
-  provinceCode: string;
-  setProvinceCode: Dispatch<SetStateAction<string>>;
-  districtCode: string;
-  setDistrictCode: Dispatch<SetStateAction<string>>;
-  wardCode: string;
-  setWardCode: Dispatch<SetStateAction<string>>;
-  onLocationChange?: (provinceName: string, districtName: string, wardName: string) => void;
-}
+export const useFullAddress = () => {
+  const [provinceCode, setProvinceCode] = useState("");
+  const [districtCode, setDistrictCode] = useState("");
+  const [wardCode, setWardCode] = useState("");
 
-const AddressForm = ({
-  provinceCode,
-  setProvinceCode,
-  districtCode,
-  setDistrictCode,
-  wardCode,
-  setWardCode,
-  onLocationChange,
-}: AddressFormProps) => {
   const { data: provinces = [] } = useProvinces();
   const { data: districts = [] } = useDistricts(Number(provinceCode));
   const { data: wards = [] } = useWards(Number(districtCode));
 
+  const provinceName = useMemo(
+    () => provinces.find((p: { code: number }) => p.code === Number(provinceCode))?.name || "",
+    [provinceCode, provinces]
+  );
+  const districtName = useMemo(
+    () => districts.find((d) => d.code === Number(districtCode))?.name || "",
+    [districtCode, districts]
+  );
+  const wardName = useMemo(() => wards.find((w) => w.code === Number(wardCode))?.name || "", [wardCode, wards]);
+
+  const fullAddress = useMemo(() => {
+    const parts = [wardName, districtName, provinceName].filter(Boolean);
+    return parts.length ? parts.join(", ") : "";
+  }, [wardName, districtName, provinceName]);
+
   useEffect(() => {
     setDistrictCode("");
     setWardCode("");
-  }, [provinceCode, setDistrictCode, setWardCode]);
+  }, [provinceCode]);
 
   useEffect(() => {
     setWardCode("");
-  }, [districtCode, setWardCode]);
+  }, [districtCode]);
 
-  useEffect(() => {
-    const provinceName = provinces.find((p: { code: number }) => p.code === Number(provinceCode))?.name || "";
-    const districtName = districts.find((d) => d.code === Number(districtCode))?.name || "";
-    const wardName = wards.find((w) => w.code === Number(wardCode))?.name || "";
-
-    if (onLocationChange) {
-      onLocationChange(provinceName, districtName, wardName);
-    }
-  }, [provinceCode, districtCode, wardCode, provinces, districts, wards, onLocationChange]);
-
-  return (
+  const Address = () => (
     <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
       <FieldsSelectLabel
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -84,6 +75,15 @@ const AddressForm = ({
       />
     </div>
   );
-};
 
-export default AddressForm;
+  return {
+    Address,
+    fullAddress,
+    provinceName,
+    districtName,
+    wardName,
+    provinceCode,
+    districtCode,
+    wardCode,
+  };
+};
