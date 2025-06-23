@@ -4,6 +4,7 @@ const routes = {
     features: "/features",
     services: "/services",
     contact: "/contact",
+    policy : "/policy",
   },
   auth: {
     login: "/login",

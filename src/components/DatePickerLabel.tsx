@@ -4,7 +4,11 @@ import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import RenderIf from "./RenderIf";
 
 interface DateValue {
@@ -20,14 +24,14 @@ const DatePickerLabel = ({ date, setDate, label, errorText }: DateValue) => {
       <span className="mb-1 text-label text-sm flex gap-1">{label}</span>
       <Popover>
         <PopoverTrigger asChild>
-          <Button
+           <Button
             className={cn(
               "w-full focus:border-primary bg-transparent hover:bg-transparent shadow-sm justify-start text-left font-normal border border-input",
               !date && "text-muted-foreground"
             )}
           >
             <CalendarIcon className="text-foreground" />
-            <span className="text-foreground">{date ? format(date, "yyyy/MM/dd") : "Chọn ngày"}</span>
+            <span className="text-foreground">{date ? format(date, "dd/MM/yyyy") : "Chọn ngày"}</span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">

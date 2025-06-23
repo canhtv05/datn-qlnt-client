@@ -22,6 +22,7 @@ export enum Status {
   ERROR = "Có lỗi xảy ra",
   LOGOUT_FAILED = "Đăng xuất thất bại",
   LOGOUT_SUCCESS = "Đăng xuất thành công",
+  REGISTER_SUCCESS = "Đăng ký thành công, vui lòng đăng nhập",
 }
 
 /* BUILDING */
