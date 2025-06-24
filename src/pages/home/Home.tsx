@@ -1,4 +1,4 @@
-import Navbar from "@/layouts/components/nav-Home";
+import Navbar from "@/layouts/components/nav-home";
 import Slider from "@/layouts/components/SliderHome";
 import HeroSection from "@/layouts/components/HeroSectionHome";
 import FeaturesSection  from "@/layouts/components/FeatureSectionHome";
@@ -11,7 +11,7 @@ const Home  = () => {
   return (
     <div >
       <Navbar />
-        <HeroSection />
+      <HeroSection />
      <MotionFadeIn>
         <Slider />
       </MotionFadeIn>

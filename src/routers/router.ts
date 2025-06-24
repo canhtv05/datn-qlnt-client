@@ -10,6 +10,7 @@ const Home = lazy(() => import("@/pages/home"));
 const FeaturesPage = lazy(() => import("@/components/home/Features"));
 const ServicesPage = lazy(() => import("@/components/home/service"));
 const ContactPage = lazy(() => import("@/components/home/Contact"));
+const PolicyPage = lazy(() => import("@/components/home/policy"));
 /* AUTH */
 const Login = lazy(() => import("@/pages/login"));
 const ForgotPassword = lazy(() => import("@/pages/forgot-password"));
@@ -85,6 +86,11 @@ const unprotectedRoutes: RouteType[] = [
   {
     path: configs.routes.home.contact,
     component: ContactPage,
+    layout: null,
+  },
+  {
+    path: configs.routes.home.policy,
+    component: PolicyPage,
     layout: null,
   },
 ];
