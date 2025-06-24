@@ -1,4 +1,4 @@
-import { FormEvent, ReactNode, useCallback, useState } from "react";
+import { FormEvent, ReactNode, useCallback } from "react";
 import {
   Dialog,
   DialogTrigger,
@@ -18,32 +18,30 @@ const Modal = ({
   title,
   children,
   onConfirm,
+  open,
+  onOpenChange,
 }: {
   trigger: ReactNode;
   title: string;
   children: ReactNode;
   onConfirm: () => Promise<boolean>;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }) => {
-  const [openMain, setOpenMain] = useState(false);
-
-  const handleConfirm = useCallback(async (): Promise<boolean> => {
-    try {
-      const result = await onConfirm();
-      if (result) {
-        setOpenMain(false);
-        return true;
-      }
-      return false;
-    } catch {
-      return false;
+  const handleConfirm = useCallback(async () => {
+    const result = await onConfirm();
+    if (result && onOpenChange) {
+      onOpenChange(false);
     }
-  }, [onConfirm]);
+    return result;
+  }, [onConfirm, onOpenChange]);
 
   const { ConfirmDialog, openDialog } = useConfirmDialog({ onConfirm: handleConfirm });
 
   const handleSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
+      e.stopPropagation();
       openDialog();
     },
     [openDialog]
@@ -51,26 +49,34 @@ const Modal = ({
 
   return (
     <>
-      <Dialog open={openMain} onOpenChange={setOpenMain}>
-        <DialogTrigger asChild>{trigger}</DialogTrigger>
-        <DialogContent className="md:max-w-3xl max-h-[90vh] p-0 [&>button.absolute]:hidden overflow-hidden flex flex-col">
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
+        <DialogContent className="md:max-w-3xl max-h-[90vh] p-0 flex flex-col">
           <DialogHeader className="sticky top-0 left-0 w-full z-50">
             <DialogTitle className="px-5 py-2.5 bg-secondary rounded-t-sm flex justify-between items-center">
               <p>{title}</p>
-              <Button
-                type="button"
-                onClick={() => setOpenMain(false)}
-                size="icon"
-                className="rounded-full shadow-none hover:bg-transparent size-[30px] bg-transparent"
-              >
-                <X className="stroke-foreground" />
-              </Button>
+              <DialogClose asChild>
+                <Button
+                  type="button"
+                  onClick={() => onOpenChange && onOpenChange(false)}
+                  size="icon"
+                  className="rounded-full shadow-none hover:bg-transparent size-[30px] bg-transparent"
+                >
+                  <X className="stroke-foreground" />
+                </Button>
+              </DialogClose>
             </DialogTitle>
           </DialogHeader>
 
           <DialogDescription className="hidden" />
 
-          <form onSubmit={handleSubmit} id="modal-form" className="flex-1 overflow-y-auto px-5 pt-4">
+          <form
+            id="modal-form"
+            name="modal-form"
+            className="flex-1 overflow-y-auto px-5 pt-4"
+            onSubmit={handleSubmit}
+            onClick={(e) => e.stopPropagation()}
+          >
             {children}
           </form>
 

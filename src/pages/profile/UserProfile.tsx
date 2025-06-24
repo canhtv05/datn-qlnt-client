@@ -93,6 +93,7 @@ const UserProfile = () => {
           />
           <FieldsSelectLabel
             id="gender"
+            name="gender"
             placeholder="Giới tính"
             label="Giới tính:"
             labelSelect="Giới tính"

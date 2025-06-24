@@ -12,16 +12,20 @@ import {
 import { buttonVariants } from "@/components/ui/button";
 import { OctagonAlert } from "lucide-react";
 
-interface UseConfirmDialogProps {
-  onConfirm: () => Promise<boolean>;
+interface UseConfirmDialogProps<T = void> {
+  onConfirm: (arg?: T) => Promise<boolean>;
   desc?: string;
   type?: "warn" | "default";
 }
 
-export const useConfirmDialog = ({ onConfirm, desc, type = "warn" }: UseConfirmDialogProps) => {
+export const useConfirmDialog = <T = void,>({ onConfirm, desc, type = "warn" }: UseConfirmDialogProps<T>) => {
   const [open, setOpen] = useState(false);
+  const [confirmArg, setConfirmArg] = useState<T | undefined>(undefined);
 
-  const openDialog = () => setOpen(true);
+  const openDialog = (arg?: T) => {
+    setConfirmArg(arg);
+    setOpen(true);
+  };
 
   const ConfirmDialog = () => (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -35,7 +39,7 @@ export const useConfirmDialog = ({ onConfirm, desc, type = "warn" }: UseConfirmD
             >
               <OctagonAlert className={`h-7 w-7 ${type === "warn" ? "text-orange-500" : "text-primary"}`} />
             </div>
-            Bạn có chắc chắn muốn tiếp tục?
+            Bạn có chắc chắn muốn tiếp tục không?
           </AlertDialogTitle>
           <AlertDialogDescription className="text-[15px] text-center">
             {!desc
@@ -50,7 +54,7 @@ export const useConfirmDialog = ({ onConfirm, desc, type = "warn" }: UseConfirmD
           <AlertDialogAction
             className={buttonVariants({ variant: type === "warn" ? "upload" : "default" })}
             onClick={async () => {
-              const ok = await onConfirm();
+              const ok = await onConfirm(confirmArg);
               if (ok) {
                 setOpen(false);
               }

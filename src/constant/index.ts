@@ -94,7 +94,7 @@ export const sidebarItems: SideBarType[] = [
       },
       {
         title: "Khách hàng",
-        url: "/customers",
+        url: "/customers/",
         icon: UsersRound,
       },
       {

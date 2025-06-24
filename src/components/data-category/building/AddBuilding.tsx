@@ -38,7 +38,7 @@ const AddBuilding = ({ value, handleChange, setValue, errors, address: AddressFo
     <div className="flex flex-col gap-3">
       <div className="grid md:grid-cols-2 grid-cols-1 md:gap-5 gap-3">
         <InputLabel
-          id="ten"
+          id="buildingName"
           name="buildingName"
           placeholder="Tên tòa nhà"
           required
@@ -48,7 +48,7 @@ const AddBuilding = ({ value, handleChange, setValue, errors, address: AddressFo
           errorText={errors.buildingName}
         />
         <InputLabel
-          id="ma"
+          id="buildingCode"
           name="buildingCode"
           placeholder="TN001"
           required
@@ -77,7 +77,8 @@ const AddBuilding = ({ value, handleChange, setValue, errors, address: AddressFo
         data={buildingType}
         placeholder="-- Chọn loại tòa nhà --"
         label="Loại tòa nhà:"
-        id="ward"
+        id="buildingType"
+        name="buildingType"
         value={value.buildingType ?? ""}
         onChange={(val) => setValue((prev) => ({ ...prev, buildingType: val as BuildingType }))}
         labelSelect="Xã/Phường"

@@ -54,7 +54,7 @@ export const useRegister = () => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue((prev) => ({
       ...prev,
-      [e.target.name]: [e.target.value],
+      [e.target.name]: e.target.value,
     }));
   };
 

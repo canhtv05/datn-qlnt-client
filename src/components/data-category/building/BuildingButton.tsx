@@ -8,7 +8,7 @@ import AddBuilding from "./AddBuilding";
 import { useCallback, useState } from "react";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Status } from "@/enums";
@@ -16,12 +16,14 @@ import { useAuthStore } from "@/zustand/authStore";
 import { createBuildingSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
 import { useFullAddress } from "@/hooks/useFullAddress";
-import { ICreateBuildingValue } from "@/types";
+import { IBtnType, ICreateBuildingValue } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
+import RenderIf from "@/components/RenderIf";
+import { useConfirmDialog } from "@/hooks";
 
 type AddData = ICreateBuildingValue & { userId: string | undefined };
 
-const BuildingButton = () => {
+const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
   const user = useAuthStore((s) => s.user);
   const [value, setValue] = useState<ICreateBuildingValue>({
     actualNumberOfFloors: undefined,
@@ -98,6 +100,52 @@ const BuildingButton = () => {
     }
   }, [addBuildingMutation, clearErrors, fullAddress, handleZodErrors, user?.id, value]);
 
+  const handleRemoveBuildingByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
+    try {
+      const selectedIds = Object.entries(ids)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .filter(([_, isSelected]) => isSelected)
+        .map(([id]) => id);
+
+      await Promise.all(selectedIds.map((id) => removeBuildingMutation.mutateAsync(id)));
+
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "buildings",
+      });
+
+      toast.success(Status.REMOVE_SUCCESS);
+      return true;
+    } catch (error) {
+      handleMutationError(error);
+      return false;
+    }
+  };
+
+  const { ConfirmDialog, openDialog } = useConfirmDialog<Record<string, boolean>>({
+    onConfirm: async (ids?: Record<string, boolean>) => {
+      if (!ids || !Object.values(ids).some(Boolean)) return false;
+      return await handleRemoveBuildingByIds(ids);
+    },
+    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tòa nhà đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    type: "warn",
+  });
+
+  const handleButton = useCallback(
+    (btn: IBtnType) => {
+      if (btn.type === "delete") {
+        openDialog(ids);
+      }
+    },
+    [ids, openDialog]
+  );
+
+  const removeBuildingMutation = useMutation({
+    mutationKey: ["remove-building"],
+    mutationFn: async (id: string) => await httpRequest.put(`/buildings/soft-delete/${id}`),
+  });
+
+  const queryClient = useQueryClient();
+
   return (
     <div className="h-full bg-background rounded-t-sm mt-4">
       <div className="flex px-4 py-3 justify-between items-center">
@@ -106,25 +154,40 @@ const BuildingButton = () => {
           {ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
-                <Modal
-                  title="Dự án/Tòa nhà"
-                  trigger={
-                    <TooltipTrigger asChild>
-                      <Button size={"icon"} variant={btn.type} className="cursor-pointer">
-                        <btn.icon className="text-white" />
-                      </Button>
-                    </TooltipTrigger>
-                  }
-                  onConfirm={handleAddBuilding}
-                >
-                  <AddBuilding
-                    handleChange={handleChange}
-                    value={value}
-                    setValue={setValue}
-                    errors={errors}
-                    address={<Address />}
-                  />
-                </Modal>
+                <RenderIf value={btn.type === "default"}>
+                  <Modal
+                    title="Dự án/Tòa nhà"
+                    trigger={
+                      <TooltipTrigger asChild>
+                        <Button size={"icon"} variant={btn.type} className="cursor-pointer">
+                          <btn.icon className="text-white" />
+                        </Button>
+                      </TooltipTrigger>
+                    }
+                    onConfirm={handleAddBuilding}
+                  >
+                    <AddBuilding
+                      handleChange={handleChange}
+                      value={value}
+                      setValue={setValue}
+                      errors={errors}
+                      address={<Address />}
+                    />
+                  </Modal>
+                </RenderIf>
+                <RenderIf value={btn.type !== "default"}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      size={"icon"}
+                      variant={btn.type}
+                      className="cursor-pointer"
+                      onClick={() => handleButton(btn)}
+                      disabled={btn.type === "delete" && !Object.values(ids).some(Boolean)}
+                    >
+                      <btn.icon className="text-white" />
+                    </Button>
+                  </TooltipTrigger>
+                </RenderIf>
                 <TooltipContent
                   className="text-white"
                   style={{
@@ -146,6 +209,7 @@ const BuildingButton = () => {
           ))}
         </div>
       </div>
+      <ConfirmDialog />
     </div>
   );
 };

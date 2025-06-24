@@ -35,9 +35,11 @@ type DataTableProps<T> = {
   totalElements: number;
   totalPages: number;
   loading?: boolean;
+  rowSelection: Record<string, boolean>;
+  setRowSelection: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
 };
 
-export default function DataTable<T>({
+export default function DataTable<T extends { id: string }>({
   data,
   columns,
   page,
@@ -45,13 +47,14 @@ export default function DataTable<T>({
   totalElements,
   totalPages,
   loading,
+  rowSelection,
+  setRowSelection,
 }: DataTableProps<T>) {
   const [searchQuery, setSearchQuery] = React.useState<string>();
   const [searchParams, setSearchParams] = useSearchParams();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
 
   const pageNum = Number(searchParams.get("page") || page || 1);
   const sizeNum = Number(searchParams.get("size") || size || 15);
@@ -115,6 +118,10 @@ export default function DataTable<T>({
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     onPaginationChange: setPagination,
+    manualPagination: true,
+    getRowId: (row) => {
+      return row.id;
+    },
     state: {
       sorting,
       columnFilters,
@@ -248,6 +255,7 @@ export default function DataTable<T>({
             ]}
             value={pagination.pageSize.toString()}
             onChange={(value) => handleSizeChange(Number(value))}
+            name="size"
             classNameTrigger="h-8"
           />
           <span className="text-[13px]">trên tổng số {totalElements} kết quả</span>

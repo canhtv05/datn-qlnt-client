@@ -26,13 +26,27 @@ export const useFullAddress = () => {
     return parts.length ? parts.join(", ") : "";
   }, [wardName, districtName, provinceName]);
 
+  const initFromNames = (wardName?: string, districtName?: string, provinceName?: string) => {
+    const foundProvince = provinces.find((p: { name: string | undefined }) => p.name === provinceName);
+    const foundDistrict = districts.find((d) => d.name === districtName);
+    const foundWard = wards.find((w) => w.name === wardName);
+
+    setProvinceCode(foundProvince?.code?.toString() ?? "");
+    setDistrictCode(foundDistrict?.code?.toString() ?? "");
+    setWardCode(foundWard?.code?.toString() ?? "");
+  };
+
   useEffect(() => {
-    setDistrictCode("");
-    setWardCode("");
+    if (provinceCode) {
+      setDistrictCode("");
+      setWardCode("");
+    }
   }, [provinceCode]);
 
   useEffect(() => {
-    setWardCode("");
+    if (districtCode) {
+      setWardCode("");
+    }
   }, [districtCode]);
 
   const Address = () => (
@@ -43,6 +57,7 @@ export const useFullAddress = () => {
         placeholder="Chọn tỉnh/thành"
         label="Tỉnh/Thành phố"
         id="province"
+        name="province"
         value={provinceCode}
         onChange={setProvinceCode}
         labelSelect="Tỉnh/Thành"
@@ -54,24 +69,28 @@ export const useFullAddress = () => {
         placeholder="Chọn quận/huyện"
         label="Quận/Huyện"
         id="district"
+        name="district"
         value={districtCode}
         onChange={setDistrictCode}
         labelSelect="Quận/Huyện"
         resetValue={!provinceCode}
         required
         showClear
+        disabled={!provinceCode}
       />
       <FieldsSelectLabel
         data={wards.map((w) => ({ label: w.name, value: w.code }))}
         placeholder="Chọn xã/phường"
         label="Xã/Phường"
         id="ward"
+        name="ward"
         value={wardCode}
         onChange={setWardCode}
         labelSelect="Xã/Phường"
         resetValue={!districtCode}
         required
         showClear
+        disabled={!districtCode}
       />
     </div>
   );
@@ -85,5 +104,6 @@ export const useFullAddress = () => {
     provinceCode,
     districtCode,
     wardCode,
+    initFromNames,
   };
 };

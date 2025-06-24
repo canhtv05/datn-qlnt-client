@@ -82,7 +82,7 @@ export default function buildColumnsFromConfig<T extends object>(configs: Column
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ) : (
-        config.label
+        <span className={cn(isCenter && "flex w-full items-center justify-center")}>{config.label}</span>
       );
     },
     cell: ({ row }) => {

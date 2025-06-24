@@ -25,7 +25,6 @@ export const useFormErrors = <T extends object>() => {
     } else {
       toast.error(Status.ERROR);
     }
-    throw error;
   };
 
   return {
