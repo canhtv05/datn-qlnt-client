@@ -86,12 +86,12 @@ export const useProfile = () => {
     value.phoneNumber,
   ]);
 
-  const handleUpdate = useCallback(async () => {
+  const handleUpdate = useCallback(async (): Promise<boolean> => {
     const isUnchanged = isDataUpdateEqual();
 
     if (isUnchanged) {
       toast.warning("Không có thay đổi nào");
-      return;
+      return true;
     }
 
     try {
@@ -113,8 +113,10 @@ export const useProfile = () => {
       clearErrors();
 
       updateProfileMutation.mutate(formData);
+      return true;
     } catch (error) {
       handleZodErrors(error);
+      return false;
     }
   }, [isDataUpdateEqual, clearErrors, file, handleZodErrors, updateProfileMutation, value]);
 

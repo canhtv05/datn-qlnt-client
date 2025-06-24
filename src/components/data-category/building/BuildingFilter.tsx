@@ -1,11 +1,13 @@
 import ButtonFilter from "@/components/ButtonFilter";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
+import { BuildingStatus, BuildingType } from "@/enums";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 
 export interface FilterValues {
-  search: string;
+  query: string;
   status: string;
+  buildingType: string;
 }
 
 export interface BuildingFilterProps {
@@ -16,7 +18,7 @@ export interface BuildingFilterProps {
 }
 
 const BuildingFilter = ({ props }: { props: BuildingFilterProps }) => {
-  const { search, status } = props.filterValues;
+  const { query, status, buildingType } = props.filterValues;
   const setFilterValues = props.setFilterValues;
 
   const handleChange = (key: keyof FilterValues, value: string) => {
@@ -29,30 +31,40 @@ const BuildingFilter = ({ props }: { props: BuildingFilterProps }) => {
   };
 
   return (
-    <form className=" bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
-      <div className="flex gap-5 items-end w-full">
-        <div className="w-1/2">
-          <FieldsSelectLabel
-            placeholder="-- Trạng thái hoạt động --"
-            labelSelect="Trạng thái"
-            data={[
-              { label: "Hoạt động", value: "HOAT_DONG" },
-              { label: "Tạm khóa", value: "TAM_KHOA" },
-            ]}
-            value={status}
-            onChange={(value) => handleChange("status", String(value))}
-          />
-        </div>
-        <div className="w-1/2">
-          <InputLabel
-            type="text"
-            id="search"
-            name="search"
-            placeholder="Tìm kiếm"
-            value={search}
-            onChange={(e) => handleChange("search", e.target.value)}
-          />
-        </div>
+    <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
+      <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end">
+        <FieldsSelectLabel
+          placeholder="-- Trạng thái hoạt động --"
+          labelSelect="Trạng thái"
+          data={[
+            { label: "Hoạt động", value: BuildingStatus.HOAT_DONG },
+            { label: "Tạm khóa", value: BuildingStatus.TAM_KHOA },
+          ]}
+          value={status}
+          onChange={(value) => handleChange("status", String(value))}
+          name="status"
+        />
+        <FieldsSelectLabel
+          placeholder="-- Loại nhà --"
+          labelSelect="Loại nhà"
+          data={[
+            { label: "Căn hộ dịch vụ", value: BuildingType.CAN_HO_DICH_VU },
+            { label: "Chung cư mini", value: BuildingType.CHUNG_CU_MINI },
+            { label: "Nhà trọ", value: BuildingType.NHA_TRO },
+            { label: "Khác", value: BuildingType.KHAC },
+          ]}
+          value={buildingType}
+          onChange={(value) => handleChange("buildingType", String(value))}
+          name="buildingType"
+        />
+        <InputLabel
+          type="text"
+          id="search"
+          name="search"
+          placeholder="Tìm kiếm"
+          value={query}
+          onChange={(e) => handleChange("query", e.target.value)}
+        />
       </div>
       <ButtonFilter onClear={props.onClear} />
     </form>

@@ -11,6 +11,7 @@ function Input({
   onFocus,
   onBlur,
   type,
+  name,
   icon,
   ...props
 }: React.ComponentProps<"input"> & {
@@ -19,6 +20,7 @@ function Input({
   onFocus?: () => void;
   onBlur?: () => void;
   icon?: React.ReactNode;
+  name?: string;
 }) {
   const [isEmpty, setIsEmpty] = React.useState(false);
   const [typeInput, setTypeInput] = React.useState(type);
@@ -26,7 +28,7 @@ function Input({
   const prevType = usePrevious(typeInput || "text");
 
   const handleBlur = (value: string) => {
-    if (!value.trim() || value.startsWith(" ")) {
+    if (!value.trim() || value.trim().startsWith(" ")) {
       setIsEmpty(true);
     }
     onBlur?.();
@@ -67,6 +69,8 @@ function Input({
             )}
             onBlur={(e) => handleBlur(e.target.value)}
             onFocus={handleFocus}
+            name={name}
+            autoComplete={props.autoComplete ?? "on"}
             {...props}
           />
         </div>

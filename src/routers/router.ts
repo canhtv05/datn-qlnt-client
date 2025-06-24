@@ -30,32 +30,6 @@ const DashBoard = lazy(() => import("@/pages/dashboard"));
 const Building = lazy(() => import("@/pages/data-category/building"));
 
 const publicRoutes: RouteType[] = [
-  /* ✅ HOME là public */
-  {
-    path: configs.routes.home.home,
-    component: Home,
-    layout: null,
-  },
-  {
-    path: configs.routes.home.features,
-    component: FeaturesPage,
-    layout: null,
-  },
-  {
-    path: configs.routes.home.services,
-    component: ServicesPage,
-    layout: null,
-  },
-  {
-    path: configs.routes.home.contact,
-    component: ContactPage,
-    layout: null,
-  },
-   {
-    path: configs.routes.home.policy,
-    component: PolicyPage,
-    layout: null,
-  },
   /* AUTH */
   {
     path: configs.routes.auth.login,
@@ -92,6 +66,35 @@ const privateRoutes: RouteType[] = [
   },
 ];
 
+const unprotectedRoutes: RouteType[] = [
+  /* ✅ HOME là public */
+  {
+    path: configs.routes.home.home,
+    component: Home,
+    layout: null,
+  },
+  {
+    path: configs.routes.home.features,
+    component: FeaturesPage,
+    layout: null,
+  },
+  {
+    path: configs.routes.home.services,
+    component: ServicesPage,
+    layout: null,
+  },
+  {
+    path: configs.routes.home.contact,
+    component: ContactPage,
+    layout: null,
+  },
+  {
+    path: configs.routes.home.policy,
+    component: PolicyPage,
+    layout: null,
+  },
+];
+
 const modals: ModalRoute[] = [
   {
     path: configs.routes.modals.profile,
@@ -99,4 +102,4 @@ const modals: ModalRoute[] = [
   },
 ];
 
-export { publicRoutes, privateRoutes, modals };
+export { publicRoutes, privateRoutes, modals, unprotectedRoutes };

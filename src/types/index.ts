@@ -8,7 +8,7 @@ export interface IBtnType {
   tooltipContent: string;
   icon: LucideIcon;
   arrowColor: string;
-  type: "default" | "upload" | "delete" | "download" | "update";
+  type: "default" | "upload" | "delete" | "download" | "update" | "status";
   hasConfirm: boolean;
 }
 
@@ -76,7 +76,6 @@ export interface ColumnConfig {
 
 /* BUILDING */
 export interface BuildingResponse extends AbstractResponse {
-  fullName: string;
   buildingCode: string;
   buildingName: string;
   address: string;
@@ -95,4 +94,10 @@ export interface ICreateBuildingValue {
   numberOfFloorsForRent: number | undefined;
   buildingType: BuildingType | undefined;
   description: string;
+}
+
+export interface IBuildingStatisticsResponse {
+  activeBuilding: number;
+  totalBuilding: number;
+  inactiveBuilding: number;
 }

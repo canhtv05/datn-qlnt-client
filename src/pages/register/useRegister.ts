@@ -35,17 +35,13 @@ export const useRegister = () => {
     acceptPolicy: false,
   });
 
-  const { clearErrors, errors, handleZodErrors } =
-    useFormErrors<RegisterValue>();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<RegisterValue>();
 
   const registerMutation = useMutation({
     mutationKey: ["register-user"],
     mutationFn: async (formValue: RegisterValue) => {
-      const { confirm, acceptPolicy, ...payload } = formValue;
-      const res = await httpRequest.post<ApiResponse<UserResponse>>(
-        "/auth/register",
-        payload
-      );
+      const { ...payload } = formValue;
+      const res = await httpRequest.post<ApiResponse<UserResponse>>("/auth/register", payload);
       return res.data;
     },
     onSuccess: () => {
@@ -92,13 +88,10 @@ export const useRegister = () => {
   const handleLoginWithGoogle = (e: FormEvent) => {
     e.preventDefault();
 
-    const callbackUrl =
-      configs.oauth2.redirectUri ?? "http://localhost:5173/authenticate";
-    const authUrl =
-      configs.oauth2.authUri ?? "https://accounts.google.com/o/oauth2/v2/auth";
+    const callbackUrl = configs.oauth2.redirectUri ?? "http://localhost:5173/authenticate";
+    const authUrl = configs.oauth2.authUri ?? "https://accounts.google.com/o/oauth2/v2/auth";
     const googleClientId =
-      configs.oauth2.clientId ??
-      "635634641386-m0df7i4nnulj2jn27qtr0qk1l8e0hk2l.apps.googleusercontent.com";
+      configs.oauth2.clientId ?? "635634641386-m0df7i4nnulj2jn27qtr0qk1l8e0hk2l.apps.googleusercontent.com";
 
     console.log(authUrl, callbackUrl, googleClientId);
 
@@ -109,12 +102,11 @@ export const useRegister = () => {
     window.location.href = targetUrl;
   };
   const handleCheckboxChange = (name: keyof typeof value, checked: boolean) => {
-  setValue((prev) => ({
-    ...prev,
-    [name]: checked,
-  }));
-};
-
+    setValue((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
+  };
 
   return {
     value,

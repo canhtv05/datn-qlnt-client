@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 
 import PublicRoute from "./routers/PublicRoute";
 import PrivateRoute from "./routers/PrivateRoute";
-import { modals, privateRoutes, publicRoutes } from "./routers/router";
+import { modals, privateRoutes, publicRoutes, unprotectedRoutes } from "./routers/router";
 import { useAppProvider } from "./provider/useAppProvider";
 import AppProvider from "./provider";
 
@@ -14,6 +14,7 @@ function App() {
       <Routes location={background || location}>
         <Route element={<PublicRoute />}>{publicRoutes.map(loadRoute)}</Route>
         <Route element={<PrivateRoute />}>{privateRoutes.map(loadRoute)}</Route>
+        <Route>{unprotectedRoutes.map(loadRoute)}</Route>
       </Routes>
       {background && (
         <Routes>

@@ -6,8 +6,9 @@ import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 interface FilterValues {
-  search: string;
+  query: string;
   status: string;
+  buildingType: string;
 }
 
 export const useBuilding = () => {
@@ -15,37 +16,39 @@ export const useBuilding = () => {
   const {
     page = "1",
     size = "15",
-    buildingCode = "",
-    address = "",
+    query = "",
     status = "",
-  } = queryFilter(searchParams, "page", "size", "buildingCode", "address", "status");
+    buildingType = "",
+  } = queryFilter(searchParams, "page", "size", "query", "status", "buildingType");
 
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
 
   const [filterValues, setFilterValues] = useState<FilterValues>({
-    search: buildingCode,
-    status: status,
+    query,
+    status,
+    buildingType,
   });
 
   useEffect(() => {
-    setFilterValues({ search: buildingCode, status });
-  }, [buildingCode, status]);
+    setFilterValues({ query, status, buildingType });
+  }, [buildingType, query, status]);
 
   const handleClear = () => {
-    setFilterValues({ search: "", status: "" });
+    setFilterValues({ query: "", status: "", buildingType: "" });
     setSearchParams({});
   };
 
   const handleFilter = useCallback(() => {
     const params = new URLSearchParams();
-    if (filterValues.search) params.set("buildingCode", filterValues.search);
+    if (filterValues.query) params.set("query", filterValues.query);
     if (filterValues.status) params.set("status", filterValues.status);
+    if (filterValues.buildingType) params.set("buildingType", filterValues.buildingType);
     params.set("page", "1");
-    if (filterValues.status || filterValues.search) {
+    if (filterValues.status || filterValues.query || filterValues.buildingType) {
       setSearchParams(params);
     }
-  }, [filterValues.search, filterValues.status, setSearchParams]);
+  }, [filterValues.buildingType, filterValues.query, filterValues.status, setSearchParams]);
 
   const props = {
     filterValues,
@@ -55,20 +58,21 @@ export const useBuilding = () => {
   };
 
   const { data, isLoading } = useQuery<ApiResponse<BuildingResponse[]>>({
-    queryKey: ["buildings", page, size, buildingCode, address, status],
+    queryKey: ["buildings", page, size, status, buildingType, query],
     queryFn: async () => {
       const params: Record<string, string> = {
         page: page.toString(),
         size: size.toString(),
       };
 
-      if (buildingCode) params["buildingCode"] = buildingCode;
-      if (address) params["address"] = address;
       if (status) params["status"] = status;
+      if (buildingType) params["buildingType"] = buildingType;
+      if (query) params["query"] = query;
 
       const res = await httpRequest.get("/buildings", {
         params,
       });
+
       return res.data;
     },
   });
@@ -77,8 +81,7 @@ export const useBuilding = () => {
     query: {
       page: parsedPage,
       size: parsedSize,
-      buildingCode,
-      address,
+      query,
       status,
     },
     setSearchParams,
