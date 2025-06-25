@@ -1,21 +1,33 @@
+import { Link } from "react-router-dom";
+
 const CallToAction = () => {
   return (
-    <section className="relative py-20 bg-gradient-to-br from-blue-900 via-indigo-900 to-blue-800 text-white overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent animate-move-bg z-0" />
-
-      <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
-        <h2 className="text-4xl font-bold mb-4 animate-fade-in-down">
-          Trải nghiệm quản lý nhà trọ ngay hôm nay!
+    <section className="relative py-24 bg-gray-900 text-white overflow-hidden">
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute -top-20 left-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 opacity-30 blur-3xl rounded-full animate-aurora-slow" />
+        <div className="absolute -bottom-10 right-1/4 w-[400px] h-[400px] bg-gradient-to-tr from-blue-500 via-green-400 to-teal-300 opacity-20 blur-2xl rounded-full animate-aurora-medium" />
+        <div className="absolute top-1/2 left-10 w-[300px] h-[300px] bg-gradient-to-tr from-pink-400 via-yellow-300 to-orange-400 opacity-20 blur-2xl rounded-full animate-aurora-fast" />
+      </div>
+      <div className="relative z-10 max-w-3xl mx-auto px-4 text-center">
+        <h2 className="text-4xl font-extrabold mb-4 animate-fade-in-down drop-shadow-md">
+          Trải nghiệm quản lý nhà trọ ngay!
         </h2>
         <p className="text-lg mb-8 text-white/80 animate-fade-in-up">
           Dễ sử dụng – Tiết kiệm thời gian – Tối ưu hóa lợi nhuận cho chủ trọ.
         </p>
-        <a
-          href="/register"
-          className="inline-block bg-white text-blue-900 font-semibold py-3 px-6 rounded-xl shadow-md hover:bg-gray-100 transition duration-300 hover:scale-[1.03] animate-pulse"
+        <Link
+          to="/register"
+          className="inline-flex items-center gap-2 px-6 py-3 text-blue-900 font-semibold bg-white rounded-xl shadow-lg hover:bg-gray-100 transition-transform transform hover:scale-105"
         >
           ✨ Đăng ký miễn phí
-        </a>
+          <svg
+            className="w-4 h-4 animate-bounce"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="M10 2a1 1 0 011 1v12.586l3.293-3.293a1 1 0 111.414 1.414l-5 5a1 1 0 01-1.414 0l-5-5a1 1 0 111.414-1.414L9 15.586V3a1 1 0 011-1z" />
+          </svg>
+        </Link>
       </div>
     </section>
   );

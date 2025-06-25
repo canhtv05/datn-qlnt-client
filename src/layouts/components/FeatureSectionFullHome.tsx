@@ -1,74 +1,126 @@
 import { motion } from "framer-motion";
-import { CheckCircle, Users, Home, FileText, BarChart2, Settings, Smartphone, Shield } from "lucide-react";
+import {
+  Home,
+  BarChart2,
+  Users,
+  FileText,
+  Bell,
+  PenTool,
+  Shield,
+  ClipboardCheck,
+  FilePlus,
+} from "lucide-react";
 
-const features = [
+const roleFeatures = [
   {
-    title: "Quản lý căn hộ",
-    desc: "Tạo và quản lý phòng, căn hộ, dự án dễ dàng, linh hoạt theo nhu cầu.",
-    icon: <Home className="w-10 h-10 text-green-600" />,
+    role: "Chủ nhà",
+    color: "bg-green-50",
+    icon: <Home className="w-6 h-6 text-green-600" />,
+    items: [
+      {
+        title: "Xem doanh thu",
+        desc: "Theo dõi tổng doanh thu theo tháng, quý, năm bằng biểu đồ trực quan.",
+        icon: <BarChart2 className="w-6 h-6 text-green-600" />,
+      },
+      {
+        title: "Tạo phòng / căn hộ",
+        desc: "Thêm mới căn hộ, cấu hình tiện ích, mức giá và tình trạng phòng.",
+        icon: <FilePlus className="w-6 h-6 text-green-600" />,
+      },
+      {
+        title: "Phân quyền nhân viên",
+        desc: "Phân chia quyền hạn truy cập theo chức năng và từng tòa nhà.",
+        icon: <Shield className="w-6 h-6 text-green-600" />,
+      },
+    ],
   },
   {
-    title: "Quản lý khách thuê",
-    desc: "Lưu trữ thông tin, hợp đồng, phương tiện và hỗ trợ ký hợp đồng online.",
-    icon: <Users className="w-10 h-10 text-green-600" />,
+    role: "Khách thuê",
+    color: "bg-blue-50",
+    icon: <Users className="w-6 h-6 text-blue-600" />,
+    items: [
+      {
+        title: "Xem hóa đơn",
+        desc: "Kiểm tra lịch sử thanh toán, hóa đơn điện, nước, dịch vụ mọi lúc.",
+        icon: <FileText className="w-6 h-6 text-blue-600" />,
+      },
+      {
+        title: "Nhận thông báo",
+        desc: "Nhận thông báo khi có hóa đơn mới, nhắc hạn thanh toán, hợp đồng.",
+        icon: <Bell className="w-6 h-6 text-blue-600" />,
+      },
+      {
+        title: "Ký hợp đồng online",
+        desc: "Ký hợp đồng điện tử nhanh chóng, không cần gặp mặt trực tiếp.",
+        icon: <PenTool className="w-6 h-6 text-blue-600" />,
+      },
+    ],
   },
   {
-    title: "Quản lý tài chính",
-    desc: "Tự động tạo hóa đơn, theo dõi thu chi, nhắc nợ và thống kê công nợ.",
-    icon: <FileText className="w-10 h-10 text-green-600" />,
-  },
-  {
-    title: "Phân quyền nhân viên",
-    desc: "Phân quyền theo bộ phận, theo tòa nhà và theo chức năng rõ ràng.",
-    icon: <Shield className="w-10 h-10 text-green-600" />,
-  },
-  {
-    title: "Thống kê & báo cáo",
-    desc: "Theo dõi hiệu quả kinh doanh qua biểu đồ, bảng biểu trực quan.",
-    icon: <BarChart2 className="w-10 h-10 text-green-600" />,
-  },
-  {
-    title: "Cài đặt nâng cao",
-    desc: "Tùy chỉnh hợp đồng, hóa đơn, logo, biểu mẫu và xuất dữ liệu dễ dàng.",
-    icon: <Settings className="w-10 h-10 text-green-600" />,
-  },
-  {
-    title: "Ứng dụng di động",
-    desc: "Hỗ trợ app mobile cho chủ nhà & khách thuê, nhận thông báo dễ dàng.",
-    icon: <Smartphone className="w-10 h-10 text-green-600" />,
-  },
-  {
-    title: "Tích hợp & mở rộng",
-    desc: "Kết nối IoT, camera, khóa cửa, thanh toán QR và phần mềm kế toán.",
-    icon: <CheckCircle className="w-10 h-10 text-green-600" />,
+    role: "Kế toán / Nhân viên",
+    color: "bg-yellow-50",
+    icon: <ClipboardCheck className="w-6 h-6 text-yellow-600" />,
+    items: [
+      {
+        title: "Theo dõi thu chi",
+        desc: "Ghi nhận giao dịch, đối soát thu chi và tổng kết hàng tháng.",
+        icon: <FileText className="w-6 h-6 text-yellow-600" />,
+      },
+      {
+        title: "In báo cáo",
+        desc: "Xuất báo cáo chi tiết định kỳ hoặc theo yêu cầu dưới dạng PDF/Excel.",
+        icon: <BarChart2 className="w-6 h-6 text-yellow-600" />,
+      },
+      {
+        title: "Quản lý hợp đồng",
+        desc: "Tạo, chỉnh sửa và lưu trữ hợp đồng khách hàng đầy đủ, chính xác.",
+        icon: <PenTool className="w-6 h-6 text-yellow-600" />,
+      },
+    ],
   },
 ];
 
-const FeatureSection = () => {
+const RoleFeatureSection = () => {
   return (
-    <section className="bg-white py-20">
-      <div className="max-w-7xl mx-auto px-4 text-center">
-        <h2 className="text-4xl font-bold text-gray-800 mb-4">Tính năng nổi bật</h2>
-        <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
-          Resident cung cấp đầy đủ công cụ để bạn quản lý nhà trọ thông minh, tiện lợi và hiệu quả.
-        </p>
+    <section className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4">
+        <h2 className="text-4xl font-bold text-center text-gray-800 mb-12">
+          Tính năng theo vai trò người dùng
+        </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {features.map((item, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="p-6 bg-green-50 rounded-xl shadow hover:shadow-md transition"
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {roleFeatures.map((group, idx) => (
+            <div
+              key={idx}
+              className={`rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 ${group.color}`}
             >
-              <div className="mb-4">{item.icon}</div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                {item.title}
-              </h3>
-              <p className="text-sm text-gray-600">{item.desc}</p>
-            </motion.div>
+              <div className="flex items-center gap-3 mb-4">
+                {group.icon}
+                <h3 className="text-2xl font-semibold text-gray-800">{group.role}</h3>
+              </div>
+              <div className="space-y-5 mt-4">
+                {group.items.map((item, index) => (
+                  <motion.div
+                    key={index}
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300"
+                  >
+                    <div className="flex items-start gap-3">
+                      {item.icon}
+                      <div>
+                        <h4 className="font-semibold text-gray-800 text-base">
+                          {item.title}
+                        </h4>
+                        <p className="text-sm text-gray-600 mt-1 leading-relaxed">
+                          {item.desc}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -76,4 +128,4 @@ const FeatureSection = () => {
   );
 };
 
-export default FeatureSection;
+export default RoleFeatureSection;
