@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
-import {FaFacebookF,FaYoutube,FaChevronRight} from "react-icons/fa";
+import { FaFacebookF, FaYoutube, FaChevronRight } from "react-icons/fa";
 import { SiZalo } from "react-icons/si";
 import { TbBrandTiktok } from "react-icons/tb";
 import { MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
-
 
 import Logo from "@/components/Logo";
 import MotionFadeUp from "@/components/ui/MotionFadeUp";
@@ -17,8 +16,8 @@ const Footer = () => {
             <div>
               <Logo className="text-3xl mb-4" />
               <p className="text-base text-gray-700 leading-7 font-bold">
-                Nền tảng hỗ trợ quản lý nhà trọ toàn diện, giúp bạn theo dõi khách
-                thuê, hóa đơn, hợp đồng và nhiều hơn thế nữa.
+                Nền tảng hỗ trợ quản lý nhà trọ toàn diện, giúp bạn theo dõi
+                khách thuê, hóa đơn, hợp đồng và nhiều hơn thế nữa.
               </p>
             </div>
           </MotionFadeUp>
@@ -44,18 +43,40 @@ const Footer = () => {
           </MotionFadeUp>
           <MotionFadeUp delay={0.3}>
             <div>
-              <h4 className="text-lg font-bold text-green-600 mb-1">Mạng xã hội</h4>
+              <h4 className="text-lg font-bold text-green-600 mb-1">
+                Mạng xã hội
+              </h4>
               <div className="w-25 h-1 bg-green-600 mb-4 rounded"></div>
               <div className="flex gap-4 flex-wrap">
                 {[
-                  { icon: <FaFacebookF />, name: "Facebook", color: "bg-blue-600" },
-                  { icon: <SiZalo />, name: "Zalo", color: "bg-[#0068ff]" },
-                  { icon: <TbBrandTiktok />, name: "TikTok", color: "bg-black" },
-                  { icon: <FaYoutube />, name: "YouTube", color: "bg-red-600" },
+                  {
+                    icon: <FaFacebookF />,
+                    name: "Facebook",
+                    color: "bg-blue-600",
+                    link: "https://facebook.com/",
+                  },
+                  {
+                    icon: <SiZalo />,
+                    name: "Zalo",
+                    color: "bg-[#0068ff]",
+                    link: "https://zalo.me/", 
+                  },
+                  {
+                    icon: <TbBrandTiktok />,
+                    name: "TikTok",
+                    color: "bg-black",
+                    link: "https://www.tiktok.com/", 
+                  },
+                  {
+                    icon: <FaYoutube />,
+                    name: "YouTube",
+                    color: "bg-red-600",
+                    link: "https://www.youtube.com/",
+                  },
                 ].map((item, i) => (
                   <a
                     key={i}
-                    href="#"
+                    href={item.link}
                     target="_blank"
                     rel="noopener noreferrer"
                     title={item.name}
@@ -69,7 +90,9 @@ const Footer = () => {
           </MotionFadeUp>
           <MotionFadeUp delay={0.4}>
             <div>
-              <h4 className="text-lg font-bold text-green-600 mb-1">Liên kết</h4>
+              <h4 className="text-lg font-bold text-green-600 mb-1">
+                Liên kết
+              </h4>
               <div className="w-16 h-1 bg-green-600 mb-4 rounded"></div>
               <ul className="space-y-3 text-base font-bold text-gray-700">
                 {[
@@ -98,8 +121,8 @@ const Footer = () => {
           <div className="flex flex-col sm:flex-row justify-between items-center gap-2 max-w-7xl mx-auto">
             <span>
               © {new Date().getFullYear()}{" "}
-              <span className="font-bold text-green-600">QLNhàTrọ</span>. All rights
-              reserved.
+              <span className="font-bold text-green-600">QLNhàTrọ</span>. All
+              rights reserved.
             </span>
             <div className="flex gap-4 font-medium">
               <Link to="/terms" className="hover:text-green-600">
