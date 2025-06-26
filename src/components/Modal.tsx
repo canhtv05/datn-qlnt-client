@@ -1,4 +1,4 @@
-import { FormEvent, ReactNode, useCallback } from "react";
+import { FormEvent, ReactNode, useCallback, useState } from "react";
 import {
   Dialog,
   DialogTrigger,
@@ -18,8 +18,9 @@ const Modal = ({
   title,
   children,
   onConfirm,
-  open,
-  onOpenChange,
+  open: controlledOpen,
+  onOpenChange: controlledOnOpenChange,
+  desc,
 }: {
   trigger: ReactNode;
   title: string;
@@ -27,22 +28,29 @@ const Modal = ({
   onConfirm: () => Promise<boolean>;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  desc?: string;
 }) => {
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isControlled = controlledOpen !== undefined;
+
+  const open = isControlled ? controlledOpen : internalOpen;
+  const onOpenChange = isControlled ? controlledOnOpenChange! : setInternalOpen;
+
   const handleConfirm = useCallback(async () => {
     const result = await onConfirm();
-    if (result && onOpenChange) {
+    if (result) {
       onOpenChange(false);
     }
     return result;
   }, [onConfirm, onOpenChange]);
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog({ onConfirm: handleConfirm });
+  const { ConfirmDialog, openDialog } = useConfirmDialog({ onConfirm: handleConfirm, desc });
 
   const handleSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
       e.stopPropagation();
-      openDialog();
+      openDialog(undefined);
     },
     [openDialog]
   );

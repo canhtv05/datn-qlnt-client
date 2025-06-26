@@ -31,7 +31,7 @@ const AppProvider = ({ children }: AppProviderProps) => {
       </RenderIf>
       {children}
       <ScrollToTop />
-      <Toaster richColors position="top-right" closeButton theme="light" />
+      <Toaster richColors position="top-right" theme="light" />
       {/* <ReactQueryDevtools /> */}
     </>
   );

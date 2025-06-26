@@ -1,9 +1,15 @@
-import { ApiResponse, BuildingResponse } from "@/types";
+import { Notice, Status } from "@/enums";
+import { useConfirmDialog, useFormErrors } from "@/hooks";
+import { createOrUpdateBuildingSchema } from "@/lib/validation";
+import { ApiResponse, BuildingResponse, IBuildingStatisticsResponse, UpdateBuildingValue } from "@/types";
+import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
-import { useQuery } from "@tanstack/react-query";
-import { useCallback, useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { PenTool } from "lucide-react";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { toast } from "sonner";
 
 interface FilterValues {
   query: string;
@@ -21,18 +27,35 @@ export const useBuilding = () => {
     buildingType = "",
   } = queryFilter(searchParams, "page", "size", "query", "status", "buildingType");
 
+  const [rowSelection, setRowSelection] = useState({});
+  const idRef = useRef<string>("");
+  const [value, setValue] = useState<UpdateBuildingValue>({
+    actualNumberOfFloors: undefined,
+    address: "",
+    buildingName: "",
+    buildingType: undefined,
+    description: "",
+    numberOfFloorsForRent: undefined,
+    status: undefined,
+  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const queryClient = useQueryClient();
+
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
+
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<UpdateBuildingValue>();
+
+  useEffect(() => {
+    setFilterValues({ query, status, buildingType });
+  }, [buildingType, query, status]);
 
   const [filterValues, setFilterValues] = useState<FilterValues>({
     query,
     status,
     buildingType,
   });
-
-  useEffect(() => {
-    setFilterValues({ query, status, buildingType });
-  }, [buildingType, query, status]);
 
   const handleClear = () => {
     setFilterValues({ query: "", status: "", buildingType: "" });
@@ -49,13 +72,6 @@ export const useBuilding = () => {
       setSearchParams(params);
     }
   }, [filterValues.buildingType, filterValues.query, filterValues.status, setSearchParams]);
-
-  const props = {
-    filterValues,
-    setFilterValues,
-    onClear: handleClear,
-    onFilter: handleFilter,
-  };
 
   const { data, isLoading } = useQuery<ApiResponse<BuildingResponse[]>>({
     queryKey: ["buildings", page, size, status, buildingType, query],
@@ -77,6 +93,198 @@ export const useBuilding = () => {
     },
   });
 
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.stopPropagation();
+    const { name, value } = e.target;
+    setValue((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const updateBuildingMutation = useMutation({
+    mutationKey: ["update-building"],
+    mutationFn: async (payload: UpdateBuildingValue) => await httpRequest.put(`/buildings/${idRef.current}`, payload),
+    onError: (error) => {
+      handleMutationError(error);
+    },
+  });
+
+  const removeBuildingMutation = useMutation({
+    mutationKey: ["remove-building"],
+    mutationFn: async (id: string) => await httpRequest.put(`/buildings/soft-delete/${id}`),
+  });
+
+  const toggleStatusBuildingMutation = useMutation({
+    mutationKey: ["toggle-building"],
+    mutationFn: async (id: string) => await httpRequest.put(`/buildings/toggle-status/${id}`),
+  });
+
+  const handleToggleStatusBuildingById = async (id: string): Promise<boolean> => {
+    try {
+      await toggleStatusBuildingMutation.mutateAsync(id, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "buildings",
+          });
+          queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
+
+          toast.success(Status.UPDATE_SUCCESS);
+        },
+      });
+      return true;
+    } catch (error) {
+      handleMutationError(error);
+      return false;
+    }
+  };
+
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>({
+    onConfirm: async ({ id, type }) => {
+      if (type === "delete") return await handleRemoveBuildingById(id);
+      if (type === "status") return await handleToggleStatusBuildingById(id);
+      return false;
+    },
+  });
+
+  const handleRemoveBuildingById = async (id: string): Promise<boolean> => {
+    try {
+      await removeBuildingMutation.mutateAsync(id, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "buildings",
+          });
+          queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
+
+          toast.success(Status.REMOVE_SUCCESS);
+        },
+      });
+      return true;
+    } catch (error) {
+      handleMutationError(error);
+      return false;
+    }
+  };
+
+  const handleUpdateBuilding = useCallback(async () => {
+    try {
+      const {
+        actualNumberOfFloors,
+        buildingName,
+        buildingType,
+        description,
+        address,
+        numberOfFloorsForRent,
+        status: buildingStatus,
+      } = value;
+
+      await createOrUpdateBuildingSchema.parseAsync(value);
+
+      const data: UpdateBuildingValue = {
+        address,
+        buildingName,
+        actualNumberOfFloors,
+        buildingType,
+        description,
+        numberOfFloorsForRent,
+        status: buildingStatus,
+      };
+
+      updateBuildingMutation.mutate(data, {
+        onSuccess: () => {
+          setValue({
+            actualNumberOfFloors: undefined,
+            address: "",
+            buildingName: "",
+            buildingType: undefined,
+            description: "",
+            numberOfFloorsForRent: undefined,
+            status: undefined,
+          });
+          queryClient.invalidateQueries({
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "buildings",
+          });
+          queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
+          toast.success(Status.UPDATE_SUCCESS);
+          setIsModalOpen(false);
+        },
+      });
+      clearErrors();
+      return true;
+    } catch (error) {
+      handleZodErrors(error);
+      return false;
+    }
+  }, [updateBuildingMutation, clearErrors, handleZodErrors, queryClient, value]);
+
+  const handleActionClick = useCallback(
+    (building: BuildingResponse, action: "update" | "delete" | "status") => {
+      idRef.current = building.id;
+      if (action === "update") {
+        // const parts = building.address.split(",").map((s) => s.trim());
+        // const len = parts.length;
+        // const wardName = parts[len - 3] || "";
+        // const districtName = parts[len - 2] || "";
+        // const provinceName = parts[len - 1] || "";
+
+        // const detailedAddress = parts.slice(0, len - 3).join(", ");
+
+        setValue({
+          actualNumberOfFloors: building.actualNumberOfFloors,
+          address: building.address,
+          buildingName: building.buildingName,
+          buildingType: building.buildingType,
+          description: building.description,
+          numberOfFloorsForRent: building.numberOfFloorsForRent,
+          status: building.status,
+        });
+        setIsModalOpen(true);
+      } else {
+        openDialog(
+          { id: building.id, type: action },
+          {
+            type: "warn",
+            desc: action === "delete" ? Notice.REMOVE : Notice.TOGGLE_STATUS,
+          }
+        );
+      }
+    },
+    [openDialog]
+  );
+
+  const { data: statistics } = useQuery<ApiResponse<IBuildingStatisticsResponse>>({
+    queryKey: ["building-statistics"],
+    queryFn: async () => {
+      const res = await httpRequest.get("/buildings/statistics");
+      return res.data;
+    },
+  });
+
+  const dataBuildings = [
+    {
+      icon: PenTool,
+      label: "Tòa nhà",
+      value: statistics?.data.totalBuilding ?? 0,
+    },
+    {
+      icon: PenTool,
+      label: "Hoạt động",
+      value: statistics?.data.activeBuilding ?? 0,
+    },
+    {
+      icon: PenTool,
+      label: "Không hoạt động",
+      value: statistics?.data.inactiveBuilding ?? 0,
+    },
+  ];
+
+  const props = {
+    filterValues,
+    setFilterValues,
+    onClear: handleClear,
+    onFilter: handleFilter,
+  };
+
   return {
     query: {
       page: parsedPage,
@@ -88,5 +296,17 @@ export const useBuilding = () => {
     props,
     data,
     isLoading,
+    dataBuildings,
+    handleActionClick,
+    rowSelection,
+    setRowSelection,
+    isModalOpen,
+    setIsModalOpen,
+    handleChange,
+    handleUpdateBuilding,
+    value,
+    setValue,
+    errors,
+    ConfirmDialog,
   };
 };

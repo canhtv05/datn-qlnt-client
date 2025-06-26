@@ -25,6 +25,13 @@ export enum Status {
   REGISTER_SUCCESS = "Đăng ký thành công, vui lòng đăng nhập",
 }
 
+export enum Notice {
+  REMOVE = "Hành động này sẽ xóa vĩnh viễn dữ liệu đã chọn khỏi hệ thống. Bạn có chắc chắn muốn tiếp tục?",
+  TOGGLE_STATUS = "Bạn có chắc chắn muốn thay đổi trạng thái của mục này?",
+  UPDATE = "Hành động này sẽ cập nhật thông tin hiện tại. Bạn có chắc chắn muốn tiếp tục?",
+  ADD = "Hành động này sẽ thêm mới một mục vào hệ thống. Bạn có chắc chắn muốn thực hiện?",
+}
+
 /* BUILDING */
 export enum BuildingType {
   NHA_TRO = "NHA_TRO",

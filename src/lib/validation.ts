@@ -8,9 +8,7 @@ export const formatFullName = (value: string) => {
   return value
     .trim()
     .split(/\s+/)
-    .map(
-      (word) => word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
-    )
+    .map((word) => word.charAt(0).toUpperCase() + word.substring(1).toLowerCase())
     .join(" ");
 };
 
@@ -19,9 +17,7 @@ export const isValidDob = (date: Date) => {
   const age =
     today.getFullYear() -
     date.getFullYear() -
-    (today < new Date(date.getFullYear(), date.getMonth(), date.getDate())
-      ? 1
-      : 0);
+    (today < new Date(date.getFullYear(), date.getMonth(), date.getDate()) ? 1 : 0);
   return age >= 18;
 };
 
@@ -97,21 +93,15 @@ export const registerSchema = z
   .object({
     email: z.email("Email không hợp lệ"),
 
-    fullName: z
-      .string()
-      .min(3, "Họ tên phải có ít nhất 3 ký tự")
-      .refine(isValidFullName, {
-        message: "Mỗi từ trong họ tên phải có ít nhất 3 ký tự",
-      }),
+    fullName: z.string().min(3, "Họ tên phải có ít nhất 3 ký tự").refine(isValidFullName, {
+      message: "Mỗi từ trong họ tên phải có ít nhất 3 ký tự",
+    }),
 
     dob: z
       .string()
       .refine((val) => !isNaN(Date.parse(val)), "Ngày sinh không hợp lệ")
       .transform((val) => new Date(val))
-      .refine(
-        (date) => isValidDob(date),
-        "Tuổi của bạn phải lớn hơn hoặc bằng 18"
-      ),
+      .refine((date) => isValidDob(date), "Tuổi của bạn phải lớn hơn hoặc bằng 18"),
 
     phoneNumber: z
       .string()
@@ -146,19 +136,13 @@ export const updateUserSchema = z.object({
     .min(3, "Họ tên phải có ít nhất 3 ký tự")
     .refine(isValidFullName, "Mỗi từ trong họ tên phải có ít nhất 3 ký tự"),
 
-  gender: z.enum(
-    [Gender.FEMALE, Gender.MALE, Gender.UNKNOWN],
-    "Giới tính không hợp lệ"
-  ),
+  gender: z.enum([Gender.FEMALE, Gender.MALE, Gender.UNKNOWN], "Giới tính không hợp lệ"),
 
   dob: z
     .string()
     .refine((val) => !isNaN(Date.parse(val)), "Ngày sinh không hợp lệ")
     .transform((val) => new Date(val))
-    .refine(
-      (date) => isValidDob(date),
-      "Tuổi của bạn phải lớn hơn hoặc bằng 18"
-    ),
+    .refine((date) => isValidDob(date), "Tuổi của bạn phải lớn hơn hoặc bằng 18"),
 
   phoneNumber: z
     .string()
@@ -172,7 +156,7 @@ export const updateUserSchema = z.object({
 });
 
 /* BUILDINGS */
-export const createBuildingSchema = z
+export const createOrUpdateBuildingSchema = z
   .object({
     address: z.string().min(1, "Địa chỉ không được để trống"),
     buildingName: z.string().min(1, "Tên tòa nhà không được để trống"),

@@ -87,7 +87,6 @@ export interface BuildingResponse extends AbstractResponse {
 }
 
 export interface ICreateBuildingValue {
-  buildingCode: string;
   buildingName: string;
   address: string;
   actualNumberOfFloors: number | undefined;
@@ -95,6 +94,8 @@ export interface ICreateBuildingValue {
   buildingType: BuildingType | undefined;
   description: string;
 }
+
+export type UpdateBuildingValue = ICreateBuildingValue & { status?: BuildingStatus };
 
 export interface IBuildingStatisticsResponse {
   activeBuilding: number;
