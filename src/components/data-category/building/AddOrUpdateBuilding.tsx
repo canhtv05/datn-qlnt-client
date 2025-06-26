@@ -4,14 +4,14 @@ import TextareaLabel from "@/components/TextareaLabel";
 import { BuildingType } from "@/enums";
 import { ICreateBuildingValue } from "@/types";
 import { MapPin } from "lucide-react";
-import { Dispatch, ReactNode } from "react";
+import { Dispatch } from "react";
 
-interface AddBuildingProps {
+interface AddOrUpdateBuildingProps {
   value: ICreateBuildingValue;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setValue: Dispatch<React.SetStateAction<ICreateBuildingValue>>;
   errors: Partial<Record<keyof ICreateBuildingValue, string>>;
-  address: ReactNode;
+  // address: ReactNode;
 }
 
 const buildingType: FieldsSelectLabelType[] = [
@@ -33,33 +33,21 @@ const buildingType: FieldsSelectLabelType[] = [
   },
 ];
 
-const AddBuilding = ({ value, handleChange, setValue, errors, address: AddressForm }: AddBuildingProps) => {
+const AddOrUpdateBuilding = ({ value, handleChange, setValue, errors }: AddOrUpdateBuildingProps) => {
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid md:grid-cols-2 grid-cols-1 md:gap-5 gap-3">
-        <InputLabel
-          id="buildingName"
-          name="buildingName"
-          placeholder="Tên tòa nhà"
-          required
-          label="Tên tòa nhà:"
-          value={value.buildingName ?? ""}
-          onChange={handleChange}
-          errorText={errors.buildingName}
-        />
-        <InputLabel
-          id="buildingCode"
-          name="buildingCode"
-          placeholder="TN001"
-          required
-          label="Mã tòa nhà:"
-          value={value.buildingCode ?? ""}
-          onChange={handleChange}
-          errorText={errors.buildingCode}
-        />
-      </div>
+      <InputLabel
+        id="buildingName"
+        name="buildingName"
+        placeholder="Tên tòa nhà"
+        required
+        label="Tên tòa nhà:"
+        value={value.buildingName ?? ""}
+        onChange={handleChange}
+        errorText={errors.buildingName}
+      />
 
-      {AddressForm}
+      {/* {AddressForm} */}
 
       <InputLabel
         id="address"
@@ -82,7 +70,6 @@ const AddBuilding = ({ value, handleChange, setValue, errors, address: AddressFo
         value={value.buildingType ?? ""}
         onChange={(val) => setValue((prev) => ({ ...prev, buildingType: val as BuildingType }))}
         labelSelect="Xã/Phường"
-        required
         showClear
         errorText={errors.buildingType}
       />
@@ -121,4 +108,4 @@ const AddBuilding = ({ value, handleChange, setValue, errors, address: AddressFo
   );
 };
 
-export default AddBuilding;
+export default AddOrUpdateBuilding;

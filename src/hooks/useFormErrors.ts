@@ -1,8 +1,5 @@
 import { z } from "zod/v4";
-import { toast } from "sonner";
 import { useState } from "react";
-
-import { Status } from "@/enums";
 
 export const useFormErrors = <T extends object>() => {
   //Partial: all fields are optional
@@ -22,8 +19,6 @@ export const useFormErrors = <T extends object>() => {
         newErrors[field] = issue.message;
       }
       setErrors(newErrors);
-    } else {
-      toast.error(Status.ERROR);
     }
   };
 

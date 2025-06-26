@@ -4,18 +4,18 @@ import { TooltipTrigger } from "@radix-ui/react-tooltip";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import Modal from "@/components/Modal";
-import AddBuilding from "./AddBuilding";
+import AddOrUpdateBuilding from "./AddOrUpdateBuilding";
 import { useCallback, useState } from "react";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
-import { Status } from "@/enums";
+import { Notice, Status } from "@/enums";
 import { useAuthStore } from "@/zustand/authStore";
-import { createBuildingSchema } from "@/lib/validation";
+import { createOrUpdateBuildingSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { useFullAddress } from "@/hooks/useFullAddress";
+// import { useFullAddress } from "@/hooks/useFullAddress";
 import { IBtnType, ICreateBuildingValue } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
@@ -28,7 +28,6 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
   const [value, setValue] = useState<ICreateBuildingValue>({
     actualNumberOfFloors: undefined,
     address: "",
-    buildingCode: "",
     buildingName: "",
     buildingType: undefined,
     description: "",
@@ -36,7 +35,9 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
   });
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateBuildingValue>();
-  const { fullAddress, Address } = useFullAddress();
+  // const { fullAddress, Address, clearValue } = useFullAddress();
+
+  const queryClient = useQueryClient();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -57,34 +58,32 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
       setValue({
         actualNumberOfFloors: undefined,
         address: "",
-        buildingCode: "",
         buildingName: "",
         buildingType: undefined,
         description: "",
         numberOfFloorsForRent: undefined,
       });
+      // clearValue();
+      queryClient.invalidateQueries({
+        predicate: (prev) => {
+          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "buildings";
+        },
+      });
+      queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
     },
   });
 
   const handleAddBuilding = useCallback(async () => {
     try {
-      const {
-        actualNumberOfFloors,
-        buildingCode,
-        buildingName,
-        buildingType,
-        description,
-        address,
-        numberOfFloorsForRent,
-      } = value;
+      const { actualNumberOfFloors, buildingName, buildingType, description, address, numberOfFloorsForRent } = value;
 
-      await createBuildingSchema.parseAsync(value);
+      await createOrUpdateBuildingSchema.parseAsync(value);
 
       const data: AddData = {
         userId: user?.id,
-        address: `${address}, ${fullAddress}`,
+        // address: `${address}, ${fullAddress}`,
+        address,
         buildingName,
-        buildingCode,
         actualNumberOfFloors,
         buildingType,
         description,
@@ -98,7 +97,7 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
       handleZodErrors(error);
       return false;
     }
-  }, [addBuildingMutation, clearErrors, fullAddress, handleZodErrors, user?.id, value]);
+  }, [addBuildingMutation, clearErrors, handleZodErrors, user?.id, value]);
 
   const handleRemoveBuildingByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
@@ -112,6 +111,7 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
       queryClient.invalidateQueries({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "buildings",
       });
+      queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
 
       toast.success(Status.REMOVE_SUCCESS);
       return true;
@@ -144,8 +144,6 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
     mutationFn: async (id: string) => await httpRequest.put(`/buildings/soft-delete/${id}`),
   });
 
-  const queryClient = useQueryClient();
-
   return (
     <div className="h-full bg-background rounded-t-sm mt-4">
       <div className="flex px-4 py-3 justify-between items-center">
@@ -164,14 +162,15 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
                         </Button>
                       </TooltipTrigger>
                     }
+                    desc={Notice.ADD}
                     onConfirm={handleAddBuilding}
                   >
-                    <AddBuilding
+                    <AddOrUpdateBuilding
                       handleChange={handleChange}
                       value={value}
                       setValue={setValue}
                       errors={errors}
-                      address={<Address />}
+                      // address={<Address />}
                     />
                   </Modal>
                 </RenderIf>

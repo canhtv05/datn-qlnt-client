@@ -49,6 +49,12 @@ export const useFullAddress = () => {
     }
   }, [districtCode]);
 
+  const clearValue = () => {
+    setProvinceCode("");
+    setWardCode("");
+    setDistrictCode("");
+  };
+
   const Address = () => (
     <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
       <FieldsSelectLabel
@@ -105,5 +111,6 @@ export const useFullAddress = () => {
     districtCode,
     wardCode,
     initFromNames,
+    clearValue,
   };
 };

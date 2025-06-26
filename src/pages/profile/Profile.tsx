@@ -59,7 +59,7 @@ const UserProfile = () => {
             >
               <Camera className="text-foreground size-4" />
             </Button>
-            <RenderIf value={tmpImg !== value.profilePicture}>
+            <RenderIf value={tmpImg !== value.profilePicture && value.profilePicture !== null}>
               <button
                 type="button"
                 className="absolute top-2 right-2 bg-background cursor-pointer p-1 rounded-full"
