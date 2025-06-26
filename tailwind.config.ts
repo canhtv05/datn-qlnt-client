@@ -19,9 +19,16 @@ const config: Config = {
           "80%": { transform: "rotate(-2deg)" },
           "100%": { transform: "rotate(0deg)" },
         },
+        auroraMove: {
+          "0%, 100%": { transform: "translateY(0) translateX(0)" },
+          "50%": { transform: "translateY(-50px) translateX(50px)" },
+        },
       },
       animation: {
         swing: "swing 1s ease-in-out infinite",
+        "aurora-slow": "auroraMove 20s infinite ease-in-out",
+        "aurora-medium": "auroraMove 15s infinite ease-in-out",
+        "aurora-fast": "auroraMove 10s infinite ease-in-out",
       },
     },
   },

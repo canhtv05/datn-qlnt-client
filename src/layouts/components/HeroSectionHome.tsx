@@ -1,77 +1,69 @@
-import { motion } from "framer-motion";
-import { useState } from "react";
-
-
-import heroImage from "@/assets/imgs/admin.webp";
 import { CheckCircle } from "lucide-react";
+import { Link } from "react-router-dom";
+
+import heroImage from "@/assets/imgs/anhBannerHome.png";
+import Logo from "@/components/Logo";
+import MotionFadeLeft from "@/components/ui/MotionFadeLeft";
+import MotionFadeRight from "@/components/ui/MotionFadeRight";
 
 const HeroSection = () => {
-  const [textDone, setTextDone] = useState(false);
-
   return (
     <section className="bg-gradient-to-br from-[#fff5e0] via-[#fbc888] to-[#f8a769] font-roboto min-h-screen pt-28 relative overflow-hidden z-0">
       <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-10">
-        <motion.div
-          className={`w-full md:w-1/2 ${
-            !textDone
-              ? "absolute top-[85%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 text-center"
-              : "relative z-10"
-          }`}
-          initial={{ scale: 1.5, opacity: 0 }}
-          animate={{
-            scale: 1,
-            opacity: 1,
-            x: textDone ? 0 : "-50%",
-            y: textDone ? 0 : "-50%",
-          }}
-          transition={{ duration: 5, ease: "easeInOut" }}
-          onAnimationComplete={() => setTextDone(true)}
-        >
-          <h1 className="text-3xl md:text-4xl font-bold leading-snug text-gray-900 mb-6">
-            <span className="text-green-700 font-extrabold">TroHub–</span> Nền tảng hàng đầu <br />
-            <span className="text-green-700 font-extrabold">Quản lý nhà trọ cho thuê</span>
-          </h1>
+        <div className="w-full md:w-1/2 relative z-10">
+          <MotionFadeLeft delay={0.1}>
+            <h1 className="text-[28px] md:text-[40px] font-bold leading-tight text-gray-900 mb-6">
+              <div className="flex items-center gap-3 flex-wrap">
+                <Logo className="text-[36px]" />
+                <span className="text-green-700 font-extrabold text-[28px] md:text-[32px]">
+                  – Nền tảng hàng đầu
+                </span>
+              </div>
+              <div className="mt-2 text-green-700 font-extrabold text-[28px] md:text-[32px]">
+                Quản lý nhà trọ cho thuê
+              </div>
+            </h1>
+          </MotionFadeLeft>
+          <MotionFadeLeft delay={0.2}>
+            <p className="text-xl text-gray-800 font-medium mb-4">
+              Tương lai sẽ là đơn vị sử dụng nhiều nhất Việt Nam
+            </p>
+          </MotionFadeLeft>
 
-          <p className="text-xl text-gray-800 font-medium mb-4">
-            Tương lai sẽ là đơn vị sử dụng nhiều nhất Việt Nam
-          </p>
-
-          <ul className="space-y-3 text-gray-700 mb-8">
-            <li className="flex items-start gap-2">
-              <CheckCircle className="text-green-600 w-5 h-5 mt-1" />
-              Phù hợp với mọi loại hình nhà trọ, căn hộ dịch vụ, văn phòng cho thuê.
-            </li>
-            <li className="flex items-start gap-2">
-              <CheckCircle className="text-green-600 w-5 h-5 mt-1" />
-              Quản lý căn hộ 1 cách dễ dàng, đơn giản và hiệu quả.
-            </li>
-            <li className="flex items-start gap-2">
-              <CheckCircle className="text-green-600 w-5 h-5 mt-1" />
-              Tự động hóa quy trình quản lý, tiết kiệm thời gian và công sức.
-            </li>
+          <ul className="space-y-3 text-gray-700 mb-8 text-left">
+            {[
+              "Phù hợp với mọi loại hình nhà trọ, căn hộ dịch vụ, văn phòng cho thuê.",
+              "Quản lý căn hộ 1 cách dễ dàng, đơn giản và hiệu quả.",
+              "Tự động hóa quy trình quản lý, tiết kiệm thời gian và công sức.",
+            ].map((text, i) => (
+              <MotionFadeLeft key={i} delay={0.3 + i * 0.1}>
+                <li className="flex items-start gap-2 max-w-md">
+                  <CheckCircle className="text-green-600 w-5 h-5 mt-1 shrink-0" />
+                  <span>{text}</span>
+                </li>
+              </MotionFadeLeft>
+            ))}
           </ul>
 
-          <a
-            href="/register"
-            className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-xl shadow-lg transition duration-300 ease-in-out"
-          >
-            Dùng thử miễn phí
-          </a>
-        </motion.div>
-        {textDone && (
-          <motion.div
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="w-full md:w-1/2 mt-10 md:mt-0 flex justify-center z-10"
-          >
+          <MotionFadeLeft delay={0.6}>
+            <Link
+              to="/register"
+              className="relative inline-block bg-orange-500 text-white font-semibold py-3 px-8 rounded-xl shadow-lg transition-all duration-300 ease-in-out group overflow-hidden"
+            >
+              <span className="relative z-10">Dùng thử miễn phí</span>
+              <span className="absolute left-[-75%] top-0 w-full h-full bg-white opacity-10 transform skew-x-[-30deg] group-hover:translate-x-[200%] transition-transform duration-500 ease-in-out"></span>
+            </Link>
+          </MotionFadeLeft>
+        </div>
+        <div className="w-full md:w-1/2 mt-10 md:mt-0 flex justify-center z-10">
+          <MotionFadeRight delay={0.4}>
             <img
               src={heroImage}
               alt="Quản lý nhà trọ"
               className="w-full max-w-xl md:max-w-2xl rounded-2xl shadow-xl"
             />
-          </motion.div>
-        )}
+          </MotionFadeRight>
+        </div>
       </div>
     </section>
   );
