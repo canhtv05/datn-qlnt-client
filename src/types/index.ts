@@ -1,4 +1,4 @@
-import { BuildingStatus, BuildingType, Gender } from "@/enums";
+import { BuildingStatus, BuildingType, Gender, RoomStatus, RoomType} from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
 import { ReactNode } from "react";
@@ -102,3 +102,36 @@ export interface IBuildingStatisticsResponse {
   totalBuilding: number;
   inactiveBuilding: number;
 }
+//room
+export interface RoomResponse extends AbstractResponse {
+  id: string;
+  roomCode: string;
+  acreage: number;
+  price: number;
+  maximumPeople: number;
+  roomType: RoomType;
+  roomstatus: RoomStatus;
+  description: string;
+  // floor?: FloorResponse;
+}
+export type RoomFormValue = {
+  // floorId: string;
+  acreage: number | null;
+  price: number | null;
+  maximumPeople: number | null;
+  roomType: RoomType | null;
+  roomstatus: RoomStatus | null;
+  description: string;
+};
+export type RoomDeleteRequest = {
+  floorId: string;
+  roomCode: string;
+};
+export interface IRoomStatisticsResponse {
+  getTotalInUse: number;
+  getTotalDangThue: number;
+  getTotalDatCoc: number;
+}
+
+
+

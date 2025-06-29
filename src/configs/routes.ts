@@ -18,6 +18,7 @@ const routes = {
   dashboard: "/dashboard",
   dataCategories: {
     buildings: "/data-categories/buildings",
+    rooms: "/data-categories/rooms",
   },
 };
 

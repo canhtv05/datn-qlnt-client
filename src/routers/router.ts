@@ -28,7 +28,7 @@ const DashBoard = lazy(() => import("@/pages/dashboard"));
 
 /* DATA CATEGORIES*/
 const Building = lazy(() => import("@/pages/data-category/building"));
-
+const Room = lazy(() => import("@/pages/data-category/room"));
 const publicRoutes: RouteType[] = [
   /* AUTH */
   {
@@ -64,10 +64,14 @@ const privateRoutes: RouteType[] = [
     path: configs.routes.dataCategories.buildings,
     component: Building,
   },
+  {
+    path: configs.routes.dataCategories.rooms,
+    component: Room,
+  },
 ];
 
 const unprotectedRoutes: RouteType[] = [
-  /* ✅ HOME là public */
+  /*HOME là public */
   {
     path: configs.routes.home.home,
     component: Home,

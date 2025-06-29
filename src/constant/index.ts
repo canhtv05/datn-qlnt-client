@@ -1,4 +1,4 @@
-import { BuildingStatus, BuildingType } from "@/enums";
+import { BuildingStatus, BuildingType, RoomStatus, RoomType } from "@/enums";
 import { IBtnType } from "@/types";
 import {
   Download,
@@ -160,37 +160,88 @@ export const STATUS_BADGE = [
   {
     value: BuildingStatus.HOAT_DONG,
     label: "Hoạt động",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className:
+      "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
   },
   {
     value: BuildingStatus.TAM_KHOA,
     label: "Tạm khóa",
-    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+    className:
+      "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
   },
   {
     value: BuildingStatus.HUY_HOAT_DONG,
     label: "Hủy hoạt động",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+    className:
+      "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
   },
   {
     value: BuildingType.NHA_TRO,
     label: "Nhà trọ",
-    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+    className:
+      "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
   },
   {
     value: BuildingType.CHUNG_CU_MINI,
     label: "Chung cư mini",
-    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+    className:
+      "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
   },
   {
     value: BuildingType.CAN_HO_DICH_VU,
     label: "Căn hộ dịch vụ",
-    className: "text-indigo-600 bg-indigo-100 border border-indigo-200 hover:bg-indigo-200 hover:text-indigo-700",
+    className:
+      "text-indigo-600 bg-indigo-100 border border-indigo-200 hover:bg-indigo-200 hover:text-indigo-700",
   },
   {
     value: BuildingType.KHAC,
     label: "Khác",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className:
+      "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+  },
+  // room status
+  {
+    value: RoomStatus.TRONG,
+    label: "Còn trống",
+    className:
+      "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+  },
+  {
+    value: RoomStatus.DA_THUE,
+    label: "Đã thuê",
+    className:
+      "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+  },
+  {
+    value: RoomStatus.DA_DAT_COC,
+    label: "Đã đặt cọc",
+    className:
+      "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+  },
+  {
+    value: RoomStatus.DANG_BAO_TRI,
+    label: "Bảo trì",
+    className:
+      "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+  },
+  // room type
+  {
+    value: RoomType.GHEP,
+    label: "Phòng ghép",
+    className:
+      "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+  },
+  {
+    value: RoomType.DON,
+    label: "Phòng đơn",
+    className:
+      "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+  },
+  {
+    value: RoomType.KHAC,
+    label: "Khác",
+    className:
+      "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
   },
 ];
 
@@ -223,4 +274,11 @@ export const ACTION_BUTTONS: IBtnType[] = [
     type: "delete",
     hasConfirm: true,
   },
+  
 ];
+export const formatNumberField = {
+  price: (val: number) => `${val.toLocaleString("vi-VN")} VNĐ`,
+  acreage: (val: number) => `${val.toLocaleString("vi-VN")} m²`,
+  maximumPeople: (val: number) => `${val} người/phòng`,
+};
+

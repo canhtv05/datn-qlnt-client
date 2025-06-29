@@ -1,5 +1,6 @@
-import { BuildingType, Gender } from "@/enums";
+import { BuildingType, Gender, RoomType, RoomStatus} from "@/enums";
 import { z } from "zod/v4";
+
 
 /*
   CHECK
@@ -179,5 +180,46 @@ export const createOrUpdateBuildingSchema = z
     {
       message: "Số tầng cho thuê không được lớn hơn số tầng thực tế",
       path: ["numberOfFloorsForRent"],
+    }
+  );
+
+  //ROOM
+ export const createOrUpdateRoomSchema = z
+  .object({
+    acreage: zSafeNumber("Diện tích").refine((val) => val >= 1, {
+      message: "Diện tích phải ≥ 1",
+    }),
+
+    price: z
+      .union([zSafeNumber("Giá"), z.literal(null)])
+      .refine((val) => val === null || val >= 0, {
+        message: "Giá phải là số không âm",
+      }),
+
+    maximumPeople: z
+      .union([zSafeNumber("Số người tối đa"), z.literal(null)])
+      .refine((val) => val === null || val >= 1, {
+        message: "Số người tối đa phải ≥ 1",
+      }),
+
+    roomType: z.enum(
+      [RoomType.GHEP, RoomType.DON, RoomType.KHAC],
+      { message: "Loại phòng không hợp lệ" }
+    ),
+
+    status: z.enum(
+      [RoomStatus.TRONG, RoomStatus.DA_THUE, RoomStatus.DA_DAT_COC, RoomStatus.DANG_BAO_TRI],
+      { message: "Trạng thái phòng không hợp lệ" }
+    ),
+
+    description: z.string().optional().nullable(),
+  })
+  .refine(
+    (data) =>
+      typeof data.acreage === "number" &&
+      (data.maximumPeople === null || typeof data.maximumPeople === "number"),
+    {
+      message: "Dữ liệu diện tích hoặc số người tối đa không hợp lệ",
+      path: ["maximumPeople"],
     }
   );
