@@ -1,3 +1,4 @@
+import { StatisticCardType } from "@/components/StatisticCard";
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
 import { createOrUpdateBuildingSchema } from "@/lib/validation";
@@ -6,7 +7,7 @@ import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { PenTool } from "lucide-react";
+import { CircleCheck, House, XCircle } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -73,7 +74,7 @@ export const useBuilding = () => {
     }
   }, [filterValues.buildingType, filterValues.query, filterValues.status, setSearchParams]);
 
-  const { data, isLoading } = useQuery<ApiResponse<BuildingResponse[]>>({
+  const { data, isLoading, isError } = useQuery<ApiResponse<BuildingResponse[]>>({
     queryKey: ["buildings", page, size, status, buildingType, query],
     queryFn: async () => {
       const params: Record<string, string> = {
@@ -252,7 +253,7 @@ export const useBuilding = () => {
     [openDialog]
   );
 
-  const { data: statistics } = useQuery<ApiResponse<IBuildingStatisticsResponse>>({
+  const { data: statistics, isError: isStatisticsError } = useQuery<ApiResponse<IBuildingStatisticsResponse>>({
     queryKey: ["building-statistics"],
     queryFn: async () => {
       const res = await httpRequest.get("/buildings/statistics");
@@ -260,19 +261,19 @@ export const useBuilding = () => {
     },
   });
 
-  const dataBuildings = [
+  const dataBuildings: StatisticCardType[] = [
     {
-      icon: PenTool,
+      icon: House,
       label: "Tòa nhà",
       value: statistics?.data.totalBuilding ?? 0,
     },
     {
-      icon: PenTool,
+      icon: CircleCheck,
       label: "Hoạt động",
       value: statistics?.data.activeBuilding ?? 0,
     },
     {
-      icon: PenTool,
+      icon: XCircle,
       label: "Không hoạt động",
       value: statistics?.data.inactiveBuilding ?? 0,
     },
@@ -284,6 +285,14 @@ export const useBuilding = () => {
     onClear: handleClear,
     onFilter: handleFilter,
   };
+
+  if (isError) {
+    toast.error("Có lỗi xảy ra khi tải tòa nhà");
+  }
+
+  if (isStatisticsError) {
+    toast.error("Có lỗi xảy ra khi tải thống kê");
+  }
 
   return {
     query: {

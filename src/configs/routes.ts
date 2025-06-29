@@ -4,7 +4,7 @@ const routes = {
     features: "/features",
     services: "/services",
     contact: "/contact",
-    policy : "/policy",
+    policy: "/policy",
   },
   auth: {
     login: "/login",
@@ -18,6 +18,8 @@ const routes = {
   dashboard: "/dashboard",
   dataCategories: {
     buildings: "/data-categories/buildings",
+    floors: "/data-categories/floors",
+    floorId: "/data-categories/floors/:id",
   },
 };
 

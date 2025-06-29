@@ -1,4 +1,4 @@
-import { BuildingType, Gender } from "@/enums";
+import { BuildingType, FloorType, Gender } from "@/enums";
 import { z } from "zod/v4";
 
 /*
@@ -181,3 +181,20 @@ export const createOrUpdateBuildingSchema = z
       path: ["numberOfFloorsForRent"],
     }
   );
+
+/* FLOOR */
+export const createFloorSchema = z.object({
+  maximumRoom: zSafeNumber("Số phòng tối đa")
+    .transform((val) => Number(val))
+    .refine((val) => val >= 1 && val <= 99, "Số phòng tối đa từ 1 -> 99"),
+
+  floorType: z.enum([FloorType.CHO_THUE, FloorType.DE_O, FloorType.KHAC, FloorType.KHO, FloorType.KHONG_CHO_THUE], {
+    message: "Loại tầng không hợp lệ",
+  }),
+
+  descriptionFloor: z.string().optional(),
+});
+
+export const updateFloorSchema = createFloorSchema.extend({
+  nameFloor: z.string().min(1, "Tên tầng không được để trống"),
+});

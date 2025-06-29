@@ -8,6 +8,7 @@ import { httpRequest } from "@/utils/httpRequest";
 import { useAuthStore } from "@/zustand/authStore";
 import cookieUtil from "@/utils/cookieUtil";
 import { Status } from "@/enums";
+import { handleMutationError } from "@/utils/handleMutationError";
 
 export const useLogout = () => {
   const clearUser = useAuthStore((state) => state.clearUser);
@@ -40,8 +41,14 @@ export const useLogout = () => {
     },
   });
 
-  const handleLogout = useCallback(() => {
-    logoutMutation.mutate();
+  const handleLogout = useCallback(async () => {
+    try {
+      await logoutMutation.mutate();
+      return true;
+    } catch (error) {
+      handleMutationError(error);
+      return false;
+    }
   }, [logoutMutation]);
 
   return { handleLogout };

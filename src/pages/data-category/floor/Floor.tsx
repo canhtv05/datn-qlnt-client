@@ -2,16 +2,16 @@ import StatisticCard from "@/components/StatisticCard";
 import DataTable from "@/components/DataTable";
 import { ArrowRightLeft, SquarePen, Trash2 } from "lucide-react";
 import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
-import BuildingButton from "@/components/data-category/building/BuildingButton";
-import BuildingFilter from "@/components/data-category/building/BuildingFilter";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { useBuilding } from "./useBuilding";
-import { BuildingResponse, ColumnConfig, IBtnType } from "@/types";
+import { ColumnConfig, FloorResponse, IBtnType } from "@/types";
 import Modal from "@/components/Modal";
-import AddOrUpdateBuilding from "@/components/data-category/building/AddOrUpdateBuilding";
 import { Notice } from "@/enums";
+import { useFloor } from "./useFloor";
+import AddOrUpdateFloor from "@/components/data-category/floor/AddOrUpdateFloor";
+import FloorButton from "@/components/data-category/floor/FloorButton";
+import FloorFilter from "@/components/data-category/floor/FloorFilter";
 
 const btns: IBtnType[] = [
   {
@@ -37,36 +37,36 @@ const btns: IBtnType[] = [
   },
 ];
 
-const Building = () => {
+const Floor = () => {
   const {
     props,
     data,
     isLoading,
     query,
     handleActionClick,
-    dataBuildings,
+    datFloors,
     rowSelection,
     setRowSelection,
     isModalOpen,
     setIsModalOpen,
     handleChange,
-    handleUpdateBuilding,
+    handleUpdateFloor,
     value,
     setValue,
     errors,
     ConfirmDialog,
-  } = useBuilding();
+  } = useFloor();
   const { page, size } = query;
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Mã tòa nhà", accessorKey: "buildingCode", isSort: true, hasHighlight: true },
+    { label: "Tên tầng", accessorKey: "nameFloor", isSort: true },
     {
       label: "Thao tác",
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
-      render: (row: BuildingResponse) => {
-        const building: BuildingResponse = row;
+      render: (row: FloorResponse) => {
+        const floor: FloorResponse = row;
         return (
           <div className="flex gap-2">
             {btns.map((btn, index) => (
@@ -78,8 +78,8 @@ const Building = () => {
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => {
-                        const type = btn.type as "update" | "delete" | "status";
-                        handleActionClick(building, type);
+                        const type = btn.type as "update" | "delete";
+                        handleActionClick(floor, type);
                       }}
                     >
                       <btn.icon className="text-white" />
@@ -109,20 +109,18 @@ const Building = () => {
       },
     },
     { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true },
-    { label: "Địa chỉ", accessorKey: "address", isSort: true },
-    { label: "Loại tòa nhà", accessorKey: "buildingType", isSort: true, hasBadge: true, isCenter: true },
-    { label: "Số tầng thực tế", accessorKey: "actualNumberOfFloors", isSort: true, isCenter: true },
-    { label: "Số tầng cho thuê", accessorKey: "numberOfFloorsForRent", isSort: true, isCenter: true },
-    { label: "Mô tả", accessorKey: "description" },
+    { label: "Số phòng tối đa", accessorKey: "maximumRoom", isSort: true },
+    { label: "Loại tầng", accessorKey: "floorType", hasBadge: true, isCenter: true, isSort: true },
+    { label: "Mô tả", accessorKey: "descriptionFloor" },
     { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
   ];
 
   return (
     <div className="flex flex-col">
-      <StatisticCard data={dataBuildings} />
-      <BuildingButton ids={rowSelection} />
-      <BuildingFilter props={props} />
-      <DataTable<BuildingResponse>
+      <StatisticCard data={datFloors} />
+      <FloorButton ids={rowSelection} />
+      <FloorFilter props={props} />
+      <DataTable<FloorResponse>
         data={data?.data ?? []}
         columns={buildColumnsFromConfig(columnConfigs)}
         page={Number(page)}
@@ -134,18 +132,18 @@ const Building = () => {
         setRowSelection={setRowSelection}
       />
       <Modal
-        title="Dự án/Tòa nhà"
+        title="Dự án/Tầng"
         trigger={null}
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
-        onConfirm={handleUpdateBuilding}
+        onConfirm={handleUpdateFloor}
         desc={Notice.UPDATE}
       >
-        <AddOrUpdateBuilding handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
+        <AddOrUpdateFloor handleChange={handleChange} value={value} setValue={setValue} errors={errors} type="add" />
       </Modal>
       <ConfirmDialog />
     </div>
   );
 };
 
-export default Building;
+export default Floor;
