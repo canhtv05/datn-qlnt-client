@@ -1,4 +1,4 @@
-import { BuildingStatus, BuildingType, Gender } from "@/enums";
+import { BuildingStatus, BuildingType, FloorStatus, FloorType, Gender } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
 import { ReactNode } from "react";
@@ -101,4 +101,54 @@ export interface IBuildingStatisticsResponse {
   activeBuilding: number;
   totalBuilding: number;
   inactiveBuilding: number;
+}
+
+export interface IBuildingCardsResponse {
+  buildingId: string;
+  buildingName: string;
+  address: string;
+  buildingType: BuildingType;
+  status: BuildingStatus;
+  totalRoomAvail: number;
+  totalRoom: number;
+}
+
+/* FLOOR */
+export interface FloorResponse extends AbstractResponse {
+  nameFloor: string;
+  maximumRoom: number;
+  floorType: FloorType;
+  status: FloorStatus;
+  buildingId: string;
+  buildingName: string;
+  descriptionFloor: string;
+}
+
+export interface ICreateFloorValue {
+  nameFloor: string;
+  maximumRoom: number | undefined;
+  floorType: FloorType | undefined;
+  descriptionFloor: string;
+}
+
+export type UpdateFloorValue = Pick<
+  ICreateFloorValue,
+  "nameFloor" | "maximumRoom" | "floorType" | "descriptionFloor"
+> & {
+  status?: FloorStatus;
+};
+
+export interface FloorFilterValues {
+  buildingId: string;
+  status: string;
+  floorType: string;
+  nameFloor: string;
+  maxRoom: string;
+}
+
+export interface IFloorStatisticsResponse {
+  buildingId: string;
+  totalFloors: number;
+  activeFloors: number;
+  inactiveFloors: number;
 }

@@ -45,3 +45,18 @@ export enum BuildingStatus {
   TAM_KHOA = "TAM_KHOA",
   HUY_HOAT_DONG = "HUY_HOAT_DONG",
 }
+
+/* FLOOR */
+export enum FloorType {
+  CHO_THUE = "CHO_THUE",
+  KHONG_CHO_THUE = "KHONG_CHO_THUE",
+  DE_O = "DE_O",
+  KHO = "KHO",
+  KHAC = "KHAC",
+}
+
+export enum FloorStatus {
+  HOAT_DONG = "HOAT_DONG",
+  KHONG_SU_DUNG = "KHONG_SU_DUNG",
+  TAM_KHOA = "TAM_KHOA",
+}

@@ -1,9 +1,8 @@
-import { BuildingStatus, BuildingType } from "@/enums";
+import { BuildingStatus, BuildingType, FloorStatus, FloorType } from "@/enums";
 import { IBtnType } from "@/types";
 import {
   Download,
   Banknote,
-  BedDouble,
   Bell,
   BookOpen,
   CalendarRange,
@@ -23,6 +22,7 @@ import {
   Trash2,
   Upload,
   UsersRound,
+  Building,
 } from "lucide-react";
 
 export interface SideBarType {
@@ -61,9 +61,9 @@ export const sidebarItems: SideBarType[] = [
         icon: DoorOpen,
       },
       {
-        title: "Giường",
-        url: "/data-categories/beds",
-        icon: BedDouble,
+        title: "Tầng",
+        url: "/data-categories/floors",
+        icon: Building,
       },
       {
         title: "Tài sản",
@@ -157,6 +157,7 @@ export const sidebarItems: SideBarType[] = [
 ];
 
 export const STATUS_BADGE = [
+  // --- Trạng thái hoạt động của tòa nhà ---
   {
     value: BuildingStatus.HOAT_DONG,
     label: "Hoạt động",
@@ -172,6 +173,8 @@ export const STATUS_BADGE = [
     label: "Hủy hoạt động",
     className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
   },
+
+  // --- Loại tòa nhà ---
   {
     value: BuildingType.NHA_TRO,
     label: "Nhà trọ",
@@ -191,6 +194,50 @@ export const STATUS_BADGE = [
     value: BuildingType.KHAC,
     label: "Khác",
     className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+  },
+
+  // --- Trạng thái tầng ---
+  {
+    value: FloorStatus.HOAT_DONG,
+    label: "Đang sử dụng",
+    className: "text-emerald-600 bg-emerald-100 border border-emerald-200 hover:bg-emerald-200 hover:text-emerald-700",
+  },
+  {
+    value: FloorStatus.KHONG_SU_DUNG,
+    label: "Không sử dụng",
+    className: "text-stone-600 bg-stone-100 border border-stone-200 hover:bg-stone-200 hover:text-stone-700",
+  },
+  {
+    value: FloorStatus.TAM_KHOA,
+    label: "Tạm khóa",
+    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+  },
+
+  // --- Loại tầng ---
+  {
+    value: FloorType.CHO_THUE,
+    label: "Cho thuê",
+    className: "text-sky-600 bg-sky-100 border border-sky-200 hover:bg-sky-200 hover:text-sky-700",
+  },
+  {
+    value: FloorType.KHONG_CHO_THUE,
+    label: "Không cho thuê",
+    className: "text-zinc-600 bg-zinc-100 border border-zinc-200 hover:bg-zinc-200 hover:text-zinc-700",
+  },
+  {
+    value: FloorType.DE_O,
+    label: "Để ở",
+    className: "text-cyan-600 bg-cyan-100 border border-cyan-200 hover:bg-cyan-200 hover:text-cyan-700",
+  },
+  {
+    value: FloorType.KHO,
+    label: "Kho",
+    className: "text-amber-600 bg-amber-100 border border-amber-200 hover:bg-amber-200 hover:text-amber-700",
+  },
+  {
+    value: FloorType.KHAC,
+    label: "Khác",
+    className: "text-neutral-600 bg-neutral-100 border border-neutral-200 hover:bg-neutral-200 hover:text-neutral-700",
   },
 ];
 

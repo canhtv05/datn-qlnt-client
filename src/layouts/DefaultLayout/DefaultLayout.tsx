@@ -2,7 +2,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/s
 import type { ReactNode } from "react";
 import { AppSidebar } from "../components/AppSidebar";
 import HeaderLayout from "../components/HeaderLayout";
-import FooterLayout from "../components/FooterLayout";
+// import FooterLayout from "../components/FooterLayout";
 
 const DefaultLayout = ({ children }: { children: ReactNode }) => {
   return (
@@ -19,7 +19,7 @@ const DefaultLayout = ({ children }: { children: ReactNode }) => {
 
           <main className="flex-1 overflow-auto p-4 bg-secondary w-full">{children}</main>
 
-          <FooterLayout />
+          {/* <FooterLayout /> */}
         </SidebarInset>
       </div>
     </SidebarProvider>

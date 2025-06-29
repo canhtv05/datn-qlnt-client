@@ -89,10 +89,12 @@ const FieldsSelectLabel = ({
           <Select value={value} onValueChange={handleChange} name={name} disabled={disabled}>
             <SelectPrimitive.Trigger
               className={cn(
-                "flex h-9 w-full cursor-pointer items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+                "flex h-9 w-full cursor-pointer items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
                 "text-foreground",
                 classNameTrigger,
-                isInvalid && "border-red-500"
+                isInvalid && "border-red-500",
+                isInvalid && "focus:ring-0",
+                !isInvalid && "focus:!ring-primary"
               )}
               aria-autocomplete="none"
               {...props}

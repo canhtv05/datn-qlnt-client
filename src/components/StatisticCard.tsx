@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { Card, CardContent } from "./ui/card";
 import { cn } from "@/lib/utils";
 
-interface StatisticCardType {
+export interface StatisticCardType {
   value: number;
   label: string;
   icon: LucideIcon;
