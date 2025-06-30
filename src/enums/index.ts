@@ -60,3 +60,12 @@ export enum FloorStatus {
   KHONG_SU_DUNG = "KHONG_SU_DUNG",
   TAM_KHOA = "TAM_KHOA",
 }
+
+/* Asset Type */
+export enum AssetGroup {
+  GIA_DUNG = "GIA_DUNG",
+  NOI_THAT = "NOI_THAT",
+  DIEN = "DIEN",
+  CA_NHAN = "CA_NHAN",
+  KHAC = "KHAC",
+}

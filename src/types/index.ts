@@ -1,4 +1,4 @@
-import { BuildingStatus, BuildingType, FloorStatus, FloorType, Gender } from "@/enums";
+import { AssetGroup, BuildingStatus, BuildingType, FloorStatus, FloorType, Gender } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
 import { ReactNode } from "react";
@@ -40,6 +40,14 @@ export interface AbstractResponse {
 export interface ApiResponse<T> {
   code: number;
   message: string;
+  data: T;
+  meta?: {
+    tokenInfo?: TokenInfo;
+    pagination?: Pagination;
+  };
+}
+
+export interface PaginatedResponse<T> {
   data: T;
   meta?: {
     tokenInfo?: TokenInfo;
@@ -151,4 +159,20 @@ export interface IFloorStatisticsResponse {
   totalFloors: number;
   activeFloors: number;
   inactiveFloors: number;
+}
+
+/* Asset Type */
+export interface ICreateAssetType {
+  nameAssetType: string;
+  assetGroup: AssetGroup | string;
+  discriptionAssetType: string;
+}
+
+export type IUpdateAssetType = ICreateAssetType;
+
+export interface AssetTypeResponse extends AbstractResponse, ICreateAssetType {}
+
+export interface AssetTypeFilterValues {
+  nameAssetType: string;
+  assetGroup: AssetGroup | string;
 }

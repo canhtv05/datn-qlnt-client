@@ -20,6 +20,7 @@ const routes = {
     buildings: "/data-categories/buildings",
     floors: "/data-categories/floors",
     floorId: "/data-categories/floors/:id",
+    assetType: "/data-categories/asset-types",
   },
 };
 

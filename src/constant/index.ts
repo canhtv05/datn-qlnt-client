@@ -1,4 +1,4 @@
-import { BuildingStatus, BuildingType, FloorStatus, FloorType } from "@/enums";
+import { AssetGroup, BuildingStatus, BuildingType, FloorStatus, FloorType } from "@/enums";
 import { IBtnType } from "@/types";
 import {
   Download,
@@ -23,6 +23,7 @@ import {
   Upload,
   UsersRound,
   Building,
+  Wrench,
 } from "lucide-react";
 
 export interface SideBarType {
@@ -64,6 +65,11 @@ export const sidebarItems: SideBarType[] = [
         title: "Tầng",
         url: "/data-categories/floors",
         icon: Building,
+      },
+      {
+        title: "Loại tài sản",
+        url: "/data-categories/asset-types",
+        icon: Wrench,
       },
       {
         title: "Tài sản",
@@ -238,6 +244,33 @@ export const STATUS_BADGE = [
     value: FloorType.KHAC,
     label: "Khác",
     className: "text-neutral-600 bg-neutral-100 border border-neutral-200 hover:bg-neutral-200 hover:text-neutral-700",
+  },
+
+  // --- Nhóm tài sản ---
+  {
+    value: AssetGroup.GIA_DUNG,
+    label: "Gia dụng",
+    className: "text-rose-600 bg-rose-100 border border-rose-200 hover:bg-rose-200 hover:text-rose-700",
+  },
+  {
+    value: AssetGroup.NOI_THAT,
+    label: "Nội thất",
+    className: "text-lime-600 bg-lime-100 border border-lime-200 hover:bg-lime-200 hover:text-lime-700",
+  },
+  {
+    value: AssetGroup.DIEN,
+    label: "Điện",
+    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+  },
+  {
+    value: AssetGroup.CA_NHAN,
+    label: "Cá nhân",
+    className: "text-pink-600 bg-pink-100 border border-pink-200 hover:bg-pink-200 hover:text-pink-700",
+  },
+  {
+    value: AssetGroup.KHAC,
+    label: "Khác",
+    className: "text-slate-600 bg-slate-100 border border-slate-200 hover:bg-slate-200 hover:text-slate-700",
   },
 ];
 

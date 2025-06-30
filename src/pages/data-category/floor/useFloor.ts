@@ -169,13 +169,13 @@ export const useFloor = () => {
 
   const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>({
     onConfirm: async ({ id, type }) => {
-      if (type === "delete") return await handleRemoveBuildingById(id);
+      if (type === "delete") return await handleRemoveFloorById(id);
       if (type === "status") return await handleToggleStatusFloorById(id);
       return false;
     },
   });
 
-  const handleRemoveBuildingById = async (id: string): Promise<boolean> => {
+  const handleRemoveFloorById = async (id: string): Promise<boolean> => {
     try {
       await removeFloorMutation.mutateAsync(id, {
         onSuccess: () => {
@@ -201,10 +201,10 @@ export const useFloor = () => {
       await updateFloorSchema.parseAsync(value);
 
       const data: UpdateFloorValue = {
-        descriptionFloor,
+        descriptionFloor: descriptionFloor.trim(),
         floorType,
         maximumRoom,
-        nameFloor,
+        nameFloor: nameFloor.trim(),
         status,
       };
 

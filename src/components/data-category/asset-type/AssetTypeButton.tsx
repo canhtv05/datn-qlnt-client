@@ -11,28 +11,24 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
-import { createFloorSchema } from "@/lib/validation";
+import { createOrUpdateAssetTypeSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { IBtnType, ICreateFloorValue } from "@/types";
+import { IBtnType, ICreateAssetType } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
-import AddOrUpdateFloor from "./AddOrUpdateFloor";
-import { useParams } from "react-router-dom";
+import AddOrUpdateAssetType from "./AddOrUpdateAssetType";
 
-const FloorButton = ({ ids }: { ids: Record<string, boolean> }) => {
-  const [value, setValue] = useState<ICreateFloorValue>({
-    descriptionFloor: "",
-    floorType: undefined,
-    maximumRoom: undefined,
-    nameFloor: "",
+const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
+  const [value, setValue] = useState<ICreateAssetType>({
+    assetGroup: "",
+    discriptionAssetType: "",
+    nameAssetType: "",
   });
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateFloorValue>();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAssetType>();
 
   const queryClient = useQueryClient();
-
-  const { id } = useParams();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -42,70 +38,58 @@ const FloorButton = ({ ids }: { ids: Record<string, boolean> }) => {
     }));
   };
 
-  const addFloorMutation = useMutation({
-    mutationKey: ["add-floor"],
-    mutationFn: async (payload: ICreateFloorValue) => await httpRequest.post("/floors", payload),
-    onError: (error) => {
-      handleMutationError(error);
-    },
+  const addAssetTypeMutation = useMutation({
+    mutationKey: ["add-asset-types"],
+    mutationFn: async (payload: ICreateAssetType) => await httpRequest.post("/asset-types", payload),
+    onError: handleMutationError,
     onSuccess: () => {
       toast.success(Status.ADD_SUCCESS);
       setValue({
-        descriptionFloor: "",
-        floorType: undefined,
-        maximumRoom: undefined,
-        nameFloor: "",
+        assetGroup: "",
+        discriptionAssetType: "",
+        nameAssetType: "",
       });
       queryClient.invalidateQueries({
         predicate: (prev) => {
-          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "floors";
+          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "asset-types";
         },
       });
-      queryClient.invalidateQueries({ queryKey: ["floors-statistics"] });
     },
   });
 
-  const handleAddFloor = useCallback(async () => {
+  const handleAddAssetType = useCallback(async () => {
     try {
-      const { descriptionFloor, floorType, maximumRoom, nameFloor } = value;
+      const { assetGroup, discriptionAssetType, nameAssetType } = value;
 
-      await createFloorSchema.parseAsync(value);
+      await createOrUpdateAssetTypeSchema.parseAsync(value);
 
-      if (!id) {
-        toast.error(Status.ERROR);
-        return false;
-      }
-
-      const data: ICreateFloorValue & { buildingId: string } = {
-        buildingId: id,
-        descriptionFloor: descriptionFloor.trim(),
-        floorType,
-        maximumRoom,
-        nameFloor: nameFloor.trim(),
+      const data: ICreateAssetType = {
+        assetGroup,
+        discriptionAssetType: discriptionAssetType.trim(),
+        nameAssetType: nameAssetType.trim(),
       };
 
-      await addFloorMutation.mutateAsync(data);
+      await addAssetTypeMutation.mutateAsync(data);
       clearErrors();
       return true;
     } catch (error) {
       handleZodErrors(error);
       return false;
     }
-  }, [addFloorMutation, id, clearErrors, handleZodErrors, value]);
+  }, [addAssetTypeMutation, clearErrors, handleZodErrors, value]);
 
-  const handleRemoveFloorsByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
+  const handleRemoveAssetTypeByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
       const selectedIds = Object.entries(ids)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .filter(([_, isSelected]) => isSelected)
         .map(([id]) => id);
 
-      await Promise.all(selectedIds.map((id) => removeFloorMutation.mutateAsync(id)));
+      await Promise.all(selectedIds.map((id) => removeAssetTypeMutation.mutateAsync(id)));
 
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "floors",
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-types",
       });
-      queryClient.invalidateQueries({ queryKey: ["floors-statistics"] });
 
       toast.success(Status.REMOVE_SUCCESS);
       return true;
@@ -118,7 +102,7 @@ const FloorButton = ({ ids }: { ids: Record<string, boolean> }) => {
   const { ConfirmDialog, openDialog } = useConfirmDialog<Record<string, boolean>>({
     onConfirm: async (ids?: Record<string, boolean>) => {
       if (!ids || !Object.values(ids).some(Boolean)) return false;
-      return await handleRemoveFloorsByIds(ids);
+      return await handleRemoveAssetTypeByIds(ids);
     },
     desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tầng đã chọn. Bạn có chắc chắn muốn tiếp tục?",
     type: "warn",
@@ -133,22 +117,22 @@ const FloorButton = ({ ids }: { ids: Record<string, boolean> }) => {
     [ids, openDialog]
   );
 
-  const removeFloorMutation = useMutation({
-    mutationKey: ["remove-floors"],
-    mutationFn: async (id: string) => await httpRequest.put(`/floors/soft-delete/${id}`),
+  const removeAssetTypeMutation = useMutation({
+    mutationKey: ["remove-asset-types"],
+    mutationFn: async (id: string) => await httpRequest.delete(`/asset-types/${id}`),
   });
 
   return (
     <div className="h-full bg-background rounded-t-sm mt-4">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Tầng</h3>
+        <h3 className="font-semibold">Loại tài sản</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Tầng"
+                    title="Loại tài sản"
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -157,14 +141,13 @@ const FloorButton = ({ ids }: { ids: Record<string, boolean> }) => {
                       </TooltipTrigger>
                     }
                     desc={Notice.ADD}
-                    onConfirm={handleAddFloor}
+                    onConfirm={handleAddAssetType}
                   >
-                    <AddOrUpdateFloor
+                    <AddOrUpdateAssetType
                       handleChange={handleChange}
                       value={value}
                       setValue={setValue}
                       errors={errors}
-                      type="update"
                     />
                   </Modal>
                 </RenderIf>
@@ -207,4 +190,4 @@ const FloorButton = ({ ids }: { ids: Record<string, boolean> }) => {
   );
 };
 
-export default FloorButton;
+export default AssetTypeButton;
