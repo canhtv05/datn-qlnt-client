@@ -24,8 +24,8 @@ interface FilterValues {
 
 const mapStatistics = (data?: IRoomStatisticsResponse) => ({
   renting: data?.getTotalDangThue ?? 0,
-  depositing: data?.getTotalDatCoc ?? 0,
-  empty: data?.getTotalInUse ?? 0,
+  depositing: data?.getTotalDaDatCoc ?? 0,
+  empty: data?.getTotalTrong ?? 0,
 });
 
 
@@ -112,17 +112,21 @@ export const useRoom = () => {
 
   const { data: statisticsRaw } = useQuery<ApiResponse<IRoomStatisticsResponse>>({
     queryKey: ["room-statistics"],
-    queryFn: async () => (await httpRequest.get("/rooms/statistics")).data,
+    queryFn: async () => (await httpRequest.get("/rooms/statistics", {
+      params: {
+        floorId: "080c75d6-2893-4eb8-aa24-aa200c8021e7"
+      }
+    })).data,
   });
   
   useEffect(() => {
-  console.log("📊 Statistics Raw:", statisticsRaw);
+  console.log("Statistics Raw:", statisticsRaw);
 }, [statisticsRaw]);
 
   const roomStats = [
-  { icon: Building2, label: "Đang thuê", value: mapStatistics(statisticsRaw?.data).renting },
-  { icon: HandCoins, label: "Đang đặt cọc", value: mapStatistics(statisticsRaw?.data).depositing },
   { icon: DoorOpen, label: "Đang trống", value: mapStatistics(statisticsRaw?.data).empty },
+  { icon: HandCoins, label: "Đang đặt cọc", value: mapStatistics(statisticsRaw?.data).depositing },
+  { icon: Building2, label: "Đang thuê", value: mapStatistics(statisticsRaw?.data).renting },
 ];
   const createRoomMutation = useMutation({
     mutationKey: ["create-room"],

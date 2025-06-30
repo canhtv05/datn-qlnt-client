@@ -128,9 +128,9 @@ export type RoomDeleteRequest = {
   roomCode: string;
 };
 export interface IRoomStatisticsResponse {
-  getTotalInUse: number;
+  getTotalTrong: number;
   getTotalDangThue: number;
-  getTotalDatCoc: number;
+  getTotalDaDatCoc: number;
 }
 
 

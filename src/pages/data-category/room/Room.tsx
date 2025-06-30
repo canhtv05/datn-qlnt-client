@@ -153,6 +153,7 @@ const Room = () => {
       hasBadge: true,
       isCenter: true,
     },
+    { label: "Mô tả", accessorKey: "description" },
     {
       label: "Trạng thái",
       accessorKey: "status",
@@ -160,7 +161,6 @@ const Room = () => {
       hasBadge: true,
       isCenter: true,
     },
-    { label: "Mô tả", accessorKey: "description" },
   ];
 
   return (
