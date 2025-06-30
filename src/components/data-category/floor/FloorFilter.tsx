@@ -8,14 +8,14 @@ import { useQuery } from "@tanstack/react-query";
 import { Dispatch, FormEvent, SetStateAction, useMemo } from "react";
 import { toast } from "sonner";
 
-export interface BuildingFilterProps {
+export interface FloorFilterProps {
   filterValues: FloorFilterValues;
   setFilterValues: Dispatch<SetStateAction<FloorFilterValues>>;
   onClear: () => void;
   onFilter: () => void;
 }
 
-const FloorFilter = ({ props }: { props: BuildingFilterProps }) => {
+const FloorFilter = ({ props }: { props: FloorFilterProps }) => {
   const { status, buildingId, maxRoom, nameFloor, floorType } = props.filterValues;
   const setFilterValues = props.setFilterValues;
 

@@ -101,10 +101,10 @@ export const useProfile = () => {
 
       const dateOfBirth = value.dob ? new Date(value.dob).toISOString().split("T")[0] : "";
 
-      formData.append("fullName", value.fullName ?? "");
+      formData.append("fullName", value.fullName?.trim() ?? "");
       formData.append("gender", value.gender ?? "");
       formData.append("dob", dateOfBirth);
-      formData.append("phoneNumber", value.phoneNumber ?? "");
+      formData.append("phoneNumber", value.phoneNumber?.trim() ?? "");
 
       if (file) {
         formData.append("profilePictureFile", file);

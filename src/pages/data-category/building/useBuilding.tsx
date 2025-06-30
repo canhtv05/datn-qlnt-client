@@ -182,11 +182,11 @@ export const useBuilding = () => {
       await createOrUpdateBuildingSchema.parseAsync(value);
 
       const data: UpdateBuildingValue = {
-        address,
-        buildingName,
+        address: address.trim(),
+        buildingName: buildingName.trim(),
         actualNumberOfFloors,
         buildingType,
-        description,
+        description: description.trim(),
         numberOfFloorsForRent,
         status: buildingStatus,
       };

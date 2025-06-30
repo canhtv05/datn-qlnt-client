@@ -1,4 +1,4 @@
-import { BuildingType, FloorType, Gender } from "@/enums";
+import { AssetGroup, BuildingType, FloorType, Gender } from "@/enums";
 import { z } from "zod/v4";
 
 /*
@@ -197,4 +197,13 @@ export const createFloorSchema = z.object({
 
 export const updateFloorSchema = createFloorSchema.extend({
   nameFloor: z.string().min(1, "Tên tầng không được để trống"),
+});
+
+/* ASSET TYPE */
+export const createOrUpdateAssetTypeSchema = z.object({
+  nameAssetType: z.string().min(1, "Tên loại tài sản không được để trống"),
+  assetGroup: z.enum([AssetGroup.CA_NHAN, AssetGroup.DIEN, AssetGroup.GIA_DUNG, AssetGroup.KHAC, AssetGroup.NOI_THAT], {
+    message: "Nhóm tài sản không hợp lệ",
+  }),
+  discriptionAssetType: z.string().min(1, "Mô tả không được để trống"),
 });

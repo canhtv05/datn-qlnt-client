@@ -1,17 +1,16 @@
-import StatisticCard from "@/components/StatisticCard";
 import DataTable from "@/components/DataTable";
-import { ArrowRightLeft, SquarePen, Trash2 } from "lucide-react";
+import { SquarePen, Trash2 } from "lucide-react";
 import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
-import BuildingButton from "@/components/data-category/building/BuildingButton";
-import BuildingFilter from "@/components/data-category/building/BuildingFilter";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { useBuilding } from "./useBuilding";
-import { BuildingResponse, ColumnConfig, IBtnType } from "@/types";
+import { AssetTypeResponse, ColumnConfig, IBtnType } from "@/types";
 import Modal from "@/components/Modal";
-import AddOrUpdateBuilding from "@/components/data-category/building/AddOrUpdateBuilding";
 import { Notice } from "@/enums";
+import { useAssetType } from "./useAssetType";
+import AssetTypeButton from "@/components/data-category/asset-type/AssetTypeButton";
+import AssetTypeFilter from "@/components/data-category/asset-type/AssetTypeFilter";
+import AddOrUpdateAssetType from "@/components/data-category/asset-type/AddOrUpdateAssetType";
 
 const btns: IBtnType[] = [
   {
@@ -28,45 +27,37 @@ const btns: IBtnType[] = [
     type: "delete",
     hasConfirm: true,
   },
-  {
-    tooltipContent: "Đổi trạng thái",
-    icon: ArrowRightLeft,
-    arrowColor: "var(--color-sky-500)",
-    type: "status",
-    hasConfirm: true,
-  },
 ];
 
-const Building = () => {
+const AssetType = () => {
   const {
     props,
     data,
     isLoading,
     query,
     handleActionClick,
-    dataBuildings,
     rowSelection,
     setRowSelection,
     isModalOpen,
     setIsModalOpen,
     handleChange,
-    handleUpdateBuilding,
+    handleUpdateFloor,
     value,
     setValue,
     errors,
     ConfirmDialog,
-  } = useBuilding();
+  } = useAssetType();
   const { page, size } = query;
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Mã tòa nhà", accessorKey: "buildingCode", isSort: true, hasHighlight: true },
+    { label: "Tên loại tài sản", accessorKey: "nameAssetType", isSort: true },
     {
       label: "Thao tác",
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
-      render: (row: BuildingResponse) => {
-        const building: BuildingResponse = row;
+      render: (row: AssetTypeResponse) => {
+        const assetType: AssetTypeResponse = row;
         return (
           <div className="flex gap-2">
             {btns.map((btn, index) => (
@@ -78,8 +69,8 @@ const Building = () => {
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => {
-                        const type = btn.type as "update" | "delete" | "status";
-                        handleActionClick(building, type);
+                        const type = btn.type as "update";
+                        handleActionClick(assetType, type);
                       }}
                     >
                       <btn.icon className="text-white" />
@@ -108,44 +99,38 @@ const Building = () => {
         );
       },
     },
-    { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true },
-    { label: "Địa chỉ", accessorKey: "address", isSort: true },
-    { label: "Loại tòa nhà", accessorKey: "buildingType", isSort: true, hasBadge: true, isCenter: true },
-    { label: "Số tầng thực tế", accessorKey: "actualNumberOfFloors", isSort: true, isCenter: true },
-    { label: "Số tầng cho thuê", accessorKey: "numberOfFloorsForRent", isSort: true, isCenter: true },
-    { label: "Mô tả", accessorKey: "description" },
-    { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
+    { label: "Nhóm tài sản", accessorKey: "assetGroup", isSort: true, isCenter: true, hasBadge: true },
+    { label: "Mô tả", accessorKey: "discriptionAssetType", isSort: false },
   ];
 
   return (
     <div className="flex flex-col">
-      <StatisticCard data={dataBuildings} />
-      <BuildingButton ids={rowSelection} />
-      <BuildingFilter props={props} />
-      <DataTable<BuildingResponse>
-        data={data?.data ?? []}
+      <AssetTypeButton ids={rowSelection} />
+      <AssetTypeFilter props={props} />
+      <DataTable<AssetTypeResponse>
+        data={data?.data?.data ?? []}
         columns={buildColumnsFromConfig(columnConfigs)}
         page={Number(page)}
         size={Number(size)}
-        totalElements={data?.meta?.pagination?.total || 0}
-        totalPages={data?.meta?.pagination?.totalPages || 0}
+        totalElements={data?.data.meta?.pagination?.total || 0}
+        totalPages={data?.data.meta?.pagination?.totalPages || 0}
         loading={isLoading}
         rowSelection={rowSelection}
         setRowSelection={setRowSelection}
       />
       <Modal
-        title="Tòa nhà"
+        title="Loại tài sản"
         trigger={null}
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
-        onConfirm={handleUpdateBuilding}
+        onConfirm={handleUpdateFloor}
         desc={Notice.UPDATE}
       >
-        <AddOrUpdateBuilding handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
+        <AddOrUpdateAssetType handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
       </Modal>
       <ConfirmDialog />
     </div>
   );
 };
 
-export default Building;
+export default AssetType;

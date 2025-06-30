@@ -72,7 +72,7 @@ const AddOrUpdateFloor = ({ value, handleChange, setValue, errors, type }: AddOr
         name="buildingType"
         value={value.floorType ?? ""}
         onChange={(val) => setValue((prev) => ({ ...prev, floorType: val as FloorType }))}
-        labelSelect="Xã/Phường"
+        labelSelect="Loại tầng"
         showClear
         errorText={errors.floorType}
         required

@@ -82,11 +82,11 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
       const data: AddData = {
         userId: user?.id,
         // address: `${address}, ${fullAddress}`,
-        address,
-        buildingName,
+        address: address.trim(),
+        buildingName: buildingName.trim(),
         actualNumberOfFloors,
         buildingType,
-        description,
+        description: description.trim(),
         numberOfFloorsForRent,
       };
 
@@ -154,7 +154,7 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Dự án/Tòa nhà"
+                    title="Tòa nhà"
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">

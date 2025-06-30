@@ -132,7 +132,7 @@ const Floor = () => {
         setRowSelection={setRowSelection}
       />
       <Modal
-        title="Dự án/Tầng"
+        title="Tầng"
         trigger={null}
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
