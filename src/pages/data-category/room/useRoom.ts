@@ -52,7 +52,7 @@ export const useRoom = () => {
     price: null,
     maximumPeople: null,
     roomType: null,
-    roomstatus: null,
+    status: null,
     description: "",
   });
 
@@ -186,7 +186,7 @@ export const useRoom = () => {
       price: null,
       maximumPeople: null,
       roomType: null,
-      roomstatus: null,
+      status: null,
       description: "",
     });
     idRef.current = "";
@@ -221,7 +221,7 @@ export const useRoom = () => {
         price: room.price,
         maximumPeople: room.maximumPeople,
         roomType: room.roomType,
-        roomstatus: room.roomstatus,
+        status: room.status,
         description: room.description,
       });
       setIsModalOpen(true);

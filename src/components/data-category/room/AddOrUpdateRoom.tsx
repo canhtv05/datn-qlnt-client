@@ -2,7 +2,7 @@ import { Dispatch } from "react";
 import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
-import { RoomStatus, RoomType } from "@/enums";
+import { RoomStatus, RoomType} from "@/enums";
 import { RoomFormValue } from "@/types";
 
 interface Props {
@@ -25,7 +25,7 @@ const roomStatuses: FieldsSelectLabelType[] = [
   { label: "Bảo trì", value: RoomStatus.DANG_BAO_TRI },
 ];
 
-const AddOrUpdateRoom = ({ value, setValue, errors }: Props) => {
+const AddOrUpdateRoom = ({ value, setValue, errors}: Props) => {
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value: inputVal } = e.target;
     setValue((prev) => ({
@@ -124,13 +124,13 @@ const AddOrUpdateRoom = ({ value, setValue, errors }: Props) => {
           label="Trạng thái:"
           id="roomstatus"
           name="roomstatus"
-          value={value.roomstatus ?? ""}
+          value={value.status ?? ""}
           onChange={(val) =>
             setValue((prev) => ({ ...prev, status: val as RoomStatus }))
           }
           labelSelect="Trạng thái"
           showClear
-          errorText={errors.roomstatus}
+          errorText={errors.status}
         />
       </div>
 

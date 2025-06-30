@@ -30,7 +30,7 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
     roomType: null,
     maximumPeople: null,
     description: "",
-    roomstatus: null,
+    status: null,
   });
 
   const { errors, clearErrors, handleZodErrors } = useFormErrors<RoomFormValue>();
@@ -54,7 +54,7 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
         roomType: null,
         maximumPeople: null,
         description: "",
-        roomstatus: null,
+        status: null,
       });
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
       queryClient.invalidateQueries({ queryKey: ["room-statistics"] });
