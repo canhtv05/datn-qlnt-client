@@ -119,7 +119,7 @@ const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
 
   const removeAssetTypeMutation = useMutation({
     mutationKey: ["remove-asset-types"],
-    mutationFn: async (id: string) => await httpRequest.delete(`/${id}`),
+    mutationFn: async (id: string) => await httpRequest.delete(`/asset-types/${id}`),
   });
 
   return (
