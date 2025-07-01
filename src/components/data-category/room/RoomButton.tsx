@@ -1,7 +1,6 @@
-// RoomButton.tsx
 import { useState, useCallback, ChangeEvent } from "react";
 import { toast } from "sonner";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -16,7 +15,7 @@ import { useFormErrors } from "@/hooks/useFormErrors";
 import { useConfirmDialog } from "@/hooks";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
-import { IBtnType, RoomFormValue} from "@/types";
+import { IBtnType, RoomFormValue, ApiResponse, FloorBasicResponse } from "@/types";
 import { Notice, Status } from "@/enums";
 import { httpRequest } from "@/utils/httpRequest";
 import { createOrUpdateRoomSchema } from "@/lib/validation";
@@ -24,7 +23,7 @@ import { handleMutationError } from "@/utils/handleMutationError";
 
 const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
   const [value, setValue] = useState<RoomFormValue>({
-    // floorId: "",
+    floorId: "",
     acreage: null,
     price: null,
     roomType: null,
@@ -36,6 +35,22 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
   const { errors, clearErrors, handleZodErrors } = useFormErrors<RoomFormValue>();
   const queryClient = useQueryClient();
 
+  //  Lấy danh sách tầng (floorList)
+  const { data: floorListData, isLoading: isLoadingFloorList } = useQuery<
+    ApiResponse<FloorBasicResponse[]>
+  >({
+    queryKey: ["floor-list"],
+    queryFn: async () => {
+      const res = await httpRequest.get("/floors/find-all", {
+        params: {
+          userId: "49c97e2e-241b-4136-9157-b54a9b580cd0",    
+          buildingId: "a7861f3e-ec13-4c8e-9639-a597d7b828e3",
+        },
+      });
+      return res.data;
+    },
+  });
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setValue((prev) => ({ ...prev, [name]: value }));
@@ -43,12 +58,13 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
 
   const addRoomMutation = useMutation({
     mutationKey: ["add-room"],
-    mutationFn: async (payload: RoomFormValue) => await httpRequest.post("/rooms/add", payload),
+    mutationFn: async (payload: RoomFormValue) =>
+      await httpRequest.post("/rooms/add", payload),
     onError: handleMutationError,
     onSuccess: () => {
       toast.success(Status.ADD_SUCCESS);
       setValue({
-        // floorId: "",
+        floorId: "",
         acreage: null,
         price: null,
         roomType: null,
@@ -75,7 +91,8 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
 
   const removeRoomMutation = useMutation({
     mutationKey: ["remove-room"],
-    mutationFn: async (id: string) => await httpRequest.put(`/rooms/soft-delete/${id}`),
+    mutationFn: async (id: string) =>
+      await httpRequest.put(`/rooms/soft-delete/${id}`),
   });
 
   const handleRemoveRooms = async (ids: Record<string, boolean>): Promise<boolean> => {
@@ -141,6 +158,7 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
                       value={value}
                       setValue={setValue}
                       errors={errors}
+                      floorList={floorListData?.data || []} 
                     />
                   </Modal>
                 </RenderIf>

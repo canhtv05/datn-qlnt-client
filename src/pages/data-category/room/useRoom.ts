@@ -5,6 +5,7 @@ import {
   RoomFormValue,
   RoomResponse,
   IRoomStatisticsResponse,
+  FloorBasicResponse,
 } from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
@@ -28,7 +29,6 @@ const mapStatistics = (data?: IRoomStatisticsResponse) => ({
   empty: data?.getTotalTrong ?? 0,
 });
 
-
 export const useRoom = () => {
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -47,7 +47,7 @@ export const useRoom = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rowSelection, setRowSelection] = useState({});
   const [value, setValue] = useState<RoomFormValue>({
-    // floorId: "",
+    floorId: "",
     acreage: null,
     price: null,
     maximumPeople: null,
@@ -79,11 +79,10 @@ export const useRoom = () => {
     if (filterValues.status) params.set("status", filterValues.status);
     if (filterValues.roomType) params.set("roomType", filterValues.roomType);
     params.set("page", "1");
-    if (filterValues.query || filterValues.status || filterValues.roomType) {
-      setSearchParams(params);
-    }
+    setSearchParams(params);
   }, [filterValues, setSearchParams]);
 
+  // Get room data
   const {
     data: roomData,
     isLoading,
@@ -98,36 +97,48 @@ export const useRoom = () => {
       if (status) params.status = status;
       if (roomType) params.roomType = roomType;
       if (query) params.query = query;
-
       const res = await httpRequest.get("/rooms", { params });
       return res.data;
     },
   });
-  console.log("roomData", roomData?.data);
+
   useEffect(() => {
     if (isRoomError) {
       toast.error("Không thể tải dữ liệu phòng. Vui lòng thử lại sau.");
     }
   }, [isRoomError]);
 
+  const userId = "49c97e2e-241b-4136-9157-b54a9b580cd0";     
+  const buildingId = "a7861f3e-ec13-4c8e-9639-a597d7b828e3";
+
+  const { data: floorListData, isLoading: isLoadingFloorList } =
+    useQuery<ApiResponse<FloorBasicResponse[]>>({
+      queryKey: ["floor-list", userId, buildingId],
+      queryFn: async () => {
+        const res = await httpRequest.get("/floors/find-all", {
+          params: {
+            buildingId,
+          },
+        });
+        return res.data;
+      },
+      enabled: !!buildingId,
+    });
+
   const { data: statisticsRaw } = useQuery<ApiResponse<IRoomStatisticsResponse>>({
     queryKey: ["room-statistics"],
-    queryFn: async () => (await httpRequest.get("/rooms/statistics", {
-      params: {
-        floorId: "080c75d6-2893-4eb8-aa24-aa200c8021e7"
-      }
-    })).data,
+    queryFn: async () =>
+      (await httpRequest.get("/rooms/statistics", {
+        params: { floorId: "080c75d6-2893-4eb8-aa24-aa200c8021e7" },
+      })).data,
   });
-  
-  useEffect(() => {
-  console.log("Statistics Raw:", statisticsRaw);
-}, [statisticsRaw]);
 
   const roomStats = [
-  { icon: DoorOpen, label: "Đang trống", value: mapStatistics(statisticsRaw?.data).empty },
-  { icon: HandCoins, label: "Đang đặt cọc", value: mapStatistics(statisticsRaw?.data).depositing },
-  { icon: Building2, label: "Đang thuê", value: mapStatistics(statisticsRaw?.data).renting },
-];
+    { icon: DoorOpen, label: "Đang trống", value: mapStatistics(statisticsRaw?.data).empty },
+    { icon: HandCoins, label: "Đang đặt cọc", value: mapStatistics(statisticsRaw?.data).depositing },
+    { icon: Building2, label: "Đang thuê", value: mapStatistics(statisticsRaw?.data).renting },
+  ];
+
   const createRoomMutation = useMutation({
     mutationKey: ["create-room"],
     mutationFn: async (payload: RoomFormValue) =>
@@ -181,7 +192,7 @@ export const useRoom = () => {
 
   const resetForm = () => {
     setValue({
-      // floorId: "",
+      floorId: "",
       acreage: null,
       price: null,
       maximumPeople: null,
@@ -195,7 +206,6 @@ export const useRoom = () => {
 
   const handleSaveRoom = async () => {
     try {
-      console.log("Payload gửi lên:", value);
       await createOrUpdateRoomSchema.parseAsync(value);
       if (idRef.current) {
         await updateRoomMutation.mutateAsync(value);
@@ -206,7 +216,6 @@ export const useRoom = () => {
       setIsModalOpen(false);
       return true;
     } catch (error) {
-      console.error("Lỗi khi lưu phòng:", error);
       handleZodErrors(error);
       return false;
     }
@@ -216,7 +225,7 @@ export const useRoom = () => {
     if (type === "update") {
       idRef.current = room.id;
       setValue({
-        // floorId: "", // cần map nếu có floor trong RoomResponse
+        floorId: "", // TODO: map lại nếu cần
         acreage: room.acreage,
         price: room.price,
         maximumPeople: room.maximumPeople,
@@ -260,5 +269,7 @@ export const useRoom = () => {
     ConfirmDialog,
     rowSelection,
     setRowSelection,
+    floorList: floorListData?.data ?? [],
+    isLoadingFloorList,
   };
 };

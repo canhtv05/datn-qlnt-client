@@ -54,6 +54,7 @@ const Room = () => {
     rowSelection,
     setRowSelection,
     props,
+    floorList
   } = useRoom();
 
   const { page, size } = query;
@@ -192,6 +193,7 @@ const Room = () => {
           handleChange={handleChange}
           setValue={setValue}
           errors={errors}
+          floorList={floorList}
         />
       </Modal>
       <ConfirmDialog />

@@ -112,10 +112,13 @@ export interface RoomResponse extends AbstractResponse {
   roomType: RoomType;
   status: RoomStatus;
   description: string;
-  // floorId: string;
+  floor: {
+    id: string;
+    floorName: string;
+  };
 }
-export type RoomFormValue = {
-  // floorId: string;
+export type RoomFormValue = { 
+  floorId: string;
   acreage: number | null;
   price: number | null;
   maximumPeople: number | null;
@@ -132,7 +135,11 @@ export interface IRoomStatisticsResponse {
   getTotalDangThue: number;
   getTotalDaDatCoc: number;
 }
-// export interface FloorBasicResponse {
-//   id: string;
-//   floorName: string;
-// }
+export interface FloorBasicResponse {
+  floorId: string;
+  floorName: string;
+  floorType: string;
+  status: string;
+  maximumRooms: number;
+  buildingName: string;
+}

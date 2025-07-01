@@ -1,15 +1,18 @@
 import { Dispatch } from "react";
-import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
+import FieldsSelectLabel, {
+  FieldsSelectLabelType,
+} from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
-import { RoomStatus, RoomType} from "@/enums";
-import { RoomFormValue } from "@/types";
+import { RoomStatus, RoomType } from "@/enums";
+import { RoomFormValue, FloorBasicResponse } from "@/types";
 
 interface Props {
   value: RoomFormValue;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setValue: Dispatch<React.SetStateAction<RoomFormValue>>;
   errors: Partial<Record<keyof RoomFormValue, string>>;
+  floorList: FloorBasicResponse[];
 }
 
 const roomTypes: FieldsSelectLabelType[] = [
@@ -25,7 +28,7 @@ const roomStatuses: FieldsSelectLabelType[] = [
   { label: "Bảo trì", value: RoomStatus.DANG_BAO_TRI },
 ];
 
-const AddOrUpdateRoom = ({ value, setValue, errors}: Props) => {
+const AddOrUpdateRoom = ({ value, setValue, errors, floorList }: Props) => {
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value: inputVal } = e.target;
     setValue((prev) => ({
@@ -34,33 +37,29 @@ const AddOrUpdateRoom = ({ value, setValue, errors}: Props) => {
     }));
   };
 
+  const floorOptions: FieldsSelectLabelType[] = floorList.map((floor) => ({
+    label: `${floor.floorName}, ${floor.buildingName}`,
+    value: floor.floorId,
+  }));
+
   return (
     <div className="flex flex-col gap-3">
       <div className="grid grid-cols-2 gap-4">
         {/* FLOOR ID */}
-        {/* <InputLabel
+        <FieldsSelectLabel
+          data={floorOptions}
+          placeholder="-- Chọn tầng --"
+          label="Tầng:"
           id="floorId"
           name="floorId"
-          placeholder="Nhập ID tầng"
-          label="Tầng:"
-          required
-          value={value.floorId}
-          onChange={handleChange}
+          value={value.floorId ?? ""}
+          onChange={(val) =>
+            setValue((prev) => ({ ...prev, floorId: val as string }))
+          }
+          labelSelect="Tầng"
+          showClear
           errorText={errors.floorId}
-        /> */}
-
-        {/* ROOM CODE */}
-        {/* Nếu roomCode không cần nhập thì có thể bỏ đi */}
-        {/* <InputLabel
-          id="roomCode"
-          name="roomCode"
-          placeholder="P101"
-          label="Mã phòng:"
-          required
-          value={value.roomCode}
-          onChange={handleChange}
-          errorText={errors.roomCode}
-        /> */}
+        />
 
         {/* ACREAGE */}
         <InputLabel
@@ -122,8 +121,8 @@ const AddOrUpdateRoom = ({ value, setValue, errors}: Props) => {
           data={roomStatuses}
           placeholder="-- Chọn trạng thái --"
           label="Trạng thái:"
-          id="roomstatus"
-          name="roomstatus"
+          id="status"
+          name="status"
           value={value.status ?? ""}
           onChange={(val) =>
             setValue((prev) => ({ ...prev, status: val as RoomStatus }))
