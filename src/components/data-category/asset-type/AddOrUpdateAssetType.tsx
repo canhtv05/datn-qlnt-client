@@ -38,30 +38,32 @@ const AssetTypes: FieldsSelectLabelType[] = [
 const AddOrUpdateAssetType = ({ value, handleChange, setValue, errors }: AddOrUpdateAssetTypeProps) => {
   return (
     <div className="flex flex-col gap-3">
-      <InputLabel
-        id="nameAssetType"
-        name="nameAssetType"
-        placeholder="Điều hòa"
-        required
-        label="Tên loại tài sản:"
-        value={value.nameAssetType ?? ""}
-        onChange={handleChange}
-        errorText={errors.nameAssetType}
-      />
+      <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full">
+        <InputLabel
+          id="nameAssetType"
+          name="nameAssetType"
+          placeholder="Điều hòa"
+          required
+          label="Tên loại tài sản:"
+          value={value.nameAssetType ?? ""}
+          onChange={handleChange}
+          errorText={errors.nameAssetType}
+        />
 
-      <FieldsSelectLabel
-        data={AssetTypes}
-        placeholder="-- Chọn nhóm tài sản --"
-        label="Nhóm tài sản:"
-        id="buildingType"
-        name="buildingType"
-        value={value.assetGroup ?? ""}
-        onChange={(val) => setValue((prev) => ({ ...prev, assetGroup: val as AssetGroup }))}
-        labelSelect="Tài sản"
-        showClear
-        errorText={errors.assetGroup}
-        required
-      />
+        <FieldsSelectLabel
+          data={AssetTypes}
+          placeholder="-- Chọn nhóm tài sản --"
+          label="Nhóm tài sản:"
+          id="buildingType"
+          name="buildingType"
+          value={value.assetGroup ?? ""}
+          onChange={(val) => setValue((prev) => ({ ...prev, assetGroup: val as AssetGroup }))}
+          labelSelect="Tài sản"
+          showClear
+          errorText={errors.assetGroup}
+          required
+        />
+      </div>
 
       <TextareaLabel
         id="discriptionAssetType"

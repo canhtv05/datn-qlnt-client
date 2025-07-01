@@ -74,27 +74,29 @@ const AddOrUpdateBuilding = ({ value, handleChange, setValue, errors }: AddOrUpd
         errorText={errors.buildingType}
       />
 
-      <InputLabel
-        id="actualNumberOfFloors"
-        name="actualNumberOfFloors"
-        placeholder="1"
-        required
-        label="Số tầng thực tế:"
-        value={value.actualNumberOfFloors ?? ""}
-        onChange={handleChange}
-        errorText={errors.actualNumberOfFloors?.toString()}
-      />
+      <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
+        <InputLabel
+          id="actualNumberOfFloors"
+          name="actualNumberOfFloors"
+          placeholder="1"
+          required
+          label="Số tầng thực tế:"
+          value={value.actualNumberOfFloors ?? ""}
+          onChange={handleChange}
+          errorText={errors.actualNumberOfFloors?.toString()}
+        />
 
-      <InputLabel
-        id="numberOfFloorsForRent"
-        name="numberOfFloorsForRent"
-        placeholder="1"
-        required
-        label="Số tầng cho thuê:"
-        value={value.numberOfFloorsForRent ?? ""}
-        onChange={handleChange}
-        errorText={errors.numberOfFloorsForRent?.toString()}
-      />
+        <InputLabel
+          id="numberOfFloorsForRent"
+          name="numberOfFloorsForRent"
+          placeholder="1"
+          required
+          label="Số tầng cho thuê:"
+          value={value.numberOfFloorsForRent ?? ""}
+          onChange={handleChange}
+          errorText={errors.numberOfFloorsForRent?.toString()}
+        />
+      </div>
 
       <TextareaLabel
         id="description"
