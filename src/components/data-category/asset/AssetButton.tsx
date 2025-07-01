@@ -11,22 +11,28 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
-import { createOrUpdateAssetTypeSchema } from "@/lib/validation";
+import { createOrUpdateAssetSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { IBtnType, ICreateAssetType } from "@/types";
+import { IBtnType, ICreateAsset } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
-import AddOrUpdateAssetType from "./AddOrUpdateAssetType";
+import AddOrUpdateAsset from "./AddOrUpdateAsset";
 
-const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
-  const [value, setValue] = useState<ICreateAssetType>({
-    assetGroup: "",
-    discriptionAssetType: "",
-    nameAssetType: "",
+const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
+  const [value, setValue] = useState<ICreateAsset>({
+    assetBeLongTo: "",
+    assetTypeId: "",
+    buildingID: "",
+    descriptionAsset: "",
+    floorID: "",
+    nameAsset: "",
+    price: undefined,
+    roomID: "",
+    tenantId: "",
   });
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAssetType>();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAsset>();
 
   const queryClient = useQueryClient();
 
@@ -38,20 +44,26 @@ const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
     }));
   };
 
-  const addAssetTypeMutation = useMutation({
-    mutationKey: ["add-asset-types"],
-    mutationFn: async (payload: ICreateAssetType) => await httpRequest.post("/asset-types", payload),
+  const addAssetMutation = useMutation({
+    mutationKey: ["add-asset"],
+    mutationFn: async (payload: ICreateAsset) => await httpRequest.post("/assets", payload),
     onError: handleMutationError,
     onSuccess: () => {
       toast.success(Status.ADD_SUCCESS);
       setValue({
-        assetGroup: "",
-        discriptionAssetType: "",
-        nameAssetType: "",
+        assetBeLongTo: "",
+        assetTypeId: "",
+        buildingID: "",
+        descriptionAsset: "",
+        floorID: "",
+        nameAsset: "",
+        price: undefined,
+        roomID: "",
+        tenantId: "",
       });
       queryClient.invalidateQueries({
         predicate: (prev) => {
-          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "asset-types";
+          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "assets";
         },
       });
     },
@@ -59,24 +71,31 @@ const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
 
   const handleAddAssetType = useCallback(async () => {
     try {
-      const { assetGroup, discriptionAssetType, nameAssetType } = value;
+      const { assetBeLongTo, assetTypeId, buildingID, descriptionAsset, floorID, nameAsset, price, roomID, tenantId } =
+        value;
 
-      await createOrUpdateAssetTypeSchema.parseAsync(value);
+      await createOrUpdateAssetSchema.parseAsync(value);
 
-      const data: ICreateAssetType = {
-        assetGroup,
-        discriptionAssetType: discriptionAssetType.trim(),
-        nameAssetType: nameAssetType.trim(),
+      const data: ICreateAsset = {
+        assetBeLongTo,
+        assetTypeId,
+        buildingID,
+        descriptionAsset: descriptionAsset.trim(),
+        floorID,
+        nameAsset: nameAsset.trim(),
+        price,
+        roomID,
+        tenantId,
       };
 
-      await addAssetTypeMutation.mutateAsync(data);
+      await addAssetMutation.mutateAsync(data);
       clearErrors();
       return true;
     } catch (error) {
       handleZodErrors(error);
       return false;
     }
-  }, [addAssetTypeMutation, clearErrors, handleZodErrors, value]);
+  }, [addAssetMutation, clearErrors, handleZodErrors, value]);
 
   const handleRemoveAssetTypeByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
@@ -88,7 +107,7 @@ const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
       await Promise.all(selectedIds.map((id) => removeAssetTypeMutation.mutateAsync(id)));
 
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-types",
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
       });
 
       toast.success(Status.REMOVE_SUCCESS);
@@ -118,21 +137,21 @@ const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
   );
 
   const removeAssetTypeMutation = useMutation({
-    mutationKey: ["remove-asset-types"],
-    mutationFn: async (id: string) => await httpRequest.delete(`/asset-types/${id}`),
+    mutationKey: ["remove-assets"],
+    mutationFn: async (id: string) => await httpRequest.delete(`/assets/${id}`),
   });
 
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Loại tài sản</h3>
+        <h3 className="font-semibold">Tài sản: Vẫn chưa thêm sửa xóa được do lỗi api khách thuê</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Loại tài sản"
+                    title="Tài sản"
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -143,12 +162,7 @@ const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
                     desc={Notice.ADD}
                     onConfirm={handleAddAssetType}
                   >
-                    <AddOrUpdateAssetType
-                      handleChange={handleChange}
-                      value={value}
-                      setValue={setValue}
-                      errors={errors}
-                    />
+                    <AddOrUpdateAsset handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
                   </Modal>
                 </RenderIf>
                 <RenderIf value={btn.type !== "default"}>
@@ -190,4 +204,4 @@ const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
   );
 };
 
-export default AssetTypeButton;
+export default AssetButton;

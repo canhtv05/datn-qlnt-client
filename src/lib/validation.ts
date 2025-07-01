@@ -1,4 +1,4 @@
-import { AssetGroup, BuildingType, FloorType, Gender } from "@/enums";
+import { AssetBeLongTo, AssetGroup, BuildingType, FloorType, Gender } from "@/enums";
 import { z } from "zod/v4";
 
 /*
@@ -192,7 +192,7 @@ export const createFloorSchema = z.object({
     message: "Loại tầng không hợp lệ",
   }),
 
-  descriptionFloor: z.string().optional(),
+  descriptionFloor: z.string(),
 });
 
 export const updateFloorSchema = createFloorSchema.extend({
@@ -206,4 +206,20 @@ export const createOrUpdateAssetTypeSchema = z.object({
     message: "Nhóm tài sản không hợp lệ",
   }),
   discriptionAssetType: z.string().min(1, "Mô tả không được để trống"),
+});
+
+/* ASSET */
+export const createOrUpdateAssetSchema = z.object({
+  nameAsset: z.string().min(1, "Tên tài sản không được để trống"),
+  assetTypeId: z.string().min(1, "Vui lòng chọn loại tài sản"),
+  assetBeLongTo: z.enum([AssetBeLongTo.CA_NHAN, AssetBeLongTo.CHUNG, AssetBeLongTo.PHONG], {
+    message: "Tài sản thuộc về không hợp lệ",
+  }),
+  roomID: z.string().min(1, "Vui lòng chọn loại phòng"),
+  buildingID: z.string().min(1, "Vui lòng chọn tòa nhà"),
+  tenantID: z.string().min(1, "Vui lòng chọn khách thuê"),
+  descriptionAsset: z.string(),
+  price: zSafeNumber("Giá")
+    .transform((val) => Number(val))
+    .refine((val) => val >= 0.0, "Giá không được âm"),
 });

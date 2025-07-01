@@ -9,6 +9,8 @@ import { BuildingStatus, BuildingType } from "@/enums";
 import { Link } from "react-router-dom";
 import RenderIf from "@/components/RenderIf";
 import { Skeleton } from "@/components/ui/skeleton";
+import NoData from "@/components/NoData";
+import { cn } from "@/lib/utils";
 
 const getSvgByBuildingType = (type: BuildingType) => {
   switch (type) {
@@ -40,11 +42,19 @@ const SelectBuilding = () => {
 
   return (
     <div
-      className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 mb-4 bg-background p-4 rounded-md"
+      className={cn(
+        "grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 mb-4 bg-background p-4 rounded-md",
+        !data?.data.length && !isLoading && "md:grid-cols-1"
+      )}
       style={{
         height: isLoading ? "100%" : "auto",
       }}
     >
+      <RenderIf value={!isLoading && !data?.data.length}>
+        <div className="grid place-items-center w-full">
+          <NoData />
+        </div>
+      </RenderIf>
       <RenderIf value={isLoading}>
         {Array.from({ length: 10 }).map((_, idx) => (
           <Skeleton key={idx} className="py-37" />

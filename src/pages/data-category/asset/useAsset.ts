@@ -1,7 +1,7 @@
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
-import { createOrUpdateAssetTypeSchema } from "@/lib/validation";
-import { ApiResponse, AssetTypeFilterValues, AssetTypeResponse, IUpdateAssetType, PaginatedResponse } from "@/types";
+import { createOrUpdateAssetSchema } from "@/lib/validation";
+import { ApiResponse, AssetResponse, IUpdateAsset } from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
@@ -10,21 +10,22 @@ import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
-export const useAssetType = () => {
+export const useAsset = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const {
-    page = "1",
-    size = "15",
-    nameAssetType = "",
-    assetGroup = "",
-  } = queryFilter(searchParams, "page", "size", "nameAssetType", "assetGroup");
+  const { page = "1", size = "15", nameAsset = "" } = queryFilter(searchParams, "page", "size", "nameAsset");
 
   const [rowSelection, setRowSelection] = useState({});
   const idRef = useRef<string>("");
-  const [value, setValue] = useState<IUpdateAssetType>({
-    assetGroup: "",
-    discriptionAssetType: "",
-    nameAssetType: "",
+  const [value, setValue] = useState<IUpdateAsset>({
+    assetBeLongTo: "",
+    assetTypeId: "",
+    buildingID: "",
+    descriptionAsset: "",
+    floorID: "",
+    nameAsset: "",
+    price: undefined,
+    roomID: "",
+    tenantId: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -33,47 +34,43 @@ export const useAssetType = () => {
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<IUpdateAssetType>();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<IUpdateAsset>();
 
   useEffect(() => {
-    setFilterValues({ assetGroup, nameAssetType });
-  }, [assetGroup, nameAssetType]);
+    setFilterValues({ nameAsset });
+  }, [nameAsset]);
 
-  const [filterValues, setFilterValues] = useState<AssetTypeFilterValues>({
-    assetGroup,
-    nameAssetType,
+  const [filterValues, setFilterValues] = useState<{ nameAsset: string }>({
+    nameAsset,
   });
 
   const handleClear = () => {
     setFilterValues({
-      assetGroup: "",
-      nameAssetType: "",
+      nameAsset: "",
     });
     setSearchParams({});
   };
 
   const handleFilter = useCallback(() => {
     const params = new URLSearchParams();
-    if (filterValues.assetGroup) params.set("assetGroup", filterValues.assetGroup);
-    if (filterValues.nameAssetType) params.set("nameAssetType", filterValues.nameAssetType);
+    if (filterValues.nameAsset) params.set("nameAsset", filterValues.nameAsset);
     params.set("page", "1");
-    if (filterValues.assetGroup || filterValues.nameAssetType) {
+    if (filterValues.nameAsset) {
       setSearchParams(params);
     }
-  }, [filterValues.assetGroup, filterValues.nameAssetType, setSearchParams]);
+  }, [filterValues.nameAsset, setSearchParams]);
 
-  const { data, isLoading, isError } = useQuery<ApiResponse<PaginatedResponse<AssetTypeResponse[]>>>({
-    queryKey: ["asset-types", page, size, assetGroup, nameAssetType],
+  const { data, isLoading, isError } = useQuery<ApiResponse<AssetResponse[]>>({
+    queryKey: ["assets", page, size, nameAsset],
     queryFn: async () => {
       const params: Record<string, string> = {
         page: page.toString(),
         size: size.toString(),
       };
 
-      if (assetGroup) params["assetGroup"] = assetGroup;
-      if (nameAssetType) params["nameAssetType"] = nameAssetType;
+      if (nameAsset) params["nameAsset"] = nameAsset;
 
-      const res = await httpRequest.get("/asset-types", {
+      const res = await httpRequest.get("/assets", {
         params,
       });
 
@@ -90,32 +87,32 @@ export const useAssetType = () => {
     }));
   };
 
-  const updateAssetTypeMutation = useMutation({
-    mutationKey: ["update-asset-type"],
-    mutationFn: async (payload: IUpdateAssetType) => await httpRequest.put(`/asset-types/${idRef.current}`, payload),
+  const updateAssetMutation = useMutation({
+    mutationKey: ["update-assets"],
+    mutationFn: async (payload: IUpdateAsset) => await httpRequest.put(`/assets/${idRef.current}`, payload),
     onError: (error) => {
       handleMutationError(error);
     },
   });
 
-  const removeAssetTypeMutation = useMutation({
-    mutationKey: ["remove-asset-types"],
-    mutationFn: async (id: string) => await httpRequest.delete(`/asset-types/${id}`),
+  const removeAssetMutation = useMutation({
+    mutationKey: ["remove-assets"],
+    mutationFn: async (id: string) => await httpRequest.delete(`/assets/${id}`),
   });
 
   const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" }>({
     onConfirm: async ({ id, type }) => {
-      if (type === "delete") return await handleRemoveAssetTypesById(id);
+      if (type === "delete") return await handleRemoveAssetById(id);
       return false;
     },
   });
 
-  const handleRemoveAssetTypesById = async (id: string): Promise<boolean> => {
+  const handleRemoveAssetById = async (id: string): Promise<boolean> => {
     try {
-      await removeAssetTypeMutation.mutateAsync(id, {
+      await removeAssetMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-types",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
           });
           toast.success(Status.REMOVE_SUCCESS);
         },
@@ -129,25 +126,38 @@ export const useAssetType = () => {
 
   const handleUpdateFloor = useCallback(async () => {
     try {
-      const { assetGroup, discriptionAssetType, nameAssetType } = value;
+      const { assetBeLongTo, assetTypeId, buildingID, descriptionAsset, floorID, nameAsset, price, roomID, tenantId } =
+        value;
 
-      await createOrUpdateAssetTypeSchema.parseAsync(value);
+      await createOrUpdateAssetSchema.parseAsync(value);
 
-      const data: IUpdateAssetType = {
-        assetGroup,
-        discriptionAssetType: discriptionAssetType.trim(),
-        nameAssetType: nameAssetType.trim(),
+      const data: IUpdateAsset = {
+        assetBeLongTo,
+        assetTypeId,
+        buildingID,
+        descriptionAsset: descriptionAsset.trim(),
+        floorID,
+        nameAsset: nameAsset.trim(),
+        price,
+        roomID,
+        tenantId,
       };
 
-      updateAssetTypeMutation.mutate(data, {
+      updateAssetMutation.mutate(data, {
         onSuccess: () => {
           setValue({
-            assetGroup: "",
-            discriptionAssetType: "",
-            nameAssetType: "",
+            assetBeLongTo: "",
+            assetTypeId: "",
+            buildingID: "",
+            descriptionAsset: "",
+            floorID: "",
+            nameAsset: "",
+            price: undefined,
+            roomID: "",
+            tenantId: "",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-types",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
           });
           toast.success(Status.UPDATE_SUCCESS);
           setIsModalOpen(false);
@@ -159,21 +169,27 @@ export const useAssetType = () => {
       handleZodErrors(error);
       return false;
     }
-  }, [updateAssetTypeMutation, clearErrors, handleZodErrors, queryClient, value]);
+  }, [updateAssetMutation, clearErrors, handleZodErrors, queryClient, value]);
 
   const handleActionClick = useCallback(
-    (assetTypes: AssetTypeResponse, action: "update") => {
-      idRef.current = assetTypes.id;
+    (asset: AssetResponse, action: "update") => {
+      idRef.current = asset.id;
       if (action === "update") {
         setValue({
-          assetGroup: assetTypes.assetGroup,
-          discriptionAssetType: assetTypes.discriptionAssetType,
-          nameAssetType: assetTypes.nameAssetType,
+          assetBeLongTo: asset.assetBeLongTo,
+          assetTypeId: asset.assetTypeId,
+          buildingID: asset.buildingID,
+          descriptionAsset: asset.descriptionAsset,
+          floorID: asset.floorID,
+          nameAsset: asset.nameAsset,
+          price: asset.price,
+          roomID: asset.roomID,
+          tenantId: asset.tenantId,
         });
         setIsModalOpen(true);
       } else {
         openDialog(
-          { id: assetTypes.id, type: action },
+          { id: asset.id, type: action },
           {
             type: "warn",
             desc: Notice.REMOVE,
@@ -199,8 +215,7 @@ export const useAssetType = () => {
     query: {
       page: parsedPage,
       size: parsedSize,
-      assetGroup,
-      nameAssetType,
+      nameAsset,
     },
     setSearchParams,
     props,

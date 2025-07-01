@@ -1,4 +1,4 @@
-import { AssetGroup, BuildingStatus, BuildingType, FloorStatus, FloorType } from "@/enums";
+import { AssetBeLongTo, AssetGroup, AssetStatus, BuildingStatus, BuildingType, FloorStatus, FloorType } from "@/enums";
 import { IBtnType } from "@/types";
 import {
   Download,
@@ -57,14 +57,14 @@ export const sidebarItems: SideBarType[] = [
         icon: House,
       },
       {
-        title: "Phòng",
-        url: "/data-categories/rooms",
-        icon: DoorOpen,
-      },
-      {
         title: "Tầng",
         url: "/data-categories/floors",
         icon: Building,
+      },
+      {
+        title: "Phòng",
+        url: "/data-categories/rooms",
+        icon: DoorOpen,
       },
       {
         title: "Loại tài sản",
@@ -73,7 +73,7 @@ export const sidebarItems: SideBarType[] = [
       },
       {
         title: "Tài sản",
-        url: "/data-categories/room-assets",
+        url: "/data-categories/assets",
         icon: Scale,
       },
       {
@@ -163,6 +163,12 @@ export const sidebarItems: SideBarType[] = [
 ];
 
 export const STATUS_BADGE = [
+  {
+    value: "__EMPTY__",
+    label: "Trống",
+    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+  },
+
   // --- Trạng thái hoạt động của tòa nhà ---
   {
     value: BuildingStatus.HOAT_DONG,
@@ -271,6 +277,50 @@ export const STATUS_BADGE = [
     value: AssetGroup.KHAC,
     label: "Khác",
     className: "text-slate-600 bg-slate-100 border border-slate-200 hover:bg-slate-200 hover:text-slate-700",
+  },
+
+  // --- Thuộc về tài sản ---
+  {
+    value: AssetBeLongTo.PHONG,
+    label: "Phòng",
+    className: "text-teal-600 bg-teal-100 border border-teal-200 hover:bg-teal-200 hover:text-teal-700",
+  },
+  {
+    value: AssetBeLongTo.CHUNG,
+    label: "Dùng chung",
+    className: "text-indigo-600 bg-indigo-100 border border-indigo-200 hover:bg-indigo-200 hover:text-indigo-700",
+  },
+  {
+    value: AssetBeLongTo.CA_NHAN,
+    label: "Cá nhân",
+    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+  },
+
+  // --- Trạng thái tài sản ---
+  {
+    value: AssetStatus.SU_DUNG,
+    label: "Đang sử dụng",
+    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+  },
+  {
+    value: AssetStatus.HU_HONG,
+    label: "Hư hỏng",
+    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+  },
+  {
+    value: AssetStatus.CAN_BAO_TRI,
+    label: "Cần bảo trì",
+    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+  },
+  {
+    value: AssetStatus.THAT_LAC,
+    label: "Thất lạc",
+    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+  },
+  {
+    value: AssetStatus.DA_THANH_LY,
+    label: "Đã thanh lý",
+    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
   },
 ];
 
