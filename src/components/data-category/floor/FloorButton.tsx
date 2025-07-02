@@ -4,7 +4,6 @@ import { TooltipTrigger } from "@radix-ui/react-tooltip";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import Modal from "@/components/Modal";
-import AddOrUpdateBuilding from "./AddOrUpdateBuilding";
 import { useCallback, useState } from "react";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
@@ -12,32 +11,28 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
-import { useAuthStore } from "@/zustand/authStore";
-import { createOrUpdateBuildingSchema } from "@/lib/validation";
+import { createFloorSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-// import { useFullAddress } from "@/hooks/useFullAddress";
-import { IBtnType, ICreateBuildingValue } from "@/types";
+import { IBtnType, ICreateFloorValue } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
+import AddOrUpdateFloor from "./AddOrUpdateFloor";
+import { useParams } from "react-router-dom";
 
-type AddData = ICreateBuildingValue & { userId: string | undefined };
-
-const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
-  const user = useAuthStore((s) => s.user);
-  const [value, setValue] = useState<ICreateBuildingValue>({
-    actualNumberOfFloors: undefined,
-    address: "",
-    buildingName: "",
-    buildingType: undefined,
-    description: "",
-    numberOfFloorsForRent: undefined,
+const FloorButton = ({ ids }: { ids: Record<string, boolean> }) => {
+  const [value, setValue] = useState<ICreateFloorValue>({
+    descriptionFloor: "",
+    floorType: undefined,
+    maximumRoom: undefined,
+    nameFloor: "",
   });
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateBuildingValue>();
-  // const { fullAddress, Address, clearValue } = useFullAddress();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateFloorValue>();
 
   const queryClient = useQueryClient();
+
+  const { id } = useParams();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -47,71 +42,70 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
     }));
   };
 
-  const addBuildingMutation = useMutation({
-    mutationKey: ["add-building"],
-    mutationFn: async (payload: AddData) => await httpRequest.post("/buildings", payload),
+  const addFloorMutation = useMutation({
+    mutationKey: ["add-floor"],
+    mutationFn: async (payload: ICreateFloorValue) => await httpRequest.post("/floors", payload),
     onError: (error) => {
       handleMutationError(error);
     },
     onSuccess: () => {
       toast.success(Status.ADD_SUCCESS);
       setValue({
-        actualNumberOfFloors: undefined,
-        address: "",
-        buildingName: "",
-        buildingType: undefined,
-        description: "",
-        numberOfFloorsForRent: undefined,
+        descriptionFloor: "",
+        floorType: undefined,
+        maximumRoom: undefined,
+        nameFloor: "",
       });
-      // clearValue();
       queryClient.invalidateQueries({
         predicate: (prev) => {
-          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "buildings";
+          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "floors";
         },
       });
-      queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
+      queryClient.invalidateQueries({ queryKey: ["floors-statistics"] });
     },
   });
 
-  const handleAddBuilding = useCallback(async () => {
+  const handleAddFloor = useCallback(async () => {
     try {
-      const { actualNumberOfFloors, buildingName, buildingType, description, address, numberOfFloorsForRent } = value;
+      const { descriptionFloor, floorType, maximumRoom, nameFloor } = value;
 
-      await createOrUpdateBuildingSchema.parseAsync(value);
+      await createFloorSchema.parseAsync(value);
 
-      const data: AddData = {
-        userId: user?.id,
-        // address: `${address}, ${fullAddress}`,
-        address: address.trim(),
-        buildingName: buildingName.trim(),
-        actualNumberOfFloors,
-        buildingType,
-        description: description.trim(),
-        numberOfFloorsForRent,
+      if (!id) {
+        toast.error(Status.ERROR);
+        return false;
+      }
+
+      const data: ICreateFloorValue & { buildingId: string } = {
+        buildingId: id,
+        descriptionFloor: descriptionFloor.trim(),
+        floorType,
+        maximumRoom,
+        nameFloor: nameFloor.trim(),
       };
 
-      await addBuildingMutation.mutateAsync(data);
+      await addFloorMutation.mutateAsync(data);
       clearErrors();
       return true;
     } catch (error) {
       handleZodErrors(error);
       return false;
     }
-  }, [addBuildingMutation, clearErrors, handleZodErrors, user?.id, value]);
+  }, [addFloorMutation, id, clearErrors, handleZodErrors, value]);
 
-  const handleRemoveBuildingByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
+  const handleRemoveFloorsByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
       const selectedIds = Object.entries(ids)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .filter(([_, isSelected]) => isSelected)
         .map(([id]) => id);
 
-      await Promise.all(selectedIds.map((id) => removeBuildingMutation.mutateAsync(id)));
+      await Promise.all(selectedIds.map((id) => removeFloorMutation.mutateAsync(id)));
 
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "buildings",
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "floors",
       });
-      queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
+      queryClient.invalidateQueries({ queryKey: ["floors-statistics"] });
 
       toast.success(Status.REMOVE_SUCCESS);
       return true;
@@ -124,9 +118,9 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
   const { ConfirmDialog, openDialog } = useConfirmDialog<Record<string, boolean>>({
     onConfirm: async (ids?: Record<string, boolean>) => {
       if (!ids || !Object.values(ids).some(Boolean)) return false;
-      return await handleRemoveBuildingByIds(ids);
+      return await handleRemoveFloorsByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tòa nhà đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tầng đã chọn. Bạn có chắc chắn muốn tiếp tục?",
     type: "warn",
   });
 
@@ -139,22 +133,22 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
     [ids, openDialog]
   );
 
-  const removeBuildingMutation = useMutation({
-    mutationKey: ["remove-building"],
-    mutationFn: async (id: string) => await httpRequest.put(`/buildings/soft-delete/${id}`),
+  const removeFloorMutation = useMutation({
+    mutationKey: ["remove-floors"],
+    mutationFn: async (id: string) => await httpRequest.put(`/floors/soft-delete/${id}`),
   });
 
   return (
     <div className="h-full bg-background rounded-t-sm mt-4">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Tòa nhà</h3>
+        <h3 className="font-semibold">Tầng</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Tòa nhà"
+                    title="Tầng"
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -163,14 +157,14 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
                       </TooltipTrigger>
                     }
                     desc={Notice.ADD}
-                    onConfirm={handleAddBuilding}
+                    onConfirm={handleAddFloor}
                   >
-                    <AddOrUpdateBuilding
+                    <AddOrUpdateFloor
                       handleChange={handleChange}
                       value={value}
                       setValue={setValue}
                       errors={errors}
-                      // address={<Address />}
+                      type="update"
                     />
                   </Modal>
                 </RenderIf>
@@ -213,4 +207,4 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
   );
 };
 
-export default BuildingButton;
+export default FloorButton;

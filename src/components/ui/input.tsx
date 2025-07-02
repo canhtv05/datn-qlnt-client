@@ -24,12 +24,14 @@ function Input({
 }) {
   const [isEmpty, setIsEmpty] = React.useState(false);
   const [typeInput, setTypeInput] = React.useState(type);
+  const [touched, setTouched] = React.useState(false);
 
   const prevType = usePrevious(typeInput || "text");
 
   const handleBlur = (value: string) => {
     if (!value.trim() || value.trim().startsWith(" ")) {
       setIsEmpty(true);
+      setTouched(true);
     }
     onBlur?.();
   };
@@ -41,7 +43,10 @@ function Input({
   const handleFocus = () => {
     setIsEmpty(false);
     onFocus?.();
+    setTouched(false);
   };
+
+  const isInvalid = validate && touched;
 
   return (
     <>
@@ -65,7 +70,8 @@ function Input({
               validate && isEmpty && "border-red-500",
               (typeInput === "password" || prevType === "password") && "pr-11",
               className,
-              icon && "border-none shadow-none focus-visible:ring-0 focus-visible:shadow-none py-0"
+              icon && "border-none shadow-none focus-visible:ring-0 focus-visible:shadow-none py-0",
+              isInvalid && "border-red-500"
             )}
             onBlur={(e) => handleBlur(e.target.value)}
             onFocus={handleFocus}

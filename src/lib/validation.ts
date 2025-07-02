@@ -1,6 +1,12 @@
-import { BuildingType, Gender, RoomType, RoomStatus} from "@/enums";
+import {
+  BuildingType,
+  Gender,
+  RoomType,
+  FloorType,
+  RoomStatus,
+  AssetGroup,
+} from "@/enums";
 import { z } from "zod/v4";
-
 
 /*
   CHECK
@@ -9,7 +15,9 @@ export const formatFullName = (value: string) => {
   return value
     .trim()
     .split(/\s+/)
-    .map((word) => word.charAt(0).toUpperCase() + word.substring(1).toLowerCase())
+    .map(
+      (word) => word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
+    )
     .join(" ");
 };
 
@@ -18,7 +26,9 @@ export const isValidDob = (date: Date) => {
   const age =
     today.getFullYear() -
     date.getFullYear() -
-    (today < new Date(date.getFullYear(), date.getMonth(), date.getDate()) ? 1 : 0);
+    (today < new Date(date.getFullYear(), date.getMonth(), date.getDate())
+      ? 1
+      : 0);
   return age >= 18;
 };
 
@@ -94,15 +104,21 @@ export const registerSchema = z
   .object({
     email: z.email("Email không hợp lệ"),
 
-    fullName: z.string().min(3, "Họ tên phải có ít nhất 3 ký tự").refine(isValidFullName, {
-      message: "Mỗi từ trong họ tên phải có ít nhất 3 ký tự",
-    }),
+    fullName: z
+      .string()
+      .min(3, "Họ tên phải có ít nhất 3 ký tự")
+      .refine(isValidFullName, {
+        message: "Mỗi từ trong họ tên phải có ít nhất 3 ký tự",
+      }),
 
     dob: z
       .string()
       .refine((val) => !isNaN(Date.parse(val)), "Ngày sinh không hợp lệ")
       .transform((val) => new Date(val))
-      .refine((date) => isValidDob(date), "Tuổi của bạn phải lớn hơn hoặc bằng 18"),
+      .refine(
+        (date) => isValidDob(date),
+        "Tuổi của bạn phải lớn hơn hoặc bằng 18"
+      ),
 
     phoneNumber: z
       .string()
@@ -137,13 +153,19 @@ export const updateUserSchema = z.object({
     .min(3, "Họ tên phải có ít nhất 3 ký tự")
     .refine(isValidFullName, "Mỗi từ trong họ tên phải có ít nhất 3 ký tự"),
 
-  gender: z.enum([Gender.FEMALE, Gender.MALE, Gender.UNKNOWN], "Giới tính không hợp lệ"),
+  gender: z.enum(
+    [Gender.FEMALE, Gender.MALE, Gender.UNKNOWN],
+    "Giới tính không hợp lệ"
+  ),
 
   dob: z
     .string()
     .refine((val) => !isNaN(Date.parse(val)), "Ngày sinh không hợp lệ")
     .transform((val) => new Date(val))
-    .refine((date) => isValidDob(date), "Tuổi của bạn phải lớn hơn hoặc bằng 18"),
+    .refine(
+      (date) => isValidDob(date),
+      "Tuổi của bạn phải lớn hơn hoặc bằng 18"
+    ),
 
   phoneNumber: z
     .string()
@@ -166,7 +188,12 @@ export const createOrUpdateBuildingSchema = z
     numberOfFloorsForRent: zSafeNumber("Số tầng cho thuê"),
 
     buildingType: z.enum(
-      [BuildingType.CAN_HO_DICH_VU, BuildingType.CHUNG_CU_MINI, BuildingType.KHAC, BuildingType.NHA_TRO],
+      [
+        BuildingType.CAN_HO_DICH_VU,
+        BuildingType.CHUNG_CU_MINI,
+        BuildingType.KHAC,
+        BuildingType.NHA_TRO,
+      ],
       { message: "Loại tòa nhà không hợp lệ" }
     ),
 
@@ -183,9 +210,57 @@ export const createOrUpdateBuildingSchema = z
     }
   );
 
-  //ROOM
- export const createOrUpdateRoomSchema = z
+/* FLOOR */
+export const createFloorSchema = z.object({
+  maximumRoom: zSafeNumber("Số phòng tối đa")
+    .transform((val) => Number(val))
+    .refine((val) => val >= 1 && val <= 99, "Số phòng tối đa từ 1 -> 99"),
+
+  floorType: z.enum(
+    [
+      FloorType.CHO_THUE,
+      FloorType.DE_O,
+      FloorType.KHAC,
+      FloorType.KHO,
+      FloorType.KHONG_CHO_THUE,
+    ],
+    {
+      message: "Loại tầng không hợp lệ",
+    }
+  ),
+
+  descriptionFloor: z.string(),
+});
+
+export const updateFloorSchema = createFloorSchema.extend({
+  nameFloor: z.string().min(1, "Tên tầng không được để trống"),
+});
+
+/* ASSET TYPE */
+export const createOrUpdateAssetTypeSchema = z.object({
+  nameAssetType: z.string().min(1, "Tên loại tài sản không được để trống"),
+  assetGroup: z.enum(
+    [
+      AssetGroup.CA_NHAN,
+      AssetGroup.DIEN,
+      AssetGroup.GIA_DUNG,
+      AssetGroup.KHAC,
+      AssetGroup.NOI_THAT,
+    ],
+    {
+      message: "Nhóm tài sản không hợp lệ",
+    }
+  ),
+  discriptionAssetType: z.string().min(1, "Mô tả không được để trống"),
+});
+
+/* ROOM */
+export const createOrUpdateRoomSchema = z
   .object({
+    buildingId: z
+      .string() 
+      .min(1, { message: "Vui lòng chọn tầng" }),
+
     acreage: zSafeNumber("Diện tích").refine((val) => val >= 1, {
       message: "Diện tích phải ≥ 1",
     }),
@@ -202,13 +277,20 @@ export const createOrUpdateBuildingSchema = z
         message: "Số người tối đa phải ≥ 1",
       }),
 
-    roomType: z.enum(
-      [RoomType.GHEP, RoomType.DON, RoomType.KHAC],
-      { message: "Loại phòng không hợp lệ" }
-    ),
+    roomType: z.enum([RoomType.GHEP, RoomType.DON, RoomType.KHAC], {
+      message: "Loại phòng không hợp lệ",
+    }),
 
     status: z.enum(
-      [RoomStatus.TRONG, RoomStatus.DA_THUE, RoomStatus.DA_DAT_COC, RoomStatus.DANG_BAO_TRI],
+      [
+        RoomStatus.TRONG,
+        RoomStatus.CHUA_HOAN_THIEN,
+        RoomStatus.DANG_THUE,
+        RoomStatus.DA_DAT_COC,
+        RoomStatus.DANG_BAO_TRI,
+        RoomStatus.HUY_HOAT_DONG,
+        RoomStatus.TAM_KHOA,
+      ],
       { message: "Trạng thái phòng không hợp lệ" }
     ),
 

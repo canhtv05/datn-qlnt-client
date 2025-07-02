@@ -1,4 +1,13 @@
-import { BuildingStatus, BuildingType, Gender, RoomStatus, RoomType} from "@/enums";
+import {
+  AssetGroup,
+  BuildingStatus,
+  BuildingType,
+  FloorStatus,
+  FloorType,
+  Gender,
+  RoomStatus,
+  RoomType,
+} from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
 import { ReactNode } from "react";
@@ -40,6 +49,14 @@ export interface AbstractResponse {
 export interface ApiResponse<T> {
   code: number;
   message: string;
+  data: T;
+  meta?: {
+    tokenInfo?: TokenInfo;
+    pagination?: Pagination;
+  };
+}
+
+export interface PaginatedResponse<T> {
   data: T;
   meta?: {
     tokenInfo?: TokenInfo;
@@ -95,14 +112,82 @@ export interface ICreateBuildingValue {
   description: string;
 }
 
-export type UpdateBuildingValue = ICreateBuildingValue & { status?: BuildingStatus };
+export type UpdateBuildingValue = ICreateBuildingValue & {
+  status?: BuildingStatus;
+};
 
 export interface IBuildingStatisticsResponse {
   activeBuilding: number;
   totalBuilding: number;
   inactiveBuilding: number;
 }
-//room
+
+export interface IBuildingCardsResponse {
+  buildingId: string;
+  buildingName: string;
+  address: string;
+  buildingType: BuildingType;
+  status: BuildingStatus;
+  totalRoomAvail: number;
+  totalRoom: number;
+}
+
+/* FLOOR */
+export interface FloorResponse extends AbstractResponse {
+  nameFloor: string;
+  maximumRoom: number;
+  floorType: FloorType;
+  status: FloorStatus;
+  buildingId: string;
+  buildingName: string;
+  descriptionFloor: string;
+}
+
+export interface ICreateFloorValue {
+  nameFloor: string;
+  maximumRoom: number | undefined;  
+  floorType: FloorType | undefined;
+  descriptionFloor: string;
+}
+
+export type UpdateFloorValue = Pick<
+  ICreateFloorValue,
+  "nameFloor" | "maximumRoom" | "floorType" | "descriptionFloor"
+> & {
+  status?: FloorStatus;
+};
+
+export interface FloorFilterValues {
+  buildingId: string;
+  status: string;
+  floorType: string;
+  nameFloor: string;
+  maxRoom: string;
+}
+
+export interface IFloorStatisticsResponse {
+  buildingId: string;
+  totalFloors: number;
+  activeFloors: number;
+  inactiveFloors: number;
+}
+
+/* Asset Type */
+export interface ICreateAssetType {
+  nameAssetType: string;
+  assetGroup: AssetGroup | string;
+  discriptionAssetType: string;
+}
+
+export type IUpdateAssetType = ICreateAssetType;
+
+export interface AssetTypeResponse extends AbstractResponse, ICreateAssetType {}
+
+export interface AssetTypeFilterValues {
+  nameAssetType: string;
+  assetGroup: AssetGroup | string;
+}
+/* ROOM*/
 export interface RoomResponse extends AbstractResponse {
   id: string;
   roomCode: string;
@@ -117,7 +202,7 @@ export interface RoomResponse extends AbstractResponse {
     floorName: string;
   };
 }
-export type RoomFormValue = { 
+export type RoomFormValue = {
   floorId: string;
   acreage: number | null;
   price: number | null;
@@ -125,6 +210,7 @@ export type RoomFormValue = {
   roomType: RoomType | null;
   status: RoomStatus | null;
   description: string;
+  buildingId?: string;
 };
 export type RoomDeleteRequest = {
   floorId: string;
@@ -134,10 +220,14 @@ export interface IRoomStatisticsResponse {
   getTotalTrong: number;
   getTotalDangThue: number;
   getTotalDaDatCoc: number;
+  getTotalDangBaoTri: number;
+  getTotalChuaHoanThien: number;
+  getTotalTamKhoa: number;
 }
 export interface FloorBasicResponse {
   floorId: string;
-  floorName: string;
+  buildingId: string;
+  nameFloor: string;
   floorType: string;
   status: string;
   maximumRooms: number;

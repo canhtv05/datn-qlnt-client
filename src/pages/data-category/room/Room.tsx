@@ -54,7 +54,7 @@ const Room = () => {
     rowSelection,
     setRowSelection,
     props,
-    floorList
+    floorList,
   } = useRoom();
 
   const { page, size } = query;

@@ -47,12 +47,39 @@ export enum BuildingStatus {
   HUY_HOAT_DONG = "HUY_HOAT_DONG",
 }
 
-//ROOM
+/* FLOOR */
+export enum FloorType {
+  CHO_THUE = "CHO_THUE",
+  KHONG_CHO_THUE = "KHONG_CHO_THUE",
+  DE_O = "DE_O",
+  KHO = "KHO",
+  KHAC = "KHAC",
+}
+
+export enum FloorStatus {
+  HOAT_DONG = "HOAT_DONG",
+  KHONG_SU_DUNG = "KHONG_SU_DUNG",
+  TAM_KHOA = "TAM_KHOA",
+}
+
+/* Asset Type */
+export enum AssetGroup {
+  GIA_DUNG = "GIA_DUNG",
+  NOI_THAT = "NOI_THAT",
+  DIEN = "DIEN",
+  CA_NHAN = "CA_NHAN",
+  KHAC = "KHAC",
+}
+
+/* ROOM */
 export enum RoomStatus {
-  TRONG = "TRONG",
-  DA_THUE = "DA_THUE",
-  DA_DAT_COC = "DA_DAT_COC",
-  DANG_BAO_TRI = "DANG_BAO_TRI",
+    TRONG = "TRONG",
+    DANG_THUE = "DANG_THUE",
+    DA_DAT_COC = "DA_DAT_COC",
+    DANG_BAO_TRI = "DANG_BAO_TRI",
+    CHUA_HOAN_THIEN = "CHUA_HOAN_THIEN",
+    TAM_KHOA = "TAM_KHOA",
+    HUY_HOAT_DONG = "HUY_HOAT_DONG",
 }
 export enum RoomType {
   GHEP = "GHEP",

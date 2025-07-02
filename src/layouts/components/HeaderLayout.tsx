@@ -88,7 +88,7 @@ const HeaderLayout = () => {
               Cài đặt
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={openDialog}>
+            <DropdownMenuItem onClick={() => openDialog()}>
               <LogOut className="text-light" />
               Đăng xuất
             </DropdownMenuItem>

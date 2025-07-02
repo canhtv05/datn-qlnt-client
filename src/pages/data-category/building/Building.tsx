@@ -58,92 +58,94 @@
     } = useBuilding();
     const { page, size } = query;
 
-    const columnConfigs: ColumnConfig[] = [
-      { label: "Mã tòa nhà", accessorKey: "buildingCode", isSort: true, hasHighlight: true },
-      {
-        label: "Thao tác",
-        accessorKey: "actions",
-        isSort: false,
-        isCenter: true,
-        render: (row: BuildingResponse) => {
-          const building: BuildingResponse = row;
-          return (
-            <div className="flex gap-2">
-              {btns.map((btn, index) => (
-                <TooltipProvider key={index}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        size={"icon"}
-                        variant={btn.type}
-                        className="cursor-pointer"
-                        onClick={() => {
-                          const type = btn.type as "update" | "delete" | "status";
-                          handleActionClick(building, type);
-                        }}
-                      >
-                        <btn.icon className="text-white" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent
-                      className="text-white"
+  const columnConfigs: ColumnConfig[] = [
+    { label: "Mã tòa nhà", accessorKey: "buildingCode", isSort: true, hasHighlight: true },
+    {
+      label: "Thao tác",
+      accessorKey: "actions",
+      isSort: false,
+      isCenter: true,
+      render: (row: BuildingResponse) => {
+        const building: BuildingResponse = row;
+        return (
+          <div className="flex gap-2">
+            {btns.map((btn, index) => (
+              <TooltipProvider key={index}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      size={"icon"}
+                      variant={btn.type}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        const type = btn.type as "update" | "delete" | "status";
+                        handleActionClick(building, type);
+                      }}
+                    >
+                      <btn.icon className="text-white" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    className="text-white"
+                    style={{
+                      background: btn.arrowColor,
+                    }}
+                    arrow={false}
+                  >
+                    <p>{btn.tooltipContent}</p>
+                    <TooltipPrimitive.Arrow
                       style={{
+                        fill: btn.arrowColor,
                         background: btn.arrowColor,
                       }}
-                      arrow={false}
-                    >
-                      <p>{btn.tooltipContent}</p>
-                      <TooltipPrimitive.Arrow
-                        style={{
-                          fill: btn.arrowColor,
-                          background: btn.arrowColor,
-                        }}
-                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
-                      />
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              ))}
-            </div>
-          );
-        },
+                      className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                    />
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ))}
+          </div>
+        );
       },
-      { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true },
-      { label: "Địa chỉ", accessorKey: "address", isSort: true },
-      { label: "Loại tòa nhà", accessorKey: "buildingType", isSort: true, hasBadge: true, isCenter: true },
-      { label: "Mô tả", accessorKey: "description" },
-      { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
-    ];
+    },
+    { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true },
+    { label: "Địa chỉ", accessorKey: "address", isSort: true },
+    { label: "Loại tòa nhà", accessorKey: "buildingType", isSort: true, hasBadge: true, isCenter: true },
+    { label: "Số tầng thực tế", accessorKey: "actualNumberOfFloors", isSort: true, isCenter: true },
+    { label: "Số tầng cho thuê", accessorKey: "numberOfFloorsForRent", isSort: true, isCenter: true },
+    { label: "Mô tả", accessorKey: "description" },
+    { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
+  ];
 
-    return (
-      <div className="flex flex-col">
-        <StatisticCard data={dataBuildings} />
-        <BuildingButton ids={rowSelection} />
-        <BuildingFilter props={props} />
-        <DataTable<BuildingResponse>
-          data={data?.data ?? []}
-          columns={buildColumnsFromConfig(columnConfigs)}
-          page={Number(page)}
-          size={Number(size)}
-          totalElements={data?.meta?.pagination?.total || 0}
-          totalPages={data?.meta?.pagination?.totalPages || 0}
-          loading={isLoading}
-          rowSelection={rowSelection}
-          setRowSelection={setRowSelection}
-        />
-        <Modal
-          title="Dự án/Tòa nhà"
-          trigger={null}
-          open={isModalOpen}
-          onOpenChange={setIsModalOpen}
-          onConfirm={handleUpdateBuilding}
-          desc={Notice.UPDATE}
-        >
-          <AddOrUpdateBuilding handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
-        </Modal>
-        <ConfirmDialog />
-      </div>
-    );
-  };
+  return (
+    <div className="flex flex-col">
+      <StatisticCard data={dataBuildings} />
+      <BuildingButton ids={rowSelection} />
+      <BuildingFilter props={props} />
+      <DataTable<BuildingResponse>
+        data={data?.data ?? []}
+        columns={buildColumnsFromConfig(columnConfigs)}
+        page={Number(page)}
+        size={Number(size)}
+        totalElements={data?.meta?.pagination?.total || 0}
+        totalPages={data?.meta?.pagination?.totalPages || 0}
+        loading={isLoading}
+        rowSelection={rowSelection}
+        setRowSelection={setRowSelection}
+      />
+      <Modal
+        title="Tòa nhà"
+        trigger={null}
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        onConfirm={handleUpdateBuilding}
+        desc={Notice.UPDATE}
+      >
+        <AddOrUpdateBuilding handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
+      </Modal>
+      <ConfirmDialog />
+    </div>
+  );
+};
 
   export default Building;

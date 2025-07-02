@@ -20,6 +20,7 @@ import { Notice, Status } from "@/enums";
 import { httpRequest } from "@/utils/httpRequest";
 import { createOrUpdateRoomSchema } from "@/lib/validation";
 import { handleMutationError } from "@/utils/handleMutationError";
+import { useParams } from "react-router-dom";
 
 const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
   const [value, setValue] = useState<RoomFormValue>({
@@ -32,23 +33,20 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
     status: null,
   });
 
+  const { id: buildingId } = useParams();
+  console.log(" buildingId:", buildingId);
   const { errors, clearErrors, handleZodErrors } = useFormErrors<RoomFormValue>();
   const queryClient = useQueryClient();
 
-  //  Lấy danh sách tầng (floorList)
-  const { data: floorListData, isLoading: isLoadingFloorList } = useQuery<
-    ApiResponse<FloorBasicResponse[]>
-  >({
-    queryKey: ["floor-list"],
+  const { data: floorListData } = useQuery<ApiResponse<FloorBasicResponse[]>>({
+    queryKey: ["floor-list", buildingId],
     queryFn: async () => {
       const res = await httpRequest.get("/floors/find-all", {
-        params: {
-          userId: "49c97e2e-241b-4136-9157-b54a9b580cd0",    
-          buildingId: "a7861f3e-ec13-4c8e-9639-a597d7b828e3",
-        },
+        params: { buildingId },
       });
       return res.data;
     },
+    enabled: !!buildingId,
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -79,15 +77,19 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
 
   const handleAddRoom = useCallback(async () => {
     try {
-      await createOrUpdateRoomSchema.parseAsync(value);
-      await addRoomMutation.mutateAsync(value);
+      const fullValue = {
+        ...value,
+        buildingId, // ✅ Gửi kèm buildingId
+      };
+      await createOrUpdateRoomSchema.parseAsync(fullValue);
+      await addRoomMutation.mutateAsync(fullValue);
       clearErrors();
       return true;
     } catch (error) {
       handleZodErrors(error);
       return false;
     }
-  }, [value, addRoomMutation, clearErrors, handleZodErrors]);
+  }, [value, buildingId, addRoomMutation, clearErrors, handleZodErrors]);
 
   const removeRoomMutation = useMutation({
     mutationKey: ["remove-room"],
@@ -158,7 +160,7 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
                       value={value}
                       setValue={setValue}
                       errors={errors}
-                      floorList={floorListData?.data || []} 
+                      floorList={floorListData?.data || []}
                     />
                   </Modal>
                 </RenderIf>

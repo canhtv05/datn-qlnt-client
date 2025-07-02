@@ -28,6 +28,10 @@ const DashBoard = lazy(() => import("@/pages/dashboard"));
 
 /* DATA CATEGORIES*/
 const Building = lazy(() => import("@/pages/data-category/building"));
+const SelectBuilding = lazy(() => import("@/components/data-category/building/SelectBuilding"));
+const Floor = lazy(() => import("@/pages/data-category/floor"));
+const AssetType = lazy(() => import("@/pages/data-category/asset-type"));
+
 const Room = lazy(() => import("@/pages/data-category/room"));
 const publicRoutes: RouteType[] = [
   /* AUTH */
@@ -65,7 +69,23 @@ const privateRoutes: RouteType[] = [
     component: Building,
   },
   {
+    path: configs.routes.dataCategories.floors,
+    component: SelectBuilding,
+  },
+  {
+    path: configs.routes.dataCategories.floorId,
+    component: Floor,
+  },
+  {
+    path: configs.routes.dataCategories.assetType,
+    component: AssetType,
+  },
+  {
     path: configs.routes.dataCategories.rooms,
+    component: SelectBuilding,
+  },
+  {
+    path: configs.routes.dataCategories.roomId,
     component: Room,
   },
 ];

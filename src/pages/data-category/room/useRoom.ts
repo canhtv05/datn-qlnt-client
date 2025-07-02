@@ -14,7 +14,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useRef, useEffect, useCallback, ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Status, Notice } from "@/enums";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { Building2, HandCoins, DoorOpen } from "lucide-react";
 
 interface FilterValues {
@@ -43,6 +43,8 @@ export const useRoom = () => {
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
 
+  const {id: buildingId} = useParams();
+  console.log(" buildingId:", buildingId);
   const idRef = useRef<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rowSelection, setRowSelection] = useState({});
@@ -88,11 +90,12 @@ export const useRoom = () => {
     isLoading,
     isError: isRoomError,
   } = useQuery<ApiResponse<RoomResponse[]>>({
-    queryKey: ["rooms", page, size, status, roomType, query],
+    queryKey: ["rooms", page, size, status, roomType, query, buildingId],
     queryFn: async () => {
       const params: Record<string, string> = {
         page: parsedPage.toString(),
         size: parsedSize.toString(),
+        buildingId: buildingId ?? "",
       };
       if (status) params.status = status;
       if (roomType) params.roomType = roomType;
@@ -108,12 +111,9 @@ export const useRoom = () => {
     }
   }, [isRoomError]);
 
-  const userId = "49c97e2e-241b-4136-9157-b54a9b580cd0";     
-  const buildingId = "a7861f3e-ec13-4c8e-9639-a597d7b828e3";
-
   const { data: floorListData, isLoading: isLoadingFloorList } =
     useQuery<ApiResponse<FloorBasicResponse[]>>({
-      queryKey: ["floor-list", userId, buildingId],
+      queryKey: ["floor-list", buildingId],
       queryFn: async () => {
         const res = await httpRequest.get("/floors/find-all", {
           params: {
@@ -126,12 +126,14 @@ export const useRoom = () => {
     });
 
   const { data: statisticsRaw } = useQuery<ApiResponse<IRoomStatisticsResponse>>({
-    queryKey: ["room-statistics"],
-    queryFn: async () =>
-      (await httpRequest.get("/rooms/statistics", {
-        params: { floorId: "080c75d6-2893-4eb8-aa24-aa200c8021e7" },
-      })).data,
-  });
+  queryKey: ["room-statistics", buildingId],
+  queryFn: async () =>
+    (await httpRequest.get("/rooms/statistics", {
+      params: { buildingId },
+    })).data,
+  enabled: !!buildingId,
+});
+
 
   const roomStats = [
     { icon: DoorOpen, label: "Đang trống", value: mapStatistics(statisticsRaw?.data).empty },
@@ -190,7 +192,7 @@ export const useRoom = () => {
     setValue((prev) => ({ ...prev, [name]: value }));
   };
 
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     setValue({
       floorId: "",
       acreage: null,
@@ -202,11 +204,12 @@ export const useRoom = () => {
     });
     idRef.current = "";
     clearErrors();
-  };
+  }, [clearErrors]);
 
-  const handleSaveRoom = async () => {
+  const handleSaveRoom = useCallback(async () => {
     try {
       await createOrUpdateRoomSchema.parseAsync(value);
+    console.error("Validation error:", value);
       if (idRef.current) {
         await updateRoomMutation.mutateAsync(value);
       } else {
@@ -219,13 +222,13 @@ export const useRoom = () => {
       handleZodErrors(error);
       return false;
     }
-  };
+  }, [value, resetForm, updateRoomMutation, createRoomMutation, handleZodErrors]);
 
   const handleActionClick = (room: RoomResponse, type: "update" | "delete") => {
     if (type === "update") {
       idRef.current = room.id;
       setValue({
-        floorId: "", // TODO: map lại nếu cần
+        floorId: room.floor.id,
         acreage: room.acreage,
         price: room.price,
         maximumPeople: room.maximumPeople,

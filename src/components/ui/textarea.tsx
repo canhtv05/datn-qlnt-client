@@ -48,9 +48,9 @@ function Textarea({
       </RenderIf>
 
       <RenderIf value={isEmpty && !!validate}>
-        <span className="text-[12px] text-red-500 font-light text-left">Thông tin bắt buộc</span>
+        <span className="text-[12px] text-red-500 font-light text-left block">Thông tin bắt buộc</span>
       </RenderIf>
-      <span className="text-[12px] text-red-500 font-light text-left">{errorText}</span>
+      <span className="text-[12px] text-red-500 font-light text-left block">{errorText}</span>
     </div>
   );
 }

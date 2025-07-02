@@ -1,4 +1,4 @@
-import { Dispatch } from "react";
+import { Dispatch, useEffect } from "react";
 import FieldsSelectLabel, {
   FieldsSelectLabelType,
 } from "@/components/FieldsSelectLabel";
@@ -23,24 +23,33 @@ const roomTypes: FieldsSelectLabelType[] = [
 
 const roomStatuses: FieldsSelectLabelType[] = [
   { label: "Còn trống", value: RoomStatus.TRONG },
-  { label: "Đã thuê", value: RoomStatus.DA_THUE },
+  { label: "Đã thuê", value: RoomStatus.DANG_THUE },
   { label: "Đặt cọc", value: RoomStatus.DA_DAT_COC },
   { label: "Bảo trì", value: RoomStatus.DANG_BAO_TRI },
+  { label: "Chưa hoàn thiện", value: RoomStatus.CHUA_HOAN_THIEN },
+  { label: "Tạm khóa", value: RoomStatus.TAM_KHOA },
+  { label: "Hủy hoạt động", value: RoomStatus.HUY_HOAT_DONG },
 ];
 
 const AddOrUpdateRoom = ({ value, setValue, errors, floorList }: Props) => {
+  const floorOptions: FieldsSelectLabelType[] = floorList.map((floor) => ({
+    label: `${floor.nameFloor} - ${floor.buildingName}`,
+    value: floor.floorId,
+  }));  
+
+  useEffect(() => {
+    console.log(" floorId value:", value.floorId);
+    console.log(" floor options:", floorOptions);
+  }, [value.floorId, floorOptions]);
+
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value: inputVal } = e.target;
+    const parsed = Number(inputVal.trim());
     setValue((prev) => ({
       ...prev,
-      [name]: inputVal === "" ? null : Number(inputVal),
+      [name]: inputVal.trim() === "" || isNaN(parsed) ? null : parsed,
     }));
   };
-
-  const floorOptions: FieldsSelectLabelType[] = floorList.map((floor) => ({
-    label: `${floor.floorName}, ${floor.buildingName}`,
-    value: floor.floorId,
-  }));
 
   return (
     <div className="flex flex-col gap-3">
