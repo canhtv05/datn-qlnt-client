@@ -84,3 +84,26 @@ export enum AssetStatus {
   THAT_LAC = "THAT_LAC",
   DA_THANH_LY = "DA_THANH_LY",
 }
+
+/* VEHICLE */
+export enum VehicleType {
+  XE_MAY = "XE_MAY",
+  O_TO = "O_TO",
+  XE_DAP = "XE_DAP",
+  KHAC = "KHAC",
+}
+
+export enum VehicleStatus {
+  SU_DUNG = "SU_DUNG",
+  KHONG_SU_DUNG = "KHONG_SU_DUNG",
+  TAM_KHOA = "TAM_KHOA",
+}
+
+/* TENANT */
+export enum TenantStatus {
+  DANG_THUE = "DANG_THUE",
+  DA_TRA_PHONG = "DA_TRA_PHONG",
+  TIEM_NANG = "TIEM_NANG",
+  HUY_BO = "HUY_BO",
+  KHOA = "KHOA",
+}

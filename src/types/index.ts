@@ -7,6 +7,9 @@ import {
   FloorStatus,
   FloorType,
   Gender,
+  TenantStatus,
+  VehicleStatus,
+  VehicleType,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -230,4 +233,45 @@ export interface AssetResponse extends AbstractResponse {
   price: number;
   assetStatus: AssetStatus | string;
   descriptionAsset: string;
+}
+
+/* VEHICLE */
+export interface VehicleResponse extends AbstractResponse {
+  fullName: string;
+  vehicleType: VehicleType | string;
+  licensePlate: string;
+  vehicleStatus: VehicleStatus | string;
+  registrationDate: string;
+  describe: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ICreateVehicle {
+  tenantId: string;
+  vehicleType: VehicleType | string;
+  licensePlate: string;
+  vehicleStatus: VehicleStatus | string;
+  registrationDate: string;
+  describe: string;
+}
+
+export type IUpdateVehicle = Omit<ICreateVehicle, "vehicleStatus" | "describe">;
+
+export interface VehicleFilterValues {
+  tenantId: string;
+  vehicleType: VehicleType | string;
+  licensePlate: string;
+}
+
+/* TENANT */
+export default interface TenantResponse extends AbstractResponse {
+  customerCode: string;
+  fullName: string;
+  gender: Gender | string;
+  dob: string;
+  email: string;
+  phoneNumber: string;
+  tenantStatus: TenantStatus | string;
+  isRepresentative: string;
 }
