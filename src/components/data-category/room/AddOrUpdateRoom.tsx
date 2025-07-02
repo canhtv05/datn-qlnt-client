@@ -1,7 +1,5 @@
-import { Dispatch, useEffect } from "react";
-import FieldsSelectLabel, {
-  FieldsSelectLabelType,
-} from "@/components/FieldsSelectLabel";
+import { Dispatch } from "react";
+import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
 import { RoomStatus, RoomType } from "@/enums";
@@ -28,19 +26,13 @@ const roomStatuses: FieldsSelectLabelType[] = [
   { label: "Bảo trì", value: RoomStatus.DANG_BAO_TRI },
   { label: "Chưa hoàn thiện", value: RoomStatus.CHUA_HOAN_THIEN },
   { label: "Tạm khóa", value: RoomStatus.TAM_KHOA },
-  { label: "Hủy hoạt động", value: RoomStatus.HUY_HOAT_DONG },
 ];
 
 const AddOrUpdateRoom = ({ value, setValue, errors, floorList }: Props) => {
   const floorOptions: FieldsSelectLabelType[] = floorList.map((floor) => ({
     label: `${floor.nameFloor} - ${floor.buildingName}`,
-    value: floor.floorId,
-  }));  
-
-  useEffect(() => {
-    console.log(" floorId value:", value.floorId);
-    console.log(" floor options:", floorOptions);
-  }, [value.floorId, floorOptions]);
+    value: floor.id,
+  }));
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value: inputVal } = e.target;
@@ -62,9 +54,7 @@ const AddOrUpdateRoom = ({ value, setValue, errors, floorList }: Props) => {
           id="floorId"
           name="floorId"
           value={value.floorId ?? ""}
-          onChange={(val) =>
-            setValue((prev) => ({ ...prev, floorId: val as string }))
-          }
+          onChange={(val) => setValue((prev) => ({ ...prev, floorId: val as string }))}
           labelSelect="Tầng"
           showClear
           errorText={errors.floorId}
@@ -117,9 +107,7 @@ const AddOrUpdateRoom = ({ value, setValue, errors, floorList }: Props) => {
           id="roomType"
           name="roomType"
           value={value.roomType ?? ""}
-          onChange={(val) =>
-            setValue((prev) => ({ ...prev, roomType: val as RoomType }))
-          }
+          onChange={(val) => setValue((prev) => ({ ...prev, roomType: val as RoomType }))}
           labelSelect="Loại phòng"
           showClear
           errorText={errors.roomType}
@@ -133,9 +121,7 @@ const AddOrUpdateRoom = ({ value, setValue, errors, floorList }: Props) => {
           id="status"
           name="status"
           value={value.status ?? ""}
-          onChange={(val) =>
-            setValue((prev) => ({ ...prev, status: val as RoomStatus }))
-          }
+          onChange={(val) => setValue((prev) => ({ ...prev, status: val as RoomStatus }))}
           labelSelect="Trạng thái"
           showClear
           errorText={errors.status}
@@ -149,9 +135,7 @@ const AddOrUpdateRoom = ({ value, setValue, errors, floorList }: Props) => {
         placeholder="Nhập mô tả chi tiết"
         label="Mô tả:"
         value={value.description ?? ""}
-        onChange={(e) =>
-          setValue((prev) => ({ ...prev, description: e.target.value }))
-        }
+        onChange={(e) => setValue((prev) => ({ ...prev, description: e.target.value }))}
       />
     </div>
   );

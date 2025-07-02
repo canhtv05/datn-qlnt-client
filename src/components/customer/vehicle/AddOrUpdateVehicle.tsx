@@ -3,15 +3,29 @@ import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSel
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
 import { VehicleStatus, VehicleType } from "@/enums";
-import { ICreateVehicle } from "@/types";
-import { Dispatch } from "react";
+import { cn } from "@/lib/utils";
+import TenantResponse, { ApiResponse, ICreateVehicle, IUpdateVehicle } from "@/types";
+import { Dispatch, useMemo } from "react";
 
-interface AddOrUpdateVehicleProps {
+type AddVehicleProps = {
+  type: "add";
   value: ICreateVehicle;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setValue: Dispatch<React.SetStateAction<ICreateVehicle>>;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   errors: Partial<Record<keyof ICreateVehicle, string>>;
-}
+  tenants?: ApiResponse<TenantResponse[]>;
+};
+
+type UpdateVehicleProps = {
+  type: "update";
+  value: IUpdateVehicle;
+  setValue: Dispatch<React.SetStateAction<IUpdateVehicle>>;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  errors: Partial<Record<keyof IUpdateVehicle, string>>;
+  tenants?: ApiResponse<TenantResponse[]>;
+};
+
+type AddOrUpdateVehicleProps = AddVehicleProps | UpdateVehicleProps;
 
 const vehicleType: FieldsSelectLabelType[] = [
   {
@@ -43,59 +57,125 @@ const vehicleStatus: FieldsSelectLabelType[] = [
   },
 ];
 
-const AddOrUpdateVehicle = ({ value, handleChange, setValue, errors }: AddOrUpdateVehicleProps) => {
+const AddOrUpdateVehicle = (props: AddOrUpdateVehicleProps) => {
+  const { handleChange, tenants, type, value, errors, setValue } = props;
+
+  const tenantOptions = useMemo(() => {
+    return (
+      tenants?.data?.map((tenant) => ({
+        label: tenant.fullName,
+        value: tenant.id,
+      })) || []
+    );
+  }, [tenants?.data]);
+
   return (
     <div className="flex flex-col gap-3">
-      thieu tenantId
-      <FieldsSelectLabel
-        data={vehicleType}
-        placeholder="-- Chọn loại xe --"
-        label="Loại xe:"
-        id="vehicleType"
-        name="vehicleType"
-        value={value.vehicleType ?? ""}
-        onChange={(val) => setValue((prev) => ({ ...prev, vehicleType: val as VehicleType }))}
-        labelSelect="Loại xe"
-        showClear
-        errorText={errors.vehicleType}
-        required
-      />
-      <FieldsSelectLabel
-        data={vehicleStatus}
-        placeholder="-- Chọn loại xe --"
-        label="Loại xe:"
-        id="vehicleStatus"
-        name="vehicleStatus"
-        value={value.vehicleStatus ?? ""}
-        onChange={(val) => setValue((prev) => ({ ...prev, vehicleStatus: val as VehicleStatus }))}
-        labelSelect="Loại xe"
-        showClear
-        errorText={errors.vehicleStatus}
-        required
-      />
-      <InputLabel
-        id="licensePlate"
-        name="licensePlate"
-        placeholder="30A-123.45"
-        required
-        label="Biển số xe:"
-        value={value.licensePlate ?? ""}
-        onChange={handleChange}
-        errorText={errors.licensePlate}
-      />
-      <DatePickerLabel
-        date={value?.registrationDate ? new Date(value?.registrationDate) : new Date()}
-        setDate={(d) => setValue((prev) => ({ ...prev, registrationDate: d.toISOString() }))}
-        label="Ngày đăng ký:"
-        errorText={errors?.registrationDate}
-      />
+      {type === "add" && (
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
+          <FieldsSelectLabel
+            data={tenantOptions}
+            placeholder="-- Chọn chủ xe --"
+            label="Chủ xe:"
+            id="tenantId"
+            name="tenantId"
+            value={value.tenantId ?? ""}
+            onChange={(val) => setValue((prev) => ({ ...prev, tenantId: val as string }))}
+            labelSelect="Chủ xe"
+            showClear
+            errorText={errors.tenantId}
+            required
+          />
+          <FieldsSelectLabel
+            data={vehicleType}
+            placeholder="-- Chọn loại xe --"
+            label="Loại xe:"
+            id="vehicleType"
+            name="vehicleType"
+            value={value.vehicleType ?? ""}
+            onChange={(val) => setValue((prev) => ({ ...prev, vehicleType: val as VehicleType }))}
+            labelSelect="Loại xe"
+            showClear
+            errorText={errors.vehicleType}
+            required
+          />
+        </div>
+      )}
+
+      <div
+        className={cn(
+          "grid grid-cols-1 gap-5",
+          type === "update" && "md:grid-cols-1",
+          type === "add" && "md:grid-cols-2"
+        )}
+      >
+        <FieldsSelectLabel
+          data={vehicleStatus}
+          placeholder="-- Trạng thái xe --"
+          label="Trạng thái xe:"
+          id="vehicleStatus"
+          name="vehicleStatus"
+          value={value.vehicleStatus ?? ""}
+          onChange={(val) => {
+            if (props.type === "add") {
+              props.setValue((prev: ICreateVehicle) => ({
+                ...prev,
+                vehicleStatus: val as VehicleStatus,
+              }));
+            } else {
+              props.setValue((prev: IUpdateVehicle) => ({
+                ...prev,
+                vehicleStatus: val as VehicleStatus,
+              }));
+            }
+          }}
+          labelSelect="Trạng thái xe"
+          showClear
+          errorText={errors.vehicleStatus}
+          required
+        />
+        {type === "add" && (
+          <DatePickerLabel
+            date={value?.registrationDate ? new Date(value?.registrationDate) : new Date()}
+            setDate={(d) => setValue((prev) => ({ ...prev, registrationDate: d.toISOString() }))}
+            label="Ngày đăng ký:"
+            errorText={errors?.registrationDate}
+          />
+        )}
+      </div>
+
+      {type === "add" && (
+        <InputLabel
+          id="licensePlate"
+          name="licensePlate"
+          placeholder="30A-123.45"
+          required
+          label="Biển số xe:"
+          value={value.licensePlate ?? ""}
+          onChange={handleChange}
+          errorText={errors.licensePlate}
+        />
+      )}
+
       <TextareaLabel
         id="describe"
         name="describe"
         placeholder="Nhập mô tả"
         label="Mô tả:"
         value={value.describe ?? ""}
-        onChange={(e) => setValue((prev) => ({ ...prev, describe: e.target.value }))}
+        onChange={(e) => {
+          if (props.type === "add") {
+            props.setValue((prev: ICreateVehicle) => ({
+              ...prev,
+              describe: e.target.value,
+            }));
+          } else {
+            props.setValue((prev: IUpdateVehicle) => ({
+              ...prev,
+              describe: e.target.value,
+            }));
+          }
+        }}
       />
     </div>
   );

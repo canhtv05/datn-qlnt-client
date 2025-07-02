@@ -3,16 +3,14 @@ import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
 import { AssetBeLongTo } from "@/enums";
 import { ApiResponse, CreateAssetInitResponse, ICreateAsset } from "@/types";
-import { httpRequest } from "@/utils/httpRequest";
-import { useQuery } from "@tanstack/react-query";
-import { Dispatch, useEffect, useMemo } from "react";
-import { toast } from "sonner";
+import { Dispatch, useMemo } from "react";
 
 interface AddOrUpdateAssetProps {
   value: ICreateAsset;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setValue: Dispatch<React.SetStateAction<ICreateAsset>>;
   errors: Partial<Record<keyof ICreateAsset, string>>;
+  assetsInfo?: ApiResponse<CreateAssetInitResponse>;
 }
 
 const assetBeLongTo: FieldsSelectLabelType[] = [
@@ -30,15 +28,7 @@ const assetBeLongTo: FieldsSelectLabelType[] = [
   },
 ];
 
-const AddOrUpdateAsset = ({ value, handleChange, setValue, errors }: AddOrUpdateAssetProps) => {
-  const { data: assetsInfo, isError: isErrorAssetInfo } = useQuery<ApiResponse<CreateAssetInitResponse>>({
-    queryKey: ["assets-init"],
-    queryFn: async () => {
-      const res = await httpRequest.get("/assets/init");
-      return res.data;
-    },
-  });
-
+const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo }: AddOrUpdateAssetProps) => {
   const roomOptions = useMemo(() => {
     return (
       assetsInfo?.data.rooms?.map((item) => ({
@@ -66,11 +56,14 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors }: AddOrUpdate
     );
   }, [assetsInfo?.data.buildings]);
 
-  useEffect(() => {
-    if (isErrorAssetInfo) {
-      toast.error("Không lấy được dữ liệu tài sản");
-    }
-  }, [isErrorAssetInfo]);
+  const tenantOptions = useMemo(() => {
+    return (
+      assetsInfo?.data.tenants?.map((item) => ({
+        label: item.name,
+        value: item.id,
+      })) ?? []
+    );
+  }, [assetsInfo?.data.tenants]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -85,7 +78,7 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors }: AddOrUpdate
         errorText={errors.nameAsset}
       />
 
-      <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full">
+      <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full">
         <FieldsSelectLabel
           data={assetBeLongTo}
           placeholder="-- Chọn tài sản thuộc về --"
@@ -111,6 +104,20 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors }: AddOrUpdate
           labelSelect="Phòng"
           showClear
           errorText={errors.roomID}
+          required
+        />
+
+        <FieldsSelectLabel
+          data={tenantOptions}
+          placeholder="-- Chọn khách thuê --"
+          label="Khách thuê:"
+          id="tenantId"
+          name="tenantId"
+          value={value.tenantId ?? ""}
+          onChange={(val) => setValue((prev) => ({ ...prev, tenantId: val as string }))}
+          labelSelect="Khách thuê"
+          showClear
+          errorText={errors.tenantId}
           required
         />
       </div>

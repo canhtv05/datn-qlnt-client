@@ -13,13 +13,19 @@ import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
 import { createOrUpdateAssetSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { IBtnType, ICreateAsset } from "@/types";
+import { ApiResponse, CreateAssetInitResponse, IBtnType, ICreateAsset } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateAsset from "./AddOrUpdateAsset";
 
-const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
+const AssetButton = ({
+  ids,
+  assetsInfo,
+}: {
+  ids: Record<string, boolean>;
+  assetsInfo?: ApiResponse<CreateAssetInitResponse>;
+}) => {
   const [value, setValue] = useState<ICreateAsset>({
     assetBeLongTo: "",
     assetTypeId: "",
@@ -144,7 +150,7 @@ const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Tài sản: Vẫn chưa thêm sửa xóa được do lỗi api khách thuê</h3>
+        <h3 className="font-semibold">Tài sản: chưa test được vì chưa có khách thuê</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>
@@ -162,7 +168,13 @@ const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
                     desc={Notice.ADD}
                     onConfirm={handleAddAssetType}
                   >
-                    <AddOrUpdateAsset handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
+                    <AddOrUpdateAsset
+                      assetsInfo={assetsInfo}
+                      handleChange={handleChange}
+                      value={value}
+                      setValue={setValue}
+                      errors={errors}
+                    />
                   </Modal>
                 </RenderIf>
                 <RenderIf value={btn.type !== "default"}>

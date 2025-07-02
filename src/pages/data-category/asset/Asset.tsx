@@ -46,6 +46,7 @@ const Asset = () => {
     setValue,
     errors,
     ConfirmDialog,
+    assetsInfo,
   } = useAsset();
   const { page, size } = query;
 
@@ -112,7 +113,7 @@ const Asset = () => {
 
   return (
     <div className="flex flex-col">
-      <AssetButton ids={rowSelection} />
+      <AssetButton ids={rowSelection} assetsInfo={assetsInfo} />
       <AssetFilter props={props} />
       <DataTable<AssetResponse>
         data={data?.data ?? []}
@@ -133,7 +134,13 @@ const Asset = () => {
         onConfirm={handleUpdateFloor}
         desc={Notice.UPDATE}
       >
-        <AddOrUpdateAsset handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
+        <AddOrUpdateAsset
+          assetsInfo={assetsInfo}
+          handleChange={handleChange}
+          value={value}
+          setValue={setValue}
+          errors={errors}
+        />
       </Modal>
       <ConfirmDialog />
     </div>

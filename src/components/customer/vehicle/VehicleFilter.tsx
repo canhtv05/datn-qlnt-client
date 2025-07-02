@@ -1,12 +1,9 @@
 import ButtonFilter from "@/components/ButtonFilter";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
-import { FloorStatus, FloorType } from "@/enums";
-import TenantResponse, { ApiResponse, VehicleFilterValues, IBuildingCardsResponse } from "@/types";
-import { httpRequest } from "@/utils/httpRequest";
-import { useQuery } from "@tanstack/react-query";
-import { Dispatch, FormEvent, SetStateAction, useEffect, useMemo } from "react";
-import { toast } from "sonner";
+import { VehicleType } from "@/enums";
+import { VehicleFilterValues } from "@/types";
+import { Dispatch, FormEvent, SetStateAction } from "react";
 
 export interface VehicleFilterProps {
   filterValues: VehicleFilterValues;
@@ -16,7 +13,7 @@ export interface VehicleFilterProps {
 }
 
 const VehicleFilter = ({ props }: { props: VehicleFilterProps }) => {
-  const { licensePlate, tenantId, vehicleType } = props.filterValues;
+  const { licensePlate, vehicleType } = props.filterValues;
   const setFilterValues = props.setFilterValues;
 
   const handleChange = (key: keyof VehicleFilterValues, value: string) => {
@@ -28,80 +25,30 @@ const VehicleFilter = ({ props }: { props: VehicleFilterProps }) => {
     props.onFilter();
   };
 
-  const { data, isError } = useQuery<ApiResponse<TenantResponse[]>>({
-    queryKey: ["tenants-all"],
-    queryFn: async () => {
-      const res = await httpRequest.get("/tenants/all");
-      return res.data;
-    },
-  });
-
-  useEffect(() => {
-    if (isError) toast.error("Không lấy được dữ liệu khách thuê");
-  }, [isError]);
-
-  const mapValueAndLabel = useMemo(() => {
-    const tenants: TenantResponse[] = data?.data ?? [];
-    return tenants.map((building) => ({
-      label: building.fullName,
-      value: building.id,
-    }));
-  }, [data]);
-
   return (
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
-      <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end">
+      <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full items-end">
         <FieldsSelectLabel
-          placeholder="-- Trạng thái hoạt động --"
-          labelSelect="Trạng thái"
+          placeholder="-- Loại phương tiện --"
+          labelSelect="Loại phương tiện"
           data={[
-            { label: "Hoạt động", value: FloorStatus.HOAT_DONG },
-            { label: "Tạm khóa", value: FloorStatus.TAM_KHOA },
+            { label: "Xe máy", value: VehicleType.XE_MAY },
+            { label: "Ô tô", value: VehicleType.O_TO },
+            { label: "Xe đạp", value: VehicleType.XE_DAP },
+            { label: "Khác", value: VehicleType.KHAC },
           ]}
-          value={status}
-          onChange={(value) => handleChange("status", String(value))}
-          name="status"
-          showClear
-        />
-        <FieldsSelectLabel
-          placeholder="-- Loại tầng --"
-          labelSelect="Loại tầng"
-          data={[
-            { label: "Cho thuê", value: FloorType.CHO_THUE },
-            { label: "Để ở", value: FloorType.DE_O },
-            { label: "Kho", value: FloorType.KHO },
-            { label: "Không cho thuê", value: FloorType.KHONG_CHO_THUE },
-            { label: "Khác", value: FloorType.KHAC },
-          ]}
-          value={floorType}
-          onChange={(value) => handleChange("floorType", String(value))}
-          name="floorType"
-          showClear
-        />
-        <FieldsSelectLabel
-          placeholder="-- Tòa nhà --"
-          labelSelect="Tòa nhà"
-          data={mapValueAndLabel}
-          value={buildingId}
-          onChange={(value) => handleChange("buildingId", String(value))}
-          name="buildingId"
+          value={vehicleType}
+          onChange={(value) => handleChange("vehicleType", String(value))}
+          name="vehicleType"
           showClear
         />
         <InputLabel
           type="text"
-          id="nameFloor"
-          name="nameFloor"
-          placeholder="Tên tòa nhà"
-          value={nameFloor}
-          onChange={(e) => handleChange("nameFloor", e.target.value)}
-        />
-        <InputLabel
-          type="number"
-          id="maxRoom"
-          name="maxRoom"
-          placeholder="Số phòng tối đa"
-          value={maxRoom}
-          onChange={(e) => handleChange("maxRoom", e.target.value)}
+          id="licensePlate"
+          name="licensePlate"
+          placeholder="Biển số xe"
+          value={licensePlate}
+          onChange={(e) => handleChange("licensePlate", e.target.value)}
         />
       </div>
       <ButtonFilter onClear={props.onClear} />

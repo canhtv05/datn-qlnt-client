@@ -5,13 +5,13 @@ import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { ColumnConfig, FloorResponse, IBtnType } from "@/types";
+import { ColumnConfig, IBtnType, VehicleResponse } from "@/types";
 import Modal from "@/components/Modal";
 import { Notice } from "@/enums";
 import { useVehicle } from "./useVehicle";
-import AddOrUpdateFloor from "@/components/data-category/floor/AddOrUpdateFloor";
-import FloorButton from "@/components/data-category/floor/FloorButton";
-import FloorFilter from "@/components/data-category/floor/FloorFilter";
+import VehicleButton from "@/components/customer/vehicle/VehicleButton";
+import VehicleFilter from "@/components/customer/vehicle/VehicleFilter";
+import AddOrUpdateVehicle from "@/components/customer/vehicle/AddOrUpdateVehicle";
 
 const btns: IBtnType[] = [
   {
@@ -44,7 +44,7 @@ const Vehicle = () => {
     isLoading,
     query,
     handleActionClick,
-    datFloors,
+    dataVehicles,
     rowSelection,
     setRowSelection,
     isModalOpen,
@@ -54,6 +54,7 @@ const Vehicle = () => {
     value,
     setValue,
     errors,
+    tenants,
     ConfirmDialog,
   } = useVehicle();
   const { page, size } = query;
@@ -65,8 +66,8 @@ const Vehicle = () => {
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
-      render: (row: FloorResponse) => {
-        const floor: FloorResponse = row;
+      render: (row: VehicleResponse) => {
+        const vehicle: VehicleResponse = row;
         return (
           <div className="flex gap-2">
             {btns.map((btn, index) => (
@@ -79,7 +80,7 @@ const Vehicle = () => {
                       className="cursor-pointer"
                       onClick={() => {
                         const type = btn.type as "update" | "delete";
-                        handleActionClick(floor, type);
+                        handleActionClick(vehicle, type);
                       }}
                     >
                       <btn.icon className="text-white" />
@@ -117,10 +118,10 @@ const Vehicle = () => {
 
   return (
     <div className="flex flex-col">
-      <StatisticCard data={datFloors} />
-      <FloorButton ids={rowSelection} />
-      <FloorFilter props={props} />
-      <DataTable<FloorResponse>
+      <StatisticCard data={dataVehicles} />
+      <VehicleButton ids={rowSelection} tenants={tenants} />
+      <VehicleFilter props={props} />
+      <DataTable<VehicleResponse>
         data={data?.data ?? []}
         columns={buildColumnsFromConfig(columnConfigs)}
         page={Number(page)}
@@ -132,14 +133,21 @@ const Vehicle = () => {
         setRowSelection={setRowSelection}
       />
       <Modal
-        title="Tầng"
+        title="Phương tiện"
         trigger={null}
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         onConfirm={handleUpdateFloor}
         desc={Notice.UPDATE}
       >
-        <AddOrUpdateFloor handleChange={handleChange} value={value} setValue={setValue} errors={errors} type="add" />
+        <AddOrUpdateVehicle
+          tenants={tenants}
+          handleChange={handleChange}
+          value={value}
+          setValue={setValue}
+          errors={errors}
+          type="update"
+        />
       </Modal>
       <ConfirmDialog />
     </div>

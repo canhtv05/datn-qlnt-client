@@ -1,7 +1,7 @@
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
 import { createOrUpdateAssetSchema } from "@/lib/validation";
-import { ApiResponse, AssetResponse, IUpdateAsset } from "@/types";
+import { ApiResponse, AssetResponse, CreateAssetInitResponse, IUpdateAsset } from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
@@ -200,6 +200,14 @@ export const useAsset = () => {
     [openDialog]
   );
 
+  const { data: assetsInfo, isError: isErrorAssetInfo } = useQuery<ApiResponse<CreateAssetInitResponse>>({
+    queryKey: ["assets-init"],
+    queryFn: async () => {
+      const res = await httpRequest.get("/assets/init");
+      return res.data;
+    },
+  });
+
   const props = {
     filterValues,
     setFilterValues,
@@ -207,9 +215,15 @@ export const useAsset = () => {
     onFilter: handleFilter,
   };
 
-  if (isError) {
-    toast.error("Có lỗi xảy ra khi tải loại tài sản");
-  }
+  useEffect(() => {
+    if (isError) {
+      toast.error("Có lỗi xảy ra khi tải loại tài sản");
+    }
+
+    if (isErrorAssetInfo) {
+      toast.error("Không lấy được dữ liệu tài sản");
+    }
+  }, [isError, isErrorAssetInfo]);
 
   return {
     query: {
@@ -232,5 +246,6 @@ export const useAsset = () => {
     setValue,
     errors,
     ConfirmDialog,
+    assetsInfo,
   };
 };

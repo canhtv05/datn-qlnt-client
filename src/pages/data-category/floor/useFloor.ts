@@ -143,14 +143,14 @@ export const useFloor = () => {
     mutationFn: async (id: string) => await httpRequest.put(`/floors/soft-delete/${id}`),
   });
 
-  const toggleStatusBuildingMutation = useMutation({
-    mutationKey: ["toggle-building"],
+  const toggleStatusFloorMutation = useMutation({
+    mutationKey: ["toggle-floor"],
     mutationFn: async (id: string) => await httpRequest.put(`/floors/toggle-status/${id}`),
   });
 
   const handleToggleStatusFloorById = async (id: string): Promise<boolean> => {
     try {
-      await toggleStatusBuildingMutation.mutateAsync(id, {
+      await toggleStatusFloorMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "floors",

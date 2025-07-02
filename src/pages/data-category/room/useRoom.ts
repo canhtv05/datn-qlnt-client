@@ -1,12 +1,6 @@
 import { useConfirmDialog, useFormErrors } from "@/hooks";
 import { createOrUpdateRoomSchema } from "@/lib/validation";
-import {
-  ApiResponse,
-  RoomFormValue,
-  RoomResponse,
-  IRoomStatisticsResponse,
-  FloorBasicResponse,
-} from "@/types";
+import { ApiResponse, RoomFormValue, RoomResponse, IRoomStatisticsResponse, FloorBasicResponse } from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
@@ -43,8 +37,7 @@ export const useRoom = () => {
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
 
-  const {id: buildingId} = useParams();
-  console.log(" buildingId:", buildingId);
+  const { id: buildingId } = useParams();
   const idRef = useRef<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rowSelection, setRowSelection] = useState({});
@@ -111,29 +104,29 @@ export const useRoom = () => {
     }
   }, [isRoomError]);
 
-  const { data: floorListData, isLoading: isLoadingFloorList } =
-    useQuery<ApiResponse<FloorBasicResponse[]>>({
-      queryKey: ["floor-list", buildingId],
-      queryFn: async () => {
-        const res = await httpRequest.get("/floors/find-all", {
-          params: {
-            buildingId,
-          },
-        });
-        return res.data;
-      },
-      enabled: !!buildingId,
-    });
+  const { data: floorListData, isLoading: isLoadingFloorList } = useQuery<ApiResponse<FloorBasicResponse[]>>({
+    queryKey: ["floor-list", buildingId],
+    queryFn: async () => {
+      const res = await httpRequest.get("/floors/find-all", {
+        params: {
+          buildingId,
+        },
+      });
+      return res.data;
+    },
+    enabled: !!buildingId,
+  });
 
   const { data: statisticsRaw } = useQuery<ApiResponse<IRoomStatisticsResponse>>({
-  queryKey: ["room-statistics", buildingId],
-  queryFn: async () =>
-    (await httpRequest.get("/rooms/statistics", {
-      params: { buildingId },
-    })).data,
-  enabled: !!buildingId,
-});
-
+    queryKey: ["room-statistics", buildingId],
+    queryFn: async () =>
+      (
+        await httpRequest.get("/rooms/statistics", {
+          params: { buildingId },
+        })
+      ).data,
+    enabled: !!buildingId,
+  });
 
   const roomStats = [
     { icon: DoorOpen, label: "Đang trống", value: mapStatistics(statisticsRaw?.data).empty },
@@ -143,8 +136,7 @@ export const useRoom = () => {
 
   const createRoomMutation = useMutation({
     mutationKey: ["create-room"],
-    mutationFn: async (payload: RoomFormValue) =>
-      httpRequest.post("/rooms/add", payload),
+    mutationFn: async (payload: RoomFormValue) => httpRequest.post("/rooms/add", payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
       queryClient.invalidateQueries({ queryKey: ["room-statistics"] });
@@ -155,8 +147,7 @@ export const useRoom = () => {
 
   const updateRoomMutation = useMutation({
     mutationKey: ["update-room"],
-    mutationFn: async (payload: RoomFormValue) =>
-      httpRequest.put(`/rooms/update/${idRef.current}`, payload),
+    mutationFn: async (payload: RoomFormValue) => httpRequest.put(`/rooms/update/${idRef.current}`, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
       queryClient.invalidateQueries({ queryKey: ["room-statistics"] });
@@ -209,7 +200,6 @@ export const useRoom = () => {
   const handleSaveRoom = useCallback(async () => {
     try {
       await createOrUpdateRoomSchema.parseAsync(value);
-    console.error("Validation error:", value);
       if (idRef.current) {
         await updateRoomMutation.mutateAsync(value);
       } else {
@@ -219,6 +209,7 @@ export const useRoom = () => {
       setIsModalOpen(false);
       return true;
     } catch (error) {
+      console.log(error);
       handleZodErrors(error);
       return false;
     }

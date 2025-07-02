@@ -25,6 +25,9 @@ const routes = {
     roomId: "/data-categories/rooms/:id",
     roomAsset: "/data-categories/assets",
   },
+  customer: {
+    vehicles: "/customers/vehicles",
+  },
 };
 
 export default routes;

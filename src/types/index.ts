@@ -230,7 +230,7 @@ export interface IRoomStatisticsResponse {
   getTotalTamKhoa: number;
 }
 export interface FloorBasicResponse {
-  floorId: string;
+  id: string;
   buildingId: string;
   nameFloor: string;
   floorType: string;
@@ -306,12 +306,16 @@ export interface ICreateVehicle {
   describe: string;
 }
 
-export type IUpdateVehicle = Omit<ICreateVehicle, "vehicleStatus" | "describe">;
+export type IUpdateVehicle = Pick<ICreateVehicle, "vehicleStatus" | "describe">;
 
 export interface VehicleFilterValues {
-  tenantId: string;
   vehicleType: VehicleType | string;
   licensePlate: string;
+}
+
+export interface VehicleStatisticsResponse {
+  total: number;
+  byType: Record<string, number>;
 }
 
 /* TENANT */

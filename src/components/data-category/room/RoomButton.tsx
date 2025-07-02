@@ -2,12 +2,7 @@ import { useState, useCallback, ChangeEvent } from "react";
 import { toast } from "sonner";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import Modal from "@/components/Modal";
 import AddOrUpdateRoom from "./AddOrUpdateRoom";
@@ -34,7 +29,6 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
   });
 
   const { id: buildingId } = useParams();
-  console.log(" buildingId:", buildingId);
   const { errors, clearErrors, handleZodErrors } = useFormErrors<RoomFormValue>();
   const queryClient = useQueryClient();
 
@@ -56,8 +50,7 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
 
   const addRoomMutation = useMutation({
     mutationKey: ["add-room"],
-    mutationFn: async (payload: RoomFormValue) =>
-      await httpRequest.post("/rooms/add", payload),
+    mutationFn: async (payload: RoomFormValue) => await httpRequest.post("/rooms/add", payload),
     onError: handleMutationError,
     onSuccess: () => {
       toast.success(Status.ADD_SUCCESS);
@@ -79,7 +72,7 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
     try {
       const fullValue = {
         ...value,
-        buildingId, // ✅ Gửi kèm buildingId
+        buildingId,
       };
       await createOrUpdateRoomSchema.parseAsync(fullValue);
       await addRoomMutation.mutateAsync(fullValue);
@@ -93,8 +86,7 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
 
   const removeRoomMutation = useMutation({
     mutationKey: ["remove-room"],
-    mutationFn: async (id: string) =>
-      await httpRequest.put(`/rooms/soft-delete/${id}`),
+    mutationFn: async (id: string) => await httpRequest.put(`/rooms/soft-delete/${id}`),
   });
 
   const handleRemoveRooms = async (ids: Record<string, boolean>): Promise<boolean> => {
@@ -178,13 +170,18 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
                 </RenderIf>
                 <TooltipContent
                   className="text-white"
-                  style={{ background: btn.arrowColor }}
+                  style={{
+                    background: btn.arrowColor,
+                  }}
                   arrow={false}
                 >
                   <p>{btn.tooltipContent}</p>
                   <TooltipPrimitive.Arrow
-                    style={{ fill: btn.arrowColor }}
-                    className="size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
+                    style={{
+                      fill: btn.arrowColor,
+                      background: btn.arrowColor,
+                    }}
+                    className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
                   />
                 </TooltipContent>
               </Tooltip>
