@@ -21,6 +21,8 @@ const routes = {
     floors: "/data-categories/floors",
     floorId: "/data-categories/floors/:id",
     assetType: "/data-categories/asset-types",
+    rooms: "/data-categories/rooms",
+    roomId: "/data-categories/rooms/:id",
     roomAsset: "/data-categories/assets",
   },
 };

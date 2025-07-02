@@ -229,6 +229,7 @@ export const useFloor = () => {
       return true;
     } catch (error) {
       handleZodErrors(error);
+      console.error("Error updating floor:", error);
       return false;
     }
   }, [updateFloorMutation, clearErrors, handleZodErrors, queryClient, value]);

@@ -1,12 +1,14 @@
 import {
-  AssetBeLongTo,
   AssetGroup,
+  AssetBeLongTo,
   AssetStatus,
   BuildingStatus,
   BuildingType,
   FloorStatus,
   FloorType,
   Gender,
+  RoomStatus,
+  RoomType,
   TenantStatus,
   VehicleStatus,
   VehicleType,
@@ -115,7 +117,9 @@ export interface ICreateBuildingValue {
   description: string;
 }
 
-export type UpdateBuildingValue = ICreateBuildingValue & { status?: BuildingStatus };
+export type UpdateBuildingValue = ICreateBuildingValue & {
+  status?: BuildingStatus;
+};
 
 export interface IBuildingStatisticsResponse {
   activeBuilding: number;
@@ -187,6 +191,52 @@ export interface AssetTypeResponse extends AbstractResponse, ICreateAssetType {}
 export interface AssetTypeFilterValues {
   nameAssetType: string;
   assetGroup: AssetGroup | string;
+}
+/* ROOM*/
+export interface RoomResponse extends AbstractResponse {
+  id: string;
+  roomCode: string;
+  acreage: number;
+  price: number;
+  maximumPeople: number;
+  roomType: RoomType;
+  status: RoomStatus;
+  description: string;
+  floor: {
+    id: string;
+    floorName: string;
+  };
+}
+export type RoomFormValue = {
+  floorId: string;
+  acreage: number | null;
+  price: number | null;
+  maximumPeople: number | null;
+  roomType: RoomType | null;
+  status: RoomStatus | null;
+  description: string;
+  buildingId?: string;
+};
+export type RoomDeleteRequest = {
+  floorId: string;
+  roomCode: string;
+};
+export interface IRoomStatisticsResponse {
+  getTotalTrong: number;
+  getTotalDangThue: number;
+  getTotalDaDatCoc: number;
+  getTotalDangBaoTri: number;
+  getTotalChuaHoanThien: number;
+  getTotalTamKhoa: number;
+}
+export interface FloorBasicResponse {
+  floorId: string;
+  buildingId: string;
+  nameFloor: string;
+  floorType: string;
+  status: string;
+  maximumRooms: number;
+  buildingName: string;
 }
 
 export interface IdAndName {

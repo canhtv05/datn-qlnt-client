@@ -33,6 +33,7 @@ const Floor = lazy(() => import("@/pages/data-category/floor"));
 const AssetType = lazy(() => import("@/pages/data-category/asset-type"));
 const Asset = lazy(() => import("@/pages/data-category/asset"));
 
+const Room = lazy(() => import("@/pages/data-category/room"));
 const publicRoutes: RouteType[] = [
   /* AUTH */
   {
@@ -81,13 +82,19 @@ const privateRoutes: RouteType[] = [
     component: AssetType,
   },
   {
+    path: configs.routes.dataCategories.rooms,
+    component: SelectBuilding,
+  },
+  {
+    path: configs.routes.dataCategories.roomId,
+    component: Room,
     path: configs.routes.dataCategories.roomAsset,
     component: Asset,
   },
 ];
 
 const unprotectedRoutes: RouteType[] = [
-  /* ✅ HOME là public */
+  /*HOME là public */
   {
     path: configs.routes.home.home,
     component: Home,

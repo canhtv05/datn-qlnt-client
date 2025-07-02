@@ -23,6 +23,7 @@ export enum Status {
   LOGOUT_FAILED = "Đăng xuất thất bại",
   LOGOUT_SUCCESS = "Đăng xuất thành công",
   REGISTER_SUCCESS = "Đăng ký thành công, vui lòng đăng nhập",
+  ERROR_STATISTICS = "Có lỗi xảy ra khi lấy dữ liệu thống kê",
 }
 
 export enum Notice {
@@ -69,7 +70,21 @@ export enum AssetGroup {
   CA_NHAN = "CA_NHAN",
   KHAC = "KHAC",
 }
-
+/* ROOM */
+export enum RoomStatus {
+    TRONG = "TRONG",
+    DANG_THUE = "DANG_THUE",
+    DA_DAT_COC = "DA_DAT_COC",
+    DANG_BAO_TRI = "DANG_BAO_TRI",
+    CHUA_HOAN_THIEN = "CHUA_HOAN_THIEN",
+    TAM_KHOA = "TAM_KHOA",
+    HUY_HOAT_DONG = "HUY_HOAT_DONG",
+}
+export enum RoomType {
+  GHEP = "GHEP",
+  DON = "DON",
+  KHAC = "KHAC",
+}
 /* Asset */
 export enum AssetBeLongTo {
   PHONG = "PHONG",
