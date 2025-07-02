@@ -41,14 +41,21 @@ export default function buildColumnsFromConfig<T extends object>(configs: Column
       return <div className={wrapperClass}>{config.render(row.original)}</div>;
     }
 
-    if (config.accessorKey === "amount") {
-      const amount = parseFloat(row.getValue("amount"));
+    if (config.accessorKey === "price") {
+      const price = parseFloat(row.getValue("price"));
       const formatted = new Intl.NumberFormat("vi-VN", {
         style: "currency",
         currency: "VND",
-      }).format(amount);
+      }).format(price);
 
-      return <div className={cn(wrapperClass, "text-right font-medium")}>{formatted}</div>;
+      const [amount, currency] = formatted.split(/\s*(?=\D+$)/);
+
+      return (
+        <div className={cn(wrapperClass, "text-right font-medium")}>
+          {amount}
+          <span className="text-sm text-red-600 font-bold ml-1">{currency}</span>
+        </div>
+      );
     }
 
     if (config.accessorKey === "email") {
@@ -59,6 +66,14 @@ export default function buildColumnsFromConfig<T extends object>(configs: Column
       return (
         <div className={wrapperClass}>
           <StatusBadge status={value} />
+        </div>
+      );
+    }
+
+    if (!value || value === undefined || value === null || (typeof value === "number" && Number.isNaN(value))) {
+      return (
+        <div className={cn(wrapperClass, "flex items-center w-full justify-center")}>
+          <StatusBadge status={"__EMPTY__"} />
         </div>
       );
     }

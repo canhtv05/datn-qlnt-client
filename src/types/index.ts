@@ -1,5 +1,8 @@
 import {
   AssetGroup,
+  AssetBeLongTo,
+  AssetGroup,
+  AssetStatus,
   BuildingStatus,
   BuildingType,
   FloorStatus,
@@ -232,4 +235,50 @@ export interface FloorBasicResponse {
   status: string;
   maximumRooms: number;
   buildingName: string;
+=======
+
+export interface IdAndName {
+  id: string;
+  name: string;
+}
+
+export interface CreateAssetInitResponse {
+  assetTypes: IdAndName[];
+  rooms: IdAndName[];
+  buildings: IdAndName[];
+  floors: IdAndName[];
+  tenants: IdAndName[];
+}
+
+/* Asset */
+export interface ICreateAsset {
+  nameAsset: string;
+  assetTypeId: string;
+  assetBeLongTo: AssetBeLongTo | string;
+  roomID: string;
+  buildingID: string;
+  floorID: string;
+  tenantId: string;
+  price: number | undefined;
+  descriptionAsset: string;
+}
+
+export type IUpdateAsset = ICreateAsset;
+
+export interface AssetResponse extends AbstractResponse {
+  nameAsset: string;
+  assetTypeId: string;
+  nameAssetType: string;
+  assetBeLongTo: AssetBeLongTo | string;
+  roomID: string;
+  roomCode: string;
+  buildingID: string;
+  buildingName: string;
+  floorID: string;
+  nameFloor: string;
+  tenantId: string;
+  fullName: string;
+  price: number;
+  assetStatus: AssetStatus | string;
+  descriptionAsset: string;
 }

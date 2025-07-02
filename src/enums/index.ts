@@ -70,7 +70,6 @@ export enum AssetGroup {
   CA_NHAN = "CA_NHAN",
   KHAC = "KHAC",
 }
-
 /* ROOM */
 export enum RoomStatus {
     TRONG = "TRONG",
@@ -86,4 +85,17 @@ export enum RoomType {
   DON = "DON",
   KHAC = "KHAC",
 }
+/* Asset */
+export enum AssetBeLongTo {
+  PHONG = "PHONG",
+  CHUNG = "CHUNG",
+  CA_NHAN = "CA_NHAN",
+}
 
+export enum AssetStatus {
+  SU_DUNG = "SU_DUNG",
+  HU_HONG = "HU_HONG",
+  CAN_BAO_TRI = "CAN_BAO_TRI",
+  THAT_LAC = "THAT_LAC",
+  DA_THANH_LY = "DA_THANH_LY",
+}
