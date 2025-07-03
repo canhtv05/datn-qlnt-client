@@ -72,13 +72,13 @@ export enum AssetGroup {
 }
 /* ROOM */
 export enum RoomStatus {
-    TRONG = "TRONG",
-    DANG_THUE = "DANG_THUE",
-    DA_DAT_COC = "DA_DAT_COC",
-    DANG_BAO_TRI = "DANG_BAO_TRI",
-    CHUA_HOAN_THIEN = "CHUA_HOAN_THIEN",
-    TAM_KHOA = "TAM_KHOA",
-    HUY_HOAT_DONG = "HUY_HOAT_DONG",
+  TRONG = "TRONG",
+  DANG_THUE = "DANG_THUE",
+  DA_DAT_COC = "DA_DAT_COC",
+  DANG_BAO_TRI = "DANG_BAO_TRI",
+  CHUA_HOAN_THIEN = "CHUA_HOAN_THIEN",
+  TAM_KHOA = "TAM_KHOA",
+  HUY_HOAT_DONG = "HUY_HOAT_DONG",
 }
 export enum RoomType {
   GHEP = "GHEP",
@@ -119,6 +119,5 @@ export enum TenantStatus {
   DANG_THUE = "DANG_THUE",
   DA_TRA_PHONG = "DA_TRA_PHONG",
   TIEM_NANG = "TIEM_NANG",
-  HUY_BO = "HUY_BO",
   KHOA = "KHOA",
 }

@@ -27,6 +27,7 @@ const routes = {
   },
   customer: {
     vehicles: "/customers/vehicles",
+    tenants: "/customers/tenants",
   },
 };
 

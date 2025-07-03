@@ -1,37 +1,42 @@
 import { StatisticCardType } from "@/components/StatisticCard";
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
-import { updateFloorSchema } from "@/lib/validation";
+import { createOrUpdateTenantSchema } from "@/lib/validation";
 import TenantResponse, {
   ApiResponse,
-  IUpdateVehicle,
-  VehicleFilterValues,
-  VehicleResponse,
-  VehicleStatisticsResponse,
+  ICreateAndUpdateTenant,
+  ITenantStatisticsResponse,
+  TenantFilterValues,
 } from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Building as BuildingIcon, CircleCheck as CircleCheckIcon, XCircle as XCircleIcon } from "lucide-react";
+import { UsersIcon, UserCheckIcon, UserXIcon, UserPlusIcon, BanIcon, LockIcon } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
-export const useVehicle = () => {
+export const useTenant = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
     size = "15",
-    vehicleType = "",
-    licensePlate = "",
-  } = queryFilter(searchParams, "page", "size", "vehicleType", "licensePlate");
+    query = "",
+    gender = "",
+    tenantStatus = "",
+  } = queryFilter(searchParams, "page", "size", "query", "gender", "tenantStatus");
 
   const [rowSelection, setRowSelection] = useState({});
   const idRef = useRef<string>("");
-  const [value, setValue] = useState<IUpdateVehicle>({
-    describe: "",
-    vehicleStatus: "",
+  const [value, setValue] = useState<ICreateAndUpdateTenant>({
+    address: "",
+    dob: "",
+    email: "",
+    fullName: "",
+    gender: "",
+    identityCardNumber: "",
+    phoneNumber: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -40,50 +45,55 @@ export const useVehicle = () => {
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<IUpdateVehicle>();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAndUpdateTenant>();
 
   useEffect(() => {
     setFilterValues({
-      licensePlate,
-      vehicleType,
+      gender,
+      query,
+      tenantStatus,
     });
-  }, [licensePlate, vehicleType]);
+  }, [gender, query, tenantStatus]);
 
-  const [filterValues, setFilterValues] = useState<VehicleFilterValues>({
-    licensePlate,
-    vehicleType,
+  const [filterValues, setFilterValues] = useState<TenantFilterValues>({
+    gender,
+    query,
+    tenantStatus,
   });
 
   const handleClear = () => {
     setFilterValues({
-      licensePlate: "",
-      vehicleType: "",
+      gender: "",
+      query: "",
+      tenantStatus: "",
     });
     setSearchParams({});
   };
 
   const handleFilter = useCallback(() => {
     const params = new URLSearchParams();
-    if (filterValues.licensePlate) params.set("licensePlate", filterValues.licensePlate);
-    if (filterValues.licensePlate) params.set("licensePlate", filterValues.licensePlate);
+    if (filterValues.gender) params.set("gender", filterValues.gender);
+    if (filterValues.query) params.set("query", filterValues.query);
+    if (filterValues.tenantStatus) params.set("tenantStatus", filterValues.tenantStatus);
     params.set("page", "1");
-    if (filterValues.licensePlate || filterValues.vehicleType) {
+    if (filterValues.gender || filterValues.query || filterValues.tenantStatus) {
       setSearchParams(params);
     }
-  }, [setSearchParams, filterValues.licensePlate, filterValues.vehicleType]);
+  }, [filterValues.gender, filterValues.query, filterValues.tenantStatus, setSearchParams]);
 
-  const { data, isLoading, isError } = useQuery<ApiResponse<VehicleResponse[]>>({
-    queryKey: ["vehicles", page, size, licensePlate, vehicleType],
+  const { data, isLoading, isError } = useQuery<ApiResponse<TenantResponse[]>>({
+    queryKey: ["tenants", page, size, query, tenantStatus, gender],
     queryFn: async () => {
       const params: Record<string, string> = {
         page: page.toString(),
         size: size.toString(),
       };
 
-      if (licensePlate) params["licensePlate"] = licensePlate;
-      if (vehicleType) params["vehicleType"] = vehicleType;
+      if (tenantStatus) params["tenantStatus"] = tenantStatus;
+      if (gender) params["gender"] = gender;
+      if (query) params["query"] = query;
 
-      const res = await httpRequest.get("/vehicles", {
+      const res = await httpRequest.get("/tenants", {
         params,
       });
 
@@ -100,27 +110,27 @@ export const useVehicle = () => {
     }));
   };
 
-  const updateVehicleMutation = useMutation({
-    mutationKey: ["update-vehicle"],
-    mutationFn: async (payload: IUpdateVehicle) => await httpRequest.put(`/vehicles/${idRef.current}`, payload),
+  const updateTenantMutation = useMutation({
+    mutationKey: ["update-tenant"],
+    mutationFn: async (payload: ICreateAndUpdateTenant) => await httpRequest.put(`/tenants/${idRef.current}`, payload),
     onError: (error) => {
       handleMutationError(error);
     },
   });
 
-  const removeVehicleMutation = useMutation({
-    mutationKey: ["remove-vehicle"],
-    mutationFn: async (id: string) => await httpRequest.put(`/vehicles/soft-delete/${id}`),
+  const removeTenantMutation = useMutation({
+    mutationKey: ["remove-tenant"],
+    mutationFn: async (id: string) => await httpRequest.put(`/tenants/soft/${id}`),
   });
 
-  const toggleStatusVehicleMutation = useMutation({
+  const toggleStatusTenantMutation = useMutation({
     mutationKey: ["toggle-vehicle"],
-    mutationFn: async (id: string) => await httpRequest.put(`/vehicles/toggle-status/${id}`),
+    mutationFn: async (id: string) => await httpRequest.put(`/vehicles/toggle/${id}`),
   });
 
   const handleToggleStatusFloorById = async (id: string): Promise<boolean> => {
     try {
-      await toggleStatusVehicleMutation.mutateAsync(id, {
+      await toggleStatusTenantMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "vehicles",
@@ -147,12 +157,12 @@ export const useVehicle = () => {
 
   const handleRemoveVehicleById = async (id: string): Promise<boolean> => {
     try {
-      await removeVehicleMutation.mutateAsync(id, {
+      await removeTenantMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "vehicles",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "tenants",
           });
-          queryClient.invalidateQueries({ queryKey: ["vehicle-statistics"] });
+          queryClient.invalidateQueries({ queryKey: ["tenants-statistics"] });
 
           toast.success(Status.REMOVE_SUCCESS);
         },
@@ -166,25 +176,35 @@ export const useVehicle = () => {
 
   const handleUpdateFloor = useCallback(async () => {
     try {
-      const { describe, vehicleStatus } = value;
+      const { address, dob, email, fullName, gender, identityCardNumber, phoneNumber } = value;
 
-      await updateFloorSchema.parseAsync(value);
+      await createOrUpdateTenantSchema.parseAsync(value);
 
-      const data: IUpdateVehicle = {
-        describe: describe.trim(),
-        vehicleStatus,
+      const data: ICreateAndUpdateTenant = {
+        address: address.trim(),
+        dob,
+        email: email.trim(),
+        fullName: fullName.trim(),
+        identityCardNumber: identityCardNumber.trim(),
+        gender,
+        phoneNumber: phoneNumber.trim(),
       };
 
-      updateVehicleMutation.mutate(data, {
+      updateTenantMutation.mutate(data, {
         onSuccess: () => {
           setValue({
-            describe: "",
-            vehicleStatus: "",
+            address: "",
+            dob: "",
+            email: "",
+            fullName: "",
+            gender: "",
+            identityCardNumber: "",
+            phoneNumber: "",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "vehicles",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "tenants",
           });
-          queryClient.invalidateQueries({ queryKey: ["vehicle-statistics"] });
+          queryClient.invalidateQueries({ queryKey: ["tenants-statistics"] });
           toast.success(Status.UPDATE_SUCCESS);
           setIsModalOpen(false);
         },
@@ -195,20 +215,25 @@ export const useVehicle = () => {
       handleZodErrors(error);
       return false;
     }
-  }, [updateVehicleMutation, clearErrors, handleZodErrors, queryClient, value]);
+  }, [updateTenantMutation, clearErrors, handleZodErrors, queryClient, value]);
 
   const handleActionClick = useCallback(
-    (floor: VehicleResponse, action: "update" | "delete") => {
-      idRef.current = floor.id;
+    (tenant: TenantResponse, action: "update" | "delete") => {
+      idRef.current = tenant.id;
       if (action === "update") {
         setValue({
-          describe: floor.describe,
-          vehicleStatus: floor.vehicleStatus,
+          address: tenant.address || "",
+          dob: tenant.dob || "",
+          email: tenant.email || "",
+          fullName: tenant.fullName || "",
+          gender: tenant.gender || "",
+          identityCardNumber: tenant.identityCardNumber || "",
+          phoneNumber: tenant.phoneNumber || "",
         });
         setIsModalOpen(true);
       } else {
         openDialog(
-          { id: floor.id, type: action },
+          { id: tenant.id, type: action },
           {
             type: "warn",
             desc: action === "delete" ? Notice.REMOVE : Notice.TOGGLE_STATUS,
@@ -219,30 +244,45 @@ export const useVehicle = () => {
     [openDialog]
   );
 
-  const { data: statistics, isError: errorStatistics } = useQuery<ApiResponse<VehicleStatisticsResponse>>({
-    queryKey: ["vehicle-statistics"],
+  const { data: statistics, isError: errorStatistics } = useQuery<ApiResponse<ITenantStatisticsResponse>>({
+    queryKey: ["tenants-statistics"],
     queryFn: async () => {
-      const res = await httpRequest.get("/vehicles/statistics", {});
+      const res = await httpRequest.get("/tenants/statistics");
       return res.data;
     },
   });
 
-  const dataVehicles: StatisticCardType[] = [
+  const dataStatisticsTenants: StatisticCardType[] = [
     {
-      icon: BuildingIcon,
-      label: "Tầng",
-      value: statistics?.data.total ?? 0,
+      icon: UsersIcon,
+      label: "Tổng người thuê",
+      value: statistics?.data.totalTenants ?? 0,
     },
-    // {
-    //   icon: CircleCheckIcon,
-    //   label: "Hoạt động",
-    //   value: statistics?.data.activeFloors ?? 0,
-    // },
-    // {
-    //   icon: XCircleIcon,
-    //   label: "Không hoạt động",
-    //   value: statistics?.data.inactiveFloors ?? 0,
-    // },
+    {
+      icon: UserCheckIcon,
+      label: "Đang thuê",
+      value: statistics?.data.totalRentingTenants ?? 0,
+    },
+    {
+      icon: UserXIcon,
+      label: "Đã trả phòng",
+      value: statistics?.data.totalCheckedOutTenants ?? 0,
+    },
+    {
+      icon: UserPlusIcon,
+      label: "Tiềm năng",
+      value: statistics?.data.totalPotentialTenants ?? 0,
+    },
+    {
+      icon: BanIcon,
+      label: "Đã hủy",
+      value: statistics?.data.totalCancelTenants ?? 0,
+    },
+    {
+      icon: LockIcon,
+      label: "Bị khóa",
+      value: statistics?.data.totalLockedTenants ?? 0,
+    },
   ];
 
   const { data: tenants, isError: isErrorTenants } = useQuery<ApiResponse<TenantResponse[]>>({
@@ -276,14 +316,15 @@ export const useVehicle = () => {
     query: {
       page: parsedPage,
       size: parsedSize,
-      licensePlate,
-      vehicleType,
+      query,
+      tenantStatus,
+      gender,
     },
     setSearchParams,
     props,
     data,
     isLoading,
-    dataVehicles,
+    dataStatisticsTenants,
     handleActionClick,
     rowSelection,
     setRowSelection,

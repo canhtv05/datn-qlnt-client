@@ -44,7 +44,7 @@ const SelectBuilding = () => {
     <div
       className={cn(
         "grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 mb-4 bg-background p-4 rounded-md",
-        !data?.data.length && !isLoading && "md:grid-cols-1"
+        !data?.data.length && !isLoading && "md:grid-cols-1 lg:grid-cols-1"
       )}
       style={{
         height: isLoading ? "100%" : "auto",

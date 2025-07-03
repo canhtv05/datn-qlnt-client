@@ -11,11 +11,7 @@ import DatePickerLabel from "@/components/DatePickerLabel";
 import { useProfile } from "./useProfile";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks/useConfirmDialog";
-
-const genderData = [
-  { label: "Nam", value: Gender.MALE },
-  { label: "Nữ", value: Gender.FEMALE },
-];
+import { GENDER_OPTIONS } from "@/constant";
 
 const UserProfile = () => {
   const {
@@ -97,7 +93,7 @@ const UserProfile = () => {
             placeholder="Giới tính"
             label="Giới tính:"
             labelSelect="Giới tính"
-            data={genderData}
+            data={GENDER_OPTIONS}
             value={value?.gender ?? Gender.UNKNOWN}
             onChange={(val) => setValue((prev) => ({ ...prev, gender: val as Gender }))}
           />

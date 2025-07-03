@@ -328,4 +328,32 @@ export default interface TenantResponse extends AbstractResponse {
   phoneNumber: string;
   tenantStatus: TenantStatus | string;
   isRepresentative: string;
+  identityCardNumber: string;
+  address: string;
+}
+
+export interface ICreateAndUpdateTenant {
+  fullName: string;
+  gender: Gender | string;
+  dob: string;
+  email: string;
+  phoneNumber: string;
+  identityCardNumber: string;
+  address: string;
+}
+
+export interface TenantFilterValues {
+  userId?: string;
+  query: string;
+  gender: Gender | string;
+  tenantStatus: TenantStatus | string;
+}
+
+export interface ITenantStatisticsResponse {
+  totalTenants: number;
+  totalRentingTenants: number;
+  totalCheckedOutTenants: number;
+  totalPotentialTenants: number;
+  totalCancelTenants: number;
+  totalLockedTenants: number;
 }

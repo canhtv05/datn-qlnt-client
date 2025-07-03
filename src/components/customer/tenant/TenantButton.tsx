@@ -11,22 +11,26 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
-import { createOrUpdateAssetTypeSchema } from "@/lib/validation";
+import { createOrUpdateTenantSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { IBtnType, ICreateAssetType } from "@/types";
+import { IBtnType, ICreateAndUpdateTenant } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
-import AddOrUpdateAssetType from "./AddOrUpdateAssetType";
+import AddOrUpdateTenant from "./AddOrUpdateTenant";
 
-const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
-  const [value, setValue] = useState<ICreateAssetType>({
-    assetGroup: "",
-    discriptionAssetType: "",
-    nameAssetType: "",
+const TenantButton = ({ ids }: { ids: Record<string, boolean> }) => {
+  const [value, setValue] = useState<ICreateAndUpdateTenant>({
+    address: "",
+    dob: "",
+    email: "",
+    fullName: "",
+    gender: "",
+    identityCardNumber: "",
+    phoneNumber: "",
   });
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAssetType>();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAndUpdateTenant>();
 
   const queryClient = useQueryClient();
 
@@ -38,58 +42,70 @@ const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
     }));
   };
 
-  const addAssetTypeMutation = useMutation({
-    mutationKey: ["add-asset-types"],
-    mutationFn: async (payload: ICreateAssetType) => await httpRequest.post("/asset-types", payload),
-    onError: handleMutationError,
+  const addTenantMutation = useMutation({
+    mutationKey: ["add-tenant"],
+    mutationFn: async (payload: ICreateAndUpdateTenant) => await httpRequest.post("/tenants/owner", payload),
+    onError: (error) => {
+      handleMutationError(error);
+    },
     onSuccess: () => {
       toast.success(Status.ADD_SUCCESS);
       setValue({
-        assetGroup: "",
-        discriptionAssetType: "",
-        nameAssetType: "",
+        address: "",
+        dob: "",
+        email: "",
+        fullName: "",
+        gender: "",
+        identityCardNumber: "",
+        phoneNumber: "",
       });
       queryClient.invalidateQueries({
         predicate: (prev) => {
-          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "asset-types";
+          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "tenants";
         },
       });
+      queryClient.invalidateQueries({ queryKey: ["tenants-statistics"] });
     },
   });
 
-  const handleAddAssetType = useCallback(async () => {
+  const handleAddTenant = useCallback(async () => {
     try {
-      const { assetGroup, discriptionAssetType, nameAssetType } = value;
+      const { address, dob, email, fullName, gender, identityCardNumber, phoneNumber } = value;
 
-      await createOrUpdateAssetTypeSchema.parseAsync(value);
+      await createOrUpdateTenantSchema.parseAsync(value);
 
-      const data: ICreateAssetType = {
-        assetGroup,
-        discriptionAssetType: discriptionAssetType.trim(),
-        nameAssetType: nameAssetType.trim(),
+      const data: ICreateAndUpdateTenant = {
+        address: address.trim(),
+        dob,
+        email: email.trim(),
+        fullName: fullName.trim(),
+        gender,
+        identityCardNumber: identityCardNumber.trim(),
+        phoneNumber: phoneNumber.trim(),
       };
 
-      await addAssetTypeMutation.mutateAsync(data);
+      await addTenantMutation.mutateAsync(data);
       clearErrors();
       return true;
     } catch (error) {
       handleZodErrors(error);
       return false;
     }
-  }, [addAssetTypeMutation, clearErrors, handleZodErrors, value]);
+  }, [addTenantMutation, clearErrors, handleZodErrors, value]);
 
-  const handleRemoveAssetTypeByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
+  const handleRemoveTenantsByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
       const selectedIds = Object.entries(ids)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .filter(([_, isSelected]) => isSelected)
         .map(([id]) => id);
 
-      await Promise.all(selectedIds.map((id) => removeAssetTypeMutation.mutateAsync(id)));
+      await Promise.all(selectedIds.map((id) => removeTenantsMutation.mutateAsync(id)));
 
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-types",
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "tenants",
       });
+      queryClient.invalidateQueries({ queryKey: ["tenants-statistics"] });
 
       toast.success(Status.REMOVE_SUCCESS);
       return true;
@@ -102,9 +118,9 @@ const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
   const { ConfirmDialog, openDialog } = useConfirmDialog<Record<string, boolean>>({
     onConfirm: async (ids?: Record<string, boolean>) => {
       if (!ids || !Object.values(ids).some(Boolean)) return false;
-      return await handleRemoveAssetTypeByIds(ids);
+      return await handleRemoveTenantsByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các loại tài sản đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các khách thuê đã chọn. Bạn có chắc chắn muốn tiếp tục?",
     type: "warn",
   });
 
@@ -117,22 +133,22 @@ const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
     [ids, openDialog]
   );
 
-  const removeAssetTypeMutation = useMutation({
-    mutationKey: ["remove-asset-types"],
-    mutationFn: async (id: string) => await httpRequest.delete(`/asset-types/${id}`),
+  const removeTenantsMutation = useMutation({
+    mutationKey: ["remove-tenants"],
+    mutationFn: async (id: string) => await httpRequest.put(`/vehicles/soft/${id}`),
   });
 
   return (
-    <div className="h-full bg-background rounded-t-sm">
+    <div className="h-full bg-background rounded-t-sm mt-4">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Loại tài sản</h3>
+        <h3 className="font-semibold">Khách thuê</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Loại tài sản"
+                    title="Khách thuê"
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -141,14 +157,9 @@ const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
                       </TooltipTrigger>
                     }
                     desc={Notice.ADD}
-                    onConfirm={handleAddAssetType}
+                    onConfirm={handleAddTenant}
                   >
-                    <AddOrUpdateAssetType
-                      handleChange={handleChange}
-                      value={value}
-                      setValue={setValue}
-                      errors={errors}
-                    />
+                    <AddOrUpdateTenant handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
                   </Modal>
                 </RenderIf>
                 <RenderIf value={btn.type !== "default"}>
@@ -190,4 +201,4 @@ const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
   );
 };
 
-export default AssetTypeButton;
+export default TenantButton;

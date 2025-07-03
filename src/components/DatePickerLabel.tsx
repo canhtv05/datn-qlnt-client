@@ -11,13 +11,19 @@ interface DateValue {
   date: Date;
   setDate: (date: Date) => void;
   label: string;
+  required?: boolean;
   errorText?: string;
 }
 
-const DatePickerLabel = ({ date, setDate, label, errorText }: DateValue) => {
+const DatePickerLabel = ({ date, setDate, label, errorText, required }: DateValue) => {
+  const isEmpty = !date && required;
+
   return (
     <div className="flex flex-col">
-      <span className="mb-1 text-label text-sm flex gap-1">{label}</span>
+      <span className="mb-1 text-label text-sm flex gap-1 font-medium">
+        {label}
+        {required && <span className="text-[10px] text-red-500">(*)</span>}
+      </span>
       <Popover>
         <PopoverTrigger asChild>
           <Button
@@ -41,6 +47,9 @@ const DatePickerLabel = ({ date, setDate, label, errorText }: DateValue) => {
           />
         </PopoverContent>
       </Popover>
+      <RenderIf value={isEmpty && !!required}>
+        <span className="text-[12px] text-red-500 font-light text-left block">Thông tin bắt buộc</span>
+      </RenderIf>
       <RenderIf value={!!errorText}>
         <span className="text-[12px] text-red-500 font-light">{errorText}</span>
       </RenderIf>

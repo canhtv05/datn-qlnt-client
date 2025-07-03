@@ -117,7 +117,7 @@ const VehicleButton = ({ ids, tenants }: { ids: Record<string, boolean>; tenants
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveVehiclesByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tầng đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu phương tiện đã chọn. Bạn có chắc chắn muốn tiếp tục?",
     type: "warn",
   });
 

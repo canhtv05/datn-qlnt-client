@@ -269,3 +269,30 @@ export const createOrUpdateAssetSchema = z.object({
     .transform((val) => Number(val))
     .refine((val) => val >= 0.0, "Giá không được âm"),
 });
+
+/* TENANT */
+export const createOrUpdateTenantSchema = z.object({
+  email: z.email("Email không hợp lệ"),
+
+  fullName: z.string().min(3, "Họ tên phải có ít nhất 3 ký tự").refine(isValidFullName, {
+    message: "Mỗi từ trong họ tên phải có ít nhất 3 ký tự",
+  }),
+
+  dob: z
+    .string()
+    .refine((val) => !isNaN(Date.parse(val)), "Ngày sinh không hợp lệ")
+    .transform((val) => new Date(val))
+    .refine((date) => isValidDob(date), "Tuổi của bạn phải lớn hơn hoặc bằng 18"),
+
+  phoneNumber: z
+    .string()
+    .min(9, "Số điện thoại phải có ít nhất 9 chữ số")
+    .max(15, "Số điện thoại không được vượt quá 15 chữ số")
+    .regex(/^[0-9]+$/, "Số điện thoại chỉ được chứa số"),
+
+  gender: z.enum([Gender.FEMALE, Gender.MALE, Gender.UNKNOWN], "Giới tính không hợp lệ"),
+
+  identityCardNumber: z.string().regex(/^\d{12}$/, "Căn cước công dân phải 12 chữ số"),
+
+  address: z.string().min(1, "Địa chỉ không được để trống"),
+});

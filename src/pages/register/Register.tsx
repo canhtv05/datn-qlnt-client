@@ -7,6 +7,7 @@ import { svg } from "@/assets/svg";
 import DatePickerLabel from "@/components/DatePickerLabel";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import { Checkbox } from "@/components/ui/checkbox";
+import { GENDER_OPTIONS } from "@/constant";
 
 const Register = () => {
   const {
@@ -19,11 +20,6 @@ const Register = () => {
     handleLoginWithGoogle,
     handleCheckboxChange,
   } = useRegister();
-  const genderData = [
-    { label: "Nam", value: "MALE" },
-    { label: "Nữ", value: "FEMALE" },
-  ];
-
   return (
     <>
       <h3 className="text-label text-left w-full text-[24px] mt-2">Đăng ký tài khoản 🚀</h3>
@@ -89,7 +85,7 @@ const Register = () => {
           placeholder="Giới tính"
           label="Giới tính:"
           labelSelect="Giới tính"
-          data={genderData}
+          data={GENDER_OPTIONS}
           value={value?.gender ?? ""}
           onChange={(val) =>
             setValue((prev) => ({

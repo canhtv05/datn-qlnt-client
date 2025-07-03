@@ -22,6 +22,8 @@ const handleClassGrid = (length: number) => {
       return "lg:grid-cols-4 md:grid-cols-2 grid-cols-1";
     case 5:
       return "xl:grid-cols-5 lg:grid-cols-3 md:grid-cols-2 grid-cols-1";
+    case 6:
+      return "2xl:grid-cols-6 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1";
     default:
       return "grid-cols-5";
   }

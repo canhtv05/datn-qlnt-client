@@ -129,7 +129,7 @@ const AssetButton = ({
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveAssetTypeByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tầng đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tài sản đã chọn. Bạn có chắc chắn muốn tiếp tục?",
     type: "warn",
   });
 
