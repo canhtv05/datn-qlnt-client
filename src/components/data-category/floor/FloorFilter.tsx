@@ -34,6 +34,7 @@ const FloorFilter = ({ props }: { props: FloorFilterProps }) => {
       const res = await httpRequest.get("/buildings/cards");
       return res.data;
     },
+    retry: 1,
   });
 
   if (isError) toast.error("Không lấy được dữ liệu tòa nhà");
@@ -42,7 +43,7 @@ const FloorFilter = ({ props }: { props: FloorFilterProps }) => {
     const buildings: IBuildingCardsResponse[] = data?.data ?? [];
     return buildings.map((building) => ({
       label: building.buildingName,
-      value: building.buildingId,
+      value: building.id,
     }));
   }, [data]);
 

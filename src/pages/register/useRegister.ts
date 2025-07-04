@@ -93,8 +93,6 @@ export const useRegister = () => {
     const googleClientId =
       configs.oauth2.clientId ?? "635634641386-m0df7i4nnulj2jn27qtr0qk1l8e0hk2l.apps.googleusercontent.com";
 
-    console.log(authUrl, callbackUrl, googleClientId);
-
     const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
       callbackUrl
     )}&response_type=code&client_id=${googleClientId}&scope=openid%20email%20profile`;

@@ -22,7 +22,7 @@ export interface IBtnType {
   tooltipContent: string;
   icon: LucideIcon;
   arrowColor: string;
-  type: "default" | "upload" | "delete" | "download" | "update" | "status";
+  type: "default" | "upload" | "delete" | "download" | "update" | "status" | "view";
   hasConfirm: boolean;
 }
 
@@ -92,6 +92,7 @@ export interface ColumnConfig {
   hasBadge?: boolean;
   isCenter?: boolean;
   hasHighlight?: boolean;
+  hasDate?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   render?: (row: any) => ReactNode;
 }
@@ -128,7 +129,7 @@ export interface IBuildingStatisticsResponse {
 }
 
 export interface IBuildingCardsResponse {
-  buildingId: string;
+  id: string;
   buildingName: string;
   address: string;
   buildingType: BuildingType;
@@ -244,12 +245,23 @@ export interface IdAndName {
   name: string;
 }
 
+export type TenantSelectResponse = IdAndName;
+
+export interface RoomSelectResponse extends IdAndName {
+  tenants: TenantSelectResponse[];
+}
+
+export interface FloorSelectResponse extends IdAndName {
+  rooms: RoomSelectResponse[];
+}
+
+export interface BuildingSelectResponse extends IdAndName {
+  floors: FloorSelectResponse[];
+}
+
 export interface CreateAssetInitResponse {
   assetTypes: IdAndName[];
-  rooms: IdAndName[];
-  buildings: IdAndName[];
-  floors: IdAndName[];
-  tenants: IdAndName[];
+  buildings: BuildingSelectResponse[];
 }
 
 /* Asset */
@@ -329,6 +341,7 @@ export default interface TenantResponse extends AbstractResponse {
   tenantStatus: TenantStatus | string;
   isRepresentative: string;
   identityCardNumber: string;
+  identificationNumber: string;
   address: string;
 }
 

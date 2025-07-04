@@ -1,41 +1,17 @@
 import StatisticCard from "@/components/StatisticCard";
 import DataTable from "@/components/DataTable";
-import { ArrowRightLeft, SquarePen, Trash2 } from "lucide-react";
 import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { ColumnConfig, IBtnType, VehicleResponse } from "@/types";
+import { ColumnConfig, VehicleResponse } from "@/types";
 import Modal from "@/components/Modal";
 import { Notice } from "@/enums";
 import { useVehicle } from "./useVehicle";
 import VehicleButton from "@/components/customer/vehicle/VehicleButton";
 import VehicleFilter from "@/components/customer/vehicle/VehicleFilter";
 import AddOrUpdateVehicle from "@/components/customer/vehicle/AddOrUpdateVehicle";
-
-const btns: IBtnType[] = [
-  {
-    tooltipContent: "Chỉnh sửa",
-    icon: SquarePen,
-    arrowColor: "#44475A",
-    type: "update",
-    hasConfirm: true,
-  },
-  {
-    tooltipContent: "Xóa",
-    icon: Trash2,
-    arrowColor: "var(--color-red-400)",
-    type: "delete",
-    hasConfirm: true,
-  },
-  {
-    tooltipContent: "Đổi trạng thái",
-    icon: ArrowRightLeft,
-    arrowColor: "var(--color-sky-500)",
-    type: "status",
-    hasConfirm: true,
-  },
-];
+import { GET_BTNS } from "@/constant";
 
 const Vehicle = () => {
   const {
@@ -60,7 +36,7 @@ const Vehicle = () => {
   const { page, size } = query;
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Tên tầng", accessorKey: "nameFloor", isSort: true },
+    { label: "Chủ sở hữu", accessorKey: "fullName", isSort: true },
     {
       label: "Thao tác",
       accessorKey: "actions",
@@ -70,7 +46,7 @@ const Vehicle = () => {
         const vehicle: VehicleResponse = row;
         return (
           <div className="flex gap-2">
-            {btns.map((btn, index) => (
+            {GET_BTNS("update", "delete", "status").map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -109,11 +85,48 @@ const Vehicle = () => {
         );
       },
     },
-    { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true },
-    { label: "Số phòng tối đa", accessorKey: "maximumRoom", isSort: true },
-    { label: "Loại tầng", accessorKey: "floorType", hasBadge: true, isCenter: true, isSort: true },
-    { label: "Mô tả", accessorKey: "descriptionFloor" },
-    { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
+    {
+      label: "Loại phương tiện",
+      accessorKey: "vehicleType",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: "Biển số",
+      accessorKey: "licensePlate",
+      isSort: true,
+    },
+    {
+      label: "Trạng thái",
+      accessorKey: "vehicleStatus",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: "Ngày đăng ký",
+      accessorKey: "registrationDate",
+      isSort: true,
+      hasDate: true,
+    },
+    {
+      label: "Mô tả",
+      accessorKey: "describe",
+      isSort: false,
+    },
+    {
+      label: "Ngày tạo",
+      accessorKey: "createdAt",
+      isSort: true,
+      hasDate: true,
+    },
+    {
+      label: "Ngày cập nhật",
+      accessorKey: "updatedAt",
+      isSort: true,
+      hasDate: true,
+    },
   ];
 
   return (

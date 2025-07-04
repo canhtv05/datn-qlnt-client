@@ -4,6 +4,7 @@ import StatusBadge from "@/components/ui/StatusBadge";
 import { cn } from "@/lib/utils";
 import { ColumnConfig, CustomColumnDef } from "@/types";
 import { Row } from "@tanstack/react-table";
+import { format } from "date-fns";
 import { ArrowUpDown } from "lucide-react";
 
 export default function buildColumnsFromConfig<T extends object>(configs: ColumnConfig[]): CustomColumnDef<T>[] {
@@ -76,6 +77,12 @@ export default function buildColumnsFromConfig<T extends object>(configs: Column
           <StatusBadge status={"__EMPTY__"} />
         </div>
       );
+    }
+
+    if (config.hasDate) {
+      const dateValue = new Date(value);
+      const formatted = format(dateValue, "dd/MM/yyyy HH:mm:ss");
+      return <div className={wrapperClass}>{formatted}</div>;
     }
 
     return <div className={wrapperClass}>{value}</div>;

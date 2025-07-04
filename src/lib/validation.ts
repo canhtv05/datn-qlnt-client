@@ -1,4 +1,14 @@
-import { BuildingType, Gender, RoomType, FloorType, RoomStatus, AssetGroup, AssetBeLongTo } from "@/enums";
+import {
+  BuildingType,
+  Gender,
+  RoomType,
+  FloorType,
+  RoomStatus,
+  AssetGroup,
+  AssetBeLongTo,
+  VehicleType,
+  VehicleStatus,
+} from "@/enums";
 import { z } from "zod/v4";
 
 /*
@@ -280,10 +290,10 @@ export const createOrUpdateTenantSchema = z.object({
 
   dob: z
     .string()
-    .refine((val) => !isNaN(Date.parse(val)), "Ngày sinh không hợp lệ")
-    .transform((val) => new Date(val))
-    .refine((date) => isValidDob(date), "Tuổi của bạn phải lớn hơn hoặc bằng 18"),
-
+    .refine((val) => {
+      return !isNaN(Date.parse(val));
+    }, "Ngày sinh không hợp lệ")
+    .transform((val) => new Date(val)),
   phoneNumber: z
     .string()
     .min(9, "Số điện thoại phải có ít nhất 9 chữ số")
@@ -295,4 +305,28 @@ export const createOrUpdateTenantSchema = z.object({
   identityCardNumber: z.string().regex(/^\d{12}$/, "Căn cước công dân phải 12 chữ số"),
 
   address: z.string().min(1, "Địa chỉ không được để trống"),
+});
+
+/* VEHICLE */
+export const createVehicleSchema = z.object({
+  tenantId: z.string().min(1, "Vui lòng chọn khách thuê"),
+  vehicleType: z.enum([VehicleType.KHAC, VehicleType.O_TO, VehicleType.XE_DAP, VehicleType.XE_MAY], {
+    message: "Loại phương tiện không hợp lệ",
+  }),
+  licensePlate: z.string().min(1, "Biển số xe không được để trống"),
+  vehicleStatus: z.enum([VehicleStatus.TAM_KHOA, VehicleStatus.SU_DUNG], {
+    message: "Trạng thái phương tiện không hợp lệ",
+  }),
+  registrationDate: z
+    .string()
+    .refine((val) => !isNaN(Date.parse(val)), "Ngày đăng ký không hợp lệ")
+    .transform((val) => new Date(val)),
+  describe: z.string(),
+});
+
+export const updateVehicleSchema = z.object({
+  vehicleStatus: z.enum([VehicleStatus.TAM_KHOA, VehicleStatus.SU_DUNG], {
+    message: "Trạng thái phương tiện không hợp lệ",
+  }),
+  describe: z.string(),
 });

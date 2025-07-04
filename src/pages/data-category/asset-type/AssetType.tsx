@@ -1,33 +1,16 @@
 import DataTable from "@/components/DataTable";
-import { SquarePen, Trash2 } from "lucide-react";
 import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { AssetTypeResponse, ColumnConfig, IBtnType } from "@/types";
+import { AssetTypeResponse, ColumnConfig } from "@/types";
 import Modal from "@/components/Modal";
 import { Notice } from "@/enums";
 import { useAssetType } from "./useAssetType";
 import AssetTypeButton from "@/components/data-category/asset-type/AssetTypeButton";
 import AssetTypeFilter from "@/components/data-category/asset-type/AssetTypeFilter";
 import AddOrUpdateAssetType from "@/components/data-category/asset-type/AddOrUpdateAssetType";
-
-const btns: IBtnType[] = [
-  {
-    tooltipContent: "Chỉnh sửa",
-    icon: SquarePen,
-    arrowColor: "#44475A",
-    type: "update",
-    hasConfirm: true,
-  },
-  {
-    tooltipContent: "Xóa",
-    icon: Trash2,
-    arrowColor: "var(--color-red-400)",
-    type: "delete",
-    hasConfirm: true,
-  },
-];
+import { GET_BTNS } from "@/constant";
 
 const AssetType = () => {
   const {
@@ -60,7 +43,7 @@ const AssetType = () => {
         const assetType: AssetTypeResponse = row;
         return (
           <div className="flex gap-2">
-            {btns.map((btn, index) => (
+            {GET_BTNS("update", "delete").map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -101,6 +84,18 @@ const AssetType = () => {
     },
     { label: "Nhóm tài sản", accessorKey: "assetGroup", isSort: true, isCenter: true, hasBadge: true },
     { label: "Mô tả", accessorKey: "discriptionAssetType", isSort: false },
+    {
+      label: "Ngày tạo",
+      accessorKey: "createdAt",
+      isSort: true,
+      hasDate: true,
+    },
+    {
+      label: "Ngày cập nhật",
+      accessorKey: "updatedAt",
+      isSort: true,
+      hasDate: true,
+    },
   ];
 
   return (

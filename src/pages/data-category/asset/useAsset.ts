@@ -206,6 +206,7 @@ export const useAsset = () => {
       const res = await httpRequest.get("/assets/init");
       return res.data;
     },
+    retry: 1,
   });
 
   const props = {

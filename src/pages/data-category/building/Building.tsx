@@ -1,62 +1,38 @@
-  import StatisticCard from "@/components/StatisticCard";
-  import DataTable from "@/components/DataTable";
-  import { ArrowRightLeft, SquarePen, Trash2 } from "lucide-react";
-  import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
-  import BuildingButton from "@/components/data-category/building/BuildingButton";
-  import BuildingFilter from "@/components/data-category/building/BuildingFilter";
-  import { Button } from "@/components/ui/button";
-  import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-  import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-  import { useBuilding } from "./useBuilding";
-  import { BuildingResponse, ColumnConfig, IBtnType } from "@/types";
-  import Modal from "@/components/Modal";
-  import AddOrUpdateBuilding from "@/components/data-category/building/AddOrUpdateBuilding";
-  import { Notice } from "@/enums";
+import StatisticCard from "@/components/StatisticCard";
+import DataTable from "@/components/DataTable";
+import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
+import BuildingButton from "@/components/data-category/building/BuildingButton";
+import BuildingFilter from "@/components/data-category/building/BuildingFilter";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+import { useBuilding } from "./useBuilding";
+import { BuildingResponse, ColumnConfig } from "@/types";
+import Modal from "@/components/Modal";
+import AddOrUpdateBuilding from "@/components/data-category/building/AddOrUpdateBuilding";
+import { Notice } from "@/enums";
+import { GET_BTNS } from "@/constant";
 
-  const btns: IBtnType[] = [
-    {
-      tooltipContent: "Chỉnh sửa",
-      icon: SquarePen,
-      arrowColor: "#44475A",
-      type: "update",
-      hasConfirm: true,
-    },
-    {
-      tooltipContent: "Xóa",
-      icon: Trash2,
-      arrowColor: "var(--color-red-400)",
-      type: "delete",
-      hasConfirm: true,
-    },
-    {
-      tooltipContent: "Đổi trạng thái",
-      icon: ArrowRightLeft,
-      arrowColor: "var(--color-sky-500)",
-      type: "status",
-      hasConfirm: true,
-    },
-  ];
-
-  const Building = () => {
-    const {
-      props,
-      data,
-      isLoading,
-      query,
-      handleActionClick,
-      dataBuildings,
-      rowSelection,
-      setRowSelection,
-      isModalOpen,
-      setIsModalOpen,
-      handleChange,
-      handleUpdateBuilding,
-      value,
-      setValue,
-      errors,
-      ConfirmDialog,
-    } = useBuilding();
-    const { page, size } = query;
+const Building = () => {
+  const {
+    props,
+    data,
+    isLoading,
+    query,
+    handleActionClick,
+    dataBuildings,
+    rowSelection,
+    setRowSelection,
+    isModalOpen,
+    setIsModalOpen,
+    handleChange,
+    handleUpdateBuilding,
+    value,
+    setValue,
+    errors,
+    ConfirmDialog,
+  } = useBuilding();
+  const { page, size } = query;
 
   const columnConfigs: ColumnConfig[] = [
     { label: "Mã tòa nhà", accessorKey: "buildingCode", isSort: true, hasHighlight: true },
@@ -69,7 +45,7 @@
         const building: BuildingResponse = row;
         return (
           <div className="flex gap-2">
-            {btns.map((btn, index) => (
+            {GET_BTNS("update", "delete", "status").map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -115,6 +91,18 @@
     { label: "Số tầng cho thuê", accessorKey: "numberOfFloorsForRent", isSort: true, isCenter: true },
     { label: "Mô tả", accessorKey: "description" },
     { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
+    {
+      label: "Ngày tạo",
+      accessorKey: "createdAt",
+      isSort: true,
+      hasDate: true,
+    },
+    {
+      label: "Ngày cập nhật",
+      accessorKey: "updatedAt",
+      isSort: true,
+      hasDate: true,
+    },
   ];
 
   return (
@@ -148,4 +136,4 @@
   );
 };
 
-  export default Building;
+export default Building;

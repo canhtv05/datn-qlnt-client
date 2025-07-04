@@ -11,7 +11,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
-import { createOrUpdateTenantSchema } from "@/lib/validation";
+import { createOrUpdateTenantSchema, formatFullName } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
 import { IBtnType, ICreateAndUpdateTenant } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
@@ -39,6 +39,13 @@ const TenantButton = ({ ids }: { ids: Record<string, boolean> }) => {
     setValue((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  const handleBlur = () => {
+    setValue((prev) => ({
+      ...prev,
+      fullName: formatFullName(prev.fullName),
     }));
   };
 
@@ -159,7 +166,13 @@ const TenantButton = ({ ids }: { ids: Record<string, boolean> }) => {
                     desc={Notice.ADD}
                     onConfirm={handleAddTenant}
                   >
-                    <AddOrUpdateTenant handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
+                    <AddOrUpdateTenant
+                      onBlur={handleBlur}
+                      handleChange={handleChange}
+                      value={value}
+                      setValue={setValue}
+                      errors={errors}
+                    />
                   </Modal>
                 </RenderIf>
                 <RenderIf value={btn.type !== "default"}>

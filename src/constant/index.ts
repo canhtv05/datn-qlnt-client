@@ -10,6 +10,8 @@ import {
   RoomType,
   TenantStatus,
   Gender,
+  VehicleType,
+  VehicleStatus,
 } from "@/enums";
 import { IBtnType } from "@/types";
 import {
@@ -36,6 +38,9 @@ import {
   UsersRound,
   Building,
   Wrench,
+  SquarePen,
+  ArrowRightLeft,
+  Eye,
 } from "lucide-react";
 
 export interface SideBarType {
@@ -178,6 +183,17 @@ export const STATUS_BADGE = [
   {
     value: "__EMPTY__",
     label: "Trống",
+    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+  },
+
+  {
+    value: "isRepresentative=true",
+    label: "Có",
+    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+  },
+  {
+    value: "isRepresentative=false",
+    label: "Không",
     className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
   },
 
@@ -420,6 +436,45 @@ export const STATUS_BADGE = [
     label: "Nữ",
     className: "text-pink-600 bg-pink-100 border border-pink-200 hover:bg-pink-200 hover:text-pink-700",
   },
+
+  // Vehicle Types
+  {
+    value: VehicleType.XE_MAY,
+    label: "Xe máy",
+    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+  },
+  {
+    value: VehicleType.O_TO,
+    label: "Ô tô",
+    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+  },
+  {
+    value: VehicleType.XE_DAP,
+    label: "Xe đạp",
+    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+  },
+  {
+    value: VehicleType.KHAC,
+    label: "Khác",
+    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+  },
+
+  // Vehicle Status
+  {
+    value: VehicleStatus.SU_DUNG,
+    label: "Đang sử dụng",
+    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+  },
+  {
+    value: VehicleStatus.KHONG_SU_DUNG,
+    label: "Ngừng sử dụng",
+    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+  },
+  {
+    value: VehicleStatus.TAM_KHOA,
+    label: "Tạm khóa",
+    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+  },
 ];
 
 export const ACTION_BUTTONS: IBtnType[] = [
@@ -461,4 +516,39 @@ export const formatNumberField = {
 export const GENDER_OPTIONS = [
   { label: "Nam", value: "MALE" },
   { label: "Nữ", value: "FEMALE" },
+];
+
+export const GET_BTNS = (...type: IBtnType["type"][]): IBtnType[] => {
+  return BTNS.filter((btn) => type.includes(btn.type));
+};
+
+export const BTNS: IBtnType[] = [
+  {
+    tooltipContent: "Chỉnh sửa",
+    icon: SquarePen,
+    arrowColor: "#44475A",
+    type: "update",
+    hasConfirm: true,
+  },
+  {
+    tooltipContent: "Xóa",
+    icon: Trash2,
+    arrowColor: "var(--color-red-400)",
+    type: "delete",
+    hasConfirm: true,
+  },
+  {
+    tooltipContent: "Đổi trạng thái",
+    icon: ArrowRightLeft,
+    arrowColor: "var(--color-sky-500)",
+    type: "status",
+    hasConfirm: true,
+  },
+  {
+    tooltipContent: "Xem chi tiết",
+    icon: Eye,
+    arrowColor: "var(--color-emerald-500)",
+    type: "view",
+    hasConfirm: false,
+  },
 ];

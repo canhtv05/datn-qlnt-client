@@ -36,6 +36,7 @@ const SelectBuilding = () => {
       const res = await httpRequest.get("/buildings/cards");
       return res.data;
     },
+    retry: 1,
   });
 
   if (isError) toast.error("Không lấy được dữ liệu tòa nhà");
@@ -62,60 +63,62 @@ const SelectBuilding = () => {
       </RenderIf>
       {data &&
         data.data.length > 0 &&
-        data.data.map((d, index) => (
-          <Link to={d.buildingId} key={index}>
-            <Card className="rounded-sm py-0 border hover:shadow-lg transition-shadow duration-300 cursor-pointer">
-              <CardHeader
-                className="p-10 rounded-t-sm relative"
-                style={{
-                  background:
-                    d.status === BuildingStatus.HOAT_DONG ? "var(--color-primary)" : "var(--color-yellow-500)",
-                  opacity: 0.8,
-                }}
-              >
-                <div className="absolute inset-0 top-20 flex items-center justify-center">
-                  <div
-                    className="bg-white rounded-full border-5"
-                    style={{
-                      borderColor:
-                        d.status === BuildingStatus.HOAT_DONG ? "var(--color-primary)" : "var(--color-yellow-500)",
-                    }}
-                  >
-                    <img
-                      src={getSvgByBuildingType(d.buildingType)}
-                      alt="building icon"
-                      className="size-20 rounded-full p-2"
-                    />
+        data.data.map((d, index) => {
+          return (
+            <Link to={d.id} key={index}>
+              <Card className="rounded-sm py-0 border hover:shadow-lg transition-shadow duration-300 cursor-pointer">
+                <CardHeader
+                  className="p-10 rounded-t-sm relative"
+                  style={{
+                    background:
+                      d.status === BuildingStatus.HOAT_DONG ? "var(--color-primary)" : "var(--color-yellow-500)",
+                    opacity: 0.8,
+                  }}
+                >
+                  <div className="absolute inset-0 top-20 flex items-center justify-center">
+                    <div
+                      className="bg-white rounded-full border-5"
+                      style={{
+                        borderColor:
+                          d.status === BuildingStatus.HOAT_DONG ? "var(--color-primary)" : "var(--color-yellow-500)",
+                      }}
+                    >
+                      <img
+                        src={getSvgByBuildingType(d.buildingType)}
+                        alt="building icon"
+                        className="size-20 rounded-full p-2"
+                      />
+                    </div>
                   </div>
-                </div>
-              </CardHeader>
-              <CardContent className="py-7">
-                <div className="flex flex-col gap-2 text-foreground text-sm">
-                  <span className="truncate w-full block font-bold">
-                    Tên tòa nhà:
-                    <span className="ml-2 font-normal">{d?.buildingName ?? ""}</span>
-                  </span>
-                  <span className="truncate w-full font-bold flex items-center justify-between">
-                    Loại tòa nhà:
-                    {d.buildingType ? <StatusBadge status={d?.buildingType} /> : ""}
-                  </span>
-                  <span className="truncate w-full font-bold flex items-center justify-between">
-                    Tổng số phòng:
-                    <span className="font-normal">{d?.totalRoom ?? 0}</span>
-                  </span>
-                  <span className="truncate w-full font-bold flex items-center justify-between">
-                    Tổng số phòng trống:
-                    <span className="font-normal">{d?.totalRoomAvail ?? 0}</span>
-                  </span>
-                  <span className="truncate w-full font-bold flex items-center justify-between">
-                    Trạng thái:
-                    {d.status ? <StatusBadge status={d.status} /> : ""}
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
+                </CardHeader>
+                <CardContent className="py-7">
+                  <div className="flex flex-col gap-2 text-foreground text-sm">
+                    <span className="truncate w-full block font-bold">
+                      Tên tòa nhà:
+                      <span className="ml-2 font-normal">{d?.buildingName ?? ""}</span>
+                    </span>
+                    <span className="truncate w-full font-bold flex items-center justify-between">
+                      Loại tòa nhà:
+                      {d.buildingType ? <StatusBadge status={d?.buildingType} /> : ""}
+                    </span>
+                    <span className="truncate w-full font-bold flex items-center justify-between">
+                      Tổng số phòng:
+                      <span className="font-normal">{d?.totalRoom ?? 0}</span>
+                    </span>
+                    <span className="truncate w-full font-bold flex items-center justify-between">
+                      Tổng số phòng trống:
+                      <span className="font-normal">{d?.totalRoomAvail ?? 0}</span>
+                    </span>
+                    <span className="truncate w-full font-bold flex items-center justify-between">
+                      Trạng thái:
+                      {d.status ? <StatusBadge status={d.status} /> : ""}
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          );
+        })}
     </div>
   );
 };

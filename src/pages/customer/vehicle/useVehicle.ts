@@ -1,7 +1,7 @@
 import { StatisticCardType } from "@/components/StatisticCard";
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
-import { updateFloorSchema } from "@/lib/validation";
+import { updateVehicleSchema } from "@/lib/validation";
 import TenantResponse, {
   ApiResponse,
   IUpdateVehicle,
@@ -65,7 +65,7 @@ export const useVehicle = () => {
   const handleFilter = useCallback(() => {
     const params = new URLSearchParams();
     if (filterValues.licensePlate) params.set("licensePlate", filterValues.licensePlate);
-    if (filterValues.licensePlate) params.set("licensePlate", filterValues.licensePlate);
+    if (filterValues.vehicleType) params.set("vehicleType", filterValues.vehicleType);
     params.set("page", "1");
     if (filterValues.licensePlate || filterValues.vehicleType) {
       setSearchParams(params);
@@ -89,6 +89,7 @@ export const useVehicle = () => {
 
       return res.data;
     },
+    retry: 1,
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -168,7 +169,7 @@ export const useVehicle = () => {
     try {
       const { describe, vehicleStatus } = value;
 
-      await updateFloorSchema.parseAsync(value);
+      await updateVehicleSchema.parseAsync(value);
 
       const data: IUpdateVehicle = {
         describe: describe.trim(),
@@ -222,9 +223,10 @@ export const useVehicle = () => {
   const { data: statistics, isError: errorStatistics } = useQuery<ApiResponse<VehicleStatisticsResponse>>({
     queryKey: ["vehicle-statistics"],
     queryFn: async () => {
-      const res = await httpRequest.get("/vehicles/statistics", {});
+      const res = await httpRequest.get("/vehicles/statistics");
       return res.data;
     },
+    retry: 1,
   });
 
   const dataVehicles: StatisticCardType[] = [
@@ -251,6 +253,7 @@ export const useVehicle = () => {
       const res = await httpRequest.get("/tenants/all");
       return res.data;
     },
+    retry: 1,
   });
 
   useEffect(() => {

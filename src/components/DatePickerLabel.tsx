@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import RenderIf from "./RenderIf";
+import { useState } from "react";
 
 interface DateValue {
-  date: Date;
+  date: Date | undefined;
   setDate: (date: Date) => void;
   label: string;
   required?: boolean;
@@ -16,7 +17,9 @@ interface DateValue {
 }
 
 const DatePickerLabel = ({ date, setDate, label, errorText, required }: DateValue) => {
-  const isEmpty = !date && required;
+  const [touched, setTouched] = useState(false);
+
+  const isEmpty = !date && required && touched;
 
   return (
     <div className="flex flex-col">
@@ -31,6 +34,7 @@ const DatePickerLabel = ({ date, setDate, label, errorText, required }: DateValu
               "w-full focus:border-primary bg-transparent hover:bg-transparent shadow-sm justify-start text-left font-normal border border-input",
               !date && "text-muted-foreground"
             )}
+            onBlur={() => setTouched(true)}
           >
             <CalendarIcon className="text-foreground" />
             <span className="text-foreground">{date ? format(date, "dd/MM/yyyy") : "Chọn ngày"}</span>
@@ -47,7 +51,7 @@ const DatePickerLabel = ({ date, setDate, label, errorText, required }: DateValu
           />
         </PopoverContent>
       </Popover>
-      <RenderIf value={isEmpty && !!required}>
+      <RenderIf value={!!isEmpty && !!required}>
         <span className="text-[12px] text-red-500 font-light text-left block">Thông tin bắt buộc</span>
       </RenderIf>
       <RenderIf value={!!errorText}>

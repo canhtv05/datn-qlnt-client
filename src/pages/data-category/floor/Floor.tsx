@@ -1,41 +1,17 @@
 import StatisticCard from "@/components/StatisticCard";
 import DataTable from "@/components/DataTable";
-import { ArrowRightLeft, SquarePen, Trash2 } from "lucide-react";
 import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { ColumnConfig, FloorResponse, IBtnType } from "@/types";
+import { ColumnConfig, FloorResponse } from "@/types";
 import Modal from "@/components/Modal";
 import { Notice } from "@/enums";
 import { useFloor } from "./useFloor";
 import AddOrUpdateFloor from "@/components/data-category/floor/AddOrUpdateFloor";
 import FloorButton from "@/components/data-category/floor/FloorButton";
 import FloorFilter from "@/components/data-category/floor/FloorFilter";
-
-const btns: IBtnType[] = [
-  {
-    tooltipContent: "Chỉnh sửa",
-    icon: SquarePen,
-    arrowColor: "#44475A",
-    type: "update",
-    hasConfirm: true,
-  },
-  {
-    tooltipContent: "Xóa",
-    icon: Trash2,
-    arrowColor: "var(--color-red-400)",
-    type: "delete",
-    hasConfirm: true,
-  },
-  {
-    tooltipContent: "Đổi trạng thái",
-    icon: ArrowRightLeft,
-    arrowColor: "var(--color-sky-500)",
-    type: "status",
-    hasConfirm: true,
-  },
-];
+import { GET_BTNS } from "@/constant";
 
 const Floor = () => {
   const {
@@ -69,7 +45,7 @@ const Floor = () => {
         const floor: FloorResponse = row;
         return (
           <div className="flex gap-2">
-            {btns.map((btn, index) => (
+            {GET_BTNS("update", "delete", "status").map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -109,10 +85,22 @@ const Floor = () => {
       },
     },
     { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true },
-    { label: "Số phòng tối đa", accessorKey: "maximumRoom", isSort: true },
+    { label: "Số phòng tối đa", accessorKey: "maximumRoom", isSort: true, isCenter: true },
     { label: "Loại tầng", accessorKey: "floorType", hasBadge: true, isCenter: true, isSort: true },
     { label: "Mô tả", accessorKey: "descriptionFloor" },
     { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
+    {
+      label: "Ngày tạo",
+      accessorKey: "createdAt",
+      isSort: true,
+      hasDate: true,
+    },
+    {
+      label: "Ngày cập nhật",
+      accessorKey: "updatedAt",
+      isSort: true,
+      hasDate: true,
+    },
   ];
 
   return (

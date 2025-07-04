@@ -22,6 +22,7 @@ const buttonVariants = cva(
         delete: "bg-red-400 hover:bg-red-300",
         update: "bg-[#44475A] hover:bg-[#5a5e78]",
         status: "bg-sky-600 hover:bg-sky-500",
+        view: "bg-emerald-500 hover:bg-emerald-400",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

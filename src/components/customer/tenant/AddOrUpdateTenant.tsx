@@ -11,9 +11,10 @@ interface AddOrUpdateTenantProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setValue: Dispatch<React.SetStateAction<ICreateAndUpdateTenant>>;
   errors: Partial<Record<keyof ICreateAndUpdateTenant, string>>;
+  onBlur: () => void;
 }
 
-const AddOrUpdateTenant = ({ value, handleChange, setValue, errors }: AddOrUpdateTenantProps) => {
+const AddOrUpdateTenant = ({ value, handleChange, setValue, errors, onBlur }: AddOrUpdateTenantProps) => {
   return (
     <div className="flex flex-col gap-3">
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
@@ -26,6 +27,7 @@ const AddOrUpdateTenant = ({ value, handleChange, setValue, errors }: AddOrUpdat
           value={value.fullName ?? ""}
           onChange={handleChange}
           errorText={errors.fullName}
+          onBlur={onBlur}
         />
         <FieldsSelectLabel
           data={GENDER_OPTIONS}
@@ -44,7 +46,7 @@ const AddOrUpdateTenant = ({ value, handleChange, setValue, errors }: AddOrUpdat
 
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
         <DatePickerLabel
-          date={value?.dob ? new Date(value?.dob) : new Date()}
+          date={value?.dob ? new Date(value.dob) : undefined}
           setDate={(d) => setValue((prev) => ({ ...prev, dob: d.toISOString() }))}
           label="Ngày sinh:"
           errorText={errors?.dob}

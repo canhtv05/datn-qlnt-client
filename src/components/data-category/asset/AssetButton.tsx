@@ -150,7 +150,7 @@ const AssetButton = ({
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Tài sản: chưa test được vì chưa có khách thuê</h3>
+        <h3 className="font-semibold">Tài sản</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>

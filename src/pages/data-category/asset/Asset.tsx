@@ -1,33 +1,16 @@
 import DataTable from "@/components/DataTable";
-import { SquarePen, Trash2 } from "lucide-react";
 import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { AssetResponse, ColumnConfig, IBtnType } from "@/types";
+import { AssetResponse, ColumnConfig } from "@/types";
 import Modal from "@/components/Modal";
 import { Notice } from "@/enums";
 import { useAsset } from "./useAsset";
 import AssetButton from "@/components/data-category/asset/AssetButton";
 import AssetFilter from "@/components/data-category/asset/AssetFilter";
 import AddOrUpdateAsset from "@/components/data-category/asset/AddOrUpdateAsset";
-
-const btns: IBtnType[] = [
-  {
-    tooltipContent: "Chỉnh sửa",
-    icon: SquarePen,
-    arrowColor: "#44475A",
-    type: "update",
-    hasConfirm: true,
-  },
-  {
-    tooltipContent: "Xóa",
-    icon: Trash2,
-    arrowColor: "var(--color-red-400)",
-    type: "delete",
-    hasConfirm: true,
-  },
-];
+import { GET_BTNS } from "@/constant";
 
 const Asset = () => {
   const {
@@ -61,7 +44,7 @@ const Asset = () => {
         const asset: AssetResponse = row;
         return (
           <div className="flex gap-2">
-            {btns.map((btn, index) => (
+            {GET_BTNS("update", "delete").map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -109,6 +92,18 @@ const Asset = () => {
     { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true },
     { label: "Giá", accessorKey: "price", isSort: true },
     { label: "Mô tả", accessorKey: "descriptionAsset", isSort: false },
+    {
+      label: "Ngày tạo",
+      accessorKey: "createdAt",
+      isSort: true,
+      hasDate: true,
+    },
+    {
+      label: "Ngày cập nhật",
+      accessorKey: "updatedAt",
+      isSort: true,
+      hasDate: true,
+    },
   ];
 
   return (

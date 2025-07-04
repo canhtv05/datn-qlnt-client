@@ -1,7 +1,7 @@
 import { StatisticCardType } from "@/components/StatisticCard";
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
-import { createOrUpdateTenantSchema } from "@/lib/validation";
+import { createOrUpdateTenantSchema, formatFullName } from "@/lib/validation";
 import TenantResponse, {
   ApiResponse,
   ICreateAndUpdateTenant,
@@ -14,7 +14,7 @@ import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UsersIcon, UserCheckIcon, UserXIcon, UserPlusIcon, BanIcon, LockIcon } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useTenant = () => {
@@ -44,6 +44,9 @@ export const useTenant = () => {
 
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAndUpdateTenant>();
 
@@ -99,6 +102,7 @@ export const useTenant = () => {
 
       return res.data;
     },
+    retry: 1,
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -124,8 +128,8 @@ export const useTenant = () => {
   });
 
   const toggleStatusTenantMutation = useMutation({
-    mutationKey: ["toggle-vehicle"],
-    mutationFn: async (id: string) => await httpRequest.put(`/vehicles/toggle/${id}`),
+    mutationKey: ["toggle-tenant"],
+    mutationFn: async (id: string) => await httpRequest.put(`/tenants/toggle/${id}`),
   });
 
   const handleToggleStatusFloorById = async (id: string): Promise<boolean> => {
@@ -133,9 +137,9 @@ export const useTenant = () => {
       await toggleStatusTenantMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "vehicles",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "tenants",
           });
-          queryClient.invalidateQueries({ queryKey: ["vehicle-statistics"] });
+          queryClient.invalidateQueries({ queryKey: ["tenants-statistics"] });
 
           toast.success(Status.UPDATE_SUCCESS);
         },
@@ -147,7 +151,7 @@ export const useTenant = () => {
     }
   };
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>({
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" | "view" }>({
     onConfirm: async ({ id, type }) => {
       if (type === "delete") return await handleRemoveVehicleById(id);
       if (type === "status") return await handleToggleStatusFloorById(id);
@@ -218,7 +222,7 @@ export const useTenant = () => {
   }, [updateTenantMutation, clearErrors, handleZodErrors, queryClient, value]);
 
   const handleActionClick = useCallback(
-    (tenant: TenantResponse, action: "update" | "delete") => {
+    (tenant: TenantResponse, action: "update" | "delete" | "view") => {
       idRef.current = tenant.id;
       if (action === "update") {
         setValue({
@@ -227,11 +231,11 @@ export const useTenant = () => {
           email: tenant.email || "",
           fullName: tenant.fullName || "",
           gender: tenant.gender || "",
-          identityCardNumber: tenant.identityCardNumber || "",
+          identityCardNumber: tenant.identificationNumber || "",
           phoneNumber: tenant.phoneNumber || "",
         });
         setIsModalOpen(true);
-      } else {
+      } else if (action !== "view") {
         openDialog(
           { id: tenant.id, type: action },
           {
@@ -239,10 +243,23 @@ export const useTenant = () => {
             desc: action === "delete" ? Notice.REMOVE : Notice.TOGGLE_STATUS,
           }
         );
+      } else {
+        navigate(`/customers/tenants/${tenant.id}`, {
+          state: {
+            location,
+          },
+        });
       }
     },
-    [openDialog]
+    [location, navigate, openDialog]
   );
+
+  const handleBlur = () => {
+    setValue((prev) => ({
+      ...prev,
+      fullName: formatFullName(prev.fullName),
+    }));
+  };
 
   const { data: statistics, isError: errorStatistics } = useQuery<ApiResponse<ITenantStatisticsResponse>>({
     queryKey: ["tenants-statistics"],
@@ -250,6 +267,7 @@ export const useTenant = () => {
       const res = await httpRequest.get("/tenants/statistics");
       return res.data;
     },
+    retry: 1,
   });
 
   const dataStatisticsTenants: StatisticCardType[] = [
@@ -291,6 +309,7 @@ export const useTenant = () => {
       const res = await httpRequest.get("/tenants/all");
       return res.data;
     },
+    retry: 1,
   });
 
   useEffect(() => {
@@ -336,6 +355,7 @@ export const useTenant = () => {
     setValue,
     errors,
     ConfirmDialog,
+    handleBlur,
     tenants,
   };
 };

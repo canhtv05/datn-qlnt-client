@@ -11,7 +11,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
-import { createFloorSchema } from "@/lib/validation";
+import { createVehicleSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
 import TenantResponse, { ApiResponse, IBtnType, ICreateVehicle } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
@@ -70,7 +70,7 @@ const VehicleButton = ({ ids, tenants }: { ids: Record<string, boolean>; tenants
     try {
       const { describe, licensePlate, registrationDate, tenantId, vehicleStatus, vehicleType } = value;
 
-      await createFloorSchema.parseAsync(value);
+      await createVehicleSchema.parseAsync(value);
 
       const data: ICreateVehicle = {
         describe: describe.trim(),
@@ -138,7 +138,7 @@ const VehicleButton = ({ ids, tenants }: { ids: Record<string, boolean>; tenants
   return (
     <div className="h-full bg-background rounded-t-sm mt-4">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Phương tiện: chưa test được vì chưa có khách thuê, thống kê</h3>
+        <h3 className="font-semibold">Phương tiện</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>

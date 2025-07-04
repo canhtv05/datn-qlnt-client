@@ -115,6 +115,7 @@ export const useRoom = () => {
       return res.data;
     },
     enabled: !!buildingId,
+    retry: 1,
   });
 
   const { data: statisticsRaw } = useQuery<ApiResponse<IRoomStatisticsResponse>>({
@@ -126,6 +127,7 @@ export const useRoom = () => {
         })
       ).data,
     enabled: !!buildingId,
+    retry: 1,
   });
 
   const roomStats = [
@@ -209,7 +211,6 @@ export const useRoom = () => {
       setIsModalOpen(false);
       return true;
     } catch (error) {
-      console.log(error);
       handleZodErrors(error);
       return false;
     }

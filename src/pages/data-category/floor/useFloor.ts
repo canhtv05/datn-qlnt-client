@@ -119,6 +119,7 @@ export const useFloor = () => {
 
       return res.data;
     },
+    retry: 1,
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -270,6 +271,7 @@ export const useFloor = () => {
       return res.data;
     },
     enabled: !!id,
+    retry: 1,
   });
 
   const datFloors: StatisticCardType[] = [

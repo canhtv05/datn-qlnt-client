@@ -92,6 +92,8 @@ export const useBuilding = () => {
 
       return res.data;
     },
+
+    retry: 1,
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -259,6 +261,7 @@ export const useBuilding = () => {
       const res = await httpRequest.get("/buildings/statistics");
       return res.data;
     },
+    retry: 1,
   });
 
   const dataBuildings: StatisticCardType[] = [

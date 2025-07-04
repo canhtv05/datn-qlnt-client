@@ -1,41 +1,18 @@
 import StatisticCard from "@/components/StatisticCard";
 import DataTable from "@/components/DataTable";
-import { ArrowRightLeft, SquarePen, Trash2 } from "lucide-react";
 import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import TenantResponse, { ColumnConfig, IBtnType } from "@/types";
+import TenantResponse, { ColumnConfig } from "@/types";
 import Modal from "@/components/Modal";
 import { Notice } from "@/enums";
 import { useTenant } from "./useTenant";
 import TenantButton from "@/components/customer/tenant/TenantButton";
 import TenantFilter from "@/components/customer/tenant/TenantFilter";
 import AddOrUpdateTenant from "@/components/customer/tenant/AddOrUpdateTenant";
-
-const btns: IBtnType[] = [
-  {
-    tooltipContent: "Chỉnh sửa",
-    icon: SquarePen,
-    arrowColor: "#44475A",
-    type: "update",
-    hasConfirm: true,
-  },
-  {
-    tooltipContent: "Xóa",
-    icon: Trash2,
-    arrowColor: "var(--color-red-400)",
-    type: "delete",
-    hasConfirm: true,
-  },
-  {
-    tooltipContent: "Đổi trạng thái",
-    icon: ArrowRightLeft,
-    arrowColor: "var(--color-sky-500)",
-    type: "status",
-    hasConfirm: true,
-  },
-];
+import { GET_BTNS } from "@/constant";
+import StatusBadge from "@/components/ui/StatusBadge";
 
 const Tenant = () => {
   const {
@@ -54,6 +31,7 @@ const Tenant = () => {
     value,
     setValue,
     errors,
+    handleBlur,
     ConfirmDialog,
   } = useTenant();
   const { page, size } = query;
@@ -69,7 +47,7 @@ const Tenant = () => {
         const tenant: TenantResponse = row;
         return (
           <div className="flex gap-2">
-            {btns.map((btn, index) => (
+            {GET_BTNS("update", "delete", "status", "view").map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -78,7 +56,7 @@ const Tenant = () => {
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => {
-                        const type = btn.type as "update" | "delete";
+                        const type = btn.type as "update" | "delete" | "view";
                         handleActionClick(tenant, type);
                       }}
                     >
@@ -114,7 +92,13 @@ const Tenant = () => {
       accessorKey: "isRepresentative",
       isCenter: true,
       isSort: true,
-      // hasBadge: true,
+      render: (row: TenantResponse) => {
+        return row.isRepresentative ? (
+          <StatusBadge status={"isRepresentative=true"} />
+        ) : (
+          <StatusBadge status={"isRepresentative=false"} />
+        );
+      },
     },
     {
       label: "Trạng thái",
@@ -142,14 +126,20 @@ const Tenant = () => {
         setRowSelection={setRowSelection}
       />
       <Modal
-        title="Phương tiện"
+        title="Khách thuê"
         trigger={null}
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         onConfirm={handleUpdateFloor}
         desc={Notice.UPDATE}
       >
-        <AddOrUpdateTenant handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
+        <AddOrUpdateTenant
+          onBlur={handleBlur}
+          handleChange={handleChange}
+          value={value}
+          setValue={setValue}
+          errors={errors}
+        />
       </Modal>
       <ConfirmDialog />
     </div>

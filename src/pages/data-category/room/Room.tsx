@@ -6,12 +6,7 @@ import AddOrUpdateRoom from "@/components/data-category/room/AddOrUpdateRoom";
 import RoomButton from "@/components/data-category/room/RoomButton";
 import RoomFilter from "@/components/data-category/room/RoomFilter";
 import { SquarePen, Trash2 } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { RoomResponse, ColumnConfig, IBtnType } from "@/types";
 import { Notice } from "@/enums";
@@ -79,18 +74,12 @@ const Room = () => {
                     size="icon"
                     variant={btn.type}
                     className="cursor-pointer"
-                    onClick={() =>
-                      handleActionClick(row, btn.type as "update" | "delete")
-                    }
+                    onClick={() => handleActionClick(row, btn.type as "update" | "delete")}
                   >
                     <btn.icon className="text-white" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent
-                  className="text-white"
-                  style={{ background: btn.arrowColor }}
-                  arrow={false}
-                >
+                <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
                   <p>{btn.tooltipContent}</p>
                   <TooltipPrimitive.Arrow
                     style={{
@@ -140,9 +129,7 @@ const Room = () => {
       render: (row: RoomResponse) => (
         <span
           dangerouslySetInnerHTML={{
-            __html: row.maximumPeople
-              ? formatNumberField.maximumPeople(row.maximumPeople)
-              : "—",
+            __html: row.maximumPeople ? formatNumberField.maximumPeople(row.maximumPeople) : "—",
           }}
         />
       ),
@@ -161,6 +148,18 @@ const Room = () => {
       isSort: true,
       hasBadge: true,
       isCenter: true,
+    },
+    {
+      label: "Ngày tạo",
+      accessorKey: "createdAt",
+      isSort: true,
+      hasDate: true,
+    },
+    {
+      label: "Ngày cập nhật",
+      accessorKey: "updatedAt",
+      isSort: true,
+      hasDate: true,
     },
   ];
 

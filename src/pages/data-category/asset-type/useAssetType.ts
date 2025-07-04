@@ -79,6 +79,7 @@ export const useAssetType = () => {
 
       return res.data;
     },
+    retry: 1,
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
