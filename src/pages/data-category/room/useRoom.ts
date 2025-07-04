@@ -1,6 +1,13 @@
 import { useConfirmDialog, useFormErrors } from "@/hooks";
 import { createOrUpdateRoomSchema } from "@/lib/validation";
-import { ApiResponse, RoomFormValue, RoomResponse, IRoomStatisticsResponse, FloorBasicResponse } from "@/types";
+import {
+  ApiResponse,
+  RoomFormValue,
+  RoomResponse,
+  IRoomStatisticsResponse,
+  FloorBasicResponse,
+  FilterRoomValues,
+} from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
@@ -11,12 +18,6 @@ import { Status, Notice } from "@/enums";
 import { useParams, useSearchParams } from "react-router-dom";
 import { Building2, HandCoins, DoorOpen } from "lucide-react";
 
-interface FilterValues {
-  query: string;
-  status: string;
-  roomType: string;
-}
-
 const mapStatistics = (data?: IRoomStatisticsResponse) => ({
   renting: data?.getTotalDangThue ?? 0,
   depositing: data?.getTotalDaDatCoc ?? 0,
@@ -26,18 +27,50 @@ const mapStatistics = (data?: IRoomStatisticsResponse) => ({
 export const useRoom = () => {
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { id: buildingIdParam } = useParams();
+
   const {
     page = "1",
     size = "15",
-    query = "",
     status = "",
-    roomType = "",
-  } = queryFilter(searchParams, "page", "size", "query", "status", "roomType");
+    maxPrice = "",
+    minPrice = "",
+    maxAcreage = "",
+    minAcreage = "",
+    maximumPeople = "",
+    nameFloor = "",
+    buildingId = "",
+    floorId = "",
+  } = queryFilter(
+    searchParams,
+    "page",
+    "size",
+    "status",
+    "maxPrice",
+    "minPrice",
+    "maxAcreage",
+    "minAcreage",
+    "maximumPeople",
+    "nameFloor",
+    "buildingId",
+    "floorId"
+  );
 
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
 
-  const { id: buildingId } = useParams();
+  const [filterValues, setFilterValues] = useState<FilterRoomValues>({
+    status,
+    maxPrice,
+    minPrice,
+    maxAcreage,
+    minAcreage,
+    maximumPeople,
+    nameFloor,
+    buildingId: buildingId || buildingIdParam || "",
+    floorId,
+  });
+
   const idRef = useRef<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rowSelection, setRowSelection] = useState({});
@@ -53,80 +86,77 @@ export const useRoom = () => {
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<RoomFormValue>();
 
-  const [filterValues, setFilterValues] = useState<FilterValues>({
-    query,
-    status,
-    roomType,
-  });
-
   useEffect(() => {
-    setFilterValues({ query, status, roomType });
-  }, [query, status, roomType]);
+    setFilterValues({
+      status,
+      maxPrice,
+      minPrice,
+      maxAcreage,
+      minAcreage,
+      maximumPeople,
+      nameFloor,
+      buildingId: buildingId || buildingIdParam || "",
+      floorId,
+    });
+  }, [status, maxPrice, minPrice, maxAcreage, minAcreage, maximumPeople, nameFloor, buildingId, buildingIdParam, floorId]);
 
   const handleClear = () => {
-    setFilterValues({ query: "", status: "", roomType: "" });
+    setFilterValues({
+      status: "",
+      maxPrice: "",
+      minPrice: "",
+      maxAcreage: "",
+      minAcreage: "",
+      maximumPeople: "",
+      nameFloor: "",
+      buildingId: "",
+      floorId: "",
+    });
     setSearchParams({});
   };
 
   const handleFilter = useCallback(() => {
     const params = new URLSearchParams();
-    if (filterValues.query) params.set("query", filterValues.query);
-    if (filterValues.status) params.set("status", filterValues.status);
-    if (filterValues.roomType) params.set("roomType", filterValues.roomType);
+    Object.entries(filterValues).forEach(([key, val]) => {
+      if (val) params.set(key, val);
+    });
     params.set("page", "1");
     setSearchParams(params);
   }, [filterValues, setSearchParams]);
 
-  // Get room data
   const {
     data: roomData,
     isLoading,
     isError: isRoomError,
   } = useQuery<ApiResponse<RoomResponse[]>>({
-    queryKey: ["rooms", page, size, status, roomType, query, buildingId],
+    queryKey: ["rooms", page, size, ...Object.values(filterValues)],
     queryFn: async () => {
-      const params: Record<string, string> = {
-        page: parsedPage.toString(),
-        size: parsedSize.toString(),
-        buildingId: buildingId ?? "",
-      };
-      if (status) params.status = status;
-      if (roomType) params.roomType = roomType;
-      if (query) params.query = query;
+      const params: Record<string, string> = { page: parsedPage.toString(), size: parsedSize.toString() };
+      Object.entries(filterValues).forEach(([k, v]) => {
+        if (v) params[k] = v;
+      });
       const res = await httpRequest.get("/rooms", { params });
       return res.data;
     },
   });
 
   useEffect(() => {
-    if (isRoomError) {
-      toast.error("Không thể tải dữ liệu phòng. Vui lòng thử lại sau.");
-    }
+    if (isRoomError) toast.error("Không thể tải dữ liệu phòng. Vui lòng thử lại sau.");
   }, [isRoomError]);
 
   const { data: floorListData, isLoading: isLoadingFloorList } = useQuery<ApiResponse<FloorBasicResponse[]>>({
-    queryKey: ["floor-list", buildingId],
-    queryFn: async () => {
-      const res = await httpRequest.get("/floors/find-all", {
-        params: {
-          buildingId,
-        },
-      });
-      return res.data;
-    },
-    enabled: !!buildingId,
+    queryKey: ["floor-list", filterValues.buildingId],
+    queryFn: async () =>
+      (await httpRequest.get("/floors/find-all", { params: { buildingId: filterValues.buildingId } })).data,
+    enabled: !!filterValues.buildingId,
     retry: 1,
   });
 
   const { data: statisticsRaw } = useQuery<ApiResponse<IRoomStatisticsResponse>>({
-    queryKey: ["room-statistics", buildingId],
+    queryKey: ["room-statistics", filterValues.buildingId],
     queryFn: async () =>
-      (
-        await httpRequest.get("/rooms/statistics", {
-          params: { buildingId },
-        })
-      ).data,
-    enabled: !!buildingId,
+      (await httpRequest.get("/rooms/statistics", { params: { buildingId: filterValues.buildingId } })).data,
+    enabled: !!filterValues.buildingId,
     retry: 1,
   });
 
@@ -138,7 +168,7 @@ export const useRoom = () => {
 
   const createRoomMutation = useMutation({
     mutationKey: ["create-room"],
-    mutationFn: async (payload: RoomFormValue) => httpRequest.post("/rooms/add", payload),
+    mutationFn: (payload: RoomFormValue) => httpRequest.post("/rooms/add", payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
       queryClient.invalidateQueries({ queryKey: ["room-statistics"] });
@@ -149,7 +179,7 @@ export const useRoom = () => {
 
   const updateRoomMutation = useMutation({
     mutationKey: ["update-room"],
-    mutationFn: async (payload: RoomFormValue) => httpRequest.put(`/rooms/update/${idRef.current}`, payload),
+    mutationFn: (payload: RoomFormValue) => httpRequest.put(`/rooms/update/${idRef.current}`, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
       queryClient.invalidateQueries({ queryKey: ["room-statistics"] });
@@ -160,7 +190,7 @@ export const useRoom = () => {
 
   const deleteRoomMutation = useMutation({
     mutationKey: ["delete-room"],
-    mutationFn: async (id: string) => httpRequest.delete(`/rooms/delete/${id}`),
+    mutationFn: (id: string) => httpRequest.delete(`/rooms/delete/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
       queryClient.invalidateQueries({ queryKey: ["room-statistics"] });
@@ -234,25 +264,13 @@ export const useRoom = () => {
     }
   };
 
-  const props = {
-    filterValues,
-    setFilterValues,
-    onClear: handleClear,
-    onFilter: handleFilter,
-  };
-
   return {
-    query: {
-      page: parsedPage,
-      size: parsedSize,
-      query,
-      status,
-    },
+    query: { page: parsedPage, size: parsedSize, ...filterValues },
     setSearchParams,
-    props,
+    props: { filterValues, setFilterValues, onClear: handleClear, onFilter: handleFilter },
     data: roomData,
     isLoading,
-    statistics: roomStats ?? [],
+    statistics: roomStats,
     value,
     setValue,
     handleChange,

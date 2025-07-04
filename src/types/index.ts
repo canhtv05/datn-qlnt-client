@@ -239,7 +239,17 @@ export interface FloorBasicResponse {
   maximumRooms: number;
   buildingName: string;
 }
-
+export interface FilterRoomValues {
+  status: string;
+  maxPrice: string;
+  minPrice: string;
+  maxAcreage: string;
+  minAcreage: string;
+  maximumPeople: string;
+  nameFloor: string;
+  buildingId: string;
+  floorId: string;
+}
 export interface IdAndName {
   id: string;
   name: string;
