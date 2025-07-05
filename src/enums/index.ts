@@ -121,3 +121,11 @@ export enum TenantStatus {
   TIEM_NANG = "TIEM_NANG",
   KHOA = "KHOA",
 }
+/*CONTRACT */
+export enum ContractStatus {
+  HIEU_LUC = "HIEU_LUC",
+  SAP_HET_HAN = "SAP_HET_HAN",
+  HET_HAN = "HET_HAN",
+  DA_THANH_LY = "DA_THANH_LY",
+  DA_HUY = "DA_HUY",
+}
