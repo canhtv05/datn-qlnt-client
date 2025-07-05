@@ -168,7 +168,7 @@ export const useRoom = () => {
 
   const createRoomMutation = useMutation({
     mutationKey: ["create-room"],
-    mutationFn: (payload: RoomFormValue) => httpRequest.post("/rooms/add", payload),
+    mutationFn: (payload: RoomFormValue) => httpRequest.post("/rooms", payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
       queryClient.invalidateQueries({ queryKey: ["room-statistics"] });

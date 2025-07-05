@@ -12,6 +12,7 @@ import {
   TenantStatus,
   VehicleStatus,
   VehicleType,
+  ContractStatus,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -379,4 +380,77 @@ export interface ITenantStatisticsResponse {
   totalPotentialTenants: number;
   totalCancelTenants: number;
   totalLockedTenants: number;
+}
+export interface TenantBasicResponse {
+  id: string;
+  customerCode: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  isRepresentative: boolean;
+}
+/* CONTRACT*/
+export interface ContractResponse extends AbstractResponse {
+  contractCode: string;
+  roomCode: string;
+  numberOfPeople: number;
+  startDate: string;
+  endDate: string;
+  deposit: number;
+  status: ContractStatus;
+  tenants: TenantBasicResponse[];
+}
+
+export interface ICreateAndUpdateContract {
+  roomId: string;
+  numberOfPeople: number;
+  startDate: string | Date;
+  endDate: string | Date;
+  deposit: number;
+  tenants: string[];
+  status?: ContractStatus;
+}
+export interface ContractDetailResponse {
+  id: string;
+  contractCode: string;
+  roomCode: string;
+
+  nameManager: string;
+  phoneNumberManager: string;
+
+  nameUser: string;
+  emailUser: string;
+  phoneNumberUser: string;
+  identityCardUser: string;
+  addressUser: string;
+
+  numberOfPeople: number;
+  startDate: string;
+  endDate: string;
+  deposit: number;
+  roomPrice: number;
+  buildingAddress: string;
+
+  status: ContractStatus;
+  createdAt: string;
+  updatedAt: string;
+
+  tenants: TenantBasicResponse[];
+}
+export interface IContractStatisticsResponse {
+  totalContracts: number;
+  totalActiveContracts: number;
+  totalExpiredContracts: number;
+  totalAboutToExpireContracts: number;
+  totalLiquidatedContracts: number;
+  totalCancelledContracts: number;
+}
+export interface ContractFilterValues {
+  query: string;
+  gender?: Gender | string;
+  status?: ContractStatus | string;
+}
+export interface Option {
+  label: string;
+  value: string;
 }
