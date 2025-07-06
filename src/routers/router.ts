@@ -22,6 +22,7 @@ const AuthLayout = lazy(() => import("@/layouts/AuthLayout"));
 
 /* MODALS */
 const Profile = lazy(() => import("@/pages/profile"));
+const DetailTenant = lazy(() => import("@/pages/customer/tenant/DetailTenant"));
 
 /* DASHBOARD */
 const DashBoard = lazy(() => import("@/pages/dashboard"));
@@ -142,6 +143,10 @@ const modals: ModalRoute[] = [
   {
     path: configs.routes.modals.profile,
     component: Profile,
+  },
+  {
+    path: configs.routes.modals.tenantDetail,
+    component: DetailTenant,
   },
 ];
 

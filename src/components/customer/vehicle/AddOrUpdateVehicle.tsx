@@ -154,6 +154,7 @@ const AddOrUpdateVehicle = (props: AddOrUpdateVehicleProps) => {
           value={value.licensePlate ?? ""}
           onChange={handleChange}
           errorText={errors.licensePlate}
+          disabled={value.vehicleType === VehicleType.XE_DAP || value.vehicleType === VehicleType.KHAC}
         />
       )}
 

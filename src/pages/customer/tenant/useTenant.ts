@@ -246,7 +246,7 @@ export const useTenant = () => {
       } else {
         navigate(`/customers/tenants/${tenant.id}`, {
           state: {
-            location,
+            background: location,
           },
         });
       }
