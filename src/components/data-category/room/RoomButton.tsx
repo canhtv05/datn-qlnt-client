@@ -50,7 +50,7 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
 
   const addRoomMutation = useMutation({
     mutationKey: ["add-room"],
-    mutationFn: async (payload: RoomFormValue) => await httpRequest.post("/rooms/add", payload),
+    mutationFn: async (payload: RoomFormValue) => await httpRequest.post("/rooms", payload),
     onError: handleMutationError,
     onSuccess: () => {
       toast.success(Status.ADD_SUCCESS);
