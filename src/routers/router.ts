@@ -37,7 +37,8 @@ const Room = lazy(() => import("@/pages/data-category/room"));
 /* CUSTOMER */
 const Vehicle = lazy(() => import("@/pages/customer/vehicle"));
 const Tenant = lazy(() => import("@/pages/customer/tenant"));
-
+const Contract = lazy(() => import("@/pages/customer/contract"));
+const ContractDetail = lazy(() => import("@/pages/customer/contract/ContractDetailPage"));
 const publicRoutes: RouteType[] = [
   /* AUTH */
   {
@@ -106,6 +107,14 @@ const privateRoutes: RouteType[] = [
   {
     path: configs.routes.customer.tenants,
     component: Tenant,
+  },
+  {
+    path: configs.routes.customer.contract,
+    component: Contract,
+  },
+  {
+    path: configs.routes.customer.contractDetail,
+    component: ContractDetail,
   },
 ];
 

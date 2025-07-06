@@ -12,6 +12,7 @@ import {
   Gender,
   VehicleType,
   VehicleStatus,
+  ContractStatus,
 } from "@/enums";
 import { IBtnType } from "@/types";
 import {
@@ -475,8 +476,38 @@ export const STATUS_BADGE = [
     label: "Tạm khóa",
     className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
   },
+  // Contract status
+   {
+    value: ContractStatus.HIEU_LUC,
+    label: "Hiệu lực",
+    className:
+      "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+  },
+  {
+    value: ContractStatus.SAP_HET_HAN,
+    label: "Sắp hết hạn",
+    className:
+      "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+  },
+  {
+    value: ContractStatus.HET_HAN,
+    label: "Hết hạn",
+    className:
+      "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+  },
+  {
+    value: ContractStatus.DA_THANH_LY,
+    label: "Đã thanh lý",
+    className:
+      "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+  },
+  {
+    value: ContractStatus.DA_HUY,
+    label: "Đã hủy",
+    className:
+      "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+  },
 ];
-
 export const ACTION_BUTTONS: IBtnType[] = [
   {
     tooltipContent: "Thêm mới",
