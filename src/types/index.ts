@@ -336,12 +336,34 @@ export interface VehicleFilterValues {
   licensePlate: string;
 }
 
+export type VehicleTypeKey = "motorbike" | "car" | "bicycle" | "other";
+
 export interface VehicleStatisticsResponse {
   total: number;
-  byType: Record<string, number>;
+  byType: Record<VehicleTypeKey, number>;
 }
-
+export interface VehicleStatisticsResponse {
+  total: number;
+  byType: Record<VehicleTypeKey, number>;
+}
 /* TENANT */
+
+export interface TenantDetailResponse extends AbstractResponse {
+  customerCode: string;
+  buildingName: string;
+  roomCode: string;
+  fullName: string;
+  gender: Gender | string;
+  dob: string;
+  email: string;
+  phoneNumber: string;
+  identityCardNumber: string;
+  address: string;
+  contractCode: string;
+  endDate: string;
+  tenantStatus: TenantStatus | string;
+  isRepresentative: string;
+}
 export default interface TenantResponse extends AbstractResponse {
   customerCode: string;
   fullName: string;

@@ -308,21 +308,34 @@ export const createOrUpdateTenantSchema = z.object({
 });
 
 /* VEHICLE */
-export const createVehicleSchema = z.object({
-  tenantId: z.string().min(1, "Vui lòng chọn khách thuê"),
-  vehicleType: z.enum([VehicleType.KHAC, VehicleType.O_TO, VehicleType.XE_DAP, VehicleType.XE_MAY], {
-    message: "Loại phương tiện không hợp lệ",
-  }),
-  licensePlate: z.string().min(1, "Biển số xe không được để trống"),
-  vehicleStatus: z.enum([VehicleStatus.TAM_KHOA, VehicleStatus.SU_DUNG], {
-    message: "Trạng thái phương tiện không hợp lệ",
-  }),
-  registrationDate: z
-    .string()
-    .refine((val) => !isNaN(Date.parse(val)), "Ngày đăng ký không hợp lệ")
-    .transform((val) => new Date(val)),
-  describe: z.string(),
-});
+export const createVehicleSchema = z
+  .object({
+    tenantId: z.string().min(1, "Vui lòng chọn khách thuê"),
+    vehicleType: z.enum([VehicleType.KHAC, VehicleType.O_TO, VehicleType.XE_DAP, VehicleType.XE_MAY], {
+      message: "Loại phương tiện không hợp lệ",
+    }),
+    licensePlate: z.string(),
+    vehicleStatus: z.enum([VehicleStatus.TAM_KHOA, VehicleStatus.SU_DUNG], {
+      message: "Trạng thái phương tiện không hợp lệ",
+    }),
+    registrationDate: z
+      .string()
+      .refine((val) => !isNaN(Date.parse(val)), "Ngày đăng ký không hợp lệ")
+      .transform((val) => new Date(val)),
+    describe: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.vehicleType === VehicleType.XE_DAP || data.vehicleType === VehicleType.KHAC) {
+        return true; // Skip license plate validation for these types
+      }
+      return data.licensePlate.trim().length > 0;
+    },
+    {
+      message: "Biển số xe không được để trống",
+      path: ["licensePlate"],
+    }
+  );
 
 export const updateVehicleSchema = z.object({
   vehicleStatus: z.enum([VehicleStatus.TAM_KHOA, VehicleStatus.SU_DUNG], {

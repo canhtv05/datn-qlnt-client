@@ -13,7 +13,7 @@ import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Building as BuildingIcon, CircleCheck as CircleCheckIcon, XCircle as XCircleIcon } from "lucide-react";
+import { BikeIcon, Building, CarIcon, MoreHorizontalIcon, RecycleIcon } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -224,6 +224,7 @@ export const useVehicle = () => {
     queryKey: ["vehicle-statistics"],
     queryFn: async () => {
       const res = await httpRequest.get("/vehicles/statistics");
+      console.log(res.data);
       return res.data;
     },
     retry: 1,
@@ -231,20 +232,30 @@ export const useVehicle = () => {
 
   const dataVehicles: StatisticCardType[] = [
     {
-      icon: BuildingIcon,
-      label: "Tầng",
+      icon: Building,
+      label: "Tổng phương tiện",
       value: statistics?.data.total ?? 0,
     },
-    // {
-    //   icon: CircleCheckIcon,
-    //   label: "Hoạt động",
-    //   value: statistics?.data.activeFloors ?? 0,
-    // },
-    // {
-    //   icon: XCircleIcon,
-    //   label: "Không hoạt động",
-    //   value: statistics?.data.inactiveFloors ?? 0,
-    // },
+    {
+      icon: BikeIcon,
+      label: "Xe máy",
+      value: statistics?.data?.byType?.motorbike ?? 0,
+    },
+    {
+      icon: CarIcon,
+      label: "Ô tô",
+      value: statistics?.data?.byType?.car ?? 0,
+    },
+    {
+      icon: RecycleIcon,
+      label: "Xe đạp",
+      value: statistics?.data?.byType?.bicycle ?? 0,
+    },
+    {
+      icon: MoreHorizontalIcon,
+      label: "Khác",
+      value: statistics?.data?.byType?.other ?? 0,
+    },
   ];
 
   const { data: tenants, isError: isErrorTenants } = useQuery<ApiResponse<TenantResponse[]>>({
