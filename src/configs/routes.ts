@@ -25,12 +25,13 @@ const routes = {
     rooms: "/data-categories/rooms",
     roomId: "/data-categories/rooms/:id",
     roomAsset: "/data-categories/assets",
+    defaultService: "/data-categories/default-services",
   },
   customer: {
     vehicles: "/customers/vehicles",
     tenants: "/customers/tenants",
-    contract : "/customers/contracts",
-    contractDetail: "/contracts/:contractId"
+    contract: "/customers/contracts",
+    contractDetail: "/contracts/:contractId",
   },
 };
 
