@@ -275,6 +275,10 @@ export interface BuildingSelectResponse extends IdAndName {
   floors: FloorSelectResponse[];
 }
 
+export interface DefaultServiceBuildingSelectResponse extends IdAndName {
+  floors: IdAndName[];
+}
+
 export interface CreateAssetInitResponse {
   assetTypes: IdAndName[];
   buildings: BuildingSelectResponse[];
@@ -518,6 +522,17 @@ export interface DefaultServiceFilter {
   defaultServiceAppliesTo: DefaultServiceAppliesTo | string;
   minPricesApply: number | undefined;
   maxPricesApply: number | undefined;
+}
+
+export interface DefaultServiceInitResponse {
+  services: IdAndName[];
+  buildings: DefaultServiceBuildingSelectResponse[];
+}
+
+export interface DefaultServiceStatistics {
+  totalDefaultServices: number;
+  activeDefaultServices: number;
+  inactiveDefaultServices: number;
 }
 
 /* SERVICE */

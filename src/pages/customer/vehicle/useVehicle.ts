@@ -224,7 +224,6 @@ export const useVehicle = () => {
     queryKey: ["vehicle-statistics"],
     queryFn: async () => {
       const res = await httpRequest.get("/vehicles/statistics");
-      console.log(res.data);
       return res.data;
     },
     retry: 1,

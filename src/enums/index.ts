@@ -138,7 +138,7 @@ export enum DefaultServiceAppliesTo {
 
 export enum DefaultServiceStatus {
   HOAT_DONG = "HOAT_DONG",
-  TAM_NGUNG = "TAM_NGUNG",
+  TAM_DUNG = "TAM_DUNG",
   HUY_BO = "HUY_BO",
 }
 

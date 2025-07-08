@@ -41,8 +41,9 @@ export default function buildColumnsFromConfig<T extends object>(configs: Column
       return <div className={wrapperClass}>{config.render(row.original)}</div>;
     }
 
-    if (config.accessorKey === "price") {
-      const price = parseFloat(row.getValue("price"));
+    if (config.accessorKey === "price" || config.accessorKey === "pricesApply") {
+      const raw = row.getValue(config.accessorKey);
+      const price = parseFloat(String(raw ?? 0));
       const formatted = new Intl.NumberFormat("vi-VN", {
         style: "currency",
         currency: "VND",

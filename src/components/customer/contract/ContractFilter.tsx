@@ -25,21 +25,18 @@ const ContractFilter = ({ props }: { props: ContractFilterProps }) => {
   };
 
   return (
-    <form
-      className="bg-background p-5 flex flex-col gap-2 items-end"
-      onSubmit={handleSubmit}
-    >
-      <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end">
+    <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
+      <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full items-end">
         <FieldsSelectLabel
           name="status"
           labelSelect="Trạng thái hợp đồng"
           placeholder="-- Trạng thái --"
           data={[
-              { label: "Hiệu lực", value: "HIEU_LUC" },
-              { label: "Sắp hết hạn", value: "SAP_HET_HAN" },
-              { label: "Hết hạn", value: "HET_HAN" },
-              { label: "Đã thanh lý", value: "DA_THANH_LY" },  
-              { label: "Đã huỷ", value: "DA_HUY" },
+            { label: "Hiệu lực", value: "HIEU_LUC" },
+            { label: "Sắp hết hạn", value: "SAP_HET_HAN" },
+            { label: "Hết hạn", value: "HET_HAN" },
+            { label: "Đã thanh lý", value: "DA_THANH_LY" },
+            { label: "Đã huỷ", value: "DA_HUY" },
           ]}
           value={status}
           onChange={(value) => handleChange("status", String(value))}

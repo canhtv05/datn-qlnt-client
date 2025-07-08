@@ -3,7 +3,7 @@ import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { AssetTypeResponse, ColumnConfig } from "@/types";
+import { ColumnConfig, DefaultServiceResponse } from "@/types";
 import Modal from "@/components/Modal";
 import { Notice } from "@/enums";
 import { GET_BTNS } from "@/constant";
@@ -11,6 +11,7 @@ import { useDefaultService } from "./useDefaultService";
 import DefaultServiceButton from "@/components/data-category/default-service/DefaultServiceButton";
 import DefaultServiceFilter from "@/components/data-category/default-service/DefaultServiceFilter";
 import AddOrUpdateDefaultService from "@/components/data-category/default-service/AddOrUpdateDefaultService";
+import StatisticCard from "@/components/StatisticCard";
 
 const DefaultService = () => {
   const {
@@ -26,24 +27,29 @@ const DefaultService = () => {
     handleChange,
     handleUpdateFloor,
     value,
+    dataDefaultServices,
     setValue,
     errors,
+    defaultServiceInit,
     ConfirmDialog,
   } = useDefaultService();
   const { page, size } = query;
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Tên loại tài sản", accessorKey: "nameAssetType", isSort: true },
+    {
+      label: "Tên dịch vụ",
+      accessorKey: "serviceName",
+      isSort: true,
+    },
     {
       label: "Thao tác",
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
-      render: (row: AssetTypeResponse) => {
-        const assetType: AssetTypeResponse = row;
+      render: (row: DefaultServiceResponse) => {
         return (
           <div className="flex gap-2">
-            {GET_BTNS("update", "delete").map((btn, index) => (
+            {GET_BTNS("update", "delete", "status").map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -53,7 +59,7 @@ const DefaultService = () => {
                       className="cursor-pointer"
                       onClick={() => {
                         const type = btn.type as "update";
-                        handleActionClick(assetType, type);
+                        handleActionClick(row, type);
                       }}
                     >
                       <btn.icon className="text-white" />
@@ -82,8 +88,47 @@ const DefaultService = () => {
         );
       },
     },
-    { label: "Nhóm tài sản", accessorKey: "assetGroup", isSort: true, isCenter: true, hasBadge: true },
-    { label: "Mô tả", accessorKey: "discriptionAssetType", isSort: false },
+
+    {
+      label: "Giá áp dụng",
+      accessorKey: "pricesApply",
+      isSort: true,
+    },
+    {
+      label: "Áp dụng theo",
+      accessorKey: "defaultServiceAppliesTo",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: "Tòa nhà",
+      accessorKey: "buildingName",
+      isSort: true,
+    },
+    {
+      label: "Tầng",
+      accessorKey: "floorName",
+      isSort: true,
+    },
+    {
+      label: "Trạng thái",
+      accessorKey: "defaultServiceStatus",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: "Ngày bắt đầu áp dụng",
+      accessorKey: "startApplying",
+      isSort: true,
+      hasDate: true,
+    },
+    {
+      label: "Mô tả",
+      accessorKey: "description",
+      isSort: false,
+    },
     {
       label: "Ngày tạo",
       accessorKey: "createdAt",
@@ -100,28 +145,36 @@ const DefaultService = () => {
 
   return (
     <div className="flex flex-col">
-      <DefaultServiceButton ids={rowSelection} />
+      <StatisticCard data={dataDefaultServices} />
+      <DefaultServiceButton ids={rowSelection} defaultServiceInit={defaultServiceInit} />
       <DefaultServiceFilter props={props} />
-      <DataTable<AssetTypeResponse>
-        data={data?.data?.data ?? []}
+      <DataTable<DefaultServiceResponse>
+        data={data?.data ?? []}
         columns={buildColumnsFromConfig(columnConfigs)}
         page={Number(page)}
         size={Number(size)}
-        totalElements={data?.data.meta?.pagination?.total || 0}
-        totalPages={data?.data.meta?.pagination?.totalPages || 0}
+        totalElements={data?.meta?.pagination?.total || 0}
+        totalPages={data?.meta?.pagination?.totalPages || 0}
         loading={isLoading}
         rowSelection={rowSelection}
         setRowSelection={setRowSelection}
       />
       <Modal
-        title="Loại tài sản"
+        title="Dịch vụ mặc định"
         trigger={null}
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         onConfirm={handleUpdateFloor}
         desc={Notice.UPDATE}
       >
-        <AddOrUpdateDefaultService handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
+        <AddOrUpdateDefaultService
+          defaultServiceInit={defaultServiceInit}
+          type="update"
+          handleChange={handleChange}
+          value={value}
+          setValue={setValue}
+          errors={errors}
+        />
       </Modal>
       <ConfirmDialog />
     </div>

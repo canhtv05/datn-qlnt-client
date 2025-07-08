@@ -23,7 +23,7 @@ const DatePickerLabel = ({ date, setDate, label, errorText, required }: DateValu
 
   return (
     <div className="flex flex-col">
-      <span className="mb-1 text-label text-sm flex gap-1 font-medium">
+      <span className="mb-1 text-label text-sm flex gap-1 font-medium items-center">
         {label}
         {required && <span className="text-[10px] text-red-500">(*)</span>}
       </span>

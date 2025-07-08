@@ -11,6 +11,8 @@ import {
   ServiceType,
   ServiceAppliedBy,
   ServiceStatus,
+  DefaultServiceAppliesTo,
+  DefaultServiceStatus,
 } from "@/enums";
 import { z } from "zod/v4";
 
@@ -384,4 +386,29 @@ export const createOrUpdateService = z.object({
     message: "Trạng thái không hợp lệ",
   }),
   description: z.string().optional(),
+});
+
+/* DEFAULT SERVICE */
+export const updateDefaultServiceSchema = z.object({
+  defaultServiceAppliesTo: z.enum([DefaultServiceAppliesTo.HOP_DONG, DefaultServiceAppliesTo.PHONG], {
+    message: "Dịch vụ mặc định áp dụng không hợp lệ",
+  }),
+  pricesApply: zSafeNumber("Giá").refine((val) => val >= 0.0, "Giá không được âm"),
+  defaultServiceStatus: z.enum(
+    [DefaultServiceStatus.HOAT_DONG, DefaultServiceStatus.TAM_DUNG, DefaultServiceStatus.HUY_BO],
+    "Trạng thái dịch vụ mặc định không hợp lệ"
+  ),
+  description: z.string().optional(),
+});
+
+export const creationDefaultServiceSchema = updateDefaultServiceSchema.extend({
+  startApplying: z
+    .string()
+    .refine((val) => {
+      return !isNaN(Date.parse(val));
+    }, "Ngày bắt đầu áp dụng không hợp lệ")
+    .transform((val) => new Date(val)),
+  buildingId: z.string().min(1, "Vui lòng chọn tòa nhà"),
+  floorId: z.string().min(1, "Vui lòng chọn tầng"),
+  serviceId: z.string().min(1, "Vui lòng chọn dịch vụ"),
 });

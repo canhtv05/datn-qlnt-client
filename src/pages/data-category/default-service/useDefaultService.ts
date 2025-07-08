@@ -1,19 +1,21 @@
+import { StatisticCardType } from "@/components/StatisticCard";
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
-import { createOrUpdateAssetTypeSchema } from "@/lib/validation";
+import { updateDefaultServiceSchema } from "@/lib/validation";
 import {
   ApiResponse,
-  AssetTypeResponse,
   DefaultServiceFilter,
+  DefaultServiceInitResponse,
   DefaultServiceResponse,
+  DefaultServiceStatistics,
   DefaultServiceUpdateRequest,
-  PaginatedResponse,
 } from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isNumber } from "lodash";
+import { CircleCheck, Puzzle, XCircle } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -59,18 +61,6 @@ export const useDefaultService = () => {
   const parsedSize = Math.max(Number(size) || 15, 1);
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<DefaultServiceUpdateRequest>();
-
-  useEffect(() => {
-    setFilterValues({
-      buildingId,
-      defaultServiceAppliesTo,
-      defaultServiceStatus,
-      floorId,
-      maxPricesApply: isNumber(maxPricesApply) ? Number(maxPricesApply) : undefined,
-      minPricesApply: isNumber(minPricesApply) ? Number(minPricesApply) : undefined,
-      serviceId,
-    });
-  }, [buildingId, defaultServiceAppliesTo, defaultServiceStatus, floorId, maxPricesApply, minPricesApply, serviceId]);
 
   const [filterValues, setFilterValues] = useState<DefaultServiceFilter>({
     buildingId,
@@ -128,7 +118,7 @@ export const useDefaultService = () => {
     setSearchParams,
   ]);
 
-  const { data, isLoading, isError } = useQuery<ApiResponse<PaginatedResponse<AssetTypeResponse[]>>>({
+  const { data, isLoading, isError } = useQuery<ApiResponse<DefaultServiceResponse[]>>({
     queryKey: [
       "default-services",
       page,
@@ -187,9 +177,10 @@ export const useDefaultService = () => {
     mutationFn: async (id: string) => await httpRequest.delete(`/default-services/${id}`),
   });
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" }>({
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>({
     onConfirm: async ({ id, type }) => {
       if (type === "delete") return await handleRemoveDefaultServicesById(id);
+      if (type === "status") return await handleToggleStatusDefaultServiceById(id);
       return false;
     },
   });
@@ -201,7 +192,32 @@ export const useDefaultService = () => {
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "default-services",
           });
+          queryClient.invalidateQueries({ queryKey: ["default-services-statistics"] });
           toast.success(Status.REMOVE_SUCCESS);
+        },
+      });
+      return true;
+    } catch (error) {
+      handleMutationError(error);
+      return false;
+    }
+  };
+
+  const toggleStatusDefaultServiceMutation = useMutation({
+    mutationKey: ["toggle-default-service"],
+    mutationFn: async (id: string) => await httpRequest.put(`/default-services/toggle-status/${id}`),
+  });
+
+  const handleToggleStatusDefaultServiceById = async (id: string): Promise<boolean> => {
+    try {
+      await toggleStatusDefaultServiceMutation.mutateAsync(id, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "default-services",
+          });
+          queryClient.invalidateQueries({ queryKey: ["default-services-statistics"] });
+
+          toast.success(Status.UPDATE_SUCCESS);
         },
       });
       return true;
@@ -215,7 +231,7 @@ export const useDefaultService = () => {
     try {
       const { defaultServiceAppliesTo, defaultServiceStatus, description, pricesApply } = value;
 
-      await createOrUpdateAssetTypeSchema.parseAsync(value);
+      await updateDefaultServiceSchema.parseAsync(value);
 
       const data: DefaultServiceUpdateRequest = {
         defaultServiceAppliesTo,
@@ -235,6 +251,7 @@ export const useDefaultService = () => {
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "default-services",
           });
+          queryClient.invalidateQueries({ queryKey: ["default-services-statistics"] });
           toast.success(Status.UPDATE_SUCCESS);
           setIsModalOpen(false);
         },
@@ -248,7 +265,7 @@ export const useDefaultService = () => {
   }, [updateDefaultServiceMutation, clearErrors, handleZodErrors, queryClient, value]);
 
   const handleActionClick = useCallback(
-    (defaultServices: DefaultServiceResponse, action: "update") => {
+    (defaultServices: DefaultServiceResponse, action: "update" | "delete") => {
       idRef.current = defaultServices.id;
       if (action === "update") {
         setValue({
@@ -263,7 +280,7 @@ export const useDefaultService = () => {
           { id: defaultServices.id, type: action },
           {
             type: "warn",
-            desc: Notice.REMOVE,
+            desc: action === "delete" ? Notice.REMOVE : Notice.TOGGLE_STATUS,
           }
         );
       }
@@ -271,16 +288,63 @@ export const useDefaultService = () => {
     [openDialog]
   );
 
+  const { data: defaultServiceInit, isError: errorServiceInit } = useQuery<ApiResponse<DefaultServiceInitResponse>>({
+    queryKey: ["default-services-init"],
+    queryFn: async () => {
+      const res = await httpRequest.get("/default-services/init");
+      return res.data;
+    },
+    retry: 1,
+  });
+
+  const { data: statistics, isError: isStatisticsError } = useQuery<ApiResponse<DefaultServiceStatistics>>({
+    queryKey: ["default-services-statistics"],
+    queryFn: async () => {
+      const res = await httpRequest.get("/default-services/statistics");
+      return res.data;
+    },
+    retry: 1,
+  });
+
+  const dataDefaultServices: StatisticCardType[] = [
+    {
+      icon: Puzzle,
+      label: "Dịch vụ",
+      value: statistics?.data.totalDefaultServices ?? 0,
+    },
+    {
+      icon: CircleCheck,
+      label: "Hoạt động",
+      value: statistics?.data.activeDefaultServices ?? 0,
+    },
+    {
+      icon: XCircle,
+      label: "Không hoạt động",
+      value: statistics?.data.inactiveDefaultServices ?? 0,
+    },
+  ];
+
   const props = {
     filterValues,
     setFilterValues,
     onClear: handleClear,
     onFilter: handleFilter,
+    defaultServiceInit,
   };
 
-  if (isError) {
-    toast.error("Có lỗi xảy ra khi tải dịch vụ mặc định");
-  }
+  useEffect(() => {
+    if (isError) {
+      toast.error("Có lỗi xảy ra khi tải dịch vụ mặc định");
+    }
+
+    if (errorServiceInit) {
+      toast.error("Có lỗi xảy ra khi tải khởi tạo dịch vụ mặc định");
+    }
+
+    if (isStatisticsError) {
+      toast.error("Có lỗi xảy ra khi tải thống kê dịch vụ mặc định");
+    }
+  }, [errorServiceInit, isError, isStatisticsError]);
 
   return {
     query: {
@@ -300,6 +364,8 @@ export const useDefaultService = () => {
     isLoading,
     handleActionClick,
     rowSelection,
+    defaultServiceInit,
+    dataDefaultServices,
     setRowSelection,
     isModalOpen,
     setIsModalOpen,

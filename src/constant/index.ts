@@ -16,6 +16,8 @@ import {
   ServiceType,
   ServiceAppliedBy,
   ServiceStatus,
+  DefaultServiceAppliesTo,
+  DefaultServiceStatus,
 } from "@/enums";
 import { IBtnType } from "@/types";
 import {
@@ -563,7 +565,35 @@ export const STATUS_BADGE = [
     label: "Ngừng sử dụng",
     className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
   },
+
+  // DEFAULT SERVICE
+  {
+    value: DefaultServiceAppliesTo.PHONG,
+    label: "Phòng",
+    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+  },
+  {
+    value: DefaultServiceAppliesTo.HOP_DONG,
+    label: "Hợp đồng",
+    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+  },
+  {
+    value: DefaultServiceStatus.HOAT_DONG,
+    label: "Hoạt động",
+    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+  },
+  {
+    value: DefaultServiceStatus.TAM_DUNG,
+    label: "Tạm dừng",
+    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+  },
+  {
+    value: DefaultServiceStatus.HUY_BO,
+    label: "Hủy bỏ",
+    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+  },
 ];
+
 export const ACTION_BUTTONS: IBtnType[] = [
   {
     tooltipContent: "Thêm mới",

@@ -11,22 +11,33 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
-import { createOrUpdateAssetTypeSchema } from "@/lib/validation";
+import { creationDefaultServiceSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { IBtnType, ICreateAssetType } from "@/types";
+import { ApiResponse, DefaultServiceCreationRequest, DefaultServiceInitResponse, IBtnType } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
-import AddOrUpdateAssetType from "./AddOrUpdateDefaultService";
+import AddOrUpdateDefaultService from "./AddOrUpdateDefaultService";
 
-const DefaultServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
-  const [value, setValue] = useState<ICreateAssetType>({
-    assetGroup: "",
-    discriptionAssetType: "",
-    nameAssetType: "",
+const DefaultServiceButton = ({
+  ids,
+  defaultServiceInit,
+}: {
+  ids: Record<string, boolean>;
+  defaultServiceInit: ApiResponse<DefaultServiceInitResponse> | undefined;
+}) => {
+  const [value, setValue] = useState<DefaultServiceCreationRequest>({
+    buildingId: "",
+    defaultServiceAppliesTo: "",
+    defaultServiceStatus: "",
+    description: "",
+    floorId: "",
+    pricesApply: undefined,
+    serviceId: "",
+    startApplying: "",
   });
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAssetType>();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<DefaultServiceCreationRequest>();
 
   const queryClient = useQueryClient();
 
@@ -38,45 +49,65 @@ const DefaultServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
     }));
   };
 
-  const addAssetTypeMutation = useMutation({
-    mutationKey: ["add-asset-types"],
-    mutationFn: async (payload: ICreateAssetType) => await httpRequest.post("/asset-types", payload),
+  const addDefaultServiceMutation = useMutation({
+    mutationKey: ["add-default-services"],
+    mutationFn: async (payload: DefaultServiceCreationRequest) => await httpRequest.post("/default-services", payload),
     onError: handleMutationError,
     onSuccess: () => {
       toast.success(Status.ADD_SUCCESS);
       setValue({
-        assetGroup: "",
-        discriptionAssetType: "",
-        nameAssetType: "",
+        buildingId: "",
+        defaultServiceAppliesTo: "",
+        defaultServiceStatus: "",
+        description: "",
+        floorId: "",
+        pricesApply: undefined,
+        serviceId: "",
+        startApplying: "",
       });
       queryClient.invalidateQueries({
         predicate: (prev) => {
-          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "asset-types";
+          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "default-services";
         },
       });
+      queryClient.invalidateQueries({ queryKey: ["default-services-statistics"] });
     },
   });
 
-  const handleAddAssetType = useCallback(async () => {
+  const handleAddDefaultService = useCallback(async () => {
     try {
-      const { assetGroup, discriptionAssetType, nameAssetType } = value;
+      const {
+        buildingId,
+        defaultServiceAppliesTo,
+        defaultServiceStatus,
+        description,
+        floorId,
+        pricesApply,
+        serviceId,
+        startApplying,
+      } = value;
 
-      await createOrUpdateAssetTypeSchema.parseAsync(value);
+      await creationDefaultServiceSchema.parseAsync(value);
 
-      const data: ICreateAssetType = {
-        assetGroup,
-        discriptionAssetType: discriptionAssetType.trim(),
-        nameAssetType: nameAssetType.trim(),
+      const data: DefaultServiceCreationRequest = {
+        buildingId,
+        defaultServiceAppliesTo,
+        defaultServiceStatus,
+        description: description.trim(),
+        floorId,
+        pricesApply,
+        serviceId,
+        startApplying,
       };
 
-      await addAssetTypeMutation.mutateAsync(data);
+      await addDefaultServiceMutation.mutateAsync(data);
       clearErrors();
       return true;
     } catch (error) {
       handleZodErrors(error);
       return false;
     }
-  }, [addAssetTypeMutation, clearErrors, handleZodErrors, value]);
+  }, [addDefaultServiceMutation, clearErrors, handleZodErrors, value]);
 
   const handleRemoveAssetTypeByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
@@ -85,11 +116,12 @@ const DefaultServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
         .filter(([_, isSelected]) => isSelected)
         .map(([id]) => id);
 
-      await Promise.all(selectedIds.map((id) => removeAssetTypeMutation.mutateAsync(id)));
+      await Promise.all(selectedIds.map((id) => removeDefaultServicesMutation.mutateAsync(id)));
 
       queryClient.invalidateQueries({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-types",
       });
+      queryClient.invalidateQueries({ queryKey: ["default-services-statistics"] });
 
       toast.success(Status.REMOVE_SUCCESS);
       return true;
@@ -104,7 +136,7 @@ const DefaultServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveAssetTypeByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các loại tài sản đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các dịch vụ mặc định đã chọn. Bạn có chắc chắn muốn tiếp tục?",
     type: "warn",
   });
 
@@ -117,22 +149,22 @@ const DefaultServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
     [ids, openDialog]
   );
 
-  const removeAssetTypeMutation = useMutation({
-    mutationKey: ["remove-asset-types"],
-    mutationFn: async (id: string) => await httpRequest.delete(`/asset-types/${id}`),
+  const removeDefaultServicesMutation = useMutation({
+    mutationKey: ["remove-default-services"],
+    mutationFn: async (id: string) => await httpRequest.put(`/default-services/soft-delete/${id}`),
   });
 
   return (
-    <div className="h-full bg-background rounded-t-sm">
+    <div className="h-full bg-background rounded-t-sm mt-4">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Loại tài sản</h3>
+        <h3 className="font-semibold">Dịch vụ mặc định</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Loại tài sản"
+                    title="Dịch vụ mặc định"
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -141,13 +173,15 @@ const DefaultServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
                       </TooltipTrigger>
                     }
                     desc={Notice.ADD}
-                    onConfirm={handleAddAssetType}
+                    onConfirm={handleAddDefaultService}
                   >
-                    <AddOrUpdateAssetType
+                    <AddOrUpdateDefaultService
+                      type="add"
                       handleChange={handleChange}
                       value={value}
                       setValue={setValue}
                       errors={errors}
+                      defaultServiceInit={defaultServiceInit}
                     />
                   </Modal>
                 </RenderIf>
