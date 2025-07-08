@@ -53,7 +53,7 @@ export default function buildColumnsFromConfig<T extends object>(configs: Column
       return (
         <div className={cn(wrapperClass, "text-right font-medium")}>
           {amount}
-          <span className="text-sm text-red-600 font-bold ml-1">{currency}</span>
+          <span className="text-sm font-bold ml-1">{currency}</span>
         </div>
       );
     }

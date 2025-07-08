@@ -15,6 +15,9 @@ import {
   ContractStatus,
   DefaultServiceAppliesTo,
   DefaultServiceStatus,
+  ServiceType,
+  ServiceStatus,
+  ServiceAppliedBy,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -515,4 +518,40 @@ export interface DefaultServiceFilter {
   defaultServiceAppliesTo: DefaultServiceAppliesTo | string;
   minPricesApply: number | undefined;
   maxPricesApply: number | undefined;
+}
+
+/* SERVICE */
+export interface ServiceResponse extends AbstractResponse {
+  name: string;
+  type: ServiceType | string;
+  unit: string;
+  price: number | undefined;
+  appliedBy: string;
+  status: string;
+  description: string;
+}
+
+export interface ServiceFilter {
+  query: string;
+  serviceType: ServiceType | string;
+  minPrice: number | undefined;
+  maxPrice: number | undefined;
+  serviceStatus: ServiceStatus | string;
+  serviceAppliedBy: ServiceAppliedBy | string;
+}
+
+export interface ServiceCreationAndUpdateRequest {
+  name: string;
+  type: ServiceType | string;
+  unit: string;
+  price: number | undefined;
+  appliedBy: ServiceAppliedBy | string;
+  status: ServiceStatus | string;
+  description: string;
+}
+
+export interface ServiceCountResponse {
+  getTotal: number;
+  getTotalHoatDong: number;
+  getTotalKhongHoatDong: number;
 }

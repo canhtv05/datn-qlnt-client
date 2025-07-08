@@ -8,6 +8,9 @@ import {
   AssetBeLongTo,
   VehicleType,
   VehicleStatus,
+  ServiceType,
+  ServiceAppliedBy,
+  ServiceStatus,
 } from "@/enums";
 import { z } from "zod/v4";
 
@@ -347,14 +350,10 @@ export const updateVehicleSchema = z.object({
 export const createOrUpdateContractSchema = z
   .object({
     roomId: z.string().min(1, "Vui lòng chọn phòng của bạn"),
-    numberOfPeople: z
-      .number({ message: "Số người phải là số" })
-      .min(1, "Phải có ít nhất 1 người"),
+    numberOfPeople: z.number({ message: "Số người phải là số" }).min(1, "Phải có ít nhất 1 người"),
     startDate: z.date({ message: "Ngày bắt đầu không hợp lệ" }),
     endDate: z.date({ message: "Ngày kết thúc không hợp lệ" }),
-    deposit: z
-      .number({ message: "Tiền cọc phải là số" })
-      .min(1, "Tiền cọc phải lớn hơn 0"),
+    deposit: z.number({ message: "Tiền cọc phải là số" }).min(1, "Tiền cọc phải lớn hơn 0"),
     tenants: z.array(z.string()).min(1, "Phải có ít nhất một khách thuê"),
   })
   .refine(
@@ -369,3 +368,20 @@ export const createOrUpdateContractSchema = z
       path: ["endDate"],
     }
   );
+
+/* SERVICE */
+export const createOrUpdateService = z.object({
+  name: z.string().min(1, "Không được để trống tên dịch vụ"),
+  type: z.enum([ServiceType.CO_DINH, ServiceType.TINH_THEO_SO], {
+    message: "Loại dịch vụ không hợp lệ",
+  }),
+  unit: z.string().min(1, "Không được để trống đơn vị"),
+  price: zSafeNumber("Giá").refine((val) => val >= 0.0, "Giá không được âm"),
+  appliedBy: z.enum([ServiceAppliedBy.NGUOI, ServiceAppliedBy.PHONG, ServiceAppliedBy.TANG], {
+    message: "Dịch vụ áp dụng không hợp lệ",
+  }),
+  status: z.enum([ServiceStatus.HOAT_DONG, ServiceStatus.TAM_KHOA, ServiceStatus.KHONG_SU_DUNG], {
+    message: "Trạng thái không hợp lệ",
+  }),
+  description: z.string().optional(),
+});

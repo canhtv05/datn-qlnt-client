@@ -141,3 +141,21 @@ export enum DefaultServiceStatus {
   TAM_NGUNG = "TAM_NGUNG",
   HUY_BO = "HUY_BO",
 }
+
+/* SERVICE */
+export enum ServiceAppliedBy {
+  PHONG = "PHONG",
+  NGUOI = "NGUOI",
+  TANG = "TANG",
+}
+
+export enum ServiceStatus {
+  HOAT_DONG = "HOAT_DONG",
+  TAM_KHOA = "TAM_KHOA",
+  KHONG_SU_DUNG = "KHONG_SU_DUNG",
+}
+
+export enum ServiceType {
+  CO_DINH = "CO_DINH",
+  TINH_THEO_SO = "TINH_THEO_SO",
+}
