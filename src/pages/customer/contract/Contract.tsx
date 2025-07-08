@@ -54,7 +54,7 @@ const Contract = () => {
       isCenter: true,
       render: (row: ContractResponse) => (
         <div className="flex gap-2">
-          {GET_BTNS("update", "delete", "view").map((btn, index) => (
+          {GET_BTNS("update", "delete", "status", "view").map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -63,7 +63,10 @@ const Contract = () => {
                     variant={btn.type}
                     className="cursor-pointer"
                     onClick={() =>
-                      handleActionClick(row, btn.type as "update" | "delete" | "view")
+                      handleActionClick(
+                        row,
+                        btn.type as "update" | "delete" | "view" | "status"
+                      )
                     }
                   >
                     <btn.icon className="text-white" />
@@ -96,42 +99,42 @@ const Contract = () => {
       isCenter: true,
     },
     {
-  label: "Số người",
-  accessorKey: "numberOfPeople",
-  isSort: true,
-  isCenter: true,
-  render: (row: ContractResponse) => `${row.numberOfPeople} người/phòng`,
-},
-{
-  label: "Ngày bắt đầu",
-  accessorKey: "startDate",
-  isSort: true,
-  render: (row: ContractResponse) =>
-    new Date(row.startDate).toLocaleDateString("vi-VN", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }),
-},
-{
-  label: "Ngày kết thúc",
-  accessorKey: "endDate",
-  isSort: true,
-  render: (row: ContractResponse) =>
-    new Date(row.endDate).toLocaleDateString("vi-VN", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }),
-},
-{
-  label: "Tiền cọc",
-  accessorKey: "deposit",
-  isSort: true,
-  isCenter: true,
-  render: (row: ContractResponse) =>
-    `${row.deposit?.toLocaleString("vi-VN")} VNĐ`,
-},
+      label: "Số người",
+      accessorKey: "numberOfPeople",
+      isSort: true,
+      isCenter: true,
+      render: (row: ContractResponse) => `${row.numberOfPeople} người/phòng`,
+    },
+    {
+      label: "Ngày bắt đầu",
+      accessorKey: "startDate",
+      isSort: true,
+      render: (row: ContractResponse) =>
+        new Date(row.startDate).toLocaleDateString("vi-VN", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        }),
+    },
+    {
+      label: "Ngày kết thúc",
+      accessorKey: "endDate",
+      isSort: true,
+      render: (row: ContractResponse) =>
+        new Date(row.endDate).toLocaleDateString("vi-VN", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        }),
+    },
+    {
+      label: "Tiền cọc",
+      accessorKey: "deposit",
+      isSort: true,
+      isCenter: true,
+      render: (row: ContractResponse) =>
+        `${row.deposit?.toLocaleString("vi-VN")} VNĐ`,
+    },
     {
       label: "Trạng thái",
       accessorKey: "status",
@@ -174,12 +177,12 @@ const Contract = () => {
         desc={Notice.UPDATE}
       >
         <AddOrUpdateContract
-  value={value}
-  errors={errors}
-  handleChange={handleChange}
-  roomOptions={roomOptions}
-  tenantOptions={tenantOptions}
-/>
+          value={value}
+          errors={errors}
+          handleChange={handleChange}
+          roomOptions={roomOptions}
+          tenantOptions={tenantOptions}
+        />
       </Modal>
 
       <ConfirmDialog />
