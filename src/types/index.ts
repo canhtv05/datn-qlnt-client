@@ -13,6 +13,8 @@ import {
   VehicleStatus,
   VehicleType,
   ContractStatus,
+  DefaultServiceAppliesTo,
+  DefaultServiceStatus,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -475,4 +477,42 @@ export interface ContractFilterValues {
 export interface Option {
   label: string;
   value: string;
+}
+
+/* DEFAULT SERVICE */
+export interface DefaultServiceResponse extends AbstractResponse {
+  defaultServiceAppliesTo: DefaultServiceAppliesTo | string;
+  pricesApply: number;
+  startApplying: string;
+  defaultServiceStatus: DefaultServiceStatus | string;
+  buildingName: string;
+  floorName: string;
+  serviceName: string;
+  description: string;
+}
+
+export interface DefaultServiceCreationRequest {
+  defaultServiceAppliesTo: DefaultServiceAppliesTo | string;
+  pricesApply: number | undefined;
+  startApplying: string;
+  defaultServiceStatus: DefaultServiceStatus | string;
+  description: string;
+  buildingId: string;
+  floorId: string;
+  serviceId: string;
+}
+
+export type DefaultServiceUpdateRequest = Pick<
+  DefaultServiceCreationRequest,
+  "defaultServiceAppliesTo" | "pricesApply" | "defaultServiceStatus" | "description"
+>;
+
+export interface DefaultServiceFilter {
+  buildingId: string;
+  floorId: string;
+  serviceId: string;
+  defaultServiceStatus: DefaultServiceStatus | string;
+  defaultServiceAppliesTo: DefaultServiceAppliesTo | string;
+  minPricesApply: number | undefined;
+  maxPricesApply: number | undefined;
 }

@@ -129,3 +129,15 @@ export enum ContractStatus {
   DA_THANH_LY = "DA_THANH_LY",
   DA_HUY = "DA_HUY",
 }
+
+/* DEFAULT SERVICE */
+export enum DefaultServiceAppliesTo {
+  PHONG = "PHONG",
+  HOP_DONG = "HOP_DONG",
+}
+
+export enum DefaultServiceStatus {
+  HOAT_DONG = "HOAT_DONG",
+  TAM_NGUNG = "TAM_NGUNG",
+  HUY_BO = "HUY_BO",
+}
