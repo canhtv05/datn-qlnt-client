@@ -2,6 +2,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
+import { FileText, Layers, XCircle, CalendarRange } from "lucide-react";
+
+
 import {
   ApiResponse,
   ContractResponse,
@@ -17,7 +20,6 @@ import { Status, Notice } from "@/enums";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { queryFilter } from "@/utils/queryFilter";
 import { httpRequest } from "@/utils/httpRequest";
-import { FileText, Layers, XCircle, CalendarRange } from "lucide-react";
 
 export const useContract = () => {
   const queryClient = useQueryClient();
@@ -37,7 +39,10 @@ export const useContract = () => {
 
   const idRef = useRef<string>("");
 
-  const [filterValues, setFilterValues] = useState<ContractFilterValues>({ query, status });
+  const [filterValues, setFilterValues] = useState<ContractFilterValues>({
+    query,
+    status,
+  });
   const [rowSelection, setRowSelection] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -48,6 +53,7 @@ export const useContract = () => {
     endDate: new Date(),
     deposit: 0,
     tenants: [],
+    status: undefined,
   });
 
   const { data: roomsData } = useQuery<ApiResponse<RoomResponse[]>>({
@@ -60,30 +66,34 @@ export const useContract = () => {
     queryFn: async () => (await httpRequest.get("/tenants/all")).data,
   });
 
-  const roomOptions = roomsData?.data?.map((room) => ({
-    label: `${room.roomCode}`,
-    value: room.id,
-  })) || [];
+  const roomOptions =
+    roomsData?.data?.map((room) => ({
+      label: `${room.roomCode}`,
+      value: room.id,
+    })) || [];
 
-  const tenantOptions = tenantsData?.data?.map((tenant) => ({
-    label: `${tenant.fullName} - ${tenant.phoneNumber}`,
-    value: tenant.id,
-  })) || [];
+  const tenantOptions =
+    tenantsData?.data?.map((tenant) => ({
+      label: `${tenant.fullName} - ${tenant.phoneNumber}`,
+      value: tenant.id,
+    })) || [];
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAndUpdateContract>();
+  const { clearErrors, errors, handleZodErrors } =
+    useFormErrors<ICreateAndUpdateContract>();
 
   useEffect(() => {
     setFilterValues({ query, status });
   }, [query, status]);
+
   const handleChange = <K extends keyof ICreateAndUpdateContract>(
-  field: K,
-  newValue: ICreateAndUpdateContract[K]
-) => {
-  setValue((prev) => ({
-    ...prev,
-    [field]: newValue,
-  }));
-};
+    field: K,
+    newValue: ICreateAndUpdateContract[K]
+  ) => {
+    setValue((prev) => ({
+      ...prev,
+      [field]: newValue,
+    }));
+  };
 
   const handleClear = () => {
     setFilterValues({ query: "", status: "" });
@@ -99,7 +109,12 @@ export const useContract = () => {
     setSearchParams(params);
   }, [filterValues, setSearchParams]);
 
-  const { data, isLoading, isError } = useQuery<ApiResponse<ContractResponse[]>>({
+  const endpoint =
+    filterValues.status === "DA_HUY" ? "/contracts/cancel" : "/contracts";
+
+  const { data, isLoading, isError } = useQuery<
+    ApiResponse<ContractResponse[]>
+  >({
     queryKey: ["contracts", page, size, ...Object.values(filterValues)],
     queryFn: async () => {
       const params: Record<string, string> = {
@@ -109,13 +124,14 @@ export const useContract = () => {
       Object.entries(filterValues).forEach(([k, v]) => {
         if (v) params[k] = v;
       });
-      const res = await httpRequest.get("/contracts", { params });
+      const res = await httpRequest.get(endpoint, { params });
       return res.data;
     },
     retry: 1,
   });
-
-  const { data: statistics, isError: errorStatistics } = useQuery<ApiResponse<IContractStatisticsResponse>>({
+  const { data: statistics, isError: errorStatistics } = useQuery<
+    ApiResponse<IContractStatisticsResponse>
+  >({
     queryKey: ["contracts-statistics"],
     queryFn: async () => (await httpRequest.get("/contracts/statistics")).data,
     retry: 1,
@@ -127,10 +143,26 @@ export const useContract = () => {
   }, [isError, errorStatistics]);
 
   const dataStatisticsContracts = [
-    { label: "Tổng hợp đồng", value: statistics?.data.totalContracts ?? 0, icon: Layers },
-    { label: "Đang hoạt động", value: statistics?.data.totalActiveContracts ?? 0, icon: FileText },
-    { label: "Đã huỷ", value: statistics?.data.totalCancelledContracts ?? 0, icon: XCircle },
-    { label: "Hết hạn", value: statistics?.data.totalExpiredContracts ?? 0, icon: CalendarRange },
+    {
+      label: "Tổng hợp đồng",
+      value: statistics?.data.totalContracts ?? 0,
+      icon: Layers,
+    },
+    {
+      label: "Đang hoạt động",
+      value: statistics?.data.totalActiveContracts ?? 0,
+      icon: FileText,
+    },
+    {
+      label: "Đã huỷ",
+      value: statistics?.data.totalCancelledContracts ?? 0,
+      icon: XCircle,
+    },
+    {
+      label: "Hết hạn",
+      value: statistics?.data.totalExpiredContracts ?? 0,
+      icon: CalendarRange,
+    },
   ];
 
   const createContractMutation = useMutation({
@@ -145,8 +177,13 @@ export const useContract = () => {
   });
 
   const updateContractMutation = useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: ICreateAndUpdateContract }) =>
-      httpRequest.put(`/contracts/${id}`, payload),
+    mutationFn: ({
+      id,
+      payload,
+    }: {
+      id: string;
+      payload: ICreateAndUpdateContract;
+    }) => httpRequest.put(`/contracts/${id}`, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
@@ -164,6 +201,27 @@ export const useContract = () => {
     },
     onError: handleMutationError,
   });
+
+  const toggleContractMutation = useMutation({
+    mutationFn: (id: string) => httpRequest.put(`/contracts/toggle/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["contracts"] });
+      queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
+      toast.success("Chuyển đổi trạng thái thành công");
+    },
+    onError: handleMutationError,
+  });
+
+  const handleToggleStatus = useCallback(
+    async (id: string) => {
+      try {
+        await toggleContractMutation.mutateAsync(id);
+      } catch {
+        // error đã được xử lý bên trên
+      }
+    },
+    [toggleContractMutation]
+  );
 
   const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string }>({
     onConfirm: async ({ id }) => {
@@ -193,7 +251,10 @@ export const useContract = () => {
     try {
       await createOrUpdateContractSchema.parseAsync(value);
       if (idRef.current) {
-        await updateContractMutation.mutateAsync({ id: idRef.current, payload: value });
+        await updateContractMutation.mutateAsync({
+          id: idRef.current,
+          payload: value,
+        });
       } else {
         await createContractMutation.mutateAsync(value);
       }
@@ -204,34 +265,57 @@ export const useContract = () => {
       handleZodErrors(error);
       return false;
     }
-  }, [value, updateContractMutation, createContractMutation, resetForm, handleZodErrors]);
+  }, [
+    value,
+    updateContractMutation,
+    createContractMutation,
+    resetForm,
+    handleZodErrors,
+  ]);
 
   const handleActionClick = useCallback(
-    (contract: ContractResponse, type: "update" | "delete" | "view") => {
-      idRef.current = contract.id;
-      if (type === "update") {
-        setValue({
-          roomId: contract.roomCode,
-          numberOfPeople: contract.numberOfPeople,
-          startDate: new Date(contract.startDate),
-          endDate: new Date(contract.endDate),
-          deposit: Number(contract.deposit),
-          tenants: contract.tenants?.map((t) => t.id) ?? [],
-        });
-        setIsModalOpen(true);
-      } else if (type === "delete") {
-        openDialog({ id: contract.id }, { type: "warn", desc: Notice.REMOVE });
-      } else {
-        navigate(`/contracts/${contract.id}`, { state: { location } });
-      }
-    },
-    [navigate, location, openDialog]
-  );
+  (
+    contract: ContractResponse,
+    type: "update" | "delete" | "view" | "status"
+  ) => {
+    idRef.current = contract.id;
+
+    if (type === "update") {
+      const matchedRoom = roomsData?.data?.find(
+        (r) => r.roomCode === contract.roomCode
+      );
+
+      setValue({
+        roomId: matchedRoom?.id ?? "",
+        numberOfPeople: contract.numberOfPeople,
+        startDate: new Date(contract.startDate),
+        endDate: new Date(contract.endDate),
+        deposit: Number(contract.deposit),
+        tenants: contract.tenants?.map((t) => t.id) ?? [],
+        status: contract.status,
+      });
+
+      setIsModalOpen(true);
+    } else if (type === "delete") {
+      openDialog({ id: contract.id }, { type: "warn", desc: Notice.REMOVE });
+    } else if (type === "status") {
+      handleToggleStatus(contract.id);
+    } else {
+      navigate(`/contracts/${contract.id}`, { state: { location } });
+    }
+  },
+  [navigate, location, openDialog, handleToggleStatus, roomsData]
+);
 
   return {
     query: { page: parsedPage, size: parsedSize, ...filterValues },
     setSearchParams,
-    props: { filterValues, setFilterValues, onClear: handleClear, onFilter: handleFilter },
+    props: {
+      filterValues,
+      setFilterValues,
+      onClear: handleClear,
+      onFilter: handleFilter,
+    },
     data,
     isLoading,
     dataStatisticsContracts,
@@ -248,5 +332,6 @@ export const useContract = () => {
     roomOptions,
     tenantOptions,
     handleChange,
+    handleToggleStatus,
   };
 };
