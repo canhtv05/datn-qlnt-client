@@ -1,21 +1,22 @@
 import ButtonFilter from "@/components/ButtonFilter";
+import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
+import { AssetBeLongTo, AssetStatus } from "@/enums";
+import { AssetFilter as Filter } from "@/types";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 
 export interface AssetFilterProps {
-  filterValues: {
-    nameAsset: string;
-  };
-  setFilterValues: Dispatch<SetStateAction<{ nameAsset: string }>>;
+  filterValues: Filter;
+  setFilterValues: Dispatch<SetStateAction<Filter>>;
   onClear: () => void;
   onFilter: () => void;
 }
 
 const AssetFilter = ({ props }: { props: AssetFilterProps }) => {
-  const { nameAsset } = props.filterValues;
+  const { nameAsset, assetBeLongTo, assetStatus } = props.filterValues;
   const setFilterValues = props.setFilterValues;
 
-  const handleChange = (key: keyof { nameAsset: string }, value: string) => {
+  const handleChange = (key: keyof Filter, value: string) => {
     setFilterValues((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -26,7 +27,35 @@ const AssetFilter = ({ props }: { props: AssetFilterProps }) => {
 
   return (
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
-      <div className="grid grid-cols-1 gap-5 w-full items-end">
+      <div className="grid grid-cols-3 gap-5 w-full items-end">
+        <FieldsSelectLabel
+          placeholder="-- Tài sản thuộc về --"
+          labelSelect="Tài sản thuộc về"
+          data={[
+            { label: "Cá nhân", value: AssetBeLongTo.CA_NHAN },
+            { label: "Chung", value: AssetBeLongTo.CHUNG },
+            { label: "Phòng", value: AssetBeLongTo.PHONG },
+          ]}
+          value={assetBeLongTo}
+          onChange={(value) => handleChange("assetBeLongTo", String(value))}
+          name="assetBeLongTo"
+          showClear
+        />
+        <FieldsSelectLabel
+          placeholder="-- Trạng thái --"
+          labelSelect="Trạng thái"
+          data={[
+            { label: "Cần bảo trì", value: AssetStatus.CAN_BAO_TRI },
+            { label: "Đã thanh lý", value: AssetStatus.DA_THANH_LY },
+            { label: "Bị hư hỏng", value: AssetStatus.HU_HONG },
+            { label: "Sử dụng", value: AssetStatus.SU_DUNG },
+            { label: "Bị thất lạc", value: AssetStatus.THAT_LAC },
+          ]}
+          value={assetStatus}
+          onChange={(value) => handleChange("assetStatus", String(value))}
+          name="assetStatus"
+          showClear
+        />
         <InputLabel
           type="text"
           id="nameAsset"

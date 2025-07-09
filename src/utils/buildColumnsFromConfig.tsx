@@ -88,30 +88,32 @@ export default function buildColumnsFromConfig<T extends object>(configs: Column
     return <div className={wrapperClass}>{value}</div>;
   };
 
-  const res: CustomColumnDef<T>[] = configs.map((config) => ({
-    accessorKey: config.accessorKey,
-    label: config.label,
-    isSort: config.isSort,
-    header: ({ column }) => {
-      const isCenter = config.isCenter;
-      return config.isSort ? (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className={cn(isCenter && "flex w-full items-center justify-center")}
-        >
-          {config.label}
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ) : (
-        <span className={cn(isCenter && "flex w-full items-center justify-center")}>{config.label}</span>
-      );
-    },
-    cell: ({ row }) => {
-      const value = row.getValue(config.accessorKey as string) as string | number;
-      return renderCellContent(config, value, row);
-    },
-  }));
+  const res: CustomColumnDef<T>[] = configs
+    .filter((configs) => !configs.isHidden)
+    .map((config) => ({
+      accessorKey: config.accessorKey,
+      label: config.label,
+      isSort: config.isSort,
+      header: ({ column }) => {
+        const isCenter = config.isCenter;
+        return config.isSort ? (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className={cn(isCenter && "flex w-full items-center justify-center")}
+          >
+            {config.label}
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        ) : (
+          <span className={cn(isCenter && "flex w-full items-center justify-center")}>{config.label}</span>
+        );
+      },
+      cell: ({ row }) => {
+        const value = row.getValue(config.accessorKey as string) as string | number;
+        return renderCellContent(config, value, row);
+      },
+    }));
 
   return [select, ...res];
 }

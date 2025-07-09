@@ -1,7 +1,14 @@
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
 import { createOrUpdateAssetSchema } from "@/lib/validation";
-import { ApiResponse, AssetResponse, CreateAssetInitResponse, IUpdateAsset } from "@/types";
+import {
+  ApiResponse,
+  AssetFilter,
+  AssetResponse,
+  CreateAssetInitResponse,
+  IUpdateAsset,
+  PaginatedResponse,
+} from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
@@ -12,7 +19,13 @@ import { toast } from "sonner";
 
 export const useAsset = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { page = "1", size = "15", nameAsset = "" } = queryFilter(searchParams, "page", "size", "nameAsset");
+  const {
+    page = "1",
+    size = "15",
+    nameAsset = "",
+    assetBeLongTo = "",
+    assetStatus = "",
+  } = queryFilter(searchParams, "page", "size", "nameAsset", "assetBeLongTo", "assetStatus");
 
   const [rowSelection, setRowSelection] = useState({});
   const idRef = useRef<string>("");
@@ -36,16 +49,16 @@ export const useAsset = () => {
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<IUpdateAsset>();
 
-  useEffect(() => {
-    setFilterValues({ nameAsset });
-  }, [nameAsset]);
-
-  const [filterValues, setFilterValues] = useState<{ nameAsset: string }>({
+  const [filterValues, setFilterValues] = useState<AssetFilter>({
     nameAsset,
+    assetBeLongTo,
+    assetStatus,
   });
 
   const handleClear = () => {
     setFilterValues({
+      assetBeLongTo: "",
+      assetStatus: "",
       nameAsset: "",
     });
     setSearchParams({});
@@ -54,14 +67,16 @@ export const useAsset = () => {
   const handleFilter = useCallback(() => {
     const params = new URLSearchParams();
     if (filterValues.nameAsset) params.set("nameAsset", filterValues.nameAsset);
+    if (filterValues.assetBeLongTo) params.set("assetBeLongTo", filterValues.assetBeLongTo);
+    if (filterValues.assetStatus) params.set("assetStatus", filterValues.assetStatus);
     params.set("page", "1");
-    if (filterValues.nameAsset) {
+    if (filterValues.nameAsset || filterValues.assetStatus || filterValues.assetBeLongTo) {
       setSearchParams(params);
     }
-  }, [filterValues.nameAsset, setSearchParams]);
+  }, [filterValues.assetBeLongTo, filterValues.assetStatus, filterValues.nameAsset, setSearchParams]);
 
-  const { data, isLoading, isError } = useQuery<ApiResponse<AssetResponse[]>>({
-    queryKey: ["assets", page, size, nameAsset],
+  const { data, isLoading, isError } = useQuery<ApiResponse<PaginatedResponse<AssetResponse[]>>>({
+    queryKey: ["assets", page, size, nameAsset, assetBeLongTo, assetStatus],
     queryFn: async () => {
       const params: Record<string, string> = {
         page: page.toString(),
@@ -69,6 +84,8 @@ export const useAsset = () => {
       };
 
       if (nameAsset) params["nameAsset"] = nameAsset;
+      if (assetStatus) params["assetStatus"] = assetStatus;
+      if (assetBeLongTo) params["assetBeLongTo"] = assetBeLongTo;
 
       const res = await httpRequest.get("/assets", {
         params,

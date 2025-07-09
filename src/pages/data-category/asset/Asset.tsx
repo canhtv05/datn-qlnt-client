@@ -85,11 +85,11 @@ const Asset = () => {
     },
     { label: "Tài sản thuộc về", accessorKey: "assetBeLongTo", isSort: true, isCenter: true, hasBadge: true },
     { label: "Tên loại tài sản", accessorKey: "nameAssetType", isSort: true, isCenter: true },
+    { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true, isCenter: true },
+    { label: "Tên tầng", accessorKey: "nameFloor", isSort: true, isCenter: true },
+    { label: "Mã phòng", accessorKey: "roomCode", isSort: true, hasHighlight: true, isCenter: true },
     { label: "Trạng thái", accessorKey: "assetStatus", isSort: true, hasBadge: true, isCenter: true },
-    { label: "Tên tầng", accessorKey: "nameFloor", isSort: true },
-    { label: "Mã phòng", accessorKey: "roomCode", isSort: true, hasHighlight: true },
     { label: "Tên khách thuê", accessorKey: "fullName", isSort: true },
-    { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true },
     { label: "Giá", accessorKey: "price", isSort: true },
     { label: "Mô tả", accessorKey: "descriptionAsset", isSort: false },
     {
@@ -104,6 +104,10 @@ const Asset = () => {
       isSort: true,
       hasDate: true,
     },
+    { label: "Mã phòng", accessorKey: "roomID", isHidden: true },
+    { label: "Mã tầng", accessorKey: "floorID", isHidden: true },
+    { label: "Mã tòa nhà", accessorKey: "buildingID", isHidden: true },
+    { label: "Mã khách thuê", accessorKey: "tenantId", isHidden: true },
   ];
 
   return (
@@ -111,12 +115,12 @@ const Asset = () => {
       <AssetButton ids={rowSelection} assetsInfo={assetsInfo} />
       <AssetFilter props={props} />
       <DataTable<AssetResponse>
-        data={data?.data ?? []}
+        data={data?.data?.data ?? []}
         columns={buildColumnsFromConfig(columnConfigs)}
         page={Number(page)}
         size={Number(size)}
-        totalElements={data?.meta?.pagination?.total || 0}
-        totalPages={data?.meta?.pagination?.totalPages || 0}
+        totalElements={data?.data?.meta?.pagination?.total || 0}
+        totalPages={data?.data?.meta?.pagination?.totalPages || 0}
         loading={isLoading}
         rowSelection={rowSelection}
         setRowSelection={setRowSelection}
