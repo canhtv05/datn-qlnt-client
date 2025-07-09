@@ -99,6 +99,7 @@ export interface ColumnConfig {
   isCenter?: boolean;
   hasHighlight?: boolean;
   hasDate?: boolean;
+  isHidden?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   render?: (row: any) => ReactNode;
 }
@@ -315,6 +316,12 @@ export interface AssetResponse extends AbstractResponse {
   price: number;
   assetStatus: AssetStatus | string;
   descriptionAsset: string;
+}
+
+export interface AssetFilter {
+  nameAsset: string;
+  assetBeLongTo: AssetBeLongTo | string;
+  assetStatus: AssetStatus | string;
 }
 
 /* VEHICLE */
