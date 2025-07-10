@@ -159,3 +159,10 @@ export enum ServiceType {
   CO_DINH = "CO_DINH",
   TINH_THEO_SO = "TINH_THEO_SO",
 }
+
+/* SERVICE ROOM */
+export enum ServiceRoomStatus {
+  DANG_SU_DUNG = "DANG_SU_DUNG",
+  TAM_DUNG = "TAM_DUNG",
+  DA_HUY = "DA_HUY",
+}

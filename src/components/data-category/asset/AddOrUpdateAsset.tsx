@@ -1,7 +1,7 @@
 import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
-import { AssetBeLongTo } from "@/enums";
+import { AssetBeLongTo, AssetStatus } from "@/enums";
 import { ApiResponse, CreateAssetInitResponse, ICreateAsset } from "@/types";
 import { Dispatch, useMemo } from "react";
 
@@ -11,6 +11,7 @@ interface AddOrUpdateAssetProps {
   setValue: Dispatch<React.SetStateAction<ICreateAsset>>;
   errors: Partial<Record<keyof ICreateAsset, string>>;
   assetsInfo?: ApiResponse<CreateAssetInitResponse>;
+  type: "add" | "update";
 }
 
 const assetBeLongTo: FieldsSelectLabelType[] = [
@@ -28,7 +29,7 @@ const assetBeLongTo: FieldsSelectLabelType[] = [
   },
 ];
 
-const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo }: AddOrUpdateAssetProps) => {
+const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, type }: AddOrUpdateAssetProps) => {
   const assetTypeOptions = useMemo(() => {
     return (
       assetsInfo?.data.assetTypes?.map((item) => ({
@@ -194,6 +195,43 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo }:
           required
         />
       </div>
+
+      {type === "update" && (
+        <FieldsSelectLabel
+          data={[
+            {
+              label: "Sử dụng",
+              value: AssetStatus.SU_DUNG,
+            },
+            {
+              label: "Cần bảo trì",
+              value: AssetStatus.CAN_BAO_TRI,
+            },
+            {
+              label: "Đã thanh lý",
+              value: AssetStatus.DA_THANH_LY,
+            },
+            {
+              label: "Hư hỏng",
+              value: AssetStatus.HU_HONG,
+            },
+            {
+              label: "Thất lạc",
+              value: AssetStatus.THAT_LAC,
+            },
+          ]}
+          placeholder="-- Chọn trạng thái --"
+          label="Trạng thái:"
+          id="assetStatus"
+          name="assetStatus"
+          value={value.assetStatus ?? ""}
+          onChange={(val) => setValue((prev) => ({ ...prev, assetStatus: val as AssetStatus }))}
+          labelSelect="Trạng thái"
+          showClear
+          errorText={errors.assetStatus}
+          required
+        />
+      )}
 
       <InputLabel
         type="number"

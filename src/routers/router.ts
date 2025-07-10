@@ -36,6 +36,7 @@ const Asset = lazy(() => import("@/pages/data-category/asset"));
 const Room = lazy(() => import("@/pages/data-category/room"));
 const Service = lazy(() => import("@/pages/data-category/service"));
 const DefaultService = lazy(() => import("@/pages/data-category/default-service"));
+const ServiceRoom = lazy(() => import("@/pages/data-category/service-room"));
 
 /* CUSTOMER */
 const Vehicle = lazy(() => import("@/pages/customer/vehicle"));
@@ -108,6 +109,10 @@ const privateRoutes: RouteType[] = [
   {
     path: configs.routes.dataCategories.defaultService,
     component: DefaultService,
+  },
+  {
+    path: configs.routes.dataCategories.roomService,
+    component: ServiceRoom,
   },
 
   /* CUSTOMER */

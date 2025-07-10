@@ -27,6 +27,7 @@ const routes = {
     roomAsset: "/data-categories/assets",
     defaultService: "/data-categories/default-services",
     service: "/data-categories/services",
+    roomService: "/data-categories/room-services",
   },
   customer: {
     vehicles: "/customers/vehicles",

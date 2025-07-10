@@ -18,6 +18,7 @@ import {
   ServiceStatus,
   DefaultServiceAppliesTo,
   DefaultServiceStatus,
+  ServiceRoomStatus,
 } from "@/enums";
 import { IBtnType } from "@/types";
 import {
@@ -590,6 +591,21 @@ export const STATUS_BADGE = [
   {
     value: DefaultServiceStatus.HUY_BO,
     label: "Hủy bỏ",
+    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+  },
+  {
+    value: ServiceRoomStatus.DANG_SU_DUNG,
+    label: "Đang sử dụng",
+    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+  },
+  {
+    value: ServiceRoomStatus.TAM_DUNG,
+    label: "Tạm dừng",
+    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+  },
+  {
+    value: ServiceRoomStatus.DA_HUY,
+    label: "Đã hủy",
     className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
   },
 ];
