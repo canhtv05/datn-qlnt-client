@@ -79,11 +79,11 @@ const ServiceRoom = () => {
       },
     },
     { label: "Tên dịch vụ", accessorKey: "name", isSort: true },
+    { label: "Giá tổng", accessorKey: "totalPrice", isSort: true },
     { label: "Trạng thái", accessorKey: "serviceRoomStatus", isSort: true, hasBadge: true, isCenter: true },
     { label: "Mã phòng", accessorKey: "roomCode", isSort: true, isCenter: true },
     { label: "Ngày bắt đầu", accessorKey: "startDate", isSort: true, hasDate: true },
     { label: "Ngày áp dụng", accessorKey: "applyTime", isSort: true, hasDate: true },
-    { label: "Giá tổng", accessorKey: "totalPrice", isSort: true },
     { label: "Mô tả", accessorKey: "descriptionServiceRoom", isSort: false },
     {
       label: "Ngày tạo",
