@@ -39,6 +39,7 @@ export const useAsset = () => {
     price: undefined,
     roomID: "",
     tenantId: "",
+    assetStatus: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -143,22 +144,33 @@ export const useAsset = () => {
 
   const handleUpdateFloor = useCallback(async () => {
     try {
-      const { assetBeLongTo, assetTypeId, buildingID, descriptionAsset, floorID, nameAsset, price, roomID, tenantId } =
-        value;
-
-      await createOrUpdateAssetSchema.parseAsync(value);
-
-      const data: IUpdateAsset = {
+      const {
         assetBeLongTo,
         assetTypeId,
         buildingID,
-        descriptionAsset: descriptionAsset.trim(),
+        descriptionAsset,
         floorID,
-        nameAsset: nameAsset.trim(),
+        nameAsset,
         price,
         roomID,
         tenantId,
+        assetStatus,
+      } = value;
+
+      const data: IUpdateAsset = {
+        assetBeLongTo,
+        assetTypeId: assetTypeId ?? "",
+        buildingID: buildingID ?? "",
+        descriptionAsset: descriptionAsset.trim(),
+        floorID: floorID ?? "",
+        nameAsset: nameAsset.trim(),
+        price,
+        roomID: roomID ?? "",
+        tenantId: tenantId ?? "",
+        assetStatus,
       };
+
+      await createOrUpdateAssetSchema.parseAsync(data);
 
       updateAssetMutation.mutate(data, {
         onSuccess: () => {
@@ -172,6 +184,7 @@ export const useAsset = () => {
             price: undefined,
             roomID: "",
             tenantId: "",
+            assetStatus: "",
           });
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
@@ -202,6 +215,7 @@ export const useAsset = () => {
           price: asset.price,
           roomID: asset.roomID,
           tenantId: asset.tenantId,
+          assetStatus: asset.assetStatus,
         });
         setIsModalOpen(true);
       } else {

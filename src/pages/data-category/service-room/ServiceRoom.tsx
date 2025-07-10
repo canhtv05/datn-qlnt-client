@@ -3,16 +3,17 @@ import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { AssetResponse, ColumnConfig } from "@/types";
+import { ColumnConfig, ServiceRoomResponse } from "@/types";
 import Modal from "@/components/Modal";
 import { Notice } from "@/enums";
-import { useAsset } from "./useAsset";
-import AssetButton from "@/components/data-category/asset/AssetButton";
-import AssetFilter from "@/components/data-category/asset/AssetFilter";
-import AddOrUpdateAsset from "@/components/data-category/asset/AddOrUpdateAsset";
+import { useServiceRoom } from "./useServiceRoom";
 import { GET_BTNS } from "@/constant";
+import ServiceRoomButton from "@/components/data-category/service-room/ServiceRoomButton";
+import ServiceRoomFilter from "@/components/data-category/service-room/ServiceRoomFilter";
+import AddOrUpdateServiceRoom from "@/components/data-category/service-room/AddOrUpdateServiceRoom";
+import StatisticCard from "@/components/StatisticCard";
 
-const Asset = () => {
+const ServiceRoom = () => {
   const {
     props,
     data,
@@ -29,51 +30,45 @@ const Asset = () => {
     setValue,
     errors,
     ConfirmDialog,
-    assetsInfo,
-  } = useAsset();
+    dataServices,
+    serviceRoomInit,
+  } = useServiceRoom();
   const { page, size } = query;
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Tên tài sản", accessorKey: "nameAsset", isSort: true },
+    { label: "Mã sử dụng", accessorKey: "usageCode", isSort: true, isCenter: true, hasHighlight: true },
     {
       label: "Thao tác",
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
-      render: (row: AssetResponse) => {
-        const asset: AssetResponse = row;
+      render: (row: ServiceRoomResponse) => {
+        const serviceRoom = row;
         return (
           <div className="flex gap-2">
-            {GET_BTNS("update", "delete").map((btn, index) => (
+            {GET_BTNS("update", "delete", "status").map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
-                      size={"icon"}
+                      size="icon"
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => {
-                        const type = btn.type as "update";
-                        handleActionClick(asset, type);
+                        handleActionClick(serviceRoom, btn.type as "update");
                       }}
                     >
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent
-                    className="text-white"
-                    style={{
-                      background: btn.arrowColor,
-                    }}
-                    arrow={false}
-                  >
+                  <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
                     <p>{btn.tooltipContent}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,
                         background: btn.arrowColor,
                       }}
-                      className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                      className="size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
                     />
                   </TooltipContent>
                 </Tooltip>
@@ -83,15 +78,13 @@ const Asset = () => {
         );
       },
     },
-    { label: "Tài sản thuộc về", accessorKey: "assetBeLongTo", isSort: true, isCenter: true, hasBadge: true },
-    { label: "Tên loại tài sản", accessorKey: "nameAssetType", isSort: true, isCenter: true },
-    { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true, isCenter: true },
-    { label: "Tên tầng", accessorKey: "nameFloor", isSort: true, isCenter: true },
-    { label: "Mã phòng", accessorKey: "roomCode", isSort: true, hasHighlight: true, isCenter: true },
-    { label: "Trạng thái", accessorKey: "assetStatus", isSort: true, hasBadge: true, isCenter: true },
-    { label: "Tên khách thuê", accessorKey: "fullName", isSort: true },
-    { label: "Giá", accessorKey: "price", isSort: true },
-    { label: "Mô tả", accessorKey: "descriptionAsset", isSort: false },
+    { label: "Tên dịch vụ", accessorKey: "name", isSort: true },
+    { label: "Giá tổng", accessorKey: "totalPrice", isSort: true },
+    { label: "Trạng thái", accessorKey: "serviceRoomStatus", isSort: true, hasBadge: true, isCenter: true },
+    { label: "Mã phòng", accessorKey: "roomCode", isSort: true, isCenter: true },
+    { label: "Ngày bắt đầu", accessorKey: "startDate", isSort: true, hasDate: true },
+    { label: "Ngày áp dụng", accessorKey: "applyTime", isSort: true, hasDate: true },
+    { label: "Mô tả", accessorKey: "descriptionServiceRoom", isSort: false },
     {
       label: "Ngày tạo",
       accessorKey: "createdAt",
@@ -104,37 +97,37 @@ const Asset = () => {
       isSort: true,
       hasDate: true,
     },
-    { label: "Mã phòng", accessorKey: "roomID", isHidden: true },
-    { label: "Mã tầng", accessorKey: "floorID", isHidden: true },
-    { label: "Mã tòa nhà", accessorKey: "buildingID", isHidden: true },
-    { label: "Mã khách thuê", accessorKey: "tenantId", isHidden: true },
+
+    { label: "Mã phòng", accessorKey: "roomId", isHidden: true },
+    { label: "Mã dịch vụ", accessorKey: "serviceId", isHidden: true },
   ];
 
   return (
     <div className="flex flex-col">
-      <AssetButton ids={rowSelection} assetsInfo={assetsInfo} />
-      <AssetFilter props={props} />
-      <DataTable<AssetResponse>
-        data={data?.data?.data ?? []}
+      <StatisticCard data={dataServices} />
+      <ServiceRoomButton ids={rowSelection} serviceRoomInit={serviceRoomInit} />
+      <ServiceRoomFilter props={props} />
+      <DataTable<ServiceRoomResponse>
+        data={data?.data ?? []}
         columns={buildColumnsFromConfig(columnConfigs)}
         page={Number(page)}
         size={Number(size)}
-        totalElements={data?.data?.meta?.pagination?.total || 0}
-        totalPages={data?.data?.meta?.pagination?.totalPages || 0}
+        totalElements={data?.meta?.pagination?.total || 0}
+        totalPages={data?.meta?.pagination?.totalPages || 0}
         loading={isLoading}
         rowSelection={rowSelection}
         setRowSelection={setRowSelection}
       />
       <Modal
-        title="Tài sản"
+        title="Tài sản phòng"
         trigger={null}
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         onConfirm={handleUpdateFloor}
         desc={Notice.UPDATE}
       >
-        <AddOrUpdateAsset
-          assetsInfo={assetsInfo}
+        <AddOrUpdateServiceRoom
+          serviceRoomInit={serviceRoomInit}
           handleChange={handleChange}
           value={value}
           setValue={setValue}
@@ -147,4 +140,4 @@ const Asset = () => {
   );
 };
 
-export default Asset;
+export default ServiceRoom;

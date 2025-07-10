@@ -18,6 +18,7 @@ import {
   ServiceType,
   ServiceStatus,
   ServiceAppliedBy,
+  ServiceRoomStatus,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -295,6 +296,7 @@ export interface ICreateAsset {
   floorID: string;
   tenantId: string;
   price: number | undefined;
+  assetStatus: AssetStatus | string;
   descriptionAsset: string;
 }
 
@@ -576,4 +578,46 @@ export interface ServiceCountResponse {
   getTotal: number;
   getTotalHoatDong: number;
   getTotalKhongHoatDong: number;
+}
+
+/* ROOM SERVICE */
+export interface ServiceRoomResponse extends AbstractResponse {
+  roomId: string;
+  roomCode: string;
+  serviceId: string;
+  name: string;
+  usageCode: string;
+  applyTime: string;
+  startDate: string;
+  totalPrice: number;
+  serviceRoomStatus: ServiceRoomStatus | string;
+  descriptionServiceRoom: string;
+}
+
+export interface ServiceRoomCreationRequest {
+  roomId: string;
+  serviceId: string;
+  startDate: string;
+  totalPrice: number | undefined;
+  descriptionServiceRoom: string;
+}
+
+export type ServiceRoomUpdateRequest = ServiceRoomCreationRequest & { serviceRoomStatus: ServiceRoomStatus | string };
+
+export interface ServiceRoomFilter {
+  query: string;
+  minPrice: number | undefined;
+  maxPrice: number | undefined;
+  status: ServiceRoomStatus | string;
+}
+
+export interface CreateRoomServiceInitResponse {
+  rooms: IdAndName[];
+  services: IdAndName[];
+}
+
+export interface ServiceRoomStatistics {
+  total: number;
+  active: number;
+  paused: number;
 }

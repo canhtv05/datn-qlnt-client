@@ -11,35 +11,30 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
-import { createOrUpdateAssetSchema } from "@/lib/validation";
+import { createServiceRoomSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { ApiResponse, CreateAssetInitResponse, IBtnType, ICreateAsset, IUpdateAsset } from "@/types";
+import { ApiResponse, CreateRoomServiceInitResponse, IBtnType, ServiceRoomCreationRequest } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
-import AddOrUpdateAsset from "./AddOrUpdateAsset";
+import AddOrUpdateServiceRoom from "./AddOrUpdateServiceRoom";
 
-const AssetButton = ({
+const ServiceRoomButton = ({
   ids,
-  assetsInfo,
+  serviceRoomInit,
 }: {
   ids: Record<string, boolean>;
-  assetsInfo?: ApiResponse<CreateAssetInitResponse>;
+  serviceRoomInit?: ApiResponse<CreateRoomServiceInitResponse>;
 }) => {
-  const [value, setValue] = useState<ICreateAsset>({
-    assetBeLongTo: "",
-    assetTypeId: "",
-    buildingID: "",
-    descriptionAsset: "",
-    floorID: "",
-    nameAsset: "",
-    price: undefined,
-    roomID: "",
-    assetStatus: "",
-    tenantId: "",
+  const [value, setValue] = useState<ServiceRoomCreationRequest>({
+    descriptionServiceRoom: "",
+    roomId: "",
+    serviceId: "",
+    startDate: "",
+    totalPrice: undefined,
   });
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAsset>();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<ServiceRoomCreationRequest>();
 
   const queryClient = useQueryClient();
 
@@ -51,69 +46,47 @@ const AssetButton = ({
     }));
   };
 
-  const addAssetMutation = useMutation({
-    mutationKey: ["add-asset"],
-    mutationFn: async (payload: ICreateAsset) => await httpRequest.post("/assets", payload),
+  const addServiceRoomMutation = useMutation({
+    mutationKey: ["add-service-room"],
+    mutationFn: async (payload: ServiceRoomCreationRequest) => await httpRequest.post("/service-rooms", payload),
     onError: handleMutationError,
     onSuccess: () => {
       toast.success(Status.ADD_SUCCESS);
       setValue({
-        assetBeLongTo: "",
-        assetTypeId: "",
-        buildingID: "",
-        descriptionAsset: "",
-        floorID: "",
-        nameAsset: "",
-        price: undefined,
-        roomID: "",
-        tenantId: "",
-        assetStatus: "",
+        descriptionServiceRoom: "",
+        roomId: "",
+        serviceId: "",
+        startDate: "",
+        totalPrice: undefined,
       });
       queryClient.invalidateQueries({
-        predicate: (prev) => {
-          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "assets";
-        },
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
       });
+      queryClient.invalidateQueries({ queryKey: ["service-rooms-statistics"] });
     },
   });
 
-  const handleAddAssetType = useCallback(async () => {
+  const handleAddServiceRoom = useCallback(async () => {
     try {
-      const {
-        assetBeLongTo,
-        assetTypeId,
-        buildingID,
-        descriptionAsset,
-        floorID,
-        nameAsset,
-        price,
-        roomID,
-        tenantId,
-        assetStatus,
-      } = value;
+      const { descriptionServiceRoom, roomId, serviceId, startDate, totalPrice } = value;
 
-      const data: IUpdateAsset = {
-        assetBeLongTo,
-        assetTypeId: assetTypeId ?? "",
-        buildingID: buildingID ?? "",
-        descriptionAsset: descriptionAsset.trim(),
-        floorID: floorID ?? "",
-        nameAsset: nameAsset.trim(),
-        price,
-        roomID: roomID ?? "",
-        tenantId: tenantId ?? "",
-        assetStatus,
+      const data: ServiceRoomCreationRequest = {
+        descriptionServiceRoom: descriptionServiceRoom.trim(),
+        roomId: roomId ?? "",
+        serviceId: serviceId ?? "",
+        startDate,
+        totalPrice,
       };
 
-      await createOrUpdateAssetSchema.parseAsync(data);
-      await addAssetMutation.mutateAsync(data);
+      await createServiceRoomSchema.parseAsync(data);
+      await addServiceRoomMutation.mutateAsync(data);
       clearErrors();
       return true;
     } catch (error) {
       handleZodErrors(error);
       return false;
     }
-  }, [addAssetMutation, clearErrors, handleZodErrors, value]);
+  }, [addServiceRoomMutation, clearErrors, handleZodErrors, value]);
 
   const handleRemoveAssetTypeByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
@@ -122,11 +95,12 @@ const AssetButton = ({
         .filter(([_, isSelected]) => isSelected)
         .map(([id]) => id);
 
-      await Promise.all(selectedIds.map((id) => removeAssetTypeMutation.mutateAsync(id)));
+      await Promise.all(selectedIds.map((id) => removeServiceRoomMutation.mutateAsync(id)));
 
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
       });
+      queryClient.invalidateQueries({ queryKey: ["service-rooms-statistics"] });
 
       toast.success(Status.REMOVE_SUCCESS);
       return true;
@@ -141,7 +115,7 @@ const AssetButton = ({
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveAssetTypeByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tài sản đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các dịch vụ phòng đã chọn. Bạn có chắc chắn muốn tiếp tục?",
     type: "warn",
   });
 
@@ -154,22 +128,22 @@ const AssetButton = ({
     [ids, openDialog]
   );
 
-  const removeAssetTypeMutation = useMutation({
-    mutationKey: ["remove-assets"],
-    mutationFn: async (id: string) => await httpRequest.delete(`/assets/${id}`),
+  const removeServiceRoomMutation = useMutation({
+    mutationKey: ["remove-service-rooms"],
+    mutationFn: async (id: string) => await httpRequest.put(`/service-rooms/soft-delete/${id}`),
   });
 
   return (
-    <div className="h-full bg-background rounded-t-sm">
+    <div className="h-full bg-background rounded-t-sm mt-4">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Tài sản</h3>
+        <h3 className="font-semibold">Dịch vụ phòng</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Tài sản"
+                    title="Dịch vụ phòng"
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -178,10 +152,10 @@ const AssetButton = ({
                       </TooltipTrigger>
                     }
                     desc={Notice.ADD}
-                    onConfirm={handleAddAssetType}
+                    onConfirm={handleAddServiceRoom}
                   >
-                    <AddOrUpdateAsset
-                      assetsInfo={assetsInfo}
+                    <AddOrUpdateServiceRoom
+                      serviceRoomInit={serviceRoomInit}
                       handleChange={handleChange}
                       value={value}
                       setValue={setValue}
@@ -229,4 +203,4 @@ const AssetButton = ({
   );
 };
 
-export default AssetButton;
+export default ServiceRoomButton;

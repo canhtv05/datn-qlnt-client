@@ -13,6 +13,7 @@ import {
   ServiceStatus,
   DefaultServiceAppliesTo,
   DefaultServiceStatus,
+  ServiceRoomStatus,
 } from "@/enums";
 import { z } from "zod/v4";
 
@@ -411,4 +412,24 @@ export const creationDefaultServiceSchema = updateDefaultServiceSchema.extend({
   buildingId: z.string().min(1, "Vui lòng chọn tòa nhà"),
   floorId: z.string().min(1, "Vui lòng chọn tầng"),
   serviceId: z.string().min(1, "Vui lòng chọn dịch vụ"),
+});
+
+export const createServiceRoomSchema = z.object({
+  roomId: z.string().min(1, "Vui lòng chọn phòng"),
+  serviceId: z.string().min(1, "Vui lòng chọn dịch vụ"),
+  startDate: z
+    .string()
+    .refine((val) => {
+      return !isNaN(Date.parse(val));
+    }, "Ngày bắt đầu không hợp lệ")
+    .transform((val) => new Date(val)),
+  totalPrice: zSafeNumber("Giá").refine((val) => val >= 0.0, "Giá không được âm"),
+
+  descriptionServiceRoom: z.string().optional(),
+});
+
+export const updateServiceRoomSchema = createServiceRoomSchema.extend({
+  serviceRoomStatus: z.enum([ServiceRoomStatus.DANG_SU_DUNG, ServiceRoomStatus.DA_HUY, ServiceRoomStatus.TAM_DUNG], {
+    message: "Dịch vụ phòng không hợp lệ",
+  }),
 });
