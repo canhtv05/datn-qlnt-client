@@ -166,3 +166,9 @@ export enum ServiceRoomStatus {
   TAM_DUNG = "TAM_DUNG",
   DA_HUY = "DA_HUY",
 }
+
+/* METER */
+export enum MeterType {
+  DIEN = "DIEN",
+  NUOC = "NUOC",
+}

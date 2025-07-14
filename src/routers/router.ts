@@ -43,6 +43,11 @@ const Vehicle = lazy(() => import("@/pages/customer/vehicle"));
 const Tenant = lazy(() => import("@/pages/customer/tenant"));
 const Contract = lazy(() => import("@/pages/customer/contract"));
 const ContractDetail = lazy(() => import("@/pages/customer/contract/ContractDetailPage"));
+
+/* FINANCE */
+const Meter = lazy(() => import("@/pages/finance/meter"));
+const MeterStatistics = lazy(() => import("@/pages/finance/meter/MeterStatistics"));
+
 const publicRoutes: RouteType[] = [
   /* AUTH */
   {
@@ -131,6 +136,16 @@ const privateRoutes: RouteType[] = [
   {
     path: configs.routes.customer.contractDetail,
     component: ContractDetail,
+  },
+
+  /* FINANCE */
+  {
+    path: configs.routes.finance.meter,
+    component: Meter,
+  },
+  {
+    path: configs.routes.finance.meterStatistics,
+    component: MeterStatistics,
   },
 ];
 

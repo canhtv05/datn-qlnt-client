@@ -19,6 +19,7 @@ import {
   DefaultServiceAppliesTo,
   DefaultServiceStatus,
   ServiceRoomStatus,
+  MeterType,
 } from "@/enums";
 import { IBtnType } from "@/types";
 import {
@@ -29,7 +30,6 @@ import {
   CalendarRange,
   Car,
   DoorOpen,
-  FilePen,
   FileText,
   FolderPlus,
   House,
@@ -50,6 +50,7 @@ import {
   Building2,
   Hammer,
   Sparkles,
+  CircleGauge,
 } from "lucide-react";
 
 export interface SideBarType {
@@ -125,11 +126,6 @@ export const sidebarItems: SideBarType[] = [
     icon: BookOpen,
     items: [
       {
-        title: "Đặt cọc",
-        url: "/customers/deposits",
-        icon: FilePen,
-      },
-      {
         title: "Hợp đồng thuê",
         url: "/customers/contracts",
         icon: FileText,
@@ -151,6 +147,11 @@ export const sidebarItems: SideBarType[] = [
     url: "/finance",
     icon: BookOpen,
     items: [
+      {
+        title: "Công tơ",
+        url: "/finance/meters",
+        icon: CircleGauge,
+      },
       {
         title: "Ghi chỉ số",
         url: "/finance/meter-reading",
@@ -607,6 +608,17 @@ export const STATUS_BADGE = [
     value: ServiceRoomStatus.DA_HUY,
     label: "Đã hủy",
     className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+  },
+
+  {
+    value: MeterType.DIEN,
+    label: "Công tơ điện",
+    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+  },
+  {
+    value: MeterType.NUOC,
+    label: "Công tơ nước",
+    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
   },
 ];
 

@@ -2,9 +2,12 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/s
 import type { ReactNode } from "react";
 import { AppSidebar } from "../components/AppSidebar";
 import HeaderLayout from "../components/HeaderLayout";
+import { useLocation } from "react-router-dom";
 // import FooterLayout from "../components/FooterLayout";
 
 const DefaultLayout = ({ children }: { children: ReactNode }) => {
+  const location = useLocation();
+
   return (
     <SidebarProvider className="block">
       <div className="flex h-screen overflow-hidden">
@@ -17,7 +20,9 @@ const DefaultLayout = ({ children }: { children: ReactNode }) => {
             <HeaderLayout />
           </header>
 
-          <main className="flex-1 overflow-auto p-4 bg-secondary w-full">{children}</main>
+          <main className="flex-1 overflow-auto p-4 bg-secondary w-full animate-fade-in-up" key={location.pathname}>
+            {children}
+          </main>
 
           {/* <FooterLayout /> */}
         </SidebarInset>
