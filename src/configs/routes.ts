@@ -33,7 +33,11 @@ const routes = {
     vehicles: "/customers/vehicles",
     tenants: "/customers/tenants",
     contract: "/customers/contracts",
-    contractDetail: "/contracts/:contractId",
+    contractDetail: "/customers/contracts/:contractId",
+  },
+  finance: {
+    meter: "/finance/meters",
+    meterStatistics: "/finance/meters/statistics",
   },
 };
 

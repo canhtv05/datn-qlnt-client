@@ -14,6 +14,7 @@ import {
   DefaultServiceAppliesTo,
   DefaultServiceStatus,
   ServiceRoomStatus,
+  MeterType,
 } from "@/enums";
 import { z } from "zod/v4";
 
@@ -414,6 +415,7 @@ export const creationDefaultServiceSchema = updateDefaultServiceSchema.extend({
   serviceId: z.string().min(1, "Vui lòng chọn dịch vụ"),
 });
 
+/* SERVICE ROOM */
 export const createServiceRoomSchema = z.object({
   roomId: z.string().min(1, "Vui lòng chọn phòng"),
   serviceId: z.string().min(1, "Vui lòng chọn dịch vụ"),
@@ -432,4 +434,25 @@ export const updateServiceRoomSchema = createServiceRoomSchema.extend({
   serviceRoomStatus: z.enum([ServiceRoomStatus.DANG_SU_DUNG, ServiceRoomStatus.DA_HUY, ServiceRoomStatus.TAM_DUNG], {
     message: "Dịch vụ phòng không hợp lệ",
   }),
+});
+
+/* METER */
+export const createOrUpdateMeterSchema = z.object({
+  roomId: z.string().min(1, "Vui lòng chọn phòng"),
+  serviceId: z.string().min(1, "Vui lòng chọn dịch vụ"),
+  meterType: z.enum([MeterType.DIEN, MeterType.NUOC], "Loại công tơ không hợp lệ"),
+  meterName: z.string().min(1, "Tên công tơ không được để trống"),
+  meterCode: z.string().min(1, "Mã công tơ không được để trống"),
+  manufactureDate: z
+    .string()
+    .refine((val) => {
+      return !isNaN(Date.parse(val));
+    }, "Ngày sản xuất không hợp lệ")
+    .transform((val) => new Date(val))
+    .refine((val) => {
+      const date = new Date();
+      return val <= date;
+    }, "Ngày sản xuất không được ở trong tương lai"),
+  initialIndex: zSafeNumber("Chỉ số ban đầu").refine((val) => val >= 0.0, "Chỉ số ban đầu không được âm"),
+  descriptionMeter: z.string().optional(),
 });

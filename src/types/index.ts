@@ -19,6 +19,7 @@ import {
   ServiceStatus,
   ServiceAppliedBy,
   ServiceRoomStatus,
+  MeterType,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -620,4 +621,54 @@ export interface ServiceRoomStatistics {
   total: number;
   active: number;
   paused: number;
+}
+
+/* METER */
+export interface MeterResponse extends AbstractResponse {
+  roomId: string;
+  roomCode: string;
+  serviceId: string;
+  serviceName: string;
+  meterType: MeterType | string;
+  meterName: string;
+  meterCode: string;
+  manufactureDate: string;
+  initialIndex: number;
+  descriptionMeter: string;
+}
+
+export interface MeterCreationAndUpdatedRequest {
+  roomId: string;
+  serviceId: string;
+  meterType: MeterType | string;
+  meterName: string;
+  meterCode: string;
+  manufactureDate: string;
+  initialIndex: number | undefined;
+  descriptionMeter: string;
+}
+
+export interface MeterFilter {
+  buildingId: string;
+  roomId: string;
+  meterType: MeterType | string;
+  query: string;
+}
+
+export interface CreateMeterInitResponse {
+  rooms: IdAndName[];
+  services: IdAndName[];
+}
+
+export interface MeterInitFilterResponse {
+  rooms: IdAndName[];
+}
+
+export interface MeterReadingMonthlyStatsResponse {
+  meterCode: string;
+  month: number;
+  year: number;
+  previousIndex: number;
+  currentIndex: number;
+  quantity: number;
 }

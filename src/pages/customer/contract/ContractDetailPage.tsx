@@ -17,10 +17,7 @@ const ContractDetailPage = () => {
     }
   }, [contractId]);
 
-  if (!data)
-    return (
-      <div className="p-8 text-center text-gray-500">Đang tải dữ liệu hợp đồng...</div>
-    );
+  if (!data) return <div className="p-8 text-center text-gray-500">Đang tải dữ liệu hợp đồng...</div>;
 
   return (
     <div className="max-w-[800px] mx-auto bg-white text-black p-12 my-12 border border-gray-300 shadow-lg leading-relaxed">
@@ -30,9 +27,7 @@ const ContractDetailPage = () => {
         <span className="font-normal text-base">Độc lập - Tự do - Hạnh phúc</span>
       </h1>
 
-      <h2 className="text-xl font-semibold text-center underline mb-6">
-        HỢP ĐỒNG THUÊ PHÒNG
-      </h2>
+      <h2 className="text-xl font-semibold text-center underline mb-6">HỢP ĐỒNG THUÊ PHÒNG</h2>
 
       {/* Thông tin chung */}
       <p className="mb-4">
@@ -83,7 +78,7 @@ const ContractDetailPage = () => {
       <h3 className="font-semibold mb-2">ĐIỀU 2: Danh sách khách thuê</h3>
       {data.tenants.length > 0 ? (
         <ol className="list-decimal pl-6">
-          {data.tenants.map((t, idx) => (
+          {data.tenants.map((t) => (
             <li key={t.id}>
               {t.fullName} - {t.phoneNumber}
             </li>
@@ -107,9 +102,7 @@ const ContractDetailPage = () => {
         </div>
       </div>
 
-      <p className="text-center text-xs mt-12 italic text-gray-500">
-        Hợp đồng được tạo trên hệ thống quản lý nhà trọ.
-      </p>
+      <p className="text-center text-xs mt-12 italic text-gray-500">Hợp đồng được tạo trên hệ thống quản lý nhà trọ.</p>
     </div>
   );
 };

@@ -77,17 +77,13 @@ export const useContract = () => {
       value: tenant.id,
     })) || [];
 
-  const { clearErrors, errors, handleZodErrors } =
-    useFormErrors<ICreateAndUpdateContract>();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAndUpdateContract>();
 
   useEffect(() => {
     setFilterValues({ query, status });
   }, [query, status]);
 
-  const handleChange = <K extends keyof ICreateAndUpdateContract>(
-    field: K,
-    newValue: ICreateAndUpdateContract[K]
-  ) => {
+  const handleChange = <K extends keyof ICreateAndUpdateContract>(field: K, newValue: ICreateAndUpdateContract[K]) => {
     setValue((prev) => ({
       ...prev,
       [field]: newValue,
@@ -108,12 +104,9 @@ export const useContract = () => {
     setSearchParams(params);
   }, [filterValues, setSearchParams]);
 
-  const endpoint =
-    filterValues.status === "DA_HUY" ? "/contracts/cancel" : "/contracts";
+  const endpoint = filterValues.status === "DA_HUY" ? "/contracts/cancel" : "/contracts";
 
-  const { data, isLoading, isError } = useQuery<
-    ApiResponse<ContractResponse[]>
-  >({
+  const { data, isLoading, isError } = useQuery<ApiResponse<ContractResponse[]>>({
     queryKey: ["contracts", page, size, ...Object.values(filterValues)],
     queryFn: async () => {
       const params: Record<string, string> = {
@@ -128,9 +121,7 @@ export const useContract = () => {
     },
     retry: 1,
   });
-  const { data: statistics, isError: errorStatistics } = useQuery<
-    ApiResponse<IContractStatisticsResponse>
-  >({
+  const { data: statistics, isError: errorStatistics } = useQuery<ApiResponse<IContractStatisticsResponse>>({
     queryKey: ["contracts-statistics"],
     queryFn: async () => (await httpRequest.get("/contracts/statistics")).data,
     retry: 1,
@@ -165,8 +156,7 @@ export const useContract = () => {
   ];
 
   const createContractMutation = useMutation({
-    mutationFn: (payload: ICreateAndUpdateContract) =>
-      httpRequest.post("/contracts", payload),
+    mutationFn: (payload: ICreateAndUpdateContract) => httpRequest.post("/contracts", payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
@@ -176,13 +166,8 @@ export const useContract = () => {
   });
 
   const updateContractMutation = useMutation({
-    mutationFn: ({
-      id,
-      payload,
-    }: {
-      id: string;
-      payload: ICreateAndUpdateContract;
-    }) => httpRequest.put(`/contracts/${id}`, payload),
+    mutationFn: ({ id, payload }: { id: string; payload: ICreateAndUpdateContract }) =>
+      httpRequest.put(`/contracts/${id}`, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
@@ -264,47 +249,36 @@ export const useContract = () => {
       handleZodErrors(error);
       return false;
     }
-  }, [
-    value,
-    updateContractMutation,
-    createContractMutation,
-    resetForm,
-    handleZodErrors,
-  ]);
+  }, [value, updateContractMutation, createContractMutation, resetForm, handleZodErrors]);
 
   const handleActionClick = useCallback(
-  (
-    contract: ContractResponse,
-    type: "update" | "delete" | "view" | "status"
-  ) => {
-    idRef.current = contract.id;
+    (contract: ContractResponse, type: "update" | "delete" | "view" | "status") => {
+      idRef.current = contract.id;
 
-    if (type === "update") {
-      const matchedRoom = roomsData?.data?.find(
-        (r) => r.roomCode === contract.roomCode
-      );
+      if (type === "update") {
+        const matchedRoom = roomsData?.data?.find((r) => r.roomCode === contract.roomCode);
 
-      setValue({
-        roomId: matchedRoom?.id ?? "",
-        numberOfPeople: contract.numberOfPeople,
-        startDate: new Date(contract.startDate),
-        endDate: new Date(contract.endDate),
-        deposit: Number(contract.deposit),
-        tenants: contract.tenants?.map((t) => t.id) ?? [],
-        status: contract.status,
-      });
+        setValue({
+          roomId: matchedRoom?.id ?? "",
+          numberOfPeople: contract.numberOfPeople,
+          startDate: new Date(contract.startDate),
+          endDate: new Date(contract.endDate),
+          deposit: Number(contract.deposit),
+          tenants: contract.tenants?.map((t) => t.id) ?? [],
+          status: contract.status,
+        });
 
-      setIsModalOpen(true);
-    } else if (type === "delete") {
-      openDialog({ id: contract.id }, { type: "warn", desc: Notice.REMOVE });
-    } else if (type === "status") {
-      handleToggleStatus(contract.id);
-    } else {
-      navigate(`/contracts/${contract.id}`, { state: { location } });
-    }
-  },
-  [navigate, location, openDialog, handleToggleStatus, roomsData]
-);
+        setIsModalOpen(true);
+      } else if (type === "delete") {
+        openDialog({ id: contract.id }, { type: "warn", desc: Notice.REMOVE });
+      } else if (type === "status") {
+        handleToggleStatus(contract.id);
+      } else {
+        navigate(`/customers/contracts/${contract.id}`, { state: { location } });
+      }
+    },
+    [navigate, location, openDialog, handleToggleStatus, roomsData]
+  );
 
   return {
     query: { page: parsedPage, size: parsedSize, ...filterValues },
