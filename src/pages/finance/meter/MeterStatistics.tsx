@@ -1,3 +1,4 @@
+import { ChartLineLabel } from "@/components/ChartCustom";
 import { ApiResponse, MeterInitFilterResponse, MeterReadingMonthlyStatsResponse } from "@/types";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
@@ -42,7 +43,7 @@ const MeterStatistics = () => {
     }
   }, [errorFilterMeterInit, errorMeterStatistics]);
 
-  return <div>/finance/meters</div>;
+  return <ChartLineLabel />;
 };
 
 export default MeterStatistics;

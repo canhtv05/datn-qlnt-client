@@ -672,3 +672,38 @@ export interface MeterReadingMonthlyStatsResponse {
   currentIndex: number;
   quantity: number;
 }
+
+export type MeterFindAllResponse = IdAndName[];
+
+/* METER READING */
+export interface MeterReadingResponse extends AbstractResponse {
+  meterId: string;
+  meterCode: string;
+  meterName: string;
+  meterType: string;
+  oldIndex: number;
+  newIndex: number;
+  quantity: number;
+  month: number;
+  year: number;
+  readingDate: string;
+  descriptionMeterReading: string;
+}
+
+export interface MeterReadingUpdateRequest {
+  oldIndex: number | undefined;
+  newIndex: number | undefined;
+  month: number | undefined;
+  year: number | undefined;
+  readingDate: string;
+  descriptionMeterReading: string;
+}
+
+export type MeterReadingCreationRequest = MeterReadingUpdateRequest & { meterId: string };
+
+export interface MeterReadingFilter {
+  buildingId: string;
+  roomId: string;
+  meterType: MeterType | string;
+  month: number | undefined;
+}

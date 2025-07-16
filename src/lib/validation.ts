@@ -456,3 +456,30 @@ export const createOrUpdateMeterSchema = z.object({
   initialIndex: zSafeNumber("Chỉ số ban đầu").refine((val) => val >= 0.0, "Chỉ số ban đầu không được âm"),
   descriptionMeter: z.string().optional(),
 });
+
+/* METER READING */
+export const updateMeterReadingSchema = z
+  .object({
+    oldIndex: zSafeNumber("Chỉ số cũ").refine((val) => val >= 0, "Chỉ số cũ không được âm"),
+    newIndex: zSafeNumber("Chỉ số cũ").refine((val) => val >= 0, "Chỉ số mới không được âm"),
+    month: zSafeNumber("Tháng").refine((val) => val >= 1 && val <= 12, "Tháng nằm trong 1 - 12"),
+    year: zSafeNumber("Năm").refine((val) => val >= 1, "Năm phải >= 1"),
+    readingDate: z.string().refine((val) => {
+      return !isNaN(Date.parse(val));
+    }, "Ngày đọc không hợp lệ"),
+    descriptionMeterReading: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      const { newIndex, oldIndex } = data;
+      return Number(newIndex) >= Number(oldIndex);
+    },
+    {
+      message: "Chỉ số mới phải lớn hơn hoặc bằng chỉ số cũ",
+      path: ["newIndex"],
+    }
+  );
+
+export const createMeterReadingSchema = updateMeterReadingSchema.extend({
+  meterId: z.string().min(1, "Vui lòng chọn công tơ"),
+});

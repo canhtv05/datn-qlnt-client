@@ -38,6 +38,7 @@ const routes = {
   finance: {
     meter: "/finance/meters",
     meterStatistics: "/finance/meters/statistics",
+    meterReading: "/finance/meter-reading",
   },
 };
 
