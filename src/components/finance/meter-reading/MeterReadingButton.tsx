@@ -11,37 +11,32 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
-import { createOrUpdateMeterSchema } from "@/lib/validation";
+import { createMeterReadingSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { ApiResponse, CreateMeterInitResponse, IBtnType, MeterCreationAndUpdatedRequest } from "@/types";
+import { ApiResponse, IBtnType, MeterFindAllResponse, MeterReadingCreationRequest } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
-import AddOrUpdateMeter from "./AddOrUpdateMeter";
-import { ChartNoAxesCombined } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import AddOrUpdateMeterReading from "./AddOrUpdateMeterReading";
 
-const MeterButton = ({
+const MeterReadingButton = ({
   ids,
-  meterInit,
+  meterInitResponse,
 }: {
   ids: Record<string, boolean>;
-  meterInit: ApiResponse<CreateMeterInitResponse> | undefined;
+  meterInitResponse: ApiResponse<MeterFindAllResponse> | undefined;
 }) => {
-  const navigate = useNavigate();
-
-  const [value, setValue] = useState<MeterCreationAndUpdatedRequest>({
-    descriptionMeter: "",
-    initialIndex: undefined,
-    manufactureDate: "",
-    meterCode: "",
-    meterName: "",
-    meterType: "",
-    roomId: "",
-    serviceId: "",
+  const [value, setValue] = useState<MeterReadingCreationRequest>({
+    descriptionMeterReading: "",
+    meterId: "",
+    month: undefined,
+    newIndex: undefined,
+    oldIndex: undefined,
+    year: new Date().getFullYear(),
+    readingDate: "",
   });
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<MeterCreationAndUpdatedRequest>();
+  const { clearErrors, errors, handleZodErrors, setErrors } = useFormErrors<MeterReadingCreationRequest>();
 
   const queryClient = useQueryClient();
 
@@ -53,71 +48,70 @@ const MeterButton = ({
     }));
   };
 
-  const addMeterMutation = useMutation({
-    mutationKey: ["add-meter"],
-    mutationFn: async (payload: MeterCreationAndUpdatedRequest) => await httpRequest.post("/meters", payload),
+  const addMeterReadingMutation = useMutation({
+    mutationKey: ["add-meter-reading"],
+    mutationFn: async (payload: MeterReadingCreationRequest) => await httpRequest.post("/meter-readings", payload),
     onError: handleMutationError,
     onSuccess: () => {
       toast.success(Status.ADD_SUCCESS);
       setValue({
-        descriptionMeter: "",
-        initialIndex: undefined,
-        manufactureDate: "",
-        meterCode: "",
-        meterName: "",
-        meterType: "",
-        roomId: "",
-        serviceId: "",
+        descriptionMeterReading: "",
+        meterId: "",
+        month: undefined,
+        newIndex: undefined,
+        oldIndex: undefined,
+        year: new Date().getFullYear(),
+        readingDate: "",
       });
       queryClient.invalidateQueries({
         predicate: (prev) => {
-          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "meters";
+          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "meter-readings";
         },
       });
-      // queryClient.invalidateQueries({ queryKey: ["meter-statistics"] });
     },
   });
 
-  const handleMeterType = useCallback(async () => {
+  const handleMeterReadingType = useCallback(async () => {
     try {
-      const { descriptionMeter, initialIndex, manufactureDate, meterCode, meterName, meterType, roomId, serviceId } =
-        value;
+      const { descriptionMeterReading, meterId, month, newIndex, oldIndex, readingDate, year } = value;
+      if (newIndex && oldIndex && newIndex < oldIndex) {
+        setErrors((prev) => ({ ...prev, newIndex: "Chỉ số mới phải lớn hơn hoặc bằng chỉ số cũ" }));
+        return false;
+      }
 
-      await createOrUpdateMeterSchema.parseAsync(value);
+      await createMeterReadingSchema.parseAsync(value);
 
-      const data: MeterCreationAndUpdatedRequest = {
-        descriptionMeter: descriptionMeter.trim(),
-        initialIndex: initialIndex || 0,
-        manufactureDate,
-        meterCode: meterCode.trim(),
-        meterName: meterName.trim(),
-        meterType,
-        roomId: roomId.trim(),
-        serviceId: serviceId.trim(),
+      const data: MeterReadingCreationRequest = {
+        descriptionMeterReading: descriptionMeterReading.trim(),
+        meterId: meterId.trim(),
+        month,
+        newIndex,
+        oldIndex,
+        readingDate,
+        year,
       };
 
-      await addMeterMutation.mutateAsync(data);
+      await addMeterReadingMutation.mutateAsync(data);
       clearErrors();
       return true;
     } catch (error) {
       handleZodErrors(error);
       return false;
     }
-  }, [addMeterMutation, clearErrors, handleZodErrors, value]);
+  }, [addMeterReadingMutation, clearErrors, handleZodErrors, setErrors, value]);
 
-  const handleRemoveAssetTypeByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
+  const handleRemoveMeterReadingByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
       const selectedIds = Object.entries(ids)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .filter(([_, isSelected]) => isSelected)
         .map(([id]) => id);
 
-      await Promise.all(selectedIds.map((id) => removeMeterMutation.mutateAsync(id)));
+      await Promise.all(selectedIds.map((id) => removeMeterReadingMutation.mutateAsync(id)));
 
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "meters",
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "meter-readings",
       });
-      // queryClient.invalidateQueries({ queryKey: ["meter-statistics"] });
 
       toast.success(Status.REMOVE_SUCCESS);
       return true;
@@ -130,9 +124,9 @@ const MeterButton = ({
   const { ConfirmDialog, openDialog } = useConfirmDialog<Record<string, boolean>>({
     onConfirm: async (ids?: Record<string, boolean>) => {
       if (!ids || !Object.values(ids).some(Boolean)) return false;
-      return await handleRemoveAssetTypeByIds(ids);
+      return await handleRemoveMeterReadingByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các loại công tơ đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các ghi chỉ số đã chọn. Bạn có chắc chắn muốn tiếp tục?",
     type: "warn",
   });
 
@@ -141,40 +135,26 @@ const MeterButton = ({
       if (btn.type === "delete") {
         openDialog(ids);
       }
-      if (btn.type === "view") {
-        navigate("/finance/meters/statistics");
-      }
     },
-    [ids, navigate, openDialog]
+    [ids, openDialog]
   );
 
-  const removeMeterMutation = useMutation({
-    mutationKey: ["remove-meters"],
-    mutationFn: async (id: string) => await httpRequest.delete(`/meters/${id}`),
+  const removeMeterReadingMutation = useMutation({
+    mutationKey: ["remove-meter-readings"],
+    mutationFn: async (id: string) => await httpRequest.delete(`/meter-readings/${id}`),
   });
-
-  const statisticButton: IBtnType[] = [
-    {
-      type: "view",
-      arrowColor: "var(--color-emerald-500)",
-      hasConfirm: false,
-      icon: ChartNoAxesCombined,
-      tooltipContent: "Xem thống kê",
-    },
-  ];
-  const ACTION_BUTTONS_CUSTOM = [...statisticButton, ...ACTION_BUTTONS];
 
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Công tơ</h3>
+        <h3 className="font-semibold">Ghi chỉ số</h3>
         <div className="flex gap-2">
-          {ACTION_BUTTONS_CUSTOM.map((btn, index) => (
+          {ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Công tơ"
+                    title="Ghi chỉ số"
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -183,14 +163,15 @@ const MeterButton = ({
                       </TooltipTrigger>
                     }
                     desc={Notice.ADD}
-                    onConfirm={handleMeterType}
+                    onConfirm={handleMeterReadingType}
                   >
-                    <AddOrUpdateMeter
-                      meterInit={meterInit}
+                    <AddOrUpdateMeterReading
+                      type="add"
                       handleChange={handleChange}
                       value={value}
                       setValue={setValue}
                       errors={errors}
+                      meterInitReading={meterInitResponse}
                     />
                   </Modal>
                 </RenderIf>
@@ -233,4 +214,4 @@ const MeterButton = ({
   );
 };
 
-export default MeterButton;
+export default MeterReadingButton;
