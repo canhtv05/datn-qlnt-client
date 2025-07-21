@@ -43,6 +43,11 @@ const Vehicle = lazy(() => import("@/pages/customer/vehicle"));
 const Tenant = lazy(() => import("@/pages/customer/tenant"));
 const Contract = lazy(() => import("@/pages/customer/contract"));
 const ContractDetail = lazy(() => import("@/pages/customer/contract/ContractDetailPage"));
+
+/*manage-feedback*/
+
+const FeedBackManager = lazy(() => import("@/pages/manage-feedback/manager"));
+const FeedBackTenant = lazy(() => import("@/pages/manage-feedback/tenant"));
 const publicRoutes: RouteType[] = [
   /* AUTH */
   {
@@ -131,6 +136,19 @@ const privateRoutes: RouteType[] = [
   {
     path: configs.routes.customer.contractDetail,
     component: ContractDetail,
+  },
+  /*manage-feedback */
+  {
+    path: configs.routes.manageFeedback.feedbackManager,
+    component: FeedBackManager,
+  },
+  {
+    path: configs.routes.manageFeedback.feedbackManagerId,
+    component: FeedBackManager,
+  },
+  {
+    path: configs.routes.manageFeedback.feedbackTenant,
+    component: FeedBackTenant,
   },
 ];
 

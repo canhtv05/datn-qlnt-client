@@ -166,3 +166,15 @@ export enum ServiceRoomStatus {
   TAM_DUNG = "TAM_DUNG",
   DA_HUY = "DA_HUY",
 }
+/*FEEDBACK*/
+export enum FeedbackStatus{
+  CHUA_XU_LY = "CHUA_XU_LY",
+  DANG_XU_LY = "DANG_XU_LY",
+  DA_XU_LY = "DA_XU_LY",
+  HUY ="HUY",
+}
+export enum FeedbackType{
+  GOP_Y = "GOP_Y",
+  KHIEU_NAI = "KHIEU_NAI",
+  KHAC = "KHAC",
+}

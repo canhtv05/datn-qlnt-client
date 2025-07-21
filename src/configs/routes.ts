@@ -1,3 +1,4 @@
+
 const routes = {
   home: {
     home: "/",
@@ -34,6 +35,11 @@ const routes = {
     tenants: "/customers/tenants",
     contract: "/customers/contracts",
     contractDetail: "/contracts/:contractId",
+  },
+  manageFeedback: {
+    feedbackManager: "/manage-feedback/manager",
+    feedbackTenant: "/manage-feedback/tenant",
+    feedbackManagerId: "/manage-feedback/manager/:id",
   },
 };
 

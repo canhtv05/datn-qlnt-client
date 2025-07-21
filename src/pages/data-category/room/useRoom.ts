@@ -166,7 +166,7 @@ export const useRoom = () => {
     { icon: Building2, label: "Đang thuê", value: mapStatistics(statisticsRaw?.data).renting },
   ];
 
-  const createRoomMutation = useMutation({
+  const createRoomMutation = useMutation({    
     mutationKey: ["create-room"],
     mutationFn: (payload: RoomFormValue) => httpRequest.post("/rooms", payload),
     onSuccess: () => {

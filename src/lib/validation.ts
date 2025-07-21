@@ -433,3 +433,18 @@ export const updateServiceRoomSchema = createServiceRoomSchema.extend({
     message: "Dịch vụ phòng không hợp lệ",
   }),
 });
+export const createOrUpdateFeedbackSchema = z.object({
+  rating: z
+    .number({ message: "Vui lòng chọn đánh giá sao" })
+    .min(1, "Đánh giá phải từ 1 sao trở lên")
+    .max(5, "Đánh giá không được vượt quá 5 sao"),
+
+  feedbackType: z
+    .string({ message: "Vui lòng chọn loại phản hồi" })
+    .min(1, "Loại phản hồi không được để trống"),
+
+  content: z
+    .string()
+    .min(5, "Nội dung phản hồi phải có ít nhất 5 ký tự")
+    .max(1000, "Nội dung phản hồi không được vượt quá 1000 ký tự"),
+});

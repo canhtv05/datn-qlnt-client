@@ -50,6 +50,9 @@ import {
   Building2,
   Hammer,
   Sparkles,
+  Users,
+  MessagesSquare,
+  ShieldCheck,
 } from "lucide-react";
 
 export interface SideBarType {
@@ -196,6 +199,24 @@ export const sidebarItems: SideBarType[] = [
       },
     ],
   },
+  {
+  label: "Phản hồi",
+  title: "Phản hồi",
+  url: "/manage-feedback",
+  icon: MessagesSquare,
+  items: [
+    {
+      title: "Phản hồi của khách thuê",
+      icon: Users,
+      url: "/manage-feedback/tenant",
+    },
+    {
+      title: "Phản hồi của chủ trọ",
+      icon: ShieldCheck,
+      url: "/manage-feedback/manager",
+    },
+  ],
+}
 ];
 
 export const STATUS_BADGE = [

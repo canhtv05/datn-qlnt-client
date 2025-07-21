@@ -19,6 +19,8 @@ import {
   ServiceStatus,
   ServiceAppliedBy,
   ServiceRoomStatus,
+  FeedbackStatus,
+  FeedbackType,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -620,4 +622,63 @@ export interface ServiceRoomStatistics {
   total: number;
   active: number;
   paused: number;
+}
+/* FEEDBACK */
+
+export interface FeedbackStatusUpdateRequest {
+  feedbackId: string;
+  feedbackStatus: FeedbackStatus | string;
+  note: string;
+}
+export interface FeedbackFormValue {
+  id: string;
+  tenantId?: string;
+  roomId?: string;
+  content: string;
+  feedbackType: FeedbackType | null;
+  rating: number | null;
+  attachment?: string;
+}
+export interface FeedbackStatusUpdateResponse {
+  id: string;
+  feedbackId: string;
+  content: string;
+  feedbackStatus: FeedbackStatus | string;
+  updatedBy: string;
+  note: string;
+  updatedAt: string;
+}
+
+export interface FeedbackResponse {
+  id: string;
+  tenantId: string;
+  fullName: string;
+  roomId: string;
+  roomCode: string;
+  content: string;
+  feedbackType: FeedbackType | string;
+  rating: number;
+  attachment: string;
+  feedbackStatus: FeedbackStatus | string;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface FeedbackSelfResponse {
+  id: string;
+  fullName: string;
+  roomCode: string;
+  content: string;
+  rating: number;
+  feedbackStatus: FeedbackStatus;
+  feedbackType: FeedbackType;   
+  attachment: string;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface FeedbackFilterValues {
+  rating?: string;
+  feedbackType?: FeedbackType | string;
+  feedbackStatus?: FeedbackStatus | string;
+  query?: string;
+  buildingId? : string;
 }

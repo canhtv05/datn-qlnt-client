@@ -41,13 +41,13 @@ const RoomFilter = ({ props }: { props: RoomFilterProps }) => {
     onFilter();
   };
 
-  const { data: buildingData, isError: isBuildingError } = useQuery<ApiResponse<IBuildingCardsResponse[]>>({
-    queryKey: ["buildings-cards"],
-    queryFn: async () => {
-      const res = await httpRequest.get("/buildings/cards");
-      return res.data;
-    },
-  });
+    const { data: buildingData, isError: isBuildingError } = useQuery<ApiResponse<IBuildingCardsResponse[]>>({
+      queryKey: ["buildings-cards"],
+      queryFn: async () => {
+        const res = await httpRequest.get("/buildings/cards");
+        return res.data;
+      },
+    });
 
   const { data: floorData, isError: isFloorError } = useQuery<ApiResponse<FloorBasicResponse[]>>({
     queryKey: ["floor-list", buildingId],
