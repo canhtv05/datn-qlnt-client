@@ -45,51 +45,43 @@ const AssetType = () => {
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
-      render: (row: ServiceResponse) => {
-        return (
-          <div className="flex gap-2">
-            {GET_BTNS("update", "delete", "status").map((btn, index) => (
-              <TooltipProvider key={index}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      size={"icon"}
-                      variant={btn.type}
-                      className="cursor-pointer"
-                      onClick={() => {
-                        const type = btn.type as "update";
-                        handleActionClick(row, type);
-                      }}
-                    >
-                      <btn.icon className="text-white" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent
-                    className="text-white"
+      render: (row: ServiceResponse) => (
+        <div className="flex gap-2">
+          {GET_BTNS("update", "delete", "status").map((btn, index) => (
+            <TooltipProvider key={index}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size={"icon"}
+                    variant={btn.type}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      const type = btn.type as "update";
+                      handleActionClick(row, type);
+                    }}
+                  >
+                    <btn.icon className="text-white" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                  <p>{btn.tooltipContent}</p>
+                  <TooltipPrimitive.Arrow
                     style={{
+                      fill: btn.arrowColor,
                       background: btn.arrowColor,
                     }}
-                    arrow={false}
-                  >
-                    <p>{btn.tooltipContent}</p>
-                    <TooltipPrimitive.Arrow
-                      style={{
-                        fill: btn.arrowColor,
-                        background: btn.arrowColor,
-                      }}
-                      className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
-                    />
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            ))}
-          </div>
-        );
-      },
+                    className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                  />
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ))}
+        </div>
+      ),
     },
     {
       label: "Loại dịch vụ",
-      accessorKey: "type",
+      accessorKey: "serviceCategory",
       isSort: true,
       isCenter: true,
       hasBadge: true,
@@ -107,7 +99,7 @@ const AssetType = () => {
     },
     {
       label: "Áp dụng theo",
-      accessorKey: "appliedBy",
+      accessorKey: "serviceCalculation",
       isSort: true,
       isCenter: true,
       hasBadge: true,
@@ -162,7 +154,13 @@ const AssetType = () => {
         onConfirm={handleUpdateFloor}
         desc={Notice.UPDATE}
       >
-        <AddOrUpdateService handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
+        <AddOrUpdateService
+          handleChange={handleChange}
+          value={value}
+          setValue={setValue}
+          errors={errors}
+          type="update"
+        />
       </Modal>
       <ConfirmDialog />
     </div>

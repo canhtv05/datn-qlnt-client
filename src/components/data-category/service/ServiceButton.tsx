@@ -13,24 +13,23 @@ import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
 import { createOrUpdateService } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { IBtnType, ServiceCreationAndUpdateRequest } from "@/types";
+import { IBtnType, ServiceCreationRequest } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateService from "./AddOrUpdateService";
 
 const ServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
-  const [value, setValue] = useState<ServiceCreationAndUpdateRequest>({
-    appliedBy: "",
+  const [value, setValue] = useState<ServiceCreationRequest>({
     description: "",
     name: "",
     price: undefined,
-    status: "",
-    type: "",
+    serviceCalculation: "",
+    serviceCategory: "",
     unit: "",
   });
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<ServiceCreationAndUpdateRequest>();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<ServiceCreationRequest>();
 
   const queryClient = useQueryClient();
 
@@ -44,17 +43,16 @@ const ServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
 
   const addServiceMutation = useMutation({
     mutationKey: ["add-service"],
-    mutationFn: async (payload: ServiceCreationAndUpdateRequest) => await httpRequest.post("/service", payload),
+    mutationFn: async (payload: ServiceCreationRequest) => await httpRequest.post("/services", payload),
     onError: handleMutationError,
     onSuccess: () => {
       toast.success(Status.ADD_SUCCESS);
       setValue({
-        appliedBy: "",
         description: "",
         name: "",
         price: undefined,
-        status: "",
-        type: "",
+        serviceCalculation: "",
+        serviceCategory: "",
         unit: "",
       });
       queryClient.invalidateQueries({
@@ -68,17 +66,16 @@ const ServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
 
   const handleAddService = useCallback(async () => {
     try {
-      const { appliedBy, description, name, price, status, type, unit } = value;
+      const { description, name, price, unit, serviceCalculation, serviceCategory } = value;
 
       await createOrUpdateService.parseAsync(value);
 
-      const data: ServiceCreationAndUpdateRequest = {
-        appliedBy,
+      const data: ServiceCreationRequest = {
         description: description.trim(),
         name: name.trim(),
         price,
-        status,
-        type,
+        serviceCalculation,
+        serviceCategory,
         unit: unit.trim(),
       };
 
@@ -156,7 +153,13 @@ const ServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
                     desc={Notice.ADD}
                     onConfirm={handleAddService}
                   >
-                    <AddOrUpdateService handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
+                    <AddOrUpdateService
+                      type="add"
+                      handleChange={handleChange}
+                      value={value}
+                      setValue={setValue}
+                      errors={errors}
+                    />
                   </Modal>
                 </RenderIf>
                 <RenderIf value={btn.type !== "default"}>

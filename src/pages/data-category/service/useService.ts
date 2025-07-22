@@ -5,9 +5,10 @@ import { createOrUpdateService } from "@/lib/validation";
 import {
   ApiResponse,
   ServiceCountResponse,
-  ServiceCreationAndUpdateRequest,
+  ServiceCreationRequest,
   ServiceFilter,
   ServiceResponse,
+  ServiceUpdateRequest,
 } from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
@@ -25,33 +26,33 @@ export const useAssetType = () => {
     page = "1",
     size = "15",
     query = "",
-    serviceType = "",
+    serviceCategory = "",
     minPrice = "",
     maxPrice = "",
     serviceStatus = "",
-    serviceAppliedBy = "",
+    serviceCalculation = "",
   } = queryFilter(
     searchParams,
     "page",
     "size",
     "query",
-    "serviceType",
+    "serviceCategory",
     "minPrice",
     "maxPrice",
     "serviceStatus",
-    "serviceAppliedBy"
+    "serviceCalculation"
   );
 
   const [rowSelection, setRowSelection] = useState({});
   const idRef = useRef<string>("");
-  const [value, setValue] = useState<ServiceCreationAndUpdateRequest>({
-    appliedBy: "",
+  const [value, setValue] = useState<ServiceUpdateRequest>({
     description: "",
     name: "",
     price: undefined,
-    status: "",
-    type: "",
     unit: "",
+    serviceCalculation: "",
+    serviceCategory: "",
+    status: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -60,15 +61,15 @@ export const useAssetType = () => {
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<ServiceCreationAndUpdateRequest>();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<ServiceUpdateRequest>();
 
   const [filterValues, setFilterValues] = useState<ServiceFilter>({
     maxPrice: isNumber(maxPrice) ? Number(maxPrice) : undefined,
     minPrice: isNumber(minPrice) ? Number(minPrice) : undefined,
     query,
-    serviceAppliedBy,
     serviceStatus,
-    serviceType,
+    serviceCalculation,
+    serviceCategory,
   });
 
   const handleClear = () => {
@@ -76,9 +77,9 @@ export const useAssetType = () => {
       maxPrice: undefined,
       minPrice: undefined,
       query: "",
-      serviceAppliedBy: "",
       serviceStatus: "",
-      serviceType: "",
+      serviceCalculation: "",
+      serviceCategory: "",
     });
     setSearchParams({});
   };
@@ -88,17 +89,17 @@ export const useAssetType = () => {
     if (filterValues.maxPrice) params.set("maxPrice", filterValues.maxPrice.toString());
     if (filterValues.minPrice) params.set("minPrice", filterValues.minPrice.toString());
     if (filterValues.query) params.set("query", filterValues.query);
-    if (filterValues.serviceAppliedBy) params.set("serviceAppliedBy", filterValues.serviceAppliedBy);
+    if (filterValues.serviceCalculation) params.set("serviceCalculation", filterValues.serviceCalculation);
     if (filterValues.serviceStatus) params.set("serviceStatus", filterValues.serviceStatus);
-    if (filterValues.serviceType) params.set("serviceType", filterValues.serviceType);
+    if (filterValues.serviceCategory) params.set("serviceCategory", filterValues.serviceCategory);
     params.set("page", "1");
     if (
       filterValues.maxPrice ||
       filterValues.minPrice ||
       filterValues.query ||
-      filterValues.serviceAppliedBy ||
+      filterValues.serviceCalculation ||
       filterValues.serviceStatus ||
-      filterValues.serviceType
+      filterValues.serviceCategory
     ) {
       setSearchParams(params);
     }
@@ -106,14 +107,14 @@ export const useAssetType = () => {
     filterValues.maxPrice,
     filterValues.minPrice,
     filterValues.query,
-    filterValues.serviceAppliedBy,
+    filterValues.serviceCalculation,
+    filterValues.serviceCategory,
     filterValues.serviceStatus,
-    filterValues.serviceType,
     setSearchParams,
   ]);
 
   const { data, isLoading, isError } = useQuery<ApiResponse<ServiceResponse[]>>({
-    queryKey: ["service", page, size, minPrice, maxPrice, query, serviceAppliedBy, serviceStatus, serviceType],
+    queryKey: ["service", page, size, minPrice, maxPrice, query, serviceCalculation, serviceStatus, serviceCalculation],
     queryFn: async () => {
       const params: Record<string, string> = {
         page: page.toString(),
@@ -123,11 +124,11 @@ export const useAssetType = () => {
       if (maxPrice) params["maxPrice"] = maxPrice;
       if (minPrice) params["minPrice"] = minPrice;
       if (query) params["query"] = query;
-      if (serviceAppliedBy) params["serviceAppliedBy"] = serviceAppliedBy;
+      if (serviceCalculation) params["serviceCalculation"] = serviceCalculation;
       if (serviceStatus) params["serviceStatus"] = serviceStatus;
-      if (serviceType) params["serviceType"] = serviceType;
+      if (serviceCategory) params["serviceCategory"] = serviceCategory;
 
-      const res = await httpRequest.get("/service", {
+      const res = await httpRequest.get("/services", {
         params,
       });
 
@@ -147,8 +148,8 @@ export const useAssetType = () => {
 
   const updateServiceMutation = useMutation({
     mutationKey: ["update-service"],
-    mutationFn: async (payload: ServiceCreationAndUpdateRequest) =>
-      await httpRequest.put(`/service/update/${idRef.current}`, payload),
+    mutationFn: async (payload: ServiceCreationRequest) =>
+      await httpRequest.put(`/services/update/${idRef.current}`, payload),
     onError: (error) => {
       handleMutationError(error);
     },
@@ -156,12 +157,12 @@ export const useAssetType = () => {
 
   const removeServiceMutation = useMutation({
     mutationKey: ["remove-services"],
-    mutationFn: async (id: string) => await httpRequest.put(`/service/soft-delete/${id}`),
+    mutationFn: async (id: string) => await httpRequest.put(`/services/soft-delete/${id}`),
   });
 
   const toggleStatusServiceMutation = useMutation({
     mutationKey: ["toggle-service"],
-    mutationFn: async (id: string) => await httpRequest.put(`/service/toggle-status/${id}`),
+    mutationFn: async (id: string) => await httpRequest.put(`/services/toggle-status/${id}`),
   });
 
   const handleToggleStatusServiceById = async (id: string): Promise<boolean> => {
@@ -210,30 +211,30 @@ export const useAssetType = () => {
 
   const handleUpdateFloor = useCallback(async () => {
     try {
-      const { appliedBy, description, name, price, status, type, unit } = value;
+      const { description, name, price, unit, status, serviceCalculation, serviceCategory } = value;
 
       await createOrUpdateService.parseAsync(value);
 
-      const data: ServiceCreationAndUpdateRequest = {
-        appliedBy,
+      const data: ServiceUpdateRequest = {
         description: description.trim(),
         name: name.trim(),
         price,
+        serviceCalculation,
+        serviceCategory,
         status,
-        type,
         unit: unit.trim(),
       };
 
       updateServiceMutation.mutate(data, {
         onSuccess: () => {
           setValue({
-            appliedBy: "",
             description: "",
             name: "",
             price: undefined,
-            status: "",
-            type: "",
+            serviceCalculation,
+            serviceCategory,
             unit: "",
+            status: "",
           });
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service",
@@ -256,13 +257,13 @@ export const useAssetType = () => {
       idRef.current = service.id;
       if (action === "update") {
         setValue({
-          appliedBy: service.appliedBy,
+          serviceCalculation: service.serviceCalculation,
           description: service.description,
           name: service.name,
           price: service.price,
-          status: service.status,
-          type: service.type,
+          serviceCategory: service.serviceCategory,
           unit: service.unit,
+          status: service.status,
         });
         setIsModalOpen(true);
       } else {
@@ -281,7 +282,7 @@ export const useAssetType = () => {
   const { data: statistics, isError: isStatisticsError } = useQuery<ApiResponse<ServiceCountResponse>>({
     queryKey: ["service-statistics"],
     queryFn: async () => {
-      const res = await httpRequest.get("/service/statistics");
+      const res = await httpRequest.get("/services/statistics");
       return res.data;
     },
     retry: 1,
@@ -329,8 +330,8 @@ export const useAssetType = () => {
       minPrice,
       maxPrice,
       query,
-      serviceType,
-      serviceAppliedBy,
+      serviceCategory,
+      serviceCalculation,
       serviceStatus,
     },
     setSearchParams,

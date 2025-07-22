@@ -8,13 +8,12 @@ import {
   AssetBeLongTo,
   VehicleType,
   VehicleStatus,
-  ServiceType,
-  ServiceAppliedBy,
-  ServiceStatus,
   DefaultServiceAppliesTo,
   DefaultServiceStatus,
   ServiceRoomStatus,
   MeterType,
+  ServiceCategory,
+  ServiceCalculation,
 } from "@/enums";
 import { z } from "zod/v4";
 
@@ -376,17 +375,37 @@ export const createOrUpdateContractSchema = z
 /* SERVICE */
 export const createOrUpdateService = z.object({
   name: z.string().min(1, "Không được để trống tên dịch vụ"),
-  type: z.enum([ServiceType.CO_DINH, ServiceType.TINH_THEO_SO], {
-    message: "Loại dịch vụ không hợp lệ",
-  }),
+  serviceCategory: z.enum(
+    [
+      ServiceCategory.AN_NINH,
+      ServiceCategory.BAO_TRI,
+      ServiceCategory.DIEN,
+      ServiceCategory.GIAT_SAY,
+      ServiceCategory.GUI_XE,
+      ServiceCategory.INTERNET,
+      ServiceCategory.KHAC,
+      ServiceCategory.NUOC,
+      ServiceCategory.THANG_MAY,
+      ServiceCategory.TIEN_PHONG,
+      ServiceCategory.VE_SINH,
+    ],
+    {
+      message: "Loại dịch vụ không hợp lệ",
+    }
+  ),
   unit: z.string().min(1, "Không được để trống đơn vị"),
   price: zSafeNumber("Giá").refine((val) => val >= 0.0, "Giá không được âm"),
-  appliedBy: z.enum([ServiceAppliedBy.NGUOI, ServiceAppliedBy.PHONG, ServiceAppliedBy.TANG], {
-    message: "Dịch vụ áp dụng không hợp lệ",
-  }),
-  status: z.enum([ServiceStatus.HOAT_DONG, ServiceStatus.TAM_KHOA, ServiceStatus.KHONG_SU_DUNG], {
-    message: "Trạng thái không hợp lệ",
-  }),
+  serviceCalculation: z.enum(
+    [
+      ServiceCalculation.TINH_THEO_NGUOI,
+      ServiceCalculation.TINH_THEO_PHONG,
+      ServiceCalculation.TINH_THEO_PHUONG_TIEN,
+      ServiceCalculation.TINH_THEO_SO,
+    ],
+    {
+      message: "Tính toán dịch vụ không hợp lệ",
+    }
+  ),
   description: z.string().optional(),
 });
 

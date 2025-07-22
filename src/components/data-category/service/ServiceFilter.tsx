@@ -1,7 +1,7 @@
 import ButtonFilter from "@/components/ButtonFilter";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
-import { ServiceAppliedBy, ServiceStatus, ServiceType } from "@/enums";
+import { ServiceCalculation, ServiceCategory, ServiceStatus } from "@/enums";
 import { ServiceFilter as Filter } from "@/types";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 
@@ -13,7 +13,7 @@ export interface ServiceFilterProps {
 }
 
 const ServiceFilter = ({ props }: { props: ServiceFilterProps }) => {
-  const { maxPrice, minPrice, query, serviceAppliedBy, serviceStatus, serviceType } = props.filterValues;
+  const { maxPrice, minPrice, query, serviceStatus, serviceCalculation, serviceCategory } = props.filterValues;
   const setFilterValues = props.setFilterValues;
 
   const handleChange = (key: keyof Filter, value: string) => {
@@ -32,25 +32,35 @@ const ServiceFilter = ({ props }: { props: ServiceFilterProps }) => {
           placeholder="-- Loại dịch vụ --"
           labelSelect="Loại dịch vụ"
           data={[
-            { label: "Cố định", value: ServiceType.CO_DINH },
-            { label: "Tính theo số", value: ServiceType.TINH_THEO_SO },
+            { label: "An ninh", value: ServiceCategory.AN_NINH },
+            { label: "Bảo trì", value: ServiceCategory.BAO_TRI },
+            { label: "Điện", value: ServiceCategory.DIEN },
+            { label: "Giặt sấy", value: ServiceCategory.GIAT_SAY },
+            { label: "Gửi xe", value: ServiceCategory.GUI_XE },
+            { label: "Internet", value: ServiceCategory.INTERNET },
+            { label: "Nước", value: ServiceCategory.NUOC },
+            { label: "Thang máy", value: ServiceCategory.THANG_MAY },
+            { label: "Tiền phòng", value: ServiceCategory.TIEN_PHONG },
+            { label: "Vệ sinh", value: ServiceCategory.VE_SINH },
+            { label: "Khác", value: ServiceCategory.KHAC },
           ]}
-          value={serviceType ?? ""}
-          onChange={(value) => handleChange("serviceType", String(value))}
-          name="serviceType"
+          value={serviceCategory ?? ""}
+          onChange={(value) => handleChange("serviceCategory", String(value))}
+          name="serviceCategory"
           showClear
         />
         <FieldsSelectLabel
-          placeholder="-- Dịch vụ áp dụng cho --"
-          labelSelect="Dịch vụ áp dụng cho"
+          placeholder="-- Tính toán dịch vụ --"
+          labelSelect="Tính toán dịch vụ"
           data={[
-            { label: "Tầng", value: ServiceAppliedBy.TANG },
-            { label: "Phòng", value: ServiceAppliedBy.PHONG },
-            { label: "Cố định", value: ServiceAppliedBy.NGUOI },
+            { label: "Tính theo người", value: ServiceCalculation.TINH_THEO_NGUOI },
+            { label: "Tính theo phòng", value: ServiceCalculation.TINH_THEO_PHONG },
+            { label: "TÍnh theo phương tiện", value: ServiceCalculation.TINH_THEO_PHUONG_TIEN },
+            { label: "Tính theo số", value: ServiceCalculation.TINH_THEO_SO },
           ]}
-          value={serviceAppliedBy ?? ""}
-          onChange={(value) => handleChange("serviceAppliedBy", String(value))}
-          name="serviceAppliedBy"
+          value={serviceCalculation ?? ""}
+          onChange={(value) => handleChange("serviceCalculation", String(value))}
+          name="serviceCalculation"
           showClear
         />
         <FieldsSelectLabel

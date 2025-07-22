@@ -15,9 +15,7 @@ import {
   ContractStatus,
   DefaultServiceAppliesTo,
   DefaultServiceStatus,
-  ServiceType,
   ServiceStatus,
-  ServiceAppliedBy,
   ServiceRoomStatus,
   MeterType,
   InvoiceStatus,
@@ -552,32 +550,33 @@ export interface DefaultServiceStatistics {
 /* SERVICE */
 export interface ServiceResponse extends AbstractResponse {
   name: string;
-  type: ServiceType | string;
   unit: string;
-  price: number | undefined;
-  appliedBy: string;
-  status: string;
+  price: number;
+  serviceCategory: ServiceCategory;
+  serviceCalculation: ServiceCalculation;
+  status: ServiceStatus;
   description: string;
 }
 
 export interface ServiceFilter {
   query: string;
-  serviceType: ServiceType | string;
+  serviceCategory: ServiceCategory | string;
   minPrice: number | undefined;
   maxPrice: number | undefined;
   serviceStatus: ServiceStatus | string;
-  serviceAppliedBy: ServiceAppliedBy | string;
+  serviceCalculation: ServiceCalculation | string;
 }
 
-export interface ServiceCreationAndUpdateRequest {
+export interface ServiceCreationRequest {
   name: string;
-  type: ServiceType | string;
+  serviceCategory: ServiceCategory | string;
   unit: string;
   price: number | undefined;
-  appliedBy: ServiceAppliedBy | string;
-  status: ServiceStatus | string;
+  serviceCalculation: ServiceCalculation | string;
   description: string;
 }
+
+export type ServiceUpdateRequest = ServiceCreationRequest & { status: ServiceStatus | string };
 
 export interface ServiceCountResponse {
   getTotal: number;
