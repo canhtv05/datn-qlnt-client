@@ -41,7 +41,12 @@ export default function buildColumnsFromConfig<T extends object>(configs: Column
       return <div className={wrapperClass}>{config.render(row.original)}</div>;
     }
 
-    if (config.accessorKey === "price" || config.accessorKey === "pricesApply" || config.accessorKey === "totalPrice") {
+    if (
+      config.accessorKey === "price" ||
+      config.accessorKey === "pricesApply" ||
+      config.accessorKey === "totalPrice" ||
+      config.accessorKey === "totalAmount"
+    ) {
       const raw = row.getValue(config.accessorKey);
       const price = parseFloat(String(raw ?? 0));
       const formatted = new Intl.NumberFormat("vi-VN", {

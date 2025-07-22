@@ -1,13 +1,11 @@
-"use client";
-
 import { TrendingUp } from "lucide-react";
-import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import useViewport from "@/hooks/useViewport";
 
-export const description = "A line chart with a label";
+export const description = "An area chart with gradient fill";
 
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
@@ -31,27 +29,25 @@ const chartConfig = {
 
 export function ChartLineLabel() {
   const { height } = useViewport();
-  console.log(height);
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Line Chart - Label</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Area Chart - Gradient</CardTitle>
+        <CardDescription>Showing total visitors for the last 6 months</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer
           config={chartConfig}
-          className="w-full"
           style={{
             height: height - 270,
+            width: "100%",
           }}
         >
-          <LineChart
+          <AreaChart
             accessibilityLayer
             data={chartData}
             margin={{
-              top: 20,
               left: 12,
               right: 12,
             }}
@@ -64,29 +60,49 @@ export function ChartLineLabel() {
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
-            <Line
+            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            <defs>
+              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-cyan-500)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-cyan-500)" stopOpacity={0.1} />
+              </linearGradient>
+              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-primary)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="var(--color-primary)" stopOpacity={0.1} />
+              </linearGradient>
+            </defs>
+            <Area
+              dataKey="mobile"
+              type="natural"
+              fill="url(#fillMobile)"
+              fillOpacity={0.4}
+              stroke="var(--color-primary)"
+              stackId="a"
+              dot={{ r: 4 }}
+              label={{ position: "top", fill: "var(--color-foreground)", fontSize: 12 }}
+            />
+            <Area
               dataKey="desktop"
               type="natural"
-              stroke="var(--color-primary)"
-              strokeWidth={2}
-              dot={{
-                fill: "var(--color-primary)",
-              }}
-              activeDot={{
-                r: 6,
-              }}
-            >
-              <LabelList position="top" offset={12} className="fill-foreground" fontSize={12} />
-            </Line>
-          </LineChart>
+              fill="url(#fillDesktop)"
+              fillOpacity={0.4}
+              stroke="var(--color-cyan-500)"
+              stackId="a"
+              dot={{ r: 4 }}
+              label={{ position: "top", fill: "var(--color-foreground)", fontSize: 12 }}
+            />
+          </AreaChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+      <CardFooter>
+        <div className="flex w-full items-start gap-2 text-sm">
+          <div className="grid gap-2">
+            <div className="flex items-center gap-2 leading-none font-medium">
+              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+            </div>
+            <div className="text-muted-foreground flex items-center gap-2 leading-none">January - June 2024</div>
+          </div>
         </div>
-        <div className="text-muted-foreground leading-none">Showing total visitors for the last 6 months</div>
       </CardFooter>
     </Card>
   );

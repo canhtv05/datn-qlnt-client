@@ -3,16 +3,16 @@ import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { ColumnConfig, MeterResponse } from "@/types";
+import { ColumnConfig, InvoiceResponse } from "@/types";
+import { GET_BTNS } from "@/constant";
+import { useInvoice } from "./useInvoice";
+import InvoiceButton from "@/components/finance/invoice/InvoiceButton";
+import InvoiceFilter from "@/components/finance/invoice/InvoiceFilter";
 import Modal from "@/components/Modal";
 import { Notice } from "@/enums";
-import { GET_BTNS } from "@/constant";
-import { useMeter } from "./useMeter";
-import MeterButton from "@/components/finance/meter/MeterButton";
-import MeterFilter from "@/components/finance/meter/MeterFilter";
-import AddOrUpdateMeter from "@/components/finance/meter/AddOrUpdateMeter";
+import UpdateInvoice from "@/components/finance/invoice/UpdateInvoice";
 
-const Meter = () => {
+const Invoice = () => {
   const {
     props,
     data,
@@ -28,32 +28,29 @@ const Meter = () => {
     value,
     setValue,
     errors,
-    meterInit,
+    contractInitToAdd,
+    buildingInitToAdd,
+    floorInitToAdd,
     ConfirmDialog,
-  } = useMeter();
+  } = useInvoice();
   const { page, size } = query;
 
   const columnConfigs: ColumnConfig[] = [
     {
-      label: "Mã công tơ",
-      accessorKey: "meterCode",
+      label: "Mã hóa đơn",
+      accessorKey: "invoiceCode",
       isSort: true,
       hasHighlight: true,
-    },
-    {
-      label: "Tên công tơ",
-      accessorKey: "meterName",
-      isSort: true,
     },
     {
       label: "Thao tác",
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
-      render: (row: MeterResponse) => {
+      render: (row: InvoiceResponse) => {
         return (
           <div className="flex gap-2">
-            {GET_BTNS("update", "delete").map((btn, index) => (
+            {GET_BTNS("update", "delete", "status", "view").map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -87,20 +84,8 @@ const Meter = () => {
       },
     },
     {
-      label: "Tên dịch vụ",
-      accessorKey: "serviceName",
-      isSort: true,
-    },
-    {
-      label: "Loại công tơ",
-      accessorKey: "meterType",
-      isSort: true,
-      hasBadge: true,
-      isCenter: true,
-    },
-    {
-      label: "Chỉ số khởi tạo",
-      accessorKey: "initialIndex",
+      label: "Tòa nhà",
+      accessorKey: "buildingName",
       isSort: true,
     },
     {
@@ -109,15 +94,49 @@ const Meter = () => {
       isSort: true,
     },
     {
-      label: "Mô tả",
-      accessorKey: "descriptionMeter",
-      isSort: false,
+      label: "Khách thuê",
+      accessorKey: "tenantName",
+      isSort: true,
     },
     {
-      label: "Ngày sản xuất",
-      accessorKey: "manufactureDate",
+      label: "Tháng",
+      accessorKey: "month",
+      isSort: true,
+    },
+    {
+      label: "Năm",
+      accessorKey: "year",
+      isSort: true,
+    },
+    {
+      label: "Tổng tiền",
+      accessorKey: "totalAmount",
+      isSort: true,
+    },
+    {
+      label: "Hạn thanh toán",
+      accessorKey: "paymentDueDate",
       isSort: true,
       hasDate: true,
+    },
+    {
+      label: "Loại hóa đơn",
+      accessorKey: "invoiceType",
+      isSort: true,
+      hasBadge: true,
+      isCenter: true,
+    },
+    {
+      label: "Trạng thái",
+      accessorKey: "invoiceStatus",
+      isSort: true,
+      hasBadge: true,
+      isCenter: true,
+    },
+    {
+      label: "Ghi chú",
+      accessorKey: "note",
+      isSort: false,
     },
     {
       label: "Ngày tạo",
@@ -125,60 +144,42 @@ const Meter = () => {
       isSort: true,
       hasDate: true,
     },
-    {
-      label: "Ngày cập nhật",
-      accessorKey: "updatedAt",
-      isSort: true,
-      hasDate: true,
-    },
-    // Các trường ẩn
-    {
-      label: "roomId",
-      accessorKey: "roomId",
-      isHidden: true,
-    },
-    {
-      label: "serviceId",
-      accessorKey: "serviceId",
-      isHidden: true,
-    },
   ];
 
   return (
     <div className="flex flex-col">
       {/* <StatisticCard data={dataDefaultServices} /> */}
-      <MeterButton ids={rowSelection} meterInit={meterInit} />
-      <MeterFilter props={props} />
-      <DataTable<MeterResponse>
-        data={data?.data?.data ?? []}
+      <InvoiceButton
+        ids={rowSelection}
+        contractInitToAdd={contractInitToAdd}
+        buildingInitToAdd={buildingInitToAdd}
+        floorInitToAdd={floorInitToAdd}
+      />
+      <InvoiceFilter props={props} />
+      <DataTable<InvoiceResponse>
+        data={data?.data ?? []}
         columns={buildColumnsFromConfig(columnConfigs)}
         page={Number(page)}
         size={Number(size)}
-        totalElements={data?.data?.meta?.pagination?.total || 0}
-        totalPages={data?.data?.meta?.pagination?.totalPages || 0}
+        totalElements={data?.meta?.pagination?.total || 0}
+        totalPages={data?.meta?.pagination?.totalPages || 0}
         loading={isLoading}
         rowSelection={rowSelection}
         setRowSelection={setRowSelection}
       />
       <Modal
-        title="Công tơ"
+        title="Cập nhật hóa đơn"
         trigger={null}
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         onConfirm={handleUpdateFloor}
         desc={Notice.UPDATE}
       >
-        <AddOrUpdateMeter
-          meterInit={meterInit}
-          handleChange={handleChange}
-          value={value}
-          setValue={setValue}
-          errors={errors}
-        />
+        <UpdateInvoice handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
       </Modal>
       <ConfirmDialog />
     </div>
   );
 };
 
-export default Meter;
+export default Invoice;

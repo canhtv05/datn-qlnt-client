@@ -37,8 +37,12 @@ const routes = {
   },
   finance: {
     meter: "/finance/meters",
-    meterStatistics: "/finance/meters/statistics",
+    meterId: "/finance/meters/:id",
+    meterStatisticId: "/finance/meters/statistics/:id",
     meterReading: "/finance/meter-reading",
+    meterReadingId: "/finance/meter-reading/:id",
+    invoice: "/finance/invoice",
+    invoiceId: "/finance/invoice/:id",
   },
 };
 

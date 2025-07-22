@@ -59,7 +59,7 @@ const Modal = ({
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
         {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
-        <DialogContent className="md:max-h-[90vh] h-full p-0 flex flex-col md:max-w-[90%]">
+        <DialogContent className="max-h-[90%] h-auto p-0 flex flex-col md:max-w-[90%]">
           <DialogHeader className="sticky top-0 left-0 w-full z-50">
             <DialogTitle className="px-5 py-2.5 bg-secondary rounded-t-sm flex justify-between items-center">
               <p>{title}</p>
@@ -88,7 +88,7 @@ const Modal = ({
             {children}
           </form>
 
-          <DialogFooter className="border-t bg-background px-5 py-3">
+          <DialogFooter className="border-t rounded-b-md bg-background px-5 py-3">
             <DialogClose asChild>
               <Button variant="outline">Hủy</Button>
             </DialogClose>

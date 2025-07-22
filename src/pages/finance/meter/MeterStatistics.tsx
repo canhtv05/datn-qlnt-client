@@ -4,7 +4,7 @@ import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 const MeterStatistics = () => {
@@ -24,13 +24,16 @@ const MeterStatistics = () => {
     retry: 1,
   });
 
+  const { id } = useParams();
+
   const { data: filterMeterInit, isError: errorFilterMeterInit } = useQuery<ApiResponse<MeterInitFilterResponse>>({
     queryKey: ["meters-filter-init"],
     queryFn: async () => {
-      const res = await httpRequest.get("/meters/init-filter");
+      const res = await httpRequest.get(`/meters/init-filter/${id}`);
       return res.data;
     },
     retry: 1,
+    enabled: !!id,
   });
 
   useEffect(() => {

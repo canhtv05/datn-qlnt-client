@@ -19,7 +19,7 @@ import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateMeter from "./AddOrUpdateMeter";
 import { ChartNoAxesCombined } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const MeterButton = ({
   ids,
@@ -136,16 +136,18 @@ const MeterButton = ({
     type: "warn",
   });
 
+  const { id } = useParams();
+
   const handleButton = useCallback(
     (btn: IBtnType) => {
       if (btn.type === "delete") {
         openDialog(ids);
       }
-      if (btn.type === "view") {
-        navigate("/finance/meters/statistics");
+      if (btn.type === "view" && id) {
+        navigate(`/finance/meters/statistics/${id}`, { replace: true });
       }
     },
-    [ids, navigate, openDialog]
+    [ids, navigate, openDialog, id]
   );
 
   const removeMeterMutation = useMutation({

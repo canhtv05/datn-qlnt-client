@@ -463,7 +463,10 @@ export const updateMeterReadingSchema = z
     oldIndex: zSafeNumber("Chỉ số cũ").refine((val) => val >= 0, "Chỉ số cũ không được âm"),
     newIndex: zSafeNumber("Chỉ số cũ").refine((val) => val >= 0, "Chỉ số mới không được âm"),
     month: zSafeNumber("Tháng").refine((val) => val >= 1 && val <= 12, "Tháng nằm trong 1 - 12"),
-    year: zSafeNumber("Năm").refine((val) => val >= 1, "Năm phải >= 1"),
+    year: zSafeNumber("Năm").refine(
+      (val) => val >= new Date().getFullYear(),
+      "Năm phải >= " + new Date().getFullYear().toString
+    ),
     readingDate: z.string().refine((val) => {
       return !isNaN(Date.parse(val));
     }, "Ngày đọc không hợp lệ"),
@@ -482,4 +485,31 @@ export const updateMeterReadingSchema = z
 
 export const createMeterReadingSchema = updateMeterReadingSchema.extend({
   meterId: z.string().min(1, "Vui lòng chọn công tơ"),
+});
+
+// invoice
+export const createInvoiceSchema = z.object({
+  paymentDueDate: z.coerce.date().refine((date) => date > new Date(), {
+    message: "Ngày đến hạn phải ở tương lai",
+  }),
+  note: z.string().optional(),
+});
+
+export const createInvoiceForContractSchema = createInvoiceSchema.extend({
+  contractId: z.string().min(1, "Vui lòng chọn hợp đồng"),
+});
+
+export const createInvoiceForBuildingSchema = createInvoiceSchema.extend({
+  buildingId: z.string().min(1, "Vui lòng chọn tòa nhà"),
+});
+
+export const createInvoiceForFloorSchema = createInvoiceSchema.extend({
+  floorId: z.string().min(1, "Vui lòng chọn tầng nhà"),
+});
+
+export const updateInvoiceSchema = z.object({
+  paymentDueDate: z.coerce.date().refine((val) => val > new Date(), {
+    message: "Ngày đến hạn phải ơi tương lai",
+  }),
+  note: z.string().optional(),
 });

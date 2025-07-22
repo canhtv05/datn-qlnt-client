@@ -160,6 +160,27 @@ export enum ServiceType {
   TINH_THEO_SO = "TINH_THEO_SO",
 }
 
+export enum ServiceCategory {
+  DIEN = "DIEN",
+  NUOC = "NUOC",
+  GUI_XE = "GUI_XE",
+  INTERNET = "INTERNET",
+  VE_SINH = "VE_SINH",
+  THANG_MAY = "THANG_MAY",
+  BAO_TRI = "BAO_TRI",
+  AN_NINH = "AN_NINH",
+  GIAT_SAY = "GIAT_SAY",
+  TIEN_PHONG = "TIEN_PHONG",
+  KHAC = "KHAC",
+}
+
+export enum ServiceCalculation {
+  TINH_THEO_SO = "TINH_THEO_SO",
+  TINH_THEO_NGUOI = "TINH_THEO_NGUOI",
+  TINH_THEO_PHONG = "TINH_THEO_PHONG",
+  TINH_THEO_PHUONG_TIEN = "TINH_THEO_PHUONG_TIEN",
+}
+
 /* SERVICE ROOM */
 export enum ServiceRoomStatus {
   DANG_SU_DUNG = "DANG_SU_DUNG",
@@ -171,4 +192,17 @@ export enum ServiceRoomStatus {
 export enum MeterType {
   DIEN = "DIEN",
   NUOC = "NUOC",
+}
+
+// invoice
+export enum InvoiceStatus {
+  CHUA_THANH_TOAN = "CHUA_THANH_TOAN",
+  DA_THANH_TOAN = "DA_THANH_TOAN",
+  QUA_HAN = "QUA_HAN",
+  HUY = "HUY",
+}
+
+export enum InvoiceType {
+  HANG_THANG = "HANG_THANG",
+  CUOI_CUNG = "CUOI_CUNG",
 }
