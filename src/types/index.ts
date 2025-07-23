@@ -773,7 +773,7 @@ export interface InvoiceDetailsResponse {
   invoiceStatus: InvoiceStatus;
   invoiceType: InvoiceType;
   items: InvoiceItemResponse[];
-  totalAmount: string;
+  totalAmount: number;
   note: string;
   createdAt: string;
   updatedAt: string;

@@ -1,16 +1,18 @@
 import { ApiResponse, InvoiceDetailsResponse } from "@/types";
-import { Card, CardContent } from "@/components/ui/card";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { httpRequest } from "@/utils/httpRequest";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import Logo from "@/components/Logo";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import StatusBadge from "@/components/ui/StatusBadge";
+import readVNNumber from "@oorts/read-vn-number";
 
 const InvoiceDetail = () => {
   const { id } = useParams();
 
-  const { data, isError } = useQuery<ApiResponse<InvoiceDetailsResponse>>({
+  const { data, isError, isLoading } = useQuery<ApiResponse<InvoiceDetailsResponse>>({
     queryKey: ["invoice-detail"],
     queryFn: async () => {
       const res = await httpRequest.get(`/invoices/${id}`);
@@ -24,93 +26,130 @@ const InvoiceDetail = () => {
     }
   }, [isError]);
 
+  if (isLoading) {
+    return (
+      <div className="w-full text-center">
+        <span>Đang tải chi tiết hóa đơn...</span>
+      </div>
+    );
+  }
+
+  const NA = "N/A";
+
+  const formatted = (price: number): string => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
+  };
+
   return (
-    <div className="space-y-6">
-      {/* Thông tin chung */}
-      <Card>
-        <CardContent className="grid md:grid-cols-2 gap-4 p-6">
+    <div className="p-10 bg-white">
+      <header className="mt-10 flex md:flex-row flex-col justify-between items-end">
+        <aside className="flex flex-col gap-y-2">
+          <Logo tro="text-[26px]" hub="text-[26px]" />
+          <span>
+            Tên tòa nhà/Building name: <strong>{data?.data?.buildingName}</strong>
+          </span>
+          <span>
+            Phòng/Room: <strong>{data?.data?.roomCode}</strong>
+          </span>
+          <span>
+            Khách hàng/Customer:{" "}
+            <strong>
+              {data?.data?.tenantName} - {data?.data?.tenantPhone ?? NA}
+            </strong>
+          </span>
+        </aside>
+        <article className="flex flex-col gap-y-2 md:mt-0 mt-5 md:items-end items-start">
+          <h1 className="uppercase font-black text-end">Hóa đơn/Payment request</h1>
+          <span className="text-end">
+            Mã/Code: <strong>{data?.data?.invoiceCode}</strong>
+          </span>
+          <span className="text-end">
+            Ngày/Date:{" "}
+            <strong>{data?.data?.createdAt && new Date(data?.data?.createdAt).toLocaleDateString("vi-VN")}</strong>
+          </span>
+          <span className="text-end">
+            Hạn TT/Due date:{" "}
+            <strong>{data?.data?.paymentDueDate && new Date(data?.data?.createdAt).toLocaleDateString("vi-VN")}</strong>
+          </span>
+          <span className="flex gap-2 items-center justify-end">
+            Loại hóa đơn/Invoice type: {data?.data?.invoiceType && <StatusBadge status={data?.data?.invoiceType} />}
+          </span>
+          <span className="flex gap-2 items-center justify-end">
+            Trạng thái/Status: {data?.data?.invoiceStatus && <StatusBadge status={data?.data?.invoiceStatus} />}
+          </span>
+        </article>
+      </header>
+      <main className="mt-10">
+        <Table className="border">
+          <TableHeader>
+            <TableRow className="[&>th]:border-r last:border-r-0 [&>th]:font-black [&>th]:bg-primary [&>th]:text-white [&>th]:text-end">
+              <TableHead className="!text-center">STT</TableHead>
+              <TableHead className="!text-start">Tên dịch vụ</TableHead>
+              <TableHead className="!text-center">Loại dịch vụ</TableHead>
+              <TableHead className="!text-center">Dịch vụ tính theo</TableHead>
+              <TableHead className="!text-center">Đơn vị</TableHead>
+              <TableHead>Chỉ số đầu</TableHead>
+              <TableHead>Chỉ số cuối</TableHead>
+              <TableHead className="text-right">Số lượng</TableHead>
+              <TableHead className="text-right">Đơn giá</TableHead>
+              <TableHead className="text-right">Thành tiền</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data?.data?.items?.map((item, index) => (
+              <TableRow key={item.id ?? index} className="[&>td]:border-r last:border-r-0 [&>td]:text-end">
+                <TableCell className="!text-center">{index + 1}</TableCell>
+                <TableCell className="!text-start">{item.serviceName}</TableCell>
+                <TableCell className="!text-center">
+                  <StatusBadge status={item.serviceCategory} />
+                </TableCell>
+                <TableCell className="!text-center">
+                  <StatusBadge status={item.serviceCalculation} />
+                </TableCell>
+                <TableCell className="!text-center">{item.unit ?? NA}</TableCell>
+                <TableCell className="text-right">{item.oldIndex ?? NA}</TableCell>
+                <TableCell className="text-right">{item.newIndex ?? NA}</TableCell>
+                <TableCell className="text-right">{item.quantity}</TableCell>
+                <TableCell className="text-right">{formatted(item?.unitPrice)}</TableCell>
+                <TableCell className="text-right">{formatted(item?.amount)}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </main>
+      <div className="flex justify-end mt-4 text-sm">
+        <div className="text-end">
           <div>
-            <h2 className="font-semibold text-lg mb-2">Thông tin hóa đơn</h2>
-            <p>
-              <strong>Mã hóa đơn:</strong> {data?.data?.invoiceCode}
-            </p>
-            <p>
-              <strong>Loại hóa đơn:</strong> {data?.data?.invoiceType}
-            </p>
-            <p>
-              <strong>Trạng thái:</strong>
-              {data?.data?.invoiceStatus && <StatusBadge status={data.data.invoiceStatus.toString()} />}
-            </p>
-            <p>
-              <strong>Hạn thanh toán:</strong> {data?.data?.paymentDueDate}
-            </p>
-            <p>
-              <strong>Tháng/Năm:</strong> {data?.data?.month}/{data?.data?.year}
-            </p>
+            Thành tiền / Total amount:{" "}
+            <strong className="text-red-500 text-base">
+              {data?.data?.totalAmount ? formatted(data?.data?.totalAmount) : formatted(0)}
+            </strong>
           </div>
-          <div>
-            <h2 className="font-semibold text-lg mb-2">Thông tin thuê</h2>
-            <p>
-              <strong>Tòa nhà:</strong> {data?.data?.buildingName}
-            </p>
-            <p>
-              <strong>Phòng:</strong> {data?.data?.roomCode}
-            </p>
-            <p>
-              <strong>Khách thuê:</strong> {data?.data?.tenantName}
-            </p>
-            <p>
-              <strong>SĐT:</strong> {data?.data?.tenantPhone}
-            </p>
+          <div className="italic text-xs mt-1 text-gray-600">
+            (Bằng chữ:{" "}
+            {(() => {
+              const text = readVNNumber.toVNWord(9999);
+              return text === "" ? "Miễn phí" : text.charAt(0).toUpperCase() + text.slice(1);
+            })()}
+            )
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {/* Bảng chi tiết các khoản */}
-      <Card>
-        <CardContent className="p-6 overflow-x-auto">
-          <h2 className="font-semibold text-lg mb-4">Chi tiết dịch vụ</h2>
-          <table className="w-full table-auto border border-gray-200">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="border px-4 py-2 text-left">#</th>
-                <th className="border px-4 py-2 text-left">Tên dịch vụ</th>
-                <th className="border px-4 py-2 text-right">Đơn giá</th>
-                <th className="border px-4 py-2 text-right">Số lượng</th>
-                <th className="border px-4 py-2 text-right">Thành tiền</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.data?.items.map((item, index) => (
-                <tr key={index}>
-                  <td className="border px-4 py-2">{index + 1}</td>
-                  <td className="border px-4 py-2">{item.serviceName}</td>
-                  <td className="border px-4 py-2 text-right">{item.unitPrice.toLocaleString()} đ</td>
-                  <td className="border px-4 py-2 text-right">{item.quantity}</td>
-                  <td className="border px-4 py-2 text-right">{item.amount.toLocaleString()} đ</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </CardContent>
-      </Card>
-
-      {/* Tổng kết */}
-      <Card>
-        <CardContent className="p-6 space-y-2">
-          <p>
-            <strong>Ghi chú:</strong> {data?.data?.note || "Không có"}
-          </p>
-          <p>
-            <strong>Tổng tiền:</strong>{" "}
-            <span className="text-emerald-600 font-semibold">{data?.data?.totalAmount.toLocaleString()} đ</span>
-          </p>
-          <p className="text-sm text-gray-500">
-            Ngày tạo: {new Date(data?.data?.createdAt).toLocaleString()} | Cập nhật:{" "}
-            {new Date(data?.data?.updatedAt).toLocaleString()}
-          </p>
-        </CardContent>
-      </Card>
+      <div className="flex flex-col justify-start text-sm mt-6">
+        <span>
+          Hóa đơn / Invoice for:{" "}
+          <strong>
+            {data?.data?.month ?? NA} - {data?.data?.year ?? NA}
+          </strong>
+        </span>
+        <span className="mt-2">
+          <span className="text-red-500 font-medium">Ghi chú / Note:</span> {data?.data?.note || NA}
+        </span>
+      </div>
     </div>
   );
 };
