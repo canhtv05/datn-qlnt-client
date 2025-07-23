@@ -260,14 +260,14 @@ const InvoiceButton = ({
       type: "contract",
     },
     {
-      tooltipContent: "Tạo hóa đơn cuối cùng",
       icon: Plus,
       arrowColor: "var(--color-primary)",
-      type: "default",
       hasConfirm: true,
+      tooltipContent: "Tạo hóa đơn cuối cùng",
+      type: "finalize",
     },
   ];
-  const ACTIONS_BUTTON_CUSTOM = [...ADD_BUTTON, ...ACTION_BUTTONS.filter((b) => b.type !== "default")];
+  const ACTIONS_BUTTON_CUSTOM = [...ADD_BUTTON, ...ACTION_BUTTONS];
 
   return (
     <div className="h-full bg-background rounded-t-sm">
@@ -346,9 +346,36 @@ const InvoiceButton = ({
                     />
                   </Modal>
                 </RenderIf>
+                <RenderIf value={btn.type === "finalize"}>
+                  <Modal
+                    title="Tạo hóa đơn cuối cùng"
+                    trigger={
+                      <TooltipTrigger asChild>
+                        <Button size={"icon"} variant={btn.type} className="cursor-pointer">
+                          <btn.icon className="text-white" />
+                        </Button>
+                      </TooltipTrigger>
+                    }
+                    desc={Notice.ADD}
+                    onConfirm={handleAddInvoiceForContract}
+                  >
+                    <AddInvoice
+                      contractInitToAdd={contractInitToAdd}
+                      handleChange={handleChange}
+                      value={valueContract}
+                      setValue={setValueContract}
+                      errors={errors}
+                      type="finalize"
+                    />
+                  </Modal>
+                </RenderIf>
                 <RenderIf
                   value={
-                    btn.type !== "contract" && btn.type !== "default" && btn.type !== "floor" && btn.type !== "building"
+                    btn.type !== "contract" &&
+                    btn.type !== "default" &&
+                    btn.type !== "floor" &&
+                    btn.type !== "building" &&
+                    btn.type !== "finalize"
                   }
                 >
                   <TooltipTrigger asChild>

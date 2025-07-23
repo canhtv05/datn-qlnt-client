@@ -38,13 +38,26 @@ interface AddInvoiceForFloorProps {
   floorInitToAdd: ApiResponse<IdAndName[]> | undefined;
 }
 
-type AddInvoiceProps = AddInvoiceForBuildingProps | AddInvoiceForContractProps | AddInvoiceForFloorProps;
+interface AddInvoiceFinalizeProps {
+  value: InvoiceCreationRequest;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setValue: Dispatch<React.SetStateAction<InvoiceCreationRequest>>;
+  errors: Partial<Record<keyof InvoiceCreationRequest, string>>;
+  type: "finalize";
+  contractInitToAdd: ApiResponse<ContractResponse[]> | undefined;
+}
+
+type AddInvoiceProps =
+  | AddInvoiceForBuildingProps
+  | AddInvoiceForContractProps
+  | AddInvoiceForFloorProps
+  | AddInvoiceFinalizeProps;
 
 const AddInvoice = (props: AddInvoiceProps) => {
   const { value, setValue, errors, type } = props;
 
   const contractOptions = useMemo(() => {
-    if (type === "contract" && "contractInitToAdd" in props) {
+    if ((type === "contract" || type === "finalize") && "contractInitToAdd" in props) {
       return (
         props.contractInitToAdd?.data?.map((c) => ({
           label: c.contractCode,
@@ -82,7 +95,7 @@ const AddInvoice = (props: AddInvoiceProps) => {
   return (
     <div className="flex flex-col gap-3">
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full">
-        {type === "contract" && (
+        {(type === "contract" || type === "finalize") && (
           <FieldsSelectLabel
             data={contractOptions}
             placeholder="-- Chọn hợp đồng --"
@@ -140,6 +153,8 @@ const AddInvoice = (props: AddInvoiceProps) => {
               setValue((prev) => ({ ...prev, paymentDueDate: date } as InvoiceCreationRequest));
             } else if (type === "floor") {
               setValue((prev) => ({ ...prev, paymentDueDate: date } as InvoiceFloorCreationRequest));
+            } else if (type === "finalize") {
+              setValue((prev) => ({ ...prev, paymentDueDate: date } as InvoiceCreationRequest));
             }
           }}
           label="Hạn thanh toán:"
@@ -163,6 +178,11 @@ const AddInvoice = (props: AddInvoiceProps) => {
               note,
             }));
           } else if (type === "contract") {
+            setValue((prev) => ({
+              ...prev,
+              note,
+            }));
+          } else if (type === "finalize") {
             setValue((prev) => ({
               ...prev,
               note,

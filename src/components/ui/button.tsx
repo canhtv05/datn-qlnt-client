@@ -23,12 +23,10 @@ const buttonVariants = cva(
         update: "bg-[#44475A] hover:bg-[#5a5e78]",
         status: "bg-sky-600 hover:bg-sky-500",
         view: "bg-emerald-500 hover:bg-emerald-400",
-        // contract: "bg-violet-600 hover:bg-violet-500",
-        // floor: "bg-orange-500 hover:bg-orange-400",
-        // building: "bg-blue-600 hover:bg-blue-500",
         contract: "bg-indigo-600 hover:bg-indigo-500", // Đậm, nghiêm túc
         floor: "bg-teal-500 hover:bg-teal-400", // Trung tính, mát mắt
         building: "bg-sky-600 hover:bg-sky-500", // Sáng, dễ nhận diện
+        finalize: "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 cursor-pointer",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

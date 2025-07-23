@@ -32,7 +32,18 @@ export interface IBtnType {
   tooltipContent: string;
   icon: LucideIcon;
   arrowColor: string;
-  type: "default" | "upload" | "delete" | "download" | "update" | "status" | "view" | "contract" | "floor" | "building";
+  type:
+    | "default"
+    | "upload"
+    | "delete"
+    | "download"
+    | "update"
+    | "status"
+    | "view"
+    | "contract"
+    | "floor"
+    | "building"
+    | "finalize";
   hasConfirm: boolean;
 }
 
