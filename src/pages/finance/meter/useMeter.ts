@@ -33,7 +33,7 @@ export const useMeter = () => {
   const idRef = useRef<string>("");
   const [value, setValue] = useState<MeterCreationAndUpdatedRequest>({
     descriptionMeter: "",
-    initialIndex: 0,
+    closestIndex: 0,
     manufactureDate: "",
     meterCode: "",
     meterName: "",
@@ -151,14 +151,14 @@ export const useMeter = () => {
 
   const handleUpdateDefaultService = useCallback(async () => {
     try {
-      const { descriptionMeter, initialIndex, manufactureDate, meterCode, meterName, meterType, roomId, serviceId } =
+      const { descriptionMeter, closestIndex, manufactureDate, meterCode, meterName, meterType, roomId, serviceId } =
         value;
 
       await createOrUpdateMeterSchema.parseAsync(value);
 
       const data: MeterCreationAndUpdatedRequest = {
         descriptionMeter: descriptionMeter.trim(),
-        initialIndex: initialIndex || 0,
+        closestIndex: closestIndex || 0,
         manufactureDate,
         meterCode: meterCode.trim(),
         meterName: meterName.trim(),
@@ -171,7 +171,7 @@ export const useMeter = () => {
         onSuccess: () => {
           setValue({
             descriptionMeter: "",
-            initialIndex: 0,
+            closestIndex: 0,
             manufactureDate: "",
             meterCode: "",
             meterName: "",
@@ -201,7 +201,7 @@ export const useMeter = () => {
       if (action === "update") {
         setValue({
           descriptionMeter: meter.descriptionMeter,
-          initialIndex: meter.initialIndex,
+          closestIndex: meter.initialIndex,
           manufactureDate: meter.manufactureDate,
           meterCode: meter.meterCode,
           meterName: meter.meterName,

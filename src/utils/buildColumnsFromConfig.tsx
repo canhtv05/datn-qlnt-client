@@ -77,6 +77,8 @@ export default function buildColumnsFromConfig<T extends object>(configs: Column
     }
 
     if (!value || value === undefined || value === null || (typeof value === "number" && Number.isNaN(value))) {
+      if (value === 0) return <div className={wrapperClass}>0</div>;
+
       return (
         <div className={cn(wrapperClass, "flex items-center w-full justify-center")}>
           <StatusBadge status={"__EMPTY__"} />

@@ -647,7 +647,7 @@ export interface MeterCreationAndUpdatedRequest {
   meterName: string;
   meterCode: string;
   manufactureDate: string;
-  initialIndex: number | undefined;
+  closestIndex: number | undefined;
   descriptionMeter: string;
 }
 

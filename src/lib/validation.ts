@@ -47,7 +47,7 @@ const isValidPhoneNumber = (number: string) => {
   return regex.test(number);
 };
 
-const zSafeNumber = (fieldName: string) =>
+const zSafeNumber = (fieldName: string, options?: { min?: number }) =>
   z
     .any()
     .transform((val) => {
@@ -63,8 +63,8 @@ const zSafeNumber = (fieldName: string) =>
     .refine((val) => !isNaN(val), {
       message: `${fieldName} không hợp lệ`,
     })
-    .refine((val) => val >= 1, {
-      message: `${fieldName} phải ≥ 1`,
+    .refine((val) => options?.min === undefined || val >= options.min!, {
+      message: `${fieldName} phải ≥ ${options?.min ?? 0}`,
     });
 
 /* CHECK */
@@ -177,8 +177,8 @@ export const createOrUpdateBuildingSchema = z
     address: z.string().min(1, "Địa chỉ không được để trống"),
     buildingName: z.string().min(1, "Tên tòa nhà không được để trống"),
 
-    actualNumberOfFloors: zSafeNumber("Số tầng thực tế"),
-    numberOfFloorsForRent: zSafeNumber("Số tầng cho thuê"),
+    actualNumberOfFloors: zSafeNumber("Số tầng thực tế", { min: 1 }),
+    numberOfFloorsForRent: zSafeNumber("Số tầng cho thuê", { min: 1 }),
 
     buildingType: z.enum(
       [BuildingType.CAN_HO_DICH_VU, BuildingType.CHUNG_CU_MINI, BuildingType.KHAC, BuildingType.NHA_TRO],
@@ -200,7 +200,7 @@ export const createOrUpdateBuildingSchema = z
 
 /* FLOOR */
 export const createFloorSchema = z.object({
-  maximumRoom: zSafeNumber("Số phòng tối đa")
+  maximumRoom: zSafeNumber("Số phòng tối đa", { min: 1 })
     .transform((val) => Number(val))
     .refine((val) => val >= 1 && val <= 99, "Số phòng tối đa từ 1 -> 99"),
 
@@ -472,7 +472,7 @@ export const createOrUpdateMeterSchema = z.object({
       const date = new Date();
       return val <= date;
     }, "Ngày sản xuất không được ở trong tương lai"),
-  initialIndex: zSafeNumber("Chỉ số ban đầu").refine((val) => val >= 0.0, "Chỉ số ban đầu không được âm"),
+  closestIndex: zSafeNumber("Chỉ số gần nhất", { min: 0 }),
   descriptionMeter: z.string().optional(),
 });
 

@@ -32,7 +32,7 @@ const MeterButton = ({
 
   const [value, setValue] = useState<MeterCreationAndUpdatedRequest>({
     descriptionMeter: "",
-    initialIndex: undefined,
+    closestIndex: undefined,
     manufactureDate: "",
     meterCode: "",
     meterName: "",
@@ -61,7 +61,7 @@ const MeterButton = ({
       toast.success(Status.ADD_SUCCESS);
       setValue({
         descriptionMeter: "",
-        initialIndex: undefined,
+        closestIndex: undefined,
         manufactureDate: "",
         meterCode: "",
         meterName: "",
@@ -80,14 +80,14 @@ const MeterButton = ({
 
   const handleMeterType = useCallback(async () => {
     try {
-      const { descriptionMeter, initialIndex, manufactureDate, meterCode, meterName, meterType, roomId, serviceId } =
+      const { descriptionMeter, closestIndex, manufactureDate, meterCode, meterName, meterType, roomId, serviceId } =
         value;
 
       await createOrUpdateMeterSchema.parseAsync(value);
 
       const data: MeterCreationAndUpdatedRequest = {
         descriptionMeter: descriptionMeter.trim(),
-        initialIndex: initialIndex || 0,
+        closestIndex: closestIndex || 0,
         manufactureDate,
         meterCode: meterCode.trim(),
         meterName: meterName.trim(),

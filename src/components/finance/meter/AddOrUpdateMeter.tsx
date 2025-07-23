@@ -116,15 +116,15 @@ const AddOrUpdateMeter = ({ value, handleChange, meterInit, setValue, errors }: 
         />
       </div>
       <InputLabel
-        id="initialIndex"
-        name="initialIndex"
+        id="closestIndex"
+        name="closestIndex"
         placeholder="0"
         type="number"
-        label="Chỉ số công tơ ban đầu:"
+        label="Chỉ số gần nhất:"
         required
-        value={value.initialIndex ?? ""}
+        value={value.closestIndex ?? ""}
         onChange={handleChange}
-        errorText={errors.initialIndex}
+        errorText={errors.closestIndex}
       />
 
       <TextareaLabel
