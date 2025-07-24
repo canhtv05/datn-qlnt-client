@@ -214,7 +214,9 @@ export interface RoomResponse extends AbstractResponse {
   description: string;
   floor: {
     id: string;
-    floorName: string;
+    nameFloor: string;
+    buildingId: string;
+    buildingName: string; 
   };
 }
 export type RoomFormValue = {
@@ -438,8 +440,12 @@ export interface ContractResponse extends AbstractResponse {
   startDate: string;
   endDate: string;
   deposit: number;
+  roomPrice : number
   status: ContractStatus;
+  assets: AssetResponse[];
   tenants: TenantBasicResponse[];
+  services: ServiceResponse[];
+  vehicles: VehicleResponse[];
 }
 
 export interface ICreateAndUpdateContract {
@@ -449,7 +455,11 @@ export interface ICreateAndUpdateContract {
   endDate: string | Date;
   deposit: number;
   tenants: string[];
-  status?: ContractStatus;
+  assets: string[];
+  services: string[];
+  vehicles: string[];
+  status: ContractStatus | undefined;
+  roomPrice?: number;
 }
 export interface ContractDetailResponse {
   id: string;
