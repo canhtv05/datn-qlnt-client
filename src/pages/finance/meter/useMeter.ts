@@ -15,7 +15,7 @@ import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useMeter = () => {
@@ -33,7 +33,7 @@ export const useMeter = () => {
   const idRef = useRef<string>("");
   const [value, setValue] = useState<MeterCreationAndUpdatedRequest>({
     descriptionMeter: "",
-    initialIndex: 0,
+    closestIndex: 0,
     manufactureDate: "",
     meterCode: "",
     meterName: "",
@@ -151,14 +151,14 @@ export const useMeter = () => {
 
   const handleUpdateDefaultService = useCallback(async () => {
     try {
-      const { descriptionMeter, initialIndex, manufactureDate, meterCode, meterName, meterType, roomId, serviceId } =
+      const { descriptionMeter, closestIndex, manufactureDate, meterCode, meterName, meterType, roomId, serviceId } =
         value;
 
       await createOrUpdateMeterSchema.parseAsync(value);
 
       const data: MeterCreationAndUpdatedRequest = {
         descriptionMeter: descriptionMeter.trim(),
-        initialIndex: initialIndex || 0,
+        closestIndex: closestIndex || 0,
         manufactureDate,
         meterCode: meterCode.trim(),
         meterName: meterName.trim(),
@@ -171,7 +171,7 @@ export const useMeter = () => {
         onSuccess: () => {
           setValue({
             descriptionMeter: "",
-            initialIndex: 0,
+            closestIndex: 0,
             manufactureDate: "",
             meterCode: "",
             meterName: "",
@@ -201,7 +201,7 @@ export const useMeter = () => {
       if (action === "update") {
         setValue({
           descriptionMeter: meter.descriptionMeter,
-          initialIndex: meter.initialIndex,
+          closestIndex: meter.initialIndex,
           manufactureDate: meter.manufactureDate,
           meterCode: meter.meterCode,
           meterName: meter.meterName,
@@ -232,13 +232,16 @@ export const useMeter = () => {
     retry: 1,
   });
 
+  const { id } = useParams();
+
   const { data: filterMeterInit, isError: errorFilterMeterInit } = useQuery<ApiResponse<MeterInitFilterResponse>>({
     queryKey: ["meters-filter-init"],
     queryFn: async () => {
-      const res = await httpRequest.get("/meters/init-filter");
+      const res = await httpRequest.get(`/meters/init-filter/${id}`);
       return res.data;
     },
     retry: 1,
+    enabled: !!id,
   });
 
   const props = {

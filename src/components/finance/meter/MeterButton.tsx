@@ -19,7 +19,7 @@ import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateMeter from "./AddOrUpdateMeter";
 import { ChartNoAxesCombined } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const MeterButton = ({
   ids,
@@ -32,7 +32,7 @@ const MeterButton = ({
 
   const [value, setValue] = useState<MeterCreationAndUpdatedRequest>({
     descriptionMeter: "",
-    initialIndex: undefined,
+    closestIndex: undefined,
     manufactureDate: "",
     meterCode: "",
     meterName: "",
@@ -61,7 +61,7 @@ const MeterButton = ({
       toast.success(Status.ADD_SUCCESS);
       setValue({
         descriptionMeter: "",
-        initialIndex: undefined,
+        closestIndex: undefined,
         manufactureDate: "",
         meterCode: "",
         meterName: "",
@@ -80,14 +80,14 @@ const MeterButton = ({
 
   const handleMeterType = useCallback(async () => {
     try {
-      const { descriptionMeter, initialIndex, manufactureDate, meterCode, meterName, meterType, roomId, serviceId } =
+      const { descriptionMeter, closestIndex, manufactureDate, meterCode, meterName, meterType, roomId, serviceId } =
         value;
 
       await createOrUpdateMeterSchema.parseAsync(value);
 
       const data: MeterCreationAndUpdatedRequest = {
         descriptionMeter: descriptionMeter.trim(),
-        initialIndex: initialIndex || 0,
+        closestIndex: closestIndex || 0,
         manufactureDate,
         meterCode: meterCode.trim(),
         meterName: meterName.trim(),
@@ -136,16 +136,18 @@ const MeterButton = ({
     type: "warn",
   });
 
+  const { id } = useParams();
+
   const handleButton = useCallback(
     (btn: IBtnType) => {
       if (btn.type === "delete") {
         openDialog(ids);
       }
-      if (btn.type === "view") {
-        navigate("/finance/meters/statistics");
+      if (btn.type === "view" && id) {
+        navigate(`/finance/meters/statistics/${id}`, { replace: true });
       }
     },
-    [ids, navigate, openDialog]
+    [ids, navigate, openDialog, id]
   );
 
   const removeMeterMutation = useMutation({

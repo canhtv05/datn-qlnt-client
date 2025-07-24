@@ -48,6 +48,11 @@ const ContractDetail = lazy(() => import("@/pages/customer/contract/ContractDeta
 const Meter = lazy(() => import("@/pages/finance/meter"));
 const MeterStatistics = lazy(() => import("@/pages/finance/meter/MeterStatistics"));
 const MeterReading = lazy(() => import("@/pages/finance/meter-reading"));
+const Invoice = lazy(() => import("@/pages/finance/invoice"));
+const InvoiceDetail = lazy(() => import("@/pages/finance/invoice/InvoiceDetail"));
+
+/* USER ROLE */
+const UserRole = lazy(() => import("@/pages/user/room"));
 
 const publicRoutes: RouteType[] = [
   /* AUTH */
@@ -78,79 +83,122 @@ const privateRoutes: RouteType[] = [
   {
     path: configs.routes.dashboard,
     component: DashBoard,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
   /* DATA CATEGORIES */
   {
     path: configs.routes.dataCategories.buildings,
     component: Building,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
     path: configs.routes.dataCategories.floors,
     component: SelectBuilding,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
     path: configs.routes.dataCategories.floorId,
     component: Floor,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
     path: configs.routes.dataCategories.assetType,
     component: AssetType,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
     path: configs.routes.dataCategories.rooms,
     component: SelectBuilding,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
     path: configs.routes.dataCategories.roomId,
     component: Room,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
     path: configs.routes.dataCategories.roomAsset,
     component: Asset,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
     path: configs.routes.dataCategories.service,
     component: Service,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
     path: configs.routes.dataCategories.defaultService,
     component: DefaultService,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
     path: configs.routes.dataCategories.roomService,
     component: ServiceRoom,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
 
   /* CUSTOMER */
   {
     path: configs.routes.customer.vehicles,
     component: Vehicle,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
     path: configs.routes.customer.tenants,
     component: Tenant,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
     path: configs.routes.customer.contract,
     component: Contract,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
     path: configs.routes.customer.contractDetail,
     component: ContractDetail,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
 
   /* FINANCE */
   {
     path: configs.routes.finance.meter,
-    component: Meter,
+    component: SelectBuilding,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
-    path: configs.routes.finance.meterStatistics,
+    path: configs.routes.finance.meterId,
+    component: Meter,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.finance.meterStatisticId,
     component: MeterStatistics,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
     path: configs.routes.finance.meterReading,
+    component: SelectBuilding,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.finance.meterReadingId,
     component: MeterReading,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.finance.invoice,
+    component: Invoice,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.finance.invoiceId,
+    component: InvoiceDetail,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.user.room,
+    component: UserRole,
+    allowedRoles: ["USER"],
   },
 ];
 
@@ -187,10 +235,12 @@ const modals: ModalRoute[] = [
   {
     path: configs.routes.modals.profile,
     component: Profile,
+    allowedRoles: ["ADMIN", "MANAGER", "STAFF", "USER"],
   },
   {
     path: configs.routes.modals.tenantDetail,
     component: DetailTenant,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
 ];
 

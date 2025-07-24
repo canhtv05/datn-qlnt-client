@@ -8,13 +8,12 @@ import {
   AssetBeLongTo,
   VehicleType,
   VehicleStatus,
-  ServiceType,
-  ServiceAppliedBy,
-  ServiceStatus,
   DefaultServiceAppliesTo,
   DefaultServiceStatus,
   ServiceRoomStatus,
   MeterType,
+  ServiceCategory,
+  ServiceCalculation,
 } from "@/enums";
 import { z } from "zod/v4";
 
@@ -48,7 +47,7 @@ const isValidPhoneNumber = (number: string) => {
   return regex.test(number);
 };
 
-const zSafeNumber = (fieldName: string) =>
+const zSafeNumber = (fieldName: string, options?: { min?: number }) =>
   z
     .any()
     .transform((val) => {
@@ -64,8 +63,8 @@ const zSafeNumber = (fieldName: string) =>
     .refine((val) => !isNaN(val), {
       message: `${fieldName} không hợp lệ`,
     })
-    .refine((val) => val >= 1, {
-      message: `${fieldName} phải ≥ 1`,
+    .refine((val) => options?.min === undefined || val >= options.min!, {
+      message: `${fieldName} phải ≥ ${options?.min ?? 0}`,
     });
 
 /* CHECK */
@@ -178,8 +177,8 @@ export const createOrUpdateBuildingSchema = z
     address: z.string().min(1, "Địa chỉ không được để trống"),
     buildingName: z.string().min(1, "Tên tòa nhà không được để trống"),
 
-    actualNumberOfFloors: zSafeNumber("Số tầng thực tế"),
-    numberOfFloorsForRent: zSafeNumber("Số tầng cho thuê"),
+    actualNumberOfFloors: zSafeNumber("Số tầng thực tế", { min: 1 }),
+    numberOfFloorsForRent: zSafeNumber("Số tầng cho thuê", { min: 1 }),
 
     buildingType: z.enum(
       [BuildingType.CAN_HO_DICH_VU, BuildingType.CHUNG_CU_MINI, BuildingType.KHAC, BuildingType.NHA_TRO],
@@ -201,7 +200,7 @@ export const createOrUpdateBuildingSchema = z
 
 /* FLOOR */
 export const createFloorSchema = z.object({
-  maximumRoom: zSafeNumber("Số phòng tối đa")
+  maximumRoom: zSafeNumber("Số phòng tối đa", { min: 1 })
     .transform((val) => Number(val))
     .refine((val) => val >= 1 && val <= 99, "Số phòng tối đa từ 1 -> 99"),
 
@@ -274,13 +273,13 @@ export const createOrUpdateRoomSchema = z
 /* ASSET */
 export const createOrUpdateAssetSchema = z.object({
   nameAsset: z.string().min(1, "Tên tài sản không được để trống"),
-  assetTypeId: z.string().min(1, "Vui lòng chọn loại tài sản"),
+  assetTypeId: z.string().optional(),
   assetBeLongTo: z.enum([AssetBeLongTo.CA_NHAN, AssetBeLongTo.CHUNG, AssetBeLongTo.PHONG], {
     message: "Tài sản thuộc về không hợp lệ",
   }),
-  roomID: z.string().min(1, "Vui lòng chọn loại phòng"),
-  buildingID: z.string().min(1, "Vui lòng chọn tòa nhà"),
-  tenantId: z.string().min(1, "Vui lòng chọn khách thuê").optional(),
+  roomID: z.string().optional(),
+  buildingID: z.string().optional(),
+  tenantId: z.string().optional(),
   descriptionAsset: z.string(),
   price: zSafeNumber("Giá")
     .transform((val) => Number(val))
@@ -376,17 +375,37 @@ export const createOrUpdateContractSchema = z
 /* SERVICE */
 export const createOrUpdateService = z.object({
   name: z.string().min(1, "Không được để trống tên dịch vụ"),
-  type: z.enum([ServiceType.CO_DINH, ServiceType.TINH_THEO_SO], {
-    message: "Loại dịch vụ không hợp lệ",
-  }),
-  unit: z.string().min(1, "Không được để trống đơn vị"),
+  serviceCategory: z.enum(
+    [
+      ServiceCategory.AN_NINH,
+      ServiceCategory.BAO_TRI,
+      ServiceCategory.DIEN,
+      ServiceCategory.GIAT_SAY,
+      ServiceCategory.GUI_XE,
+      ServiceCategory.INTERNET,
+      ServiceCategory.KHAC,
+      ServiceCategory.NUOC,
+      ServiceCategory.THANG_MAY,
+      ServiceCategory.TIEN_PHONG,
+      ServiceCategory.VE_SINH,
+    ],
+    {
+      message: "Loại dịch vụ không hợp lệ",
+    }
+  ),
+  unit: z.string().optional(),
   price: zSafeNumber("Giá").refine((val) => val >= 0.0, "Giá không được âm"),
-  appliedBy: z.enum([ServiceAppliedBy.NGUOI, ServiceAppliedBy.PHONG, ServiceAppliedBy.TANG], {
-    message: "Dịch vụ áp dụng không hợp lệ",
-  }),
-  status: z.enum([ServiceStatus.HOAT_DONG, ServiceStatus.TAM_KHOA, ServiceStatus.KHONG_SU_DUNG], {
-    message: "Trạng thái không hợp lệ",
-  }),
+  serviceCalculation: z.enum(
+    [
+      ServiceCalculation.TINH_THEO_NGUOI,
+      ServiceCalculation.TINH_THEO_PHONG,
+      ServiceCalculation.TINH_THEO_PHUONG_TIEN,
+      ServiceCalculation.TINH_THEO_SO,
+    ],
+    {
+      message: "Tính toán dịch vụ không hợp lệ",
+    }
+  ),
   description: z.string().optional(),
 });
 
@@ -453,7 +472,7 @@ export const createOrUpdateMeterSchema = z.object({
       const date = new Date();
       return val <= date;
     }, "Ngày sản xuất không được ở trong tương lai"),
-  initialIndex: zSafeNumber("Chỉ số ban đầu").refine((val) => val >= 0.0, "Chỉ số ban đầu không được âm"),
+  closestIndex: zSafeNumber("Chỉ số gần nhất", { min: 0 }),
   descriptionMeter: z.string().optional(),
 });
 
@@ -463,7 +482,10 @@ export const updateMeterReadingSchema = z
     oldIndex: zSafeNumber("Chỉ số cũ").refine((val) => val >= 0, "Chỉ số cũ không được âm"),
     newIndex: zSafeNumber("Chỉ số cũ").refine((val) => val >= 0, "Chỉ số mới không được âm"),
     month: zSafeNumber("Tháng").refine((val) => val >= 1 && val <= 12, "Tháng nằm trong 1 - 12"),
-    year: zSafeNumber("Năm").refine((val) => val >= 1, "Năm phải >= 1"),
+    year: zSafeNumber("Năm").refine(
+      (val) => val >= new Date().getFullYear(),
+      "Năm phải >= " + new Date().getFullYear().toString
+    ),
     readingDate: z.string().refine((val) => {
       return !isNaN(Date.parse(val));
     }, "Ngày đọc không hợp lệ"),
@@ -482,4 +504,31 @@ export const updateMeterReadingSchema = z
 
 export const createMeterReadingSchema = updateMeterReadingSchema.extend({
   meterId: z.string().min(1, "Vui lòng chọn công tơ"),
+});
+
+// invoice
+export const createInvoiceSchema = z.object({
+  paymentDueDate: z.coerce.date().refine((date) => date > new Date(), {
+    message: "Ngày đến hạn phải ở tương lai",
+  }),
+  note: z.string().optional(),
+});
+
+export const createInvoiceForContractSchema = createInvoiceSchema.extend({
+  contractId: z.string().min(1, "Vui lòng chọn hợp đồng"),
+});
+
+export const createInvoiceForBuildingSchema = createInvoiceSchema.extend({
+  buildingId: z.string().min(1, "Vui lòng chọn tòa nhà"),
+});
+
+export const createInvoiceForFloorSchema = createInvoiceSchema.extend({
+  floorId: z.string().min(1, "Vui lòng chọn tầng nhà"),
+});
+
+export const updateInvoiceSchema = z.object({
+  paymentDueDate: z.coerce.date().refine((val) => val > new Date(), {
+    message: "Ngày đến hạn phải ơi tương lai",
+  }),
+  note: z.string().optional(),
 });

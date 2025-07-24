@@ -15,11 +15,13 @@ import {
   ContractStatus,
   DefaultServiceAppliesTo,
   DefaultServiceStatus,
-  ServiceType,
   ServiceStatus,
-  ServiceAppliedBy,
   ServiceRoomStatus,
   MeterType,
+  InvoiceStatus,
+  InvoiceType,
+  ServiceCategory,
+  ServiceCalculation,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -30,7 +32,18 @@ export interface IBtnType {
   tooltipContent: string;
   icon: LucideIcon;
   arrowColor: string;
-  type: "default" | "upload" | "delete" | "download" | "update" | "status" | "view";
+  type:
+    | "default"
+    | "upload"
+    | "delete"
+    | "download"
+    | "update"
+    | "status"
+    | "view"
+    | "contract"
+    | "floor"
+    | "building"
+    | "finalize";
   hasConfirm: boolean;
 }
 
@@ -85,6 +98,11 @@ export interface UserResponse extends AbstractResponse {
   email: string;
   phoneNumber: string;
   profilePicture: string;
+  roles: RoleResponse[];
+}
+
+export interface RoleResponse {
+  name: string;
 }
 
 /* CUSTOM COLUMN Tanstack Table */
@@ -558,32 +576,33 @@ export interface DefaultServiceStatistics {
 /* SERVICE */
 export interface ServiceResponse extends AbstractResponse {
   name: string;
-  type: ServiceType | string;
   unit: string;
-  price: number | undefined;
-  appliedBy: string;
-  status: string;
+  price: number;
+  serviceCategory: ServiceCategory;
+  serviceCalculation: ServiceCalculation;
+  status: ServiceStatus;
   description: string;
 }
 
 export interface ServiceFilter {
   query: string;
-  serviceType: ServiceType | string;
+  serviceCategory: ServiceCategory | string;
   minPrice: number | undefined;
   maxPrice: number | undefined;
   serviceStatus: ServiceStatus | string;
-  serviceAppliedBy: ServiceAppliedBy | string;
+  serviceCalculation: ServiceCalculation | string;
 }
 
-export interface ServiceCreationAndUpdateRequest {
+export interface ServiceCreationRequest {
   name: string;
-  type: ServiceType | string;
+  serviceCategory: ServiceCategory | string;
   unit: string;
   price: number | undefined;
-  appliedBy: ServiceAppliedBy | string;
-  status: ServiceStatus | string;
+  serviceCalculation: ServiceCalculation | string;
   description: string;
 }
+
+export type ServiceUpdateRequest = ServiceCreationRequest & { status: ServiceStatus | string };
 
 export interface ServiceCountResponse {
   getTotal: number;
@@ -654,7 +673,7 @@ export interface MeterCreationAndUpdatedRequest {
   meterName: string;
   meterCode: string;
   manufactureDate: string;
-  initialIndex: number | undefined;
+  closestIndex: number | undefined;
   descriptionMeter: string;
 }
 
@@ -716,4 +735,84 @@ export interface MeterReadingFilter {
   roomId: string;
   meterType: MeterType | string;
   month: number | undefined;
+}
+
+// invoice
+export interface InvoiceCreationRequest {
+  contractId: string;
+  paymentDueDate: string;
+  note: string;
+}
+
+export interface InvoiceBuildingCreationRequest {
+  buildingId: string;
+  paymentDueDate: string;
+  note: string;
+}
+
+export interface InvoiceFloorCreationRequest {
+  floorId: string;
+  paymentDueDate: string;
+  note: string;
+}
+export interface InvoiceResponse extends AbstractResponse {
+  invoiceCode: string;
+  buildingName: string;
+  roomCode: string;
+  tenantName: string;
+  month: number;
+  year: number;
+  totalAmount: number;
+  paymentDueDate: string;
+  invoiceStatus: InvoiceStatus;
+  invoiceType: InvoiceType;
+  note: string;
+}
+
+export interface InvoiceFilter {
+  query: string;
+  building: string;
+  floor: string;
+  month: number | undefined;
+  year: number | undefined;
+  minTotalAmount: number | undefined;
+  maxTotalAmount: number | undefined;
+  invoiceStatus: InvoiceStatus | string;
+  invoiceType: InvoiceType | string;
+}
+
+export interface InvoiceUpdateRequest {
+  paymentDueDate: string;
+  note: string;
+}
+
+export interface InvoiceDetailsResponse {
+  invoiceId: string;
+  invoiceCode: string;
+  buildingName: string;
+  roomCode: string;
+  tenantName: string;
+  tenantPhone: string;
+  month: number;
+  year: number;
+  paymentDueDate: string;
+  invoiceStatus: InvoiceStatus;
+  invoiceType: InvoiceType;
+  items: InvoiceItemResponse[];
+  totalAmount: number;
+  note: string;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface InvoiceItemResponse {
+  id: string;
+  serviceName: string;
+  serviceCategory: ServiceCategory;
+  serviceCalculation: ServiceCalculation;
+  oldIndex: number;
+  newIndex: number;
+  quantity: number;
+  unit: string;
+  unitPrice: number;
+  amount: number;
 }

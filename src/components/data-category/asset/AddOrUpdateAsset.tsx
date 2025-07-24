@@ -114,7 +114,6 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, t
           labelSelect="Tòa nhà"
           showClear
           errorText={errors.buildingID}
-          required
         />
 
         <FieldsSelectLabel
@@ -134,7 +133,6 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, t
           labelSelect="Tầng"
           showClear
           errorText={errors.floorID}
-          required
         />
 
         <FieldsSelectLabel
@@ -148,7 +146,6 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, t
           labelSelect="Phòng"
           showClear
           errorText={errors.roomID}
-          required
         />
       </div>
 
@@ -164,7 +161,6 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, t
           labelSelect="Loại tài sản"
           showClear
           errorText={errors.assetTypeId}
-          required
         />
 
         <FieldsSelectLabel
@@ -192,7 +188,6 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, t
           labelSelect="Khách thuê"
           showClear
           errorText={errors.tenantId}
-          required
         />
       </div>
 

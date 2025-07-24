@@ -1,18 +1,29 @@
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
-import { ServiceAppliedBy, ServiceStatus, ServiceType } from "@/enums";
-import { ServiceCreationAndUpdateRequest } from "@/types";
+import { ServiceCalculation, ServiceCategory, ServiceStatus } from "@/enums";
+import { ServiceCreationRequest, ServiceUpdateRequest } from "@/types";
 import { Dispatch } from "react";
 
-interface AddOrUpdateServiceProps {
-  value: ServiceCreationAndUpdateRequest;
+interface AddServiceProps {
+  value: ServiceCreationRequest;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setValue: Dispatch<React.SetStateAction<ServiceCreationAndUpdateRequest>>;
-  errors: Partial<Record<keyof ServiceCreationAndUpdateRequest, string>>;
+  setValue: Dispatch<React.SetStateAction<ServiceCreationRequest>>;
+  errors: Partial<Record<keyof ServiceCreationRequest, string>>;
+  type: "add";
 }
 
-const AddOrUpdateService = ({ value, handleChange, setValue, errors }: AddOrUpdateServiceProps) => {
+interface UpdateServiceProps {
+  value: ServiceUpdateRequest;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setValue: Dispatch<React.SetStateAction<ServiceUpdateRequest>>;
+  errors: Partial<Record<keyof ServiceUpdateRequest, string>>;
+  type: "update";
+}
+
+type AddOrUpdateServiceProps = AddServiceProps | UpdateServiceProps;
+
+const AddOrUpdateService = ({ value, handleChange, setValue, errors, type }: AddOrUpdateServiceProps) => {
   return (
     <div className="flex flex-col gap-3">
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full items-end">
@@ -29,48 +40,78 @@ const AddOrUpdateService = ({ value, handleChange, setValue, errors }: AddOrUpda
         <InputLabel
           id="unit"
           name="unit"
-          placeholder="1 ngày dùng dịch vụ"
+          placeholder="..."
           label="Đơn vị:"
-          required
           value={value.unit ?? ""}
           onChange={handleChange}
           errorText={errors.unit}
         />
       </div>
-      <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end">
+      <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full items-end">
         <FieldsSelectLabel
           label="Loại dịch vụ"
           placeholder="-- Loại dịch vụ --"
           labelSelect="Loại dịch vụ"
           data={[
-            { label: "Cố định", value: ServiceType.CO_DINH },
-            { label: "Tính theo số", value: ServiceType.TINH_THEO_SO },
+            { label: "An ninh", value: ServiceCategory.AN_NINH },
+            { label: "Bảo trì", value: ServiceCategory.BAO_TRI },
+            { label: "Điện", value: ServiceCategory.DIEN },
+            { label: "Giặt sấy", value: ServiceCategory.GIAT_SAY },
+            { label: "Gửi xe", value: ServiceCategory.GUI_XE },
+            { label: "Internet", value: ServiceCategory.INTERNET },
+            { label: "Nước", value: ServiceCategory.NUOC },
+            { label: "Thang máy", value: ServiceCategory.THANG_MAY },
+            { label: "Tiền phòng", value: ServiceCategory.TIEN_PHONG },
+            { label: "Vệ sinh", value: ServiceCategory.VE_SINH },
+            { label: "Khác", value: ServiceCategory.KHAC },
           ]}
-          value={value.type ?? ""}
-          id="type"
-          onChange={(value) => setValue((prev) => ({ ...prev, type: value as ServiceType }))}
-          name="type"
+          value={value.serviceCategory ?? ""}
+          onChange={(value) => {
+            if (type === "add") setValue((prev) => ({ ...prev, serviceCategory: value as ServiceCategory }));
+            else setValue((prev) => ({ ...prev, serviceCategory: value as ServiceCategory }));
+          }}
+          name="serviceCategory"
+          id="serviceCategory"
           required
           showClear
-          errorText={errors.type}
+          errorText={errors.serviceCategory}
         />
         <FieldsSelectLabel
-          label="Dịch vụ áp dụng cho"
-          placeholder="-- Dịch vụ áp dụng cho --"
-          labelSelect="Dịch vụ áp dụng cho"
+          label="Tính toán dịch vụ"
+          placeholder="-- Tính toán dịch vụ --"
+          labelSelect="Tính toán dịch vụ"
           data={[
-            { label: "Tầng", value: ServiceAppliedBy.TANG },
-            { label: "Phòng", value: ServiceAppliedBy.PHONG },
-            { label: "Cố định", value: ServiceAppliedBy.NGUOI },
+            { label: "Tính theo người", value: ServiceCalculation.TINH_THEO_NGUOI },
+            { label: "Tính theo phòng", value: ServiceCalculation.TINH_THEO_PHONG },
+            { label: "TÍnh theo phương tiện", value: ServiceCalculation.TINH_THEO_PHUONG_TIEN },
+            { label: "Tính theo số", value: ServiceCalculation.TINH_THEO_SO },
           ]}
-          value={value.appliedBy ?? ""}
-          onChange={(value) => setValue((prev) => ({ ...prev, appliedBy: value as ServiceAppliedBy }))}
-          name="appliedBy"
-          id="appliedBy"
-          required
+          value={value.serviceCalculation ?? ""}
+          onChange={(value) => {
+            if (type === "add") setValue((prev) => ({ ...prev, serviceCalculation: value as ServiceCalculation }));
+            else setValue((prev) => ({ ...prev, serviceCalculation: value as ServiceCalculation }));
+          }}
+          name="serviceCalculation"
+          id="serviceCalculation"
           showClear
-          errorText={errors.appliedBy}
+          required
+          errorText={errors.serviceCalculation}
         />
+      </div>
+
+      <InputLabel
+        id="price"
+        name="price"
+        placeholder="3000000"
+        type="text"
+        label="Giá (VNĐ):"
+        required
+        value={value.price ?? ""}
+        onChange={handleChange}
+        errorText={errors.price}
+      />
+
+      {type === "update" && (
         <FieldsSelectLabel
           label="Trạng thái"
           placeholder="-- Trạng thái --"
@@ -87,19 +128,7 @@ const AddOrUpdateService = ({ value, handleChange, setValue, errors }: AddOrUpda
           required
           errorText={errors.status}
         />
-      </div>
-
-      <InputLabel
-        id="price"
-        name="price"
-        placeholder="3000000"
-        type="text"
-        label="Giá (VNĐ):"
-        required
-        value={value.price ?? ""}
-        onChange={handleChange}
-        errorText={errors.price}
-      />
+      )}
 
       <TextareaLabel
         id="description"
@@ -107,7 +136,10 @@ const AddOrUpdateService = ({ value, handleChange, setValue, errors }: AddOrUpda
         placeholder="Nhập mô tả"
         label="Mô tả:"
         value={value.description ?? ""}
-        onChange={(e) => setValue((prev) => ({ ...prev, description: e.target.value }))}
+        onChange={(e) => {
+          if (type === "add") setValue((prev) => ({ ...prev, description: e.target.value }));
+          else setValue((prev) => ({ ...prev, description: e.target.value }));
+        }}
         errorText={errors.description}
       />
     </div>

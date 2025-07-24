@@ -20,6 +20,10 @@ import {
   DefaultServiceStatus,
   ServiceRoomStatus,
   MeterType,
+  InvoiceStatus,
+  InvoiceType,
+  ServiceCategory,
+  ServiceCalculation,
 } from "@/enums";
 import { IBtnType } from "@/types";
 import {
@@ -31,7 +35,6 @@ import {
   Car,
   DoorOpen,
   FileText,
-  FolderPlus,
   House,
   Layers,
   LucideIcon,
@@ -51,6 +54,12 @@ import {
   Hammer,
   Sparkles,
   CircleGauge,
+  BedDouble,
+  CreditCard,
+  History,
+  Users,
+  Flashlight,
+  Droplet,
 } from "lucide-react";
 
 export interface SideBarType {
@@ -65,139 +74,184 @@ export interface SideBarType {
   }[];
 }
 
-export const sidebarItems: SideBarType[] = [
-  {
-    label: "Theo dõi nhanh",
-    title: "Bảng tin",
-    url: "/dashboard",
-    icon: Layers,
-  },
-  {
-    label: "Quản lý vận hành",
-    title: "Danh mục dữ liệu",
-    url: "/data-categories",
-    icon: Layers,
-    items: [
-      {
-        title: "Tòa nhà",
-        url: "/data-categories/buildings",
-        icon: House,
-      },
-      {
-        title: "Tầng",
-        url: "/data-categories/floors",
-        icon: Building,
-      },
-      {
-        title: "Phòng",
-        url: "/data-categories/rooms",
-        icon: DoorOpen,
-      },
-      {
-        title: "Loại tài sản",
-        url: "/data-categories/asset-types",
-        icon: Wrench,
-      },
-      {
-        title: "Tài sản",
-        url: "/data-categories/assets",
-        icon: Scale,
-      },
-      {
-        title: "Dịch vụ phòng",
-        url: "/data-categories/room-services",
-        icon: Building2,
-      },
-      {
-        title: "Dịch vụ",
-        url: "/data-categories/services",
-        icon: Hammer,
-      },
-      {
-        title: "Dịch vụ mặc định",
-        url: "/data-categories/default-services",
-        icon: Sparkles,
-      },
-    ],
-  },
-  {
-    title: "Khách hàng",
-    url: "/customers",
-    icon: BookOpen,
-    items: [
-      {
-        title: "Hợp đồng thuê",
-        url: "/customers/contracts",
-        icon: FileText,
-      },
-      {
-        title: "Khách hàng",
-        url: "/customers/tenants",
-        icon: UsersRound,
-      },
-      {
-        title: "Phương tiện",
-        url: "/customers/vehicles",
-        icon: Car,
-      },
-    ],
-  },
-  {
-    title: "Tài chính",
-    url: "/finance",
-    icon: BookOpen,
-    items: [
-      {
-        title: "Công tơ",
-        url: "/finance/meters",
-        icon: CircleGauge,
-      },
-      {
-        title: "Ghi chỉ số",
-        url: "/finance/meter-reading",
-        icon: PenTool,
-      },
-      {
-        title: "Hóa đơn",
-        url: "/finance/invoice",
-        icon: FileText,
-      },
-      {
-        title: "Thu chi",
-        url: "/finance/transactions",
-        icon: FolderPlus,
-      },
-    ],
-  },
-  {
-    title: "Gửi thông báo",
-    url: "/notifications",
-    icon: Bell,
-  },
-  {
-    label: "Báo cáo",
-    title: "Báo cáo tài chính",
-    url: "/financial-reports",
-    icon: PieChart,
-    items: [
-      {
-        title: "Dòng tiền",
-        icon: Banknote,
-        url: "/financial-reports/cash-flow",
-      },
-      {
-        title: "Danh sách tiền cọc",
-        icon: FileText,
-        url: "/financial-reports/deposits",
-      },
-      {
-        title: "Lịch thanh toán",
-        icon: CalendarRange,
-        url: "/financial-reports/payment-schedule",
-      },
-    ],
-  },
-];
+export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): SideBarType[] | [] => {
+  const MANAGER = [
+    {
+      label: "Theo dõi nhanh",
+      title: "Bảng tin",
+      url: "/dashboard",
+      icon: Layers,
+    },
+    {
+      label: "Quản lý vận hành",
+      title: "Danh mục dữ liệu",
+      url: "/data-categories",
+      icon: Layers,
+      items: [
+        {
+          title: "Tòa nhà",
+          url: "/data-categories/buildings",
+          icon: House,
+        },
+        {
+          title: "Tầng",
+          url: "/data-categories/floors",
+          icon: Building,
+        },
+        {
+          title: "Phòng",
+          url: "/data-categories/rooms",
+          icon: DoorOpen,
+        },
+        {
+          title: "Loại tài sản",
+          url: "/data-categories/asset-types",
+          icon: Wrench,
+        },
+        {
+          title: "Tài sản",
+          url: "/data-categories/assets",
+          icon: Scale,
+        },
+        {
+          title: "Dịch vụ phòng",
+          url: "/data-categories/room-services",
+          icon: Building2,
+        },
+        {
+          title: "Dịch vụ",
+          url: "/data-categories/services",
+          icon: Hammer,
+        },
+        {
+          title: "Dịch vụ mặc định",
+          url: "/data-categories/default-services",
+          icon: Sparkles,
+        },
+      ],
+    },
+    {
+      title: "Khách hàng",
+      url: "/customers",
+      icon: BookOpen,
+      items: [
+        {
+          title: "Hợp đồng thuê",
+          url: "/customers/contracts",
+          icon: FileText,
+        },
+        {
+          title: "Khách hàng",
+          url: "/customers/tenants",
+          icon: UsersRound,
+        },
+        {
+          title: "Phương tiện",
+          url: "/customers/vehicles",
+          icon: Car,
+        },
+      ],
+    },
+    {
+      title: "Tài chính",
+      url: "/finance",
+      icon: BookOpen,
+      items: [
+        {
+          title: "Công tơ",
+          url: "/finance/meters",
+          icon: CircleGauge,
+        },
+        {
+          title: "Ghi chỉ số",
+          url: "/finance/meter-reading",
+          icon: PenTool,
+        },
+        {
+          title: "Hóa đơn",
+          url: "/finance/invoice",
+          icon: FileText,
+        },
+      ],
+    },
+    {
+      title: "Gửi thông báo",
+      url: "/notifications",
+      icon: Bell,
+    },
+    {
+      label: "Báo cáo",
+      title: "Báo cáo tài chính",
+      url: "/financial-reports",
+      icon: PieChart,
+      items: [
+        {
+          title: "Dòng tiền",
+          icon: Banknote,
+          url: "/financial-reports/cash-flow",
+        },
+        {
+          title: "Danh sách tiền cọc",
+          icon: FileText,
+          url: "/financial-reports/deposits",
+        },
+        {
+          title: "Lịch thanh toán",
+          icon: CalendarRange,
+          url: "/financial-reports/payment-schedule",
+        },
+      ],
+    },
+  ];
+
+  const USER = [
+    {
+      label: "Thông tin",
+      title: "Xem thông tin phòng",
+      url: "/room",
+      icon: BedDouble,
+    },
+    {
+      title: "Xem hợp đồng",
+      url: "/contracts",
+      icon: FileText,
+    },
+    {
+      title: "Xem hóa đơn",
+      url: "/invoices",
+      icon: CreditCard,
+    },
+    {
+      title: "Thanh toán hóa đơn",
+      url: "/payment",
+      icon: CreditCard,
+    },
+    {
+      title: "Xem hóa đơn cũ",
+      url: "/invoices/history",
+      icon: History,
+    },
+    {
+      title: "Xem thành viên trong phòng",
+      url: "/room/members",
+      icon: Users,
+    },
+    {
+      title: "Xem điện",
+      url: "/electric",
+      icon: Flashlight,
+    },
+    {
+      title: "Xem nước",
+      url: "/water",
+      icon: Droplet,
+    },
+  ];
+
+  if (role === "MANAGER" || role === "ADMIN") return MANAGER;
+  else if (role === "USER") return USER;
+  else return [];
+};
 
 export const STATUS_BADGE = [
   {
@@ -619,6 +673,113 @@ export const STATUS_BADGE = [
     value: MeterType.NUOC,
     label: "Công tơ nước",
     className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+  },
+
+  {
+    value: InvoiceStatus.CHUA_THANH_TOAN,
+    label: "Chưa thanh toán",
+    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+  },
+  {
+    value: InvoiceStatus.DA_THANH_TOAN,
+    label: "Đã thanh toán",
+    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+  },
+  {
+    value: InvoiceStatus.QUA_HAN,
+    label: "Quá hạn",
+    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+  },
+  {
+    value: InvoiceStatus.HUY,
+    label: "Đã hủy",
+    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+  },
+
+  {
+    value: InvoiceType.HANG_THANG,
+    label: "Hàng tháng",
+    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+  },
+  {
+    value: InvoiceType.CUOI_CUNG,
+    label: "Cuối cùng",
+    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+  },
+  {
+    value: ServiceCategory.DIEN,
+    label: "Điện",
+    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+  },
+  {
+    value: ServiceCategory.NUOC,
+    label: "Nước",
+    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+  },
+  {
+    value: ServiceCategory.GUI_XE,
+    label: "Gửi xe",
+    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+  },
+  {
+    value: ServiceCategory.INTERNET,
+    label: "Internet",
+    className: "text-indigo-600 bg-indigo-100 border border-indigo-200 hover:bg-indigo-200 hover:text-indigo-700",
+  },
+  {
+    value: ServiceCategory.VE_SINH,
+    label: "Vệ sinh",
+    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+  },
+  {
+    value: ServiceCategory.THANG_MAY,
+    label: "Thang máy",
+    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+  },
+  {
+    value: ServiceCategory.BAO_TRI,
+    label: "Bảo trì",
+    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+  },
+  {
+    value: ServiceCategory.AN_NINH,
+    label: "An ninh",
+    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+  },
+  {
+    value: ServiceCategory.GIAT_SAY,
+    label: "Giặt sấy",
+    className: "text-pink-600 bg-pink-100 border border-pink-200 hover:bg-pink-200 hover:text-pink-700",
+  },
+  {
+    value: ServiceCategory.TIEN_PHONG,
+    label: "Tiền phòng",
+    className: "text-teal-600 bg-teal-100 border border-teal-200 hover:bg-teal-200 hover:text-teal-700",
+  },
+  {
+    value: ServiceCategory.KHAC,
+    label: "Khác",
+    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+  },
+  {
+    value: ServiceCalculation.TINH_THEO_SO,
+    label: "Tính theo số",
+    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+  },
+  {
+    value: ServiceCalculation.TINH_THEO_NGUOI,
+    label: "Tính theo người",
+    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+  },
+  {
+    value: ServiceCalculation.TINH_THEO_PHONG,
+    label: "Tính theo phòng",
+    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+  },
+  {
+    value: ServiceCalculation.TINH_THEO_PHUONG_TIEN,
+    label: "Tính theo phương tiện",
+    className: "text-indigo-600 bg-indigo-100 border border-indigo-200 hover:bg-indigo-200 hover:text-indigo-700",
   },
 ];
 

@@ -41,7 +41,12 @@ export default function buildColumnsFromConfig<T extends object>(configs: Column
       return <div className={wrapperClass}>{config.render(row.original)}</div>;
     }
 
-    if (config.accessorKey === "price" || config.accessorKey === "pricesApply" || config.accessorKey === "totalPrice") {
+    if (
+      config.accessorKey === "price" ||
+      config.accessorKey === "pricesApply" ||
+      config.accessorKey === "totalPrice" ||
+      config.accessorKey === "totalAmount"
+    ) {
       const raw = row.getValue(config.accessorKey);
       const price = parseFloat(String(raw ?? 0));
       const formatted = new Intl.NumberFormat("vi-VN", {
@@ -72,6 +77,8 @@ export default function buildColumnsFromConfig<T extends object>(configs: Column
     }
 
     if (!value || value === undefined || value === null || (typeof value === "number" && Number.isNaN(value))) {
+      if (value === 0) return <div className={wrapperClass}>0</div>;
+
       return (
         <div className={cn(wrapperClass, "flex items-center w-full justify-center")}>
           <StatusBadge status={"__EMPTY__"} />
