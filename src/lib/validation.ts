@@ -273,13 +273,13 @@ export const createOrUpdateRoomSchema = z
 /* ASSET */
 export const createOrUpdateAssetSchema = z.object({
   nameAsset: z.string().min(1, "Tên tài sản không được để trống"),
-  assetTypeId: z.string().min(1, "Vui lòng chọn loại tài sản"),
+  assetTypeId: z.string().optional(),
   assetBeLongTo: z.enum([AssetBeLongTo.CA_NHAN, AssetBeLongTo.CHUNG, AssetBeLongTo.PHONG], {
     message: "Tài sản thuộc về không hợp lệ",
   }),
-  roomID: z.string().min(1, "Vui lòng chọn loại phòng"),
-  buildingID: z.string().min(1, "Vui lòng chọn tòa nhà"),
-  tenantId: z.string().min(1, "Vui lòng chọn khách thuê").optional(),
+  roomID: z.string().optional(),
+  buildingID: z.string().optional(),
+  tenantId: z.string().optional(),
   descriptionAsset: z.string(),
   price: zSafeNumber("Giá")
     .transform((val) => Number(val))
@@ -393,7 +393,7 @@ export const createOrUpdateService = z.object({
       message: "Loại dịch vụ không hợp lệ",
     }
   ),
-  unit: z.string().min(1, "Không được để trống đơn vị"),
+  unit: z.string().optional(),
   price: zSafeNumber("Giá").refine((val) => val >= 0.0, "Giá không được âm"),
   serviceCalculation: z.enum(
     [

@@ -40,9 +40,8 @@ const AddOrUpdateService = ({ value, handleChange, setValue, errors, type }: Add
         <InputLabel
           id="unit"
           name="unit"
-          placeholder="1 ngày dùng dịch vụ"
+          placeholder="..."
           label="Đơn vị:"
-          required
           value={value.unit ?? ""}
           onChange={handleChange}
           errorText={errors.unit}
