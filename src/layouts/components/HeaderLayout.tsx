@@ -16,6 +16,7 @@ import {
 import Image from "@/components/Image";
 import { useLogout } from "./useLogout";
 import { useConfirmDialog } from "@/hooks/useConfirmDialog";
+import useHighestRole from "@/hooks/useHighestRole";
 
 const HeaderLayout = () => {
   const navigate = useNavigate();
@@ -29,6 +30,8 @@ const HeaderLayout = () => {
     type: "default",
     desc: "Bạn sẽ được đăng xuất khỏi hệ thống. Hành động này sẽ kết thúc phiên làm việc hiện tại của bạn.",
   });
+
+  const highestRole = useHighestRole();
 
   return (
     <header className="flex items-center">
@@ -53,9 +56,13 @@ const HeaderLayout = () => {
       <div className="flex gap-2 items-center">
         <div className="flex flex-col md:max-w-[200px] sm:max-w-[200px] max-w-[100px]">
           <h2 className="font-semibold text-[14px] truncate text-white">
-            {!user?.fullName ? <span className="inline-block opacity-0">Chủ nhà</span> : user?.fullName}
+            {!user?.fullName ? <span className="inline-block opacity-0">N/A</span> : user?.fullName}
           </h2>
-          <h2 className="font-normal truncate text-right text-white/80 text-[14px]">Chủ nhà</h2>
+          <h2 className="font-normal truncate text-right text-white/80 text-[14px]">
+            {(() => {
+              return highestRole ?? "N/A";
+            })()}
+          </h2>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

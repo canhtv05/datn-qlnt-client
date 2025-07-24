@@ -10,6 +10,8 @@ import { useAuthStore } from "@/zustand/authStore";
 import { Status } from "@/enums";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { ApiResponse, UserResponse } from "@/types";
+import { RoleType } from "@/hooks/useHighestRole";
+import { getHighestRole } from "@/lib/utils";
 
 const Authenticate = () => {
   const navigate = useNavigate();
@@ -38,10 +40,17 @@ const Authenticate = () => {
   useEffect(() => {
     if (data) {
       setShowSuccessScreen(true);
-      setUser(data.data.data, true);
       const timer = setTimeout(() => {
         setUser(data.data.data, true);
-        navigate("/dashboard");
+        const roles: RoleType[] = data.data.data.roles.map((r) => r.name as RoleType);
+
+        const highestRole = getHighestRole(roles);
+
+        if (highestRole === "USER") {
+          navigate("/room");
+        } else {
+          navigate("/dashboard");
+        }
       }, 1000);
 
       return () => clearTimeout(timer);
