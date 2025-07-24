@@ -10,6 +10,8 @@ import cookieUtil from "@/utils/cookieUtil";
 import { useFormErrors } from "@/hooks/useFormErrors";
 import { handleMutationError } from "@/utils/handleMutationError";
 import configs from "@/configs";
+import { RoleType } from "@/hooks/useHighestRole";
+import { getHighestRole } from "@/lib/utils";
 
 interface LoginValue {
   email: string;
@@ -40,7 +42,16 @@ export const useLogin = () => {
         refreshToken: data.meta?.tokenInfo?.refreshToken,
       };
       cookieUtil.setStorage(token);
-      navigate("/dashboard");
+
+      const roles: RoleType[] = data.data.roles.map((r) => r.name as RoleType);
+
+      const highestRole = getHighestRole(roles);
+
+      if (highestRole === "USER") {
+        navigate("/room");
+      } else {
+        navigate("/dashboard");
+      }
     },
     onError: (error) => {
       handleMutationError(error);

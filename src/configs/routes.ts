@@ -44,6 +44,9 @@ const routes = {
     invoice: "/finance/invoice",
     invoiceId: "/finance/invoice/:id",
   },
+  user: {
+    room: "/room",
+  },
 };
 
 export default routes;

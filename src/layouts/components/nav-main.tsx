@@ -17,6 +17,7 @@ import {
 import { cn } from "@/lib/utils";
 import { sidebarItems, SideBarType } from "@/constant";
 import RenderIf from "@/components/RenderIf";
+import useHighestRole from "@/hooks/useHighestRole";
 
 const NavBarParent = ({ props, isActive }: { props: SideBarType; isActive: boolean }) => {
   const { title, icon: ItemIcon, items, url } = props;
@@ -57,11 +58,14 @@ const NavBarParent = ({ props, isActive }: { props: SideBarType; isActive: boole
 
 export function NavMain() {
   const location = useLocation();
+  const highestRole = useHighestRole();
+
+  const sidebar = highestRole ? sidebarItems(highestRole) : [];
 
   return (
     <SidebarGroup>
       <SidebarMenu>
-        {sidebarItems.map((item, index) => {
+        {sidebar.map((item, index) => {
           const isActive = location.pathname.startsWith(item.url);
 
           return (

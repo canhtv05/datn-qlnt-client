@@ -3,6 +3,7 @@ import { Route, useLocation } from "react-router-dom";
 
 import DefaultLayout from "@/layouts/DefaultLayout";
 import { useAuthStore } from "@/zustand/authStore";
+import useHighestRole, { RoleType } from "@/hooks/useHighestRole";
 
 type LayoutComponent = ComponentType<{ children: ReactNode }>;
 
@@ -16,6 +17,7 @@ export interface RouteType {
     path: string;
     component: RouteComponent;
   }[];
+  allowedRoles?: RoleType[];
 }
 
 export const useAppProvider = () => {
@@ -23,16 +25,19 @@ export const useAppProvider = () => {
   const background = location.state && location.state.background;
   const isLoading = useAuthStore((s) => s.isLoading);
 
-  const loadRoute = (route: RouteType, index: number) => {
-    const Page = route.component;
+  const user = useAuthStore((s) => s.user);
+  const highestRole = useHighestRole();
 
+  const loadRoute = (route: RouteType, index: number) => {
+    if (route.allowedRoles && user?.roles) {
+      if (!route.allowedRoles.includes(highestRole)) return null;
+    }
+
+    const Page = route.component;
     let Layout: LayoutComponent = DefaultLayout;
 
-    if (route.layout === null) {
-      Layout = Fragment;
-    } else if (route.layout) {
-      Layout = route.layout;
-    }
+    if (route.layout === null) Layout = Fragment;
+    else if (route.layout) Layout = route.layout;
 
     return (
       <Route

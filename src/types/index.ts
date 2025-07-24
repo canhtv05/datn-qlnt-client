@@ -98,6 +98,11 @@ export interface UserResponse extends AbstractResponse {
   email: string;
   phoneNumber: string;
   profilePicture: string;
+  roles: RoleResponse[];
+}
+
+export interface RoleResponse {
+  name: string;
 }
 
 /* CUSTOM COLUMN Tanstack Table */
