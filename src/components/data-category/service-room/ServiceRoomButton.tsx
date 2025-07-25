@@ -31,7 +31,6 @@ const ServiceRoomButton = ({
     roomId: "",
     serviceId: "",
     startDate: "",
-    totalPrice: undefined,
   });
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<ServiceRoomCreationRequest>();
@@ -57,7 +56,6 @@ const ServiceRoomButton = ({
         roomId: "",
         serviceId: "",
         startDate: "",
-        totalPrice: undefined,
       });
       queryClient.invalidateQueries({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
@@ -68,14 +66,13 @@ const ServiceRoomButton = ({
 
   const handleAddServiceRoom = useCallback(async () => {
     try {
-      const { descriptionServiceRoom, roomId, serviceId, startDate, totalPrice } = value;
+      const { descriptionServiceRoom, roomId, serviceId, startDate } = value;
 
       const data: ServiceRoomCreationRequest = {
         descriptionServiceRoom: descriptionServiceRoom.trim(),
         roomId: roomId ?? "",
         serviceId: serviceId ?? "",
         startDate,
-        totalPrice,
       };
 
       await createServiceRoomSchema.parseAsync(data);

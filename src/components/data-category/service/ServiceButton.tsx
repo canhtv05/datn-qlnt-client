@@ -26,7 +26,6 @@ const ServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
     price: undefined,
     serviceCalculation: "",
     serviceCategory: "",
-    unit: "",
   });
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<ServiceCreationRequest>();
@@ -53,7 +52,6 @@ const ServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
         price: undefined,
         serviceCalculation: "",
         serviceCategory: "",
-        unit: "",
       });
       queryClient.invalidateQueries({
         predicate: (prev) => {
@@ -66,7 +64,7 @@ const ServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
 
   const handleAddService = useCallback(async () => {
     try {
-      const { description, name, price, unit, serviceCalculation, serviceCategory } = value;
+      const { description, name, price, serviceCalculation, serviceCategory } = value;
 
       await createOrUpdateService.parseAsync(value);
 
@@ -76,7 +74,6 @@ const ServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
         price,
         serviceCalculation,
         serviceCategory,
-        unit: unit.trim(),
       };
 
       await addServiceMutation.mutateAsync(data);

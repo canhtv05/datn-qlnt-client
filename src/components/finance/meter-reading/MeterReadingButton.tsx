@@ -29,14 +29,10 @@ const MeterReadingButton = ({
   const [value, setValue] = useState<MeterReadingCreationRequest>({
     descriptionMeterReading: "",
     meterId: "",
-    month: undefined,
     newIndex: undefined,
-    oldIndex: undefined,
-    year: new Date().getFullYear(),
-    readingDate: "",
   });
 
-  const { clearErrors, errors, handleZodErrors, setErrors } = useFormErrors<MeterReadingCreationRequest>();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<MeterReadingCreationRequest>();
 
   const queryClient = useQueryClient();
 
@@ -57,11 +53,7 @@ const MeterReadingButton = ({
       setValue({
         descriptionMeterReading: "",
         meterId: "",
-        month: undefined,
         newIndex: undefined,
-        oldIndex: undefined,
-        year: new Date().getFullYear(),
-        readingDate: "",
       });
       queryClient.invalidateQueries({
         predicate: (prev) => {
@@ -73,22 +65,14 @@ const MeterReadingButton = ({
 
   const handleMeterReadingType = useCallback(async () => {
     try {
-      const { descriptionMeterReading, meterId, month, newIndex, oldIndex, readingDate, year } = value;
-      if (newIndex && oldIndex && newIndex < oldIndex) {
-        setErrors((prev) => ({ ...prev, newIndex: "Chỉ số mới phải lớn hơn hoặc bằng chỉ số cũ" }));
-        return false;
-      }
+      const { descriptionMeterReading, meterId, newIndex } = value;
 
       await createMeterReadingSchema.parseAsync(value);
 
       const data: MeterReadingCreationRequest = {
         descriptionMeterReading: descriptionMeterReading.trim(),
         meterId: meterId.trim(),
-        month,
         newIndex,
-        oldIndex,
-        readingDate,
-        year,
       };
 
       await addMeterReadingMutation.mutateAsync(data);
@@ -98,7 +82,7 @@ const MeterReadingButton = ({
       handleZodErrors(error);
       return false;
     }
-  }, [addMeterReadingMutation, clearErrors, handleZodErrors, setErrors, value]);
+  }, [addMeterReadingMutation, clearErrors, handleZodErrors, value]);
 
   const handleRemoveMeterReadingByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {

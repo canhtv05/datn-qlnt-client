@@ -1,6 +1,5 @@
 import DatePickerLabel from "@/components/DatePickerLabel";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
-import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
 import { ServiceRoomStatus } from "@/enums";
 import {
@@ -31,14 +30,7 @@ interface UpdateServiceRoomProps {
 
 type AddOrUpdateServiceRoomProps = AddServiceRoomProps | UpdateServiceRoomProps;
 
-const AddOrUpdateServiceRoom = ({
-  value,
-  handleChange,
-  setValue,
-  errors,
-  serviceRoomInit,
-  type,
-}: AddOrUpdateServiceRoomProps) => {
+const AddOrUpdateServiceRoom = ({ value, setValue, errors, serviceRoomInit, type }: AddOrUpdateServiceRoomProps) => {
   const roomOptions = useMemo(() => {
     return (
       serviceRoomInit?.data?.rooms?.map((room) => ({
@@ -135,17 +127,6 @@ const AddOrUpdateServiceRoom = ({
           required
         />
       )}
-      <InputLabel
-        id="totalPrice"
-        name="totalPrice"
-        placeholder="3000000"
-        type="text"
-        label="Tổng tiền (VNĐ):"
-        required
-        value={value.totalPrice ?? ""}
-        onChange={handleChange}
-        errorText={errors.totalPrice}
-      />
       <TextareaLabel
         id="description"
         name="description"

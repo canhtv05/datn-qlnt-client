@@ -49,7 +49,6 @@ export const useAssetType = () => {
     description: "",
     name: "",
     price: undefined,
-    unit: "",
     serviceCalculation: "",
     serviceCategory: "",
     status: "",
@@ -211,7 +210,7 @@ export const useAssetType = () => {
 
   const handleUpdateFloor = useCallback(async () => {
     try {
-      const { description, name, price, unit, status, serviceCalculation, serviceCategory } = value;
+      const { description, name, price, status, serviceCalculation, serviceCategory } = value;
 
       await createOrUpdateService.parseAsync(value);
 
@@ -222,7 +221,6 @@ export const useAssetType = () => {
         serviceCalculation,
         serviceCategory,
         status,
-        unit: unit.trim(),
       };
 
       updateServiceMutation.mutate(data, {
@@ -233,7 +231,6 @@ export const useAssetType = () => {
             price: undefined,
             serviceCalculation,
             serviceCategory,
-            unit: "",
             status: "",
           });
           queryClient.invalidateQueries({
@@ -262,7 +259,6 @@ export const useAssetType = () => {
           name: service.name,
           price: service.price,
           serviceCategory: service.serviceCategory,
-          unit: service.unit,
           status: service.status,
         });
         setIsModalOpen(true);

@@ -38,7 +38,6 @@ export const useServiceRoom = () => {
     roomId: "",
     serviceId: "",
     startDate: "",
-    totalPrice: undefined,
     serviceRoomStatus: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -175,7 +174,7 @@ export const useServiceRoom = () => {
 
   const handleUpdateServiceRoom = useCallback(async () => {
     try {
-      const { descriptionServiceRoom, roomId, serviceId, startDate, totalPrice, serviceRoomStatus } = value;
+      const { descriptionServiceRoom, roomId, serviceId, startDate, serviceRoomStatus } = value;
 
       const data: ServiceRoomUpdateRequest = {
         descriptionServiceRoom: descriptionServiceRoom.trim(),
@@ -183,7 +182,6 @@ export const useServiceRoom = () => {
         serviceId: serviceId ?? "",
         serviceRoomStatus,
         startDate,
-        totalPrice,
       };
 
       await updateServiceRoomSchema.parseAsync(data);
@@ -196,7 +194,6 @@ export const useServiceRoom = () => {
             serviceId: "",
             serviceRoomStatus: "",
             startDate: "",
-            totalPrice: undefined,
           });
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
@@ -224,7 +221,6 @@ export const useServiceRoom = () => {
           serviceId: serviceRoom.serviceId,
           serviceRoomStatus: serviceRoom.serviceRoomStatus,
           startDate: serviceRoom.startDate,
-          totalPrice: serviceRoom.totalPrice,
         });
         setIsModalOpen(true);
       } else {

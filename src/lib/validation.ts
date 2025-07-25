@@ -273,7 +273,7 @@ export const createOrUpdateRoomSchema = z
 /* ASSET */
 export const createOrUpdateAssetSchema = z.object({
   nameAsset: z.string().min(1, "Tên tài sản không được để trống"),
-  assetTypeId: z.string().optional(),
+  assetTypeId: z.string().min(1, "Vui lòng chọn loại tài sản"),
   assetBeLongTo: z.enum([AssetBeLongTo.CA_NHAN, AssetBeLongTo.CHUNG, AssetBeLongTo.PHONG], {
     message: "Tài sản thuộc về không hợp lệ",
   }),
@@ -393,7 +393,6 @@ export const createOrUpdateService = z.object({
       message: "Loại dịch vụ không hợp lệ",
     }
   ),
-  unit: z.string().optional(),
   price: zSafeNumber("Giá").refine((val) => val >= 0.0, "Giá không được âm"),
   serviceCalculation: z.enum(
     [
@@ -444,8 +443,6 @@ export const createServiceRoomSchema = z.object({
       return !isNaN(Date.parse(val));
     }, "Ngày bắt đầu không hợp lệ")
     .transform((val) => new Date(val)),
-  totalPrice: zSafeNumber("Giá").refine((val) => val >= 0.0, "Giá không được âm"),
-
   descriptionServiceRoom: z.string().optional(),
 });
 
@@ -477,30 +474,10 @@ export const createOrUpdateMeterSchema = z.object({
 });
 
 /* METER READING */
-export const updateMeterReadingSchema = z
-  .object({
-    oldIndex: zSafeNumber("Chỉ số cũ").refine((val) => val >= 0, "Chỉ số cũ không được âm"),
-    newIndex: zSafeNumber("Chỉ số cũ").refine((val) => val >= 0, "Chỉ số mới không được âm"),
-    month: zSafeNumber("Tháng").refine((val) => val >= 1 && val <= 12, "Tháng nằm trong 1 - 12"),
-    year: zSafeNumber("Năm").refine(
-      (val) => val >= new Date().getFullYear(),
-      "Năm phải >= " + new Date().getFullYear().toString
-    ),
-    readingDate: z.string().refine((val) => {
-      return !isNaN(Date.parse(val));
-    }, "Ngày đọc không hợp lệ"),
-    descriptionMeterReading: z.string().optional(),
-  })
-  .refine(
-    (data) => {
-      const { newIndex, oldIndex } = data;
-      return Number(newIndex) >= Number(oldIndex);
-    },
-    {
-      message: "Chỉ số mới phải lớn hơn hoặc bằng chỉ số cũ",
-      path: ["newIndex"],
-    }
-  );
+export const updateMeterReadingSchema = z.object({
+  newIndex: zSafeNumber("Chỉ số cũ").refine((val) => val >= 0, "Chỉ số mới không được âm"),
+  descriptionMeterReading: z.string().optional(),
+});
 
 export const createMeterReadingSchema = updateMeterReadingSchema.extend({
   meterId: z.string().min(1, "Vui lòng chọn công tơ"),
