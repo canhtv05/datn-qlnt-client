@@ -37,6 +37,9 @@ const Contract = () => {
     handleSaveContract,
     roomOptions,
     tenantOptions,
+    assetOptions,
+    servicesOptions,
+    vehiclesOptions,
     handleChange,
   } = useContract();
 
@@ -99,12 +102,36 @@ const Contract = () => {
       isCenter: true,
     },
     {
+      label: "Khách thuê",
+      accessorKey: "tenants",
+      render: (row: ContractResponse) =>
+        row.tenants?.map((t) => t.fullName).join(", ") || "—",
+    },
+    {
       label: "Số người",
       accessorKey: "numberOfPeople",
       isSort: true,
       isCenter: true,
       render: (row: ContractResponse) => `${row.numberOfPeople} người/phòng`,
     },
+    {
+    label: "Tài sản",
+    accessorKey: "assets",
+    render: (row: ContractResponse) =>
+      row.assets?.map((a) => a.nameAsset).join(", ") || "—",
+  },
+  {
+    label: "Dịch vụ",
+    accessorKey: "services",
+    render: (row: ContractResponse) =>
+      row.services?.map((a) => a.name).join(", ") || "—",
+  },
+  {
+    label: "Phương tiện",
+    accessorKey: "vehicles",
+    render: (row: ContractResponse) =>
+      row.vehicles?.map((a) => a.fullName).join(", ") || "—",
+  },
     {
       label: "Ngày bắt đầu",
       accessorKey: "startDate",
@@ -136,18 +163,20 @@ const Contract = () => {
         `${row.deposit?.toLocaleString("vi-VN")} VNĐ`,
     },
     {
+      label: "Tiền phòng",
+      accessorKey: "roomPrice",
+      isSort: true,
+      isCenter: true,
+      render: (row: ContractResponse) =>
+        `${row.roomPrice?.toLocaleString("vi-VN")} VNĐ`,
+    },
+    {
       label: "Trạng thái",
       accessorKey: "status",
       isSort: true,
       isCenter: true,
       hasBadge: true,
       render: (row: ContractResponse) => <StatusBadge status={row.status} />,
-    },
-    {
-      label: "Khách thuê",
-      accessorKey: "tenants",
-      render: (row: ContractResponse) =>
-        row.tenants?.map((t) => t.fullName).join(", ") || "—",
     },
   ];
 
@@ -167,7 +196,6 @@ const Contract = () => {
         rowSelection={rowSelection}
         setRowSelection={setRowSelection}
       />
-
       <Modal
         title="Hợp đồng"
         trigger={null}
@@ -182,6 +210,9 @@ const Contract = () => {
           handleChange={handleChange}
           roomOptions={roomOptions}
           tenantOptions={tenantOptions}
+          assetOptions={assetOptions}
+          servicesOptions={servicesOptions}
+          vehiclesOptions={vehiclesOptions}
         />
       </Modal>
 

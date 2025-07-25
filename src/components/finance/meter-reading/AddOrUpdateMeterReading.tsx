@@ -1,4 +1,3 @@
-import DatePickerLabel from "@/components/DatePickerLabel";
 import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
@@ -70,72 +69,17 @@ const AddOrUpdateMeterReading = ({
           required
         />
       )}
-      <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full">
-        <InputLabel
-          id="oldIndex"
-          name="oldIndex"
-          placeholder="0"
-          type="number"
-          label="Chỉ số cũ:"
-          required
-          value={value.oldIndex ?? ""}
-          onChange={handleChangeMeterReading}
-          errorText={errors.oldIndex}
-          disabled={type === "update"}
-        />
-        <InputLabel
-          id="newIndex"
-          name="newIndex"
-          placeholder="100"
-          type="number"
-          label="Chỉ số mới:"
-          required
-          value={value.newIndex ?? ""}
-          onChange={handleChangeMeterReading}
-          errorText={errors.newIndex}
-        />
-      </div>
-
-      <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full">
-        <InputLabel
-          id="month"
-          name="month"
-          placeholder="1"
-          type="number"
-          label="Tháng"
-          required
-          min={1}
-          max={12}
-          value={value.month ?? ""}
-          onChange={(e) => {
-            if (Number(e.target.value) > 12 || Number(e.target.value) < 1) return;
-            handleChange(e);
-          }}
-          errorText={errors.month}
-        />
-        <InputLabel
-          id="year"
-          name="year"
-          placeholder={new Date().getFullYear().toString()}
-          type="text"
-          label="Năm:"
-          min={1}
-          required
-          value={value.year ?? ""}
-          onChange={handleChange}
-          errorText={errors.year}
-        />
-        <DatePickerLabel
-          date={value?.readingDate ? new Date(value?.readingDate) : undefined}
-          setDate={(d) => {
-            if (type === "add") setValue((prev) => ({ ...prev, readingDate: d.toISOString() }));
-            else setValue((prev) => ({ ...prev, readingDate: d.toISOString() }));
-          }}
-          label="Ngày đọc:"
-          errorText={errors?.readingDate}
-          required
-        />
-      </div>
+      <InputLabel
+        id="newIndex"
+        name="newIndex"
+        placeholder="100"
+        type="number"
+        label="Chỉ số mới:"
+        required
+        value={value.newIndex ?? ""}
+        onChange={handleChangeMeterReading}
+        errorText={errors.newIndex}
+      />
       <TextareaLabel
         id="descriptionMeterReading"
         name="descriptionMeterReading"

@@ -232,7 +232,9 @@ export interface RoomResponse extends AbstractResponse {
   description: string;
   floor: {
     id: string;
-    floorName: string;
+    nameFloor: string;
+    buildingId: string;
+    buildingName: string;
   };
 }
 export type RoomFormValue = {
@@ -303,6 +305,14 @@ export interface DefaultServiceBuildingSelectResponse extends IdAndName {
 export interface CreateAssetInitResponse {
   assetTypes: IdAndName[];
   buildings: BuildingSelectResponse[];
+}
+
+export interface CreateAssetInit2Response {
+  assetTypes: IdAndName[];
+  buildings: IdAndName[];
+  floors: IdAndName[];
+  tenants: IdAndName[];
+  rooms: IdAndName[];
 }
 
 /* Asset */
@@ -456,8 +466,12 @@ export interface ContractResponse extends AbstractResponse {
   startDate: string;
   endDate: string;
   deposit: number;
+  roomPrice: number;
   status: ContractStatus;
+  assets: AssetResponse[];
   tenants: TenantBasicResponse[];
+  services: ServiceResponse[];
+  vehicles: VehicleResponse[];
 }
 
 export interface ICreateAndUpdateContract {
@@ -467,7 +481,11 @@ export interface ICreateAndUpdateContract {
   endDate: string | Date;
   deposit: number;
   tenants: string[];
-  status?: ContractStatus;
+  assets: string[];
+  services: string[];
+  vehicles: string[];
+  status: ContractStatus | undefined;
+  roomPrice?: number;
 }
 export interface ContractDetailResponse {
   id: string;
@@ -586,7 +604,6 @@ export interface ServiceFilter {
 export interface ServiceCreationRequest {
   name: string;
   serviceCategory: ServiceCategory | string;
-  unit: string;
   price: number | undefined;
   serviceCalculation: ServiceCalculation | string;
   description: string;
@@ -618,7 +635,6 @@ export interface ServiceRoomCreationRequest {
   roomId: string;
   serviceId: string;
   startDate: string;
-  totalPrice: number | undefined;
   descriptionServiceRoom: string;
 }
 
@@ -710,15 +726,15 @@ export interface MeterReadingResponse extends AbstractResponse {
 }
 
 export interface MeterReadingUpdateRequest {
-  oldIndex: number | undefined;
   newIndex: number | undefined;
-  month: number | undefined;
-  year: number | undefined;
-  readingDate: string;
   descriptionMeterReading: string;
 }
 
-export type MeterReadingCreationRequest = MeterReadingUpdateRequest & { meterId: string };
+export interface MeterReadingCreationRequest {
+  newIndex: number | undefined;
+  descriptionMeterReading: string;
+  meterId: string;
+}
 
 export interface MeterReadingFilter {
   buildingId: string;

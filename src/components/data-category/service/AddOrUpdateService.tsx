@@ -26,28 +26,16 @@ type AddOrUpdateServiceProps = AddServiceProps | UpdateServiceProps;
 const AddOrUpdateService = ({ value, handleChange, setValue, errors, type }: AddOrUpdateServiceProps) => {
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full items-end">
-        <InputLabel
-          id="name"
-          name="name"
-          placeholder="Quét dọn"
-          label="Tên dịch vụ:"
-          required
-          value={value.name ?? ""}
-          onChange={handleChange}
-          errorText={errors.name}
-        />
-        <InputLabel
-          id="unit"
-          name="unit"
-          placeholder="1 ngày dùng dịch vụ"
-          label="Đơn vị:"
-          required
-          value={value.unit ?? ""}
-          onChange={handleChange}
-          errorText={errors.unit}
-        />
-      </div>
+      <InputLabel
+        id="name"
+        name="name"
+        placeholder="Quét dọn"
+        label="Tên dịch vụ:"
+        required
+        value={value.name ?? ""}
+        onChange={handleChange}
+        errorText={errors.name}
+      />
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full items-end">
         <FieldsSelectLabel
           label="Loại dịch vụ"

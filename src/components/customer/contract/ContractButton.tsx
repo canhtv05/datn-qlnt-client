@@ -1,7 +1,11 @@
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { TooltipTrigger } from "@radix-ui/react-tooltip";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+} from "@/components/ui/tooltip";
 import Modal from "@/components/Modal";
 import { useCallback, useState } from "react";
 import { handleMutationError } from "@/utils/handleMutationError";
@@ -17,11 +21,14 @@ import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateContract from "./AddOrUpdateContract";
 import {
   ApiResponse,
+  AssetResponse,
   IBtnType,
   ICreateAndUpdateContract,
   Option,
   RoomResponse,
+  ServiceResponse,
   TenantBasicResponse,
+  VehicleResponse,
 } from "@/types";
 
 const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
@@ -32,13 +39,22 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
     endDate: new Date(),
     deposit: 0,
     tenants: [],
+    assets: [],
+    services: [],
+    vehicles: [],
+    status: undefined,
+    roomPrice: 0,
   });
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAndUpdateContract>();
+  const { clearErrors, errors, handleZodErrors } =
+    useFormErrors<ICreateAndUpdateContract>();
   const queryClient = useQueryClient();
 
   const handleChange = useCallback(
-    <K extends keyof ICreateAndUpdateContract>(field: K, newValue: ICreateAndUpdateContract[K]) => {
+    <K extends keyof ICreateAndUpdateContract>(
+      field: K,
+      newValue: ICreateAndUpdateContract[K]
+    ) => {
       setValue((prev) => ({ ...prev, [field]: newValue }));
     },
     []
@@ -58,8 +74,16 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
         endDate: new Date(),
         deposit: 0,
         tenants: [],
+        assets: [],
+        services: [],
+        vehicles: [],
+        status: undefined,
+        roomPrice: 0,
       });
-      queryClient.invalidateQueries({ predicate: (q) => Array.isArray(q.queryKey) && q.queryKey[0] === "contracts" });
+      queryClient.invalidateQueries({
+        predicate: (q) =>
+          Array.isArray(q.queryKey) && q.queryKey[0] === "contracts",
+      });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
     },
   });
@@ -78,16 +102,21 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
 
   const removeContractsMutation = useMutation({
     mutationKey: ["remove-contracts"],
-    mutationFn: async (id: string) => await httpRequest.put(`/contracts/soft/${id}`),
+    mutationFn: async (id: string) =>
+      await httpRequest.put(`/contracts/soft/${id}`),
   });
 
-  const handleRemoveContractsByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
+  const handleRemoveContractsByIds = async (
+    ids: Record<string, boolean>
+  ): Promise<boolean> => {
     try {
       const selectedIds = Object.entries(ids)
         .filter(([, selected]) => selected)
         .map(([id]) => id);
 
-      await Promise.all(selectedIds.map((id) => removeContractsMutation.mutateAsync(id)));
+      await Promise.all(
+        selectedIds.map((id) => removeContractsMutation.mutateAsync(id))
+      );
 
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
@@ -100,7 +129,9 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
     }
   };
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<Record<string, boolean>>({
+  const { ConfirmDialog, openDialog } = useConfirmDialog<
+    Record<string, boolean>
+  >({
     onConfirm: async (ids?: Record<string, boolean>) => {
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveContractsByIds(ids);
@@ -123,24 +154,49 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
     queryKey: ["rooms-all"],
     queryFn: async () => (await httpRequest.get("/rooms/all")).data,
   });
-
+   const roomOptions: Option[] =
+    roomsData?.data?.map((room) => ({
+      label: `${room.roomCode} - ${room.floor.buildingName}`,
+      value: room.id,
+    })) || [];
   const { data: tenantsData } = useQuery<ApiResponse<TenantBasicResponse[]>>({
     queryKey: ["tenants-all"],
     queryFn: async () => (await httpRequest.get("/tenants/all")).data,
   });
-
-  const roomOptions: Option[] =
-    roomsData?.data?.map((room) => ({
-      label: `${room.roomCode}`,
-      value: room.id,
-    })) || [];
-
   const tenantOptions: Option[] =
     tenantsData?.data?.map((tenant) => ({
       label: `${tenant.fullName} - ${tenant.phoneNumber}`,
       value: tenant.id,
     })) || [];
 
+  const { data: assetsData } = useQuery<ApiResponse<AssetResponse[]>>({
+    queryKey: ["assets-all"],
+    queryFn: async () => (await httpRequest.get("/assets/find-all")).data,
+  });
+  const assetOptions: Option[] =
+    assetsData?.data?.map((asset) => ({
+      label: asset.nameAsset,
+      value: asset.id,
+    })) || [];
+  const { data: servicesDaTa } = useQuery<ApiResponse<ServiceResponse[]>>({
+    queryKey: ["services"],
+    queryFn: async () => (await httpRequest.get("/services")).data,
+  });
+  const servicesOptions: Option[] =
+    servicesDaTa?.data?.map((services) => ({
+      label: services.name,
+      value: services.id,
+    })) || [];
+
+  const { data: vehiclesDaTa } = useQuery<ApiResponse<VehicleResponse[]>>({
+    queryKey: ["vehicles-all"],
+    queryFn: async () => (await httpRequest.get("/vehicles")).data,
+  });
+  const vehiclesOptions: Option[] =
+    vehiclesDaTa?.data?.map((vehicles) => ({
+      label: `${vehicles.fullName} - ${vehicles.vehicleType}`,
+      value: vehicles.id,
+    })) || [];
   return (
     <div className="h-full bg-background rounded-t-sm mt-4">
       <div className="flex px-4 py-3 justify-between items-center">
@@ -154,7 +210,11 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
                     title="Thêm hợp đồng"
                     trigger={
                       <TooltipTrigger asChild>
-                        <Button size="icon" variant={btn.type} className="cursor-pointer">
+                        <Button
+                          size="icon"
+                          variant={btn.type}
+                          className="cursor-pointer"
+                        >
                           <btn.icon className="text-white" />
                         </Button>
                       </TooltipTrigger>
@@ -168,6 +228,9 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
                       handleChange={handleChange}
                       roomOptions={roomOptions}
                       tenantOptions={tenantOptions}
+                      assetOptions={assetOptions}
+                      servicesOptions={servicesOptions}
+                      vehiclesOptions={vehiclesOptions}
                     />
                   </Modal>
                 </RenderIf>
@@ -178,13 +241,20 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => handleButton(btn)}
-                      disabled={btn.type === "delete" && !Object.values(ids).some(Boolean)}
+                      disabled={
+                        btn.type === "delete" &&
+                        !Object.values(ids).some(Boolean)
+                      }
                     >
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
                 </RenderIf>
-                <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                <TooltipContent
+                  className="text-white"
+                  style={{ background: btn.arrowColor }}
+                  arrow={false}
+                >
                   <p>{btn.tooltipContent}</p>
                   <TooltipPrimitive.Arrow
                     style={{ fill: btn.arrowColor, background: btn.arrowColor }}

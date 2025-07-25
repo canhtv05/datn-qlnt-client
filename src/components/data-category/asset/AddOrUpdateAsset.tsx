@@ -2,7 +2,7 @@ import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSel
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
 import { AssetBeLongTo, AssetStatus } from "@/enums";
-import { ApiResponse, CreateAssetInitResponse, ICreateAsset } from "@/types";
+import { ApiResponse, CreateAssetInit2Response, ICreateAsset } from "@/types";
 import { Dispatch, useMemo } from "react";
 
 interface AddOrUpdateAssetProps {
@@ -10,7 +10,7 @@ interface AddOrUpdateAssetProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setValue: Dispatch<React.SetStateAction<ICreateAsset>>;
   errors: Partial<Record<keyof ICreateAsset, string>>;
-  assetsInfo?: ApiResponse<CreateAssetInitResponse>;
+  assetsInfo?: ApiResponse<CreateAssetInit2Response>;
   type: "add" | "update";
 }
 
@@ -30,6 +30,8 @@ const assetBeLongTo: FieldsSelectLabelType[] = [
 ];
 
 const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, type }: AddOrUpdateAssetProps) => {
+  const hasAnyLocationSelected = !!value.tenantId || !!value.buildingID || !!value.floorID || !!value.roomID;
+
   const assetTypeOptions = useMemo(() => {
     return (
       assetsInfo?.data.assetTypes?.map((item) => ({
@@ -49,38 +51,31 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, t
   }, [assetsInfo?.data.buildings]);
 
   const floorOptions = useMemo(() => {
-    const selectedBuilding = assetsInfo?.data.buildings?.find((b) => b.id === value.buildingID);
     return (
-      selectedBuilding?.floors?.map((f) => ({
+      assetsInfo?.data?.floors?.map((f) => ({
         label: f.name,
         value: f.id,
       })) ?? []
     );
-  }, [assetsInfo?.data.buildings, value.buildingID]);
+  }, [assetsInfo?.data?.floors]);
 
   const roomOptions = useMemo(() => {
-    const selectedBuilding = assetsInfo?.data.buildings?.find((b) => b.id === value.buildingID);
-    const selectedFloor = selectedBuilding?.floors?.find((f) => f.id === value.floorID);
     return (
-      selectedFloor?.rooms?.map((r) => ({
+      assetsInfo?.data?.rooms?.map((r) => ({
         label: r.name,
         value: r.id,
       })) ?? []
     );
-  }, [assetsInfo?.data.buildings, value.buildingID, value.floorID]);
+  }, [assetsInfo?.data?.rooms]);
 
   const tenantOptions = useMemo(() => {
-    const selectedBuilding = assetsInfo?.data.buildings?.find((b) => b.id === value.buildingID);
-    const selectedFloor = selectedBuilding?.floors?.find((f) => f.id === value.floorID);
-    const selectedRoom = selectedFloor?.rooms?.find((r) => r.id === value.roomID);
-
     return (
-      selectedRoom?.tenants?.map((t) => ({
+      assetsInfo?.data?.tenants?.map((t) => ({
         label: t.name,
         value: t.id,
       })) ?? []
     );
-  }, [assetsInfo?.data.buildings, value.buildingID, value.floorID, value.roomID]);
+  }, [assetsInfo?.data?.tenants]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -114,7 +109,7 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, t
           labelSelect="Tòa nhà"
           showClear
           errorText={errors.buildingID}
-          required
+          disabled={hasAnyLocationSelected && !value.buildingID}
         />
 
         <FieldsSelectLabel
@@ -134,7 +129,7 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, t
           labelSelect="Tầng"
           showClear
           errorText={errors.floorID}
-          required
+          disabled={hasAnyLocationSelected && !value.floorID}
         />
 
         <FieldsSelectLabel
@@ -148,7 +143,7 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, t
           labelSelect="Phòng"
           showClear
           errorText={errors.roomID}
-          required
+          disabled={hasAnyLocationSelected && !value.roomID}
         />
       </div>
 
@@ -192,7 +187,7 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, t
           labelSelect="Khách thuê"
           showClear
           errorText={errors.tenantId}
-          required
+          disabled={hasAnyLocationSelected && !value.tenantId}
         />
       </div>
 

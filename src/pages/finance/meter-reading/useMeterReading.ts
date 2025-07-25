@@ -33,11 +33,7 @@ export const useMeterReading = () => {
   const idRef = useRef<string>("");
   const [value, setValue] = useState<MeterReadingUpdateRequest>({
     descriptionMeterReading: "",
-    month: undefined,
     newIndex: undefined,
-    oldIndex: undefined,
-    readingDate: "",
-    year: undefined,
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -148,28 +144,20 @@ export const useMeterReading = () => {
 
   const handleUpdateDefaultService = useCallback(async () => {
     try {
-      const { descriptionMeterReading, month, newIndex, oldIndex, readingDate, year } = value;
+      const { descriptionMeterReading, newIndex } = value;
 
       await updateMeterReadingSchema.parseAsync(value);
 
       const data: MeterReadingUpdateRequest = {
         descriptionMeterReading: descriptionMeterReading.trim(),
-        month,
         newIndex,
-        oldIndex,
-        readingDate,
-        year,
       };
 
       updateMeterReadingMutation.mutate(data, {
         onSuccess: () => {
           setValue({
             descriptionMeterReading: "",
-            month: undefined,
             newIndex: undefined,
-            oldIndex: undefined,
-            readingDate: "",
-            year: undefined,
           });
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "meter-readings",
@@ -192,11 +180,7 @@ export const useMeterReading = () => {
       if (action === "update") {
         setValue({
           descriptionMeterReading: meterReading.descriptionMeterReading,
-          month: meterReading.month,
           newIndex: meterReading.newIndex,
-          oldIndex: meterReading.oldIndex,
-          readingDate: meterReading.readingDate,
-          year: meterReading.year,
         });
         setIsModalOpen(true);
       } else {

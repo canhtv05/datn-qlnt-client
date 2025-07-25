@@ -5,7 +5,7 @@ import {
   ApiResponse,
   AssetFilter,
   AssetResponse,
-  CreateAssetInitResponse,
+  CreateAssetInit2Response,
   IUpdateAsset,
   PaginatedResponse,
 } from "@/types";
@@ -231,10 +231,10 @@ export const useAsset = () => {
     [openDialog]
   );
 
-  const { data: assetsInfo, isError: isErrorAssetInfo } = useQuery<ApiResponse<CreateAssetInitResponse>>({
+  const { data: assetsInfo, isError: isErrorAssetInfo } = useQuery<ApiResponse<CreateAssetInit2Response>>({
     queryKey: ["assets-init"],
     queryFn: async () => {
-      const res = await httpRequest.get("/assets/init");
+      const res = await httpRequest.get("/assets/init/2");
       return res.data;
     },
     retry: 1,

@@ -73,10 +73,12 @@ const FieldsMultiSelectLabel = ({
             borderColor: isInvalid ? "#f87171" : base.borderColor,
             minHeight: "36px",
             fontSize: "14px",
+            border: 2,
             boxShadow: state.isFocused ? "0 0 0 1px #3b82f6" : base.boxShadow,
-            '&:hover': {
+            "&:hover": {
               borderColor: state.isFocused ? "#3b82f6" : base.borderColor,
             },
+            borderRadius: "8px",
           }),
           multiValueLabel: (base) => ({
             ...base,
@@ -86,15 +88,11 @@ const FieldsMultiSelectLabel = ({
       />
 
       <RenderIf value={!!isInvalid}>
-        <span className="text-[12px] text-red-500 font-light mt-1">
-          Thông tin bắt buộc
-        </span>
+        <span className="text-[12px] text-red-500 font-light mt-1">Thông tin bắt buộc</span>
       </RenderIf>
 
       <RenderIf value={!!errorText}>
-        <span className="text-[12px] text-red-500 font-light mt-1">
-          {errorText}
-        </span>
+        <span className="text-[12px] text-red-500 font-light mt-1">{errorText}</span>
       </RenderIf>
     </div>
   );
