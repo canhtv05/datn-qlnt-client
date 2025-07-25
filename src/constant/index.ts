@@ -30,7 +30,6 @@ import {
   Download,
   Banknote,
   Bell,
-  BookOpen,
   CalendarRange,
   Car,
   DoorOpen,
@@ -60,6 +59,9 @@ import {
   Users,
   Flashlight,
   Droplet,
+  Landmark,
+  Handshake,
+  BookOpenCheck,
 } from "lucide-react";
 
 export interface SideBarType {
@@ -84,56 +86,73 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
     },
     {
       label: "Quản lý vận hành",
-      title: "Danh mục dữ liệu",
-      url: "/data-categories",
-      icon: Layers,
+      title: "Cơ sở vật chất",
+      url: "/facilities",
+      icon: Landmark,
       items: [
         {
           title: "Tòa nhà",
-          url: "/data-categories/buildings",
+          url: "/facilities/buildings",
           icon: House,
         },
         {
           title: "Tầng",
-          url: "/data-categories/floors",
+          url: "/facilities/floors",
           icon: Building,
         },
         {
           title: "Phòng",
-          url: "/data-categories/rooms",
+          url: "/facilities/rooms",
           icon: DoorOpen,
         },
+      ],
+    },
+    {
+      label: "Quản lý tài sản",
+      title: "Tài sản",
+      url: "/asset-management",
+      icon: Scale,
+      items: [
         {
           title: "Loại tài sản",
-          url: "/data-categories/asset-types",
+          url: "/asset-management/asset-types",
           icon: Wrench,
         },
         {
           title: "Tài sản",
-          url: "/data-categories/assets",
+          url: "/asset-management/assets",
           icon: Scale,
         },
+      ],
+    },
+    {
+      label: "Quản lý dịch vụ",
+      title: "Dịch vụ",
+      url: "/service-management",
+      icon: Hammer,
+      items: [
         {
           title: "Dịch vụ phòng",
-          url: "/data-categories/room-services",
+          url: "/service-management/room-services",
           icon: Building2,
         },
         {
           title: "Dịch vụ",
-          url: "/data-categories/services",
+          url: "/service-management/services",
           icon: Hammer,
         },
         {
           title: "Dịch vụ mặc định",
-          url: "/data-categories/default-services",
+          url: "/service-management/default-services",
           icon: Sparkles,
         },
       ],
     },
     {
+      label: "Quản lý khách thuê",
       title: "Khách hàng",
       url: "/customers",
-      icon: BookOpen,
+      icon: Handshake,
       items: [
         {
           title: "Hợp đồng thuê",
@@ -153,9 +172,10 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
       ],
     },
     {
+      label: "Quản lý tài chính",
       title: "Tài chính",
       url: "/finance",
-      icon: BookOpen,
+      icon: BookOpenCheck,
       items: [
         {
           title: "Công tơ",

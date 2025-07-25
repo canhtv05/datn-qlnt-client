@@ -84,7 +84,7 @@ export const useFloor = () => {
     ) {
       if (filterValues.buildingId) {
         const query = params.toString();
-        navigate(`/data-categories/floors/${filterValues.buildingId}?${query}`);
+        navigate(`/facilities/floors/${filterValues.buildingId}?${query}`);
       } else {
         setSearchParams(params);
       }

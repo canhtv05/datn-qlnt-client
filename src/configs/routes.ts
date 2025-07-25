@@ -17,17 +17,21 @@ const routes = {
     tenantDetail: "/customers/tenants/:id",
   },
   dashboard: "/dashboard",
-  dataCategories: {
-    buildings: "/data-categories/buildings",
-    floors: "/data-categories/floors",
-    floorId: "/data-categories/floors/:id",
-    assetType: "/data-categories/asset-types",
-    rooms: "/data-categories/rooms",
-    roomId: "/data-categories/rooms/:id",
-    roomAsset: "/data-categories/assets",
-    defaultService: "/data-categories/default-services",
-    service: "/data-categories/services",
-    roomService: "/data-categories/room-services",
+  facilities: {
+    buildings: "/facilities/buildings",
+    floors: "/facilities/floors",
+    floorId: "/facilities/floors/:id",
+    rooms: "/facilities/rooms",
+    roomId: "/facilities/rooms/:id",
+  },
+  assetMng: {
+    assetType: "/asset-management/asset-types",
+    asset: "/asset-management/assets",
+  },
+  serviceMng: {
+    roomService: "/service-management/room-services",
+    defaultService: "/service-management/default-services",
+    service: "/service-management/services",
   },
   customer: {
     vehicles: "/customers/vehicles",

@@ -85,54 +85,58 @@ const privateRoutes: RouteType[] = [
     component: DashBoard,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
-  /* DATA CATEGORIES */
+  /* Facilities */
   {
-    path: configs.routes.dataCategories.buildings,
+    path: configs.routes.facilities.buildings,
     component: Building,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
-    path: configs.routes.dataCategories.floors,
+    path: configs.routes.facilities.floors,
     component: SelectBuilding,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
-    path: configs.routes.dataCategories.floorId,
+    path: configs.routes.facilities.floorId,
     component: Floor,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
-    path: configs.routes.dataCategories.assetType,
-    component: AssetType,
-    allowedRoles: ["ADMIN", "MANAGER"],
-  },
-  {
-    path: configs.routes.dataCategories.rooms,
+    path: configs.routes.facilities.rooms,
     component: SelectBuilding,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
-    path: configs.routes.dataCategories.roomId,
+    path: configs.routes.facilities.roomId,
     component: Room,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
+
+  /* ASSET MANAGEMENT */
   {
-    path: configs.routes.dataCategories.roomAsset,
-    component: Asset,
+    path: configs.routes.assetMng.assetType,
+    component: AssetType,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
-    path: configs.routes.dataCategories.service,
+    path: configs.routes.assetMng.asset,
+    component: Asset,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+
+  /* SERVICE MANAGEMENT */
+  {
+    path: configs.routes.serviceMng.service,
     component: Service,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
-    path: configs.routes.dataCategories.defaultService,
+    path: configs.routes.serviceMng.defaultService,
     component: DefaultService,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
-    path: configs.routes.dataCategories.roomService,
+    path: configs.routes.serviceMng.roomService,
     component: ServiceRoom,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
