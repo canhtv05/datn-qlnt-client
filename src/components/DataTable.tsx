@@ -37,6 +37,7 @@ type DataTableProps<T> = {
   loading?: boolean;
   rowSelection: Record<string, boolean>;
   setRowSelection: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
+  disablePagination?: boolean;
 };
 
 export default function DataTable<T extends { id: string }>({
@@ -48,6 +49,7 @@ export default function DataTable<T extends { id: string }>({
   totalPages,
   loading,
   rowSelection,
+  disablePagination,
   setRowSelection,
 }: DataTableProps<T>) {
   const [searchQuery, setSearchQuery] = React.useState<string>();
@@ -242,64 +244,66 @@ export default function DataTable<T extends { id: string }>({
         </TableBody>
       </Table>
 
-      <div className="flex md:flex-row flex-col items-center justify-between space-x-2 py-3">
-        <div className="flex items-center gap-2 md:pb-0 pb-5">
-          <span className="text-[13px]">Hiển thị</span>
-          <FieldsSelectLabel
-            placeholder="Số bản ghi mỗi trang"
-            labelSelect="Số bản ghi mỗi trang"
-            data={[
-              { label: "15", value: 15 },
-              { label: "30", value: 30 },
-              { label: "50", value: 50 },
-            ]}
-            value={pagination.pageSize.toString()}
-            onChange={(value) => handleSizeChange(Number(value))}
-            name="size"
-            classNameTrigger="h-8"
-          />
-          <span className="text-[13px]">trên tổng số {totalElements} kết quả</span>
-        </div>
-        <div className="h-full flex items-center gap-2 flex-wrap">
-          <Button
-            size="icon"
-            variant="ghost"
-            className="rounded-full bg-secondary cursor-pointer"
-            onClick={() => handlePageChange(pageNum - 1)}
-            disabled={pageNum <= 1 || totalPages === 0 || data.length === 0}
-          >
-            <ChevronLeft className="text-foreground size-5" />
-          </Button>
+      {!disablePagination && (
+        <div className="flex md:flex-row flex-col items-center justify-between space-x-2 py-3">
+          <div className="flex items-center gap-2 md:pb-0 pb-5">
+            <span className="text-[13px]">Hiển thị</span>
+            <FieldsSelectLabel
+              placeholder="Số bản ghi mỗi trang"
+              labelSelect="Số bản ghi mỗi trang"
+              data={[
+                { label: "15", value: 15 },
+                { label: "30", value: 30 },
+                { label: "50", value: 50 },
+              ]}
+              value={pagination.pageSize.toString()}
+              onChange={(value) => handleSizeChange(Number(value))}
+              name="size"
+              classNameTrigger="h-8"
+            />
+            <span className="text-[13px]">trên tổng số {totalElements} kết quả</span>
+          </div>
+          <div className="h-full flex items-center gap-2 flex-wrap">
+            <Button
+              size="icon"
+              variant="ghost"
+              className="rounded-full bg-secondary cursor-pointer"
+              onClick={() => handlePageChange(pageNum - 1)}
+              disabled={pageNum <= 1 || totalPages === 0 || data.length === 0}
+            >
+              <ChevronLeft className="text-foreground size-5" />
+            </Button>
 
-          {getPageNumbers().map((item, idx) =>
-            item === "ellipsis" ? (
-              <span key={idx} className="text-muted-foreground">
-                ...
-              </span>
-            ) : (
-              <button
-                key={idx}
-                className={`w-6 h-6 flex justify-center items-center rounded-full cursor-pointer text-sm ${
-                  item === pageNum ? "bg-primary text-white" : "hover:bg-muted text-foreground"
-                }`}
-                onClick={() => handlePageChange(item as number)}
-              >
-                {item}
-              </button>
-            )
-          )}
+            {getPageNumbers().map((item, idx) =>
+              item === "ellipsis" ? (
+                <span key={idx} className="text-muted-foreground">
+                  ...
+                </span>
+              ) : (
+                <button
+                  key={idx}
+                  className={`w-6 h-6 flex justify-center items-center rounded-full cursor-pointer text-sm ${
+                    item === pageNum ? "bg-primary text-white" : "hover:bg-muted text-foreground"
+                  }`}
+                  onClick={() => handlePageChange(item as number)}
+                >
+                  {item}
+                </button>
+              )
+            )}
 
-          <Button
-            size="icon"
-            variant="ghost"
-            className="rounded-full bg-secondary cursor-pointer"
-            onClick={() => handlePageChange(pageNum + 1)}
-            disabled={pageNum >= totalPages || totalPages === 0 || data.length === 0}
-          >
-            <ChevronRight className="text-foreground size-5" />
-          </Button>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="rounded-full bg-secondary cursor-pointer"
+              onClick={() => handlePageChange(pageNum + 1)}
+              disabled={pageNum >= totalPages || totalPages === 0 || data.length === 0}
+            >
+              <ChevronRight className="text-foreground size-5" />
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

@@ -172,6 +172,7 @@ export enum ServiceCategory {
   GIAT_SAY = "GIAT_SAY",
   TIEN_PHONG = "TIEN_PHONG",
   KHAC = "KHAC",
+  DEN_BU = "DEN_BU",
 }
 
 export enum ServiceCalculation {
@@ -205,4 +206,12 @@ export enum InvoiceStatus {
 export enum InvoiceType {
   HANG_THANG = "HANG_THANG",
   CUOI_CUNG = "CUOI_CUNG",
+}
+
+export enum InvoiceItemType {
+  DIEN = "DIEN",
+  NUOC = "NUOC",
+  DICH_VU = "DICH_VU",
+  TIEN_PHONG = "TIEN_PHONG",
+  DEN_BU = "DEN_BU",
 }

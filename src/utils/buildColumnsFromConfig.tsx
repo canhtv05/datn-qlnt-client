@@ -45,13 +45,17 @@ export default function buildColumnsFromConfig<T extends object>(configs: Column
       config.accessorKey === "price" ||
       config.accessorKey === "pricesApply" ||
       config.accessorKey === "totalPrice" ||
-      config.accessorKey === "totalAmount"
+      config.accessorKey === "totalAmount" ||
+      config.accessorKey === "amount"
     ) {
       const raw = row.getValue(config.accessorKey);
       const price = parseFloat(String(raw ?? 0));
+
       const formatted = new Intl.NumberFormat("vi-VN", {
         style: "currency",
         currency: "VND",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
       }).format(price);
 
       const [amount, currency] = formatted.split(/\s*(?=\D+$)/);

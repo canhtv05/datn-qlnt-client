@@ -7,13 +7,17 @@ import { toast } from "sonner";
 import Logo from "@/components/Logo";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import StatusBadge from "@/components/ui/StatusBadge";
-import readVNNumber from "@oorts/read-vn-number";
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
 import "@/assets/css/print.css";
 import { Button } from "@/components/ui/button";
+import { formattedVND } from "@/lib/utils";
 
-const InvoiceDetail = () => {
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+import readVNNumber from "@oorts/read-vn-number";
+
+const ViewInvoiceDetail = () => {
   const { id } = useParams();
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -46,15 +50,8 @@ const InvoiceDetail = () => {
 
   const NA = "N/A";
 
-  const formatted = (price: number): string => {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(price);
-  };
-
   return (
-    <div className="p-10 bg-white">
+    <div className="p-10 bg-background rounded-md">
       <div className="flex justify-end">
         <Button variant={"default"} onClick={reactToPrintFn}>
           Tải hóa đơn
@@ -131,8 +128,8 @@ const InvoiceDetail = () => {
                   <TableCell className="text-right">{item.oldIndex ?? NA}</TableCell>
                   <TableCell className="text-right">{item.newIndex ?? NA}</TableCell>
                   <TableCell className="text-right">{item.quantity}</TableCell>
-                  <TableCell className="text-right">{formatted(item?.unitPrice)}</TableCell>
-                  <TableCell className="text-right">{formatted(item?.amount)}</TableCell>
+                  <TableCell className="text-right">{formattedVND(item?.unitPrice)}</TableCell>
+                  <TableCell className="text-right">{formattedVND(item?.amount)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -143,10 +140,10 @@ const InvoiceDetail = () => {
             <div>
               Thành tiền / Total amount:{" "}
               <strong className="text-red-500 text-base">
-                {data?.data?.totalAmount ? formatted(data?.data?.totalAmount) : formatted(0)}
+                {data?.data?.totalAmount ? formattedVND(data?.data?.totalAmount) : formattedVND(0)}
               </strong>
             </div>
-            <div className="italic text-xs mt-1 text-gray-600">
+            <div className="italic text-xs mt-1 text-foreground">
               (Bằng chữ:{" "}
               {(() => {
                 const text = readVNNumber.toVNWord(data?.data?.totalAmount);
@@ -173,4 +170,4 @@ const InvoiceDetail = () => {
   );
 };
 
-export default InvoiceDetail;
+export default ViewInvoiceDetail;

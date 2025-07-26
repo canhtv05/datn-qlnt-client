@@ -14,7 +14,9 @@ import {
   MeterType,
   ServiceCategory,
   ServiceCalculation,
+  InvoiceItemType,
 } from "@/enums";
+import { isNumber } from "lodash";
 import { z } from "zod/v4";
 
 /*
@@ -509,3 +511,74 @@ export const updateInvoiceSchema = z.object({
   }),
   note: z.string().optional(),
 });
+
+export const invoiceDetailUpdateSchema = z.object({
+  description: z.string().optional(),
+
+  newIndex: z.preprocess(
+    (val) => (val === "" || val === null || val === undefined ? undefined : Number(val)),
+    z.number().min(1, { message: "Chỉ số mới phải ≥ 1" }).optional()
+  ),
+  quantity: z.preprocess(
+    (val) => (val === "" || val === null || val === undefined ? undefined : Number(val)),
+    z.number().min(1, { message: "Số lượng phải ≥ 1" }).optional()
+  ),
+  unitPrice: z.preprocess(
+    (val) => (val === "" || val === null || val === undefined ? undefined : Number(val)),
+    z.number().min(1, { message: "Đơn giá phải ≥ 1" }).optional()
+  ),
+  serviceName: z.string().optional(),
+});
+
+export const invoiceDetailCreationSchema = invoiceDetailUpdateSchema
+  .extend({
+    invoiceId: z.string().min(1, "Mã hóa đơn không được để trống"),
+    invoiceItemType: z.enum(
+      [InvoiceItemType.DIEN, InvoiceItemType.NUOC, InvoiceItemType.DEN_BU, InvoiceItemType.DICH_VU],
+      "Loại mục hóa đơn không hợp lệ"
+    ),
+    serviceRoomId: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      const { invoiceItemType, quantity } = data;
+      if (invoiceItemType !== InvoiceItemType.DEN_BU) return true;
+      if (!isNumber(quantity) || quantity < 1) return true;
+      return quantity !== undefined || quantity !== null;
+    },
+    { message: "Số lượng là bắt buộc với loại ĐỀN BÙ", path: ["quantity"] }
+  )
+  .refine(
+    (data) => {
+      const { invoiceItemType, unitPrice } = data;
+      if (invoiceItemType !== InvoiceItemType.DEN_BU) return true;
+      if (!isNumber(unitPrice) || unitPrice < 1) return true;
+      return unitPrice !== undefined || unitPrice !== null;
+    },
+    {
+      message: "Đơn giá là bắt buộc với loại đền bù",
+      path: ["unitPrice"],
+    }
+  )
+  .refine(
+    (data) => {
+      const { invoiceItemType, newIndex } = data;
+      if (invoiceItemType !== InvoiceItemType.DIEN && invoiceItemType !== InvoiceItemType.NUOC) return true;
+      if (!isNumber(newIndex) || newIndex < 1) return true;
+      return newIndex !== null || newIndex !== undefined;
+    },
+    {
+      message: "Chỉ số mới là bắt buộc với điện hoặc nước",
+      path: ["newIndex"],
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.invoiceItemType !== InvoiceItemType.DICH_VU) return true;
+      return !!data.serviceRoomId;
+    },
+    {
+      message: "Dịch vụ bắt buộc phải chọn phòng",
+      path: ["serviceRoomId"],
+    }
+  );

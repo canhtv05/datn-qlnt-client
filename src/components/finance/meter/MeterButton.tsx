@@ -18,7 +18,6 @@ import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateMeter from "./AddOrUpdateMeter";
-import { ChartNoAxesCombined } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const MeterButton = ({
@@ -155,16 +154,17 @@ const MeterButton = ({
     mutationFn: async (id: string) => await httpRequest.delete(`/meters/${id}`),
   });
 
-  const statisticButton: IBtnType[] = [
-    {
-      type: "view",
-      arrowColor: "var(--color-emerald-500)",
-      hasConfirm: false,
-      icon: ChartNoAxesCombined,
-      tooltipContent: "Xem thống kê",
-    },
-  ];
-  const ACTION_BUTTONS_CUSTOM = [...statisticButton, ...ACTION_BUTTONS];
+  // tạm thời bỏ phần này
+  // const statisticButton: IBtnType[] = [
+  //   {
+  //     type: "view",
+  //     arrowColor: "var(--color-emerald-500)",
+  //     hasConfirm: false,
+  //     icon: ChartNoAxesCombined,
+  //     tooltipContent: "Xem thống kê",
+  //   },
+  // ];
+  const ACTION_BUTTONS_CUSTOM = [...ACTION_BUTTONS];
 
   return (
     <div className="h-full bg-background rounded-t-sm">

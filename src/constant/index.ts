@@ -24,6 +24,7 @@ import {
   InvoiceType,
   ServiceCategory,
   ServiceCalculation,
+  InvoiceItemType,
 } from "@/enums";
 import { IBtnType } from "@/types";
 import {
@@ -276,6 +277,12 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
 export const STATUS_BADGE = [
   {
     value: "__EMPTY__",
+    label: "Trống",
+    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+  },
+
+  {
+    value: null,
     label: "Trống",
     className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
   },
@@ -800,6 +807,36 @@ export const STATUS_BADGE = [
     value: ServiceCalculation.TINH_THEO_PHUONG_TIEN,
     label: "Tính theo phương tiện",
     className: "text-indigo-600 bg-indigo-100 border border-indigo-200 hover:bg-indigo-200 hover:text-indigo-700",
+  },
+  {
+    value: InvoiceItemType.DIEN,
+    label: "Điện",
+    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+  },
+  {
+    value: ServiceCategory.DEN_BU,
+    label: "Đền bù",
+    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+  },
+  {
+    value: InvoiceItemType.NUOC,
+    label: "Nước",
+    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+  },
+  {
+    value: InvoiceItemType.DICH_VU,
+    label: "Dịch vụ",
+    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+  },
+  {
+    value: InvoiceItemType.TIEN_PHONG,
+    label: "Tiền phòng",
+    className: "text-teal-600 bg-teal-100 border border-teal-200 hover:bg-teal-200 hover:text-teal-700",
+  },
+  {
+    value: InvoiceItemType.DEN_BU,
+    label: "Đền bù",
+    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
   },
 ];
 

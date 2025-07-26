@@ -22,6 +22,7 @@ import {
   InvoiceType,
   ServiceCategory,
   ServiceCalculation,
+  InvoiceItemType,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -283,6 +284,8 @@ export interface IdAndName {
   id: string;
   name: string;
 }
+
+export type IdNameAndType = IdAndName & { type: string };
 
 export type TenantSelectResponse = IdAndName;
 
@@ -765,6 +768,7 @@ export interface InvoiceResponse extends AbstractResponse {
   invoiceCode: string;
   buildingName: string;
   roomCode: string;
+  roomId: string;
   tenantName: string;
   month: number;
   year: number;
@@ -793,6 +797,7 @@ export interface InvoiceUpdateRequest {
 }
 
 export interface InvoiceDetailsResponse {
+  id: string;
   invoiceId: string;
   invoiceCode: string;
   buildingName: string;
@@ -821,4 +826,24 @@ export interface InvoiceItemResponse {
   unit: string;
   unitPrice: number;
   amount: number;
+  description: string;
+}
+
+export interface InvoiceDetailCreationRequest {
+  invoiceId: string;
+  serviceName: string;
+  invoiceItemType: InvoiceItemType | string;
+  serviceRoomId: string;
+  newIndex: number | undefined;
+  quantity: number | undefined;
+  unitPrice: number | undefined;
+  description: string;
+}
+
+export interface InvoiceDetailUpdateRequest {
+  serviceName: string;
+  newIndex: number | undefined;
+  quantity: number | undefined;
+  unitPrice: number | undefined;
+  description: string;
 }
