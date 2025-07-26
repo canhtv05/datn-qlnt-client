@@ -19,11 +19,9 @@ const DefaultLayout = ({ children }: { children: ReactNode }) => {
             </div>
             <HeaderLayout />
           </header>
-
           <main className="flex-1 overflow-auto p-4 bg-secondary w-full animate-fade-in-up" key={location.pathname}>
             {children}
           </main>
-
           {/* <FooterLayout /> */}
         </SidebarInset>
       </div>

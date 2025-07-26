@@ -815,8 +815,8 @@ export const STATUS_BADGE = [
   },
   {
     value: ServiceCategory.DEN_BU,
-    label: "Đền bù",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+    label: "Trống",
+    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
   },
   {
     value: InvoiceItemType.NUOC,

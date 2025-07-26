@@ -9,7 +9,7 @@ import Logo from "@/components/Logo";
 const AuthLayout = ({ children }: { children: ReactNode }) => {
   const { width } = useViewport();
   return (
-    <main className="lg:flex w-full min-h-screen h-full justify-center">
+    <main className="lg:flex bg-white w-full min-h-screen h-full justify-center">
       <RenderIf value={width >= Viewport.XL}>
         <article className="p-5 flex justify-center items-center bg-primary flex-1 float-start w-[65%]">
           <img src={svg.login} alt="img_login" className="object-contain h-[80%]" loading="lazy" />
