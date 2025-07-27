@@ -52,17 +52,16 @@ import {
   Eye,
   Building2,
   Hammer,
-  Sparkles,
   CircleGauge,
   BedDouble,
   CreditCard,
   History,
   Users,
-  Flashlight,
   Droplet,
   Landmark,
   Handshake,
   BookOpenCheck,
+  Zap,
 } from "lucide-react";
 
 export interface SideBarType {
@@ -142,11 +141,6 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
           url: "/service-management/services",
           icon: Hammer,
         },
-        {
-          title: "Dịch vụ mặc định",
-          url: "/service-management/default-services",
-          icon: Sparkles,
-        },
       ],
     },
     {
@@ -156,7 +150,7 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
       icon: Handshake,
       items: [
         {
-          title: "Hợp đồng thuê",
+          title: "Hợp đồng",
           url: "/customers/contracts",
           icon: FileText,
         },
@@ -254,13 +248,13 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
     },
     {
       title: "Xem thành viên trong phòng",
-      url: "/room/members",
+      url: "/members",
       icon: Users,
     },
     {
       title: "Xem điện",
       url: "/electric",
-      icon: Flashlight,
+      icon: Zap,
     },
     {
       title: "Xem nước",

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Select from "react-select";
 import { Label } from "./label";
 import RenderIf from "../RenderIf";
@@ -37,10 +37,6 @@ const FieldsMultiSelectLabel = ({
 }: FieldsMultiSelectLabelProps) => {
   const [touched, setTouched] = useState(false);
 
-  useEffect(() => {
-    setTouched(true);
-  }, [value]);
-
   const isInvalid = required && touched && value.length === 0;
 
   return (
@@ -61,6 +57,7 @@ const FieldsMultiSelectLabel = ({
         isDisabled={isDisabled}
         options={data}
         value={value}
+        onMenuClose={() => setTouched(true)}
         onChange={(selected) => onChange(selected as FieldsSelectLabelType[])}
         classNamePrefix="react-select"
         className={
@@ -74,9 +71,9 @@ const FieldsMultiSelectLabel = ({
             minHeight: "36px",
             fontSize: "14px",
             border: 2,
-            boxShadow: state.isFocused ? "0 0 0 1px #3b82f6" : base.boxShadow,
+            boxShadow: state.isFocused ? "0 0 0 1px var(--color-primary)" : base.boxShadow,
             "&:hover": {
-              borderColor: state.isFocused ? "#3b82f6" : base.borderColor,
+              borderColor: state.isFocused ? "var(--color-primary)" : base.borderColor,
             },
             borderRadius: "8px",
           }),

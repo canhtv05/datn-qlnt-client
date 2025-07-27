@@ -634,6 +634,8 @@ export interface ServiceRoomResponse extends AbstractResponse {
   descriptionServiceRoom: string;
 }
 
+// export interface ServiceRoomView {}
+
 export interface ServiceRoomCreationRequest {
   roomId: string;
   serviceId: string;
