@@ -337,11 +337,6 @@ export const STATUS_BADGE = [
     className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
   },
   {
-    value: RoomStatus.DANG_THUE,
-    label: "Đã thuê",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
-  },
-  {
     value: RoomStatus.DA_DAT_COC,
     label: "Đã đặt cọc",
     className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
@@ -902,7 +897,7 @@ export const BTNS: IBtnType[] = [
     hasConfirm: true,
   },
   {
-    tooltipContent: "Xem chi tiết",
+    tooltipContent: "Xem",
     icon: Eye,
     arrowColor: "var(--color-emerald-500)",
     type: "view",

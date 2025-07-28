@@ -15,6 +15,7 @@ const routes = {
   modals: {
     profile: "/profile",
     tenantDetail: "/customers/tenants/:id",
+    roomMembers: "/room/members/:id",
   },
   dashboard: "/dashboard",
   facilities: {

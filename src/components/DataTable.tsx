@@ -38,6 +38,7 @@ type DataTableProps<T> = {
   rowSelection: Record<string, boolean>;
   setRowSelection: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
   disablePagination?: boolean;
+  disableSelect?: boolean;
 };
 
 export default function DataTable<T extends { id: string }>({
@@ -49,8 +50,9 @@ export default function DataTable<T extends { id: string }>({
   totalPages,
   loading,
   rowSelection,
-  disablePagination,
+  disablePagination = false,
   setRowSelection,
+  disableSelect = false,
 }: DataTableProps<T>) {
   const [searchQuery, setSearchQuery] = React.useState<string>();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -135,7 +137,12 @@ export default function DataTable<T extends { id: string }>({
   return (
     <div className="bg-background px-5 rounded-b-md">
       <div className="flex-1 text-sm text-muted-foreground py-2 flex justify-between items-center">
-        {table.getFilteredSelectedRowModel().rows.length} trên {table.getFilteredRowModel().rows.length} dòng được chọn
+        {!disableSelect && (
+          <span>
+            {table.getFilteredSelectedRowModel().rows.length} trên {table.getFilteredRowModel().rows.length} dòng được
+            chọn
+          </span>
+        )}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -210,7 +217,7 @@ export default function DataTable<T extends { id: string }>({
         </TableHeader>
         <TableBody>
           {loading ? (
-            Array.from({ length: 15 }).map((_, rowIndex) => (
+            Array.from({ length: 5 }).map((_, rowIndex) => (
               <TableRow
                 key={`skeleton-row-${rowIndex}`}
                 className="[&>td]:border-r last:border-r-0 h-12 [&>td]:border-input [&>td:first-child]:border-r-0"

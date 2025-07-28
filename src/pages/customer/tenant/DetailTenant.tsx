@@ -7,6 +7,8 @@ import { toast } from "sonner";
 import { ApiResponse, TenantDetailResponse } from "@/types";
 import { Building2, FileSignature, Mail, UserRound, X, FileText } from "lucide-react";
 import StatusBadge from "@/components/ui/StatusBadge";
+import { useEffect } from "react";
+import Overlay from "@/components/Overlay";
 
 const formatDate = (date: Date) => date.toLocaleDateString("vi-VN");
 const formatDateTime = (date: Date) => date.toLocaleString("vi-VN");
@@ -27,18 +29,15 @@ const DetailTenant = () => {
 
   const tenant = data?.data;
 
-  if (isError) {
-    toast.error("Không thể tải thông tin khách thuê. Vui lòng thử lại sau.");
-    return null;
-  }
+  useEffect(() => {
+    if (isError) {
+      toast.error("Không thể tải thông tin khách thuê. Vui lòng thử lại sau.");
+      return;
+    }
+  }, [isError]);
 
   return (
-    <div
-      className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex justify-center items-center p-4"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) navigate(-1);
-      }}
-    >
+    <Overlay>
       <div className="w-full max-w-5xl bg-white rounded-xl shadow-xl max-h-[95vh] flex flex-col overflow-hidden">
         <div className="bg-primary/80 p-6 relative shrink-0">
           <Button
@@ -168,7 +167,7 @@ const DetailTenant = () => {
           <span>Cập nhật gần nhất: {tenant?.updatedAt && formatDateTime(new Date(tenant.updatedAt))}</span>
         </div>
       </div>
-    </div>
+    </Overlay>
   );
 };
 
