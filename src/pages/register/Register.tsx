@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import InputLabel from "@/components/InputLabel";
 import { useRegister } from "./useRegister";
-import { svg } from "@/assets/svg";
+// import { svg } from "@/assets/svg";
 import DatePickerLabel from "@/components/DatePickerLabel";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -17,7 +17,7 @@ const Register = () => {
     handleBlur,
     handleChange,
     setValue,
-    handleLoginWithGoogle,
+    // handleLoginWithGoogle,
     handleCheckboxChange,
   } = useRegister();
   return (
@@ -148,12 +148,12 @@ const Register = () => {
         <Button type="submit" className="w-full hover:shadow-sm">
           <span className="text-white">Đăng ký</span>
         </Button>
-        <div className="relative my-2 flex items-center justify-center">
+        {/* <div className="relative my-2 flex items-center justify-center">
           <div className="absolute top-1/2 left-0 w-full h-px bg-[#6e6b7b] transform -translate-y-1/2"></div>
           <span className="bg-white text-label px-2 relative z-10 text-[12px]">Hoặc đăng ký với Google</span>
-        </div>
+        </div> */}
 
-        <Button
+        {/* <Button
           type="button"
           variant={"outline"}
           className="w-full hover:bg-transparent hover:shadow-sm dark:border-border cursor-pointer"
@@ -161,7 +161,7 @@ const Register = () => {
         >
           <img src={svg.googleIcon} alt="logo google" className="size-[20px]" />
           <span className="text-label">Đăng ký với Google</span>
-        </Button>
+        </Button> */}
       </form>
 
       <span className="mt-5 text-[14px] text-label">

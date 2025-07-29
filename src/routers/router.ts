@@ -23,6 +23,7 @@ const AuthLayout = lazy(() => import("@/layouts/AuthLayout"));
 /* MODALS */
 const Profile = lazy(() => import("@/pages/profile"));
 const DetailTenant = lazy(() => import("@/pages/customer/tenant/DetailTenant"));
+const RoomMembers = lazy(() => import("@/pages/user/members"));
 
 /* DASHBOARD */
 const DashBoard = lazy(() => import("@/pages/dashboard"));
@@ -35,7 +36,6 @@ const AssetType = lazy(() => import("@/pages/data-category/asset-type"));
 const Asset = lazy(() => import("@/pages/data-category/asset"));
 const Room = lazy(() => import("@/pages/data-category/room"));
 const Service = lazy(() => import("@/pages/data-category/service"));
-const DefaultService = lazy(() => import("@/pages/data-category/default-service"));
 const ServiceRoom = lazy(() => import("@/pages/data-category/service-room"));
 
 /* CUSTOMER */
@@ -129,11 +129,6 @@ const privateRoutes: RouteType[] = [
   {
     path: configs.routes.serviceMng.service,
     component: Service,
-    allowedRoles: ["ADMIN", "MANAGER"],
-  },
-  {
-    path: configs.routes.serviceMng.defaultService,
-    component: DefaultService,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
@@ -251,6 +246,11 @@ const modals: ModalRoute[] = [
     path: configs.routes.modals.tenantDetail,
     component: DetailTenant,
     allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.modals.roomMembers,
+    component: RoomMembers,
+    allowedRoles: ["ADMIN", "MANAGER", "STAFF", "USER"],
   },
 ];
 

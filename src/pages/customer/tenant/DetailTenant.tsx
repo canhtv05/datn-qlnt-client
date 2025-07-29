@@ -5,11 +5,17 @@ import { useQuery } from "@tanstack/react-query";
 import { httpRequest } from "@/utils/httpRequest";
 import { toast } from "sonner";
 import { ApiResponse, TenantDetailResponse } from "@/types";
-import { Building2, FileSignature, Mail, UserRound, X, FileText } from "lucide-react";
+import { Building2, FileSignature, Mail, UserRound, X, FileText, Check } from "lucide-react";
 import StatusBadge from "@/components/ui/StatusBadge";
+import { useEffect } from "react";
+import Overlay from "@/components/Overlay";
+import Image from "@/components/Image";
+import { Badge } from "@/components/ui/badge";
 
 const formatDate = (date: Date) => date.toLocaleDateString("vi-VN");
 const formatDateTime = (date: Date) => date.toLocaleString("vi-VN");
+
+const NA = "N/A";
 
 const DetailTenant = () => {
   const navigate = useNavigate();
@@ -19,6 +25,7 @@ const DetailTenant = () => {
     queryKey: ["tenantDetail", id],
     queryFn: async () => {
       const res = await httpRequest.get(`/tenants/detail/${id}`);
+      console.log(res.data);
       return res.data;
     },
     enabled: !!id,
@@ -27,148 +34,94 @@ const DetailTenant = () => {
 
   const tenant = data?.data;
 
-  if (isError) {
-    toast.error("Không thể tải thông tin khách thuê. Vui lòng thử lại sau.");
-    return null;
-  }
+  useEffect(() => {
+    if (isError) {
+      toast.error("Không thể tải thông tin khách thuê. Vui lòng thử lại sau.");
+      return;
+    }
+  }, [isError]);
 
   return (
-    <div
-      className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex justify-center items-center p-4"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) navigate(-1);
-      }}
-    >
-      <div className="w-full max-w-5xl bg-white rounded-xl shadow-xl max-h-[95vh] flex flex-col overflow-hidden">
-        <div className="bg-primary/80 p-6 relative shrink-0">
-          <Button
-            size="icon"
-            variant="ghost"
-            className="absolute cursor-pointer right-4 top-4 bg-white/20 text-white hover:bg-white/30 rounded-full"
-            onClick={() => navigate(-1)}
-          >
-            <X className="w-5 h-5 stroke-white" />
-          </Button>
-
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div>
-              <h1 className="text-2xl font-bold text-white">{tenant?.fullName}</h1>
-              <div className="flex flex-wrap gap-2 mt-1 text-xs text-white">
-                <span className="flex items-center gap-1">
-                  Trạng thái: {tenant?.tenantStatus && <StatusBadge status={tenant.tenantStatus} />}
+    <Overlay>
+      <div className="bg-background rounded-sm w-full max-h-[90vh] flex flex-col">
+        <div className="px-6 py-4 border-b border-border bg-gradient-to-r from-primary/80 to-primary text-white rounded-t-sm">
+          <h3 className="text-lg font-semibold">Xem chi tiết khách thuê</h3>
+          <p className="text-xs mt-1">Thông tin người thuê, hợp đồng và liên hệ</p>
+        </div>
+        <div className="overflow-y-auto">
+          <div className="bg-background md:gap-10 flex justify-center 2xl:flex-row flex-col md:px-20 px-5 items-center py-5 rounded-b-sm">
+            <aside className="shrink-0 flex flex-col items-center gap-2">
+              <Image src={tenant?.pictureUrl} className="size-50 rounded-none" />
+              <div className="flex gap-2">
+                <StatusBadge status={tenant?.tenantStatus ?? "__EMPTY__"} />
+                <span className="text-sm font-medium flex items-start gap-2">
+                  {tenant?.isRepresentative ? (
+                    <Badge
+                      className={`px-2 rounded-full text-[10px] font-medium transition-colors duration-200 text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700`}
+                    >
+                      Là đại diện
+                    </Badge>
+                  ) : (
+                    <Badge
+                      className={`px-2 rounded-full text-[10px] font-medium transition-colors duration-200 text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700`}
+                    >
+                      Không là đại diện
+                    </Badge>
+                  )}
                 </span>
-                {tenant?.isRepresentative && (
-                  <span className="flex items-center gap-1">
-                    Là đại diện:{" "}
-                    <StatusBadge
-                      status={tenant.isRepresentative ? "isRepresentative=true" : "isRepresentative=false"}
-                    />
-                  </span>
-                )}
               </div>
-            </div>
+            </aside>
+            <main className="flex lg:flex-row flex-col lg:gap-1 gap-5 items-start md:justify-start justify-center h-full w-full flex-1">
+              <div className="flex flex-col w-full justify-between h-full">
+                <div className="flex items-center w-full gap-2 mt-5 md:mt-0">
+                  <span className="uppercase text-[12px] whitespace-nowrap">Thông tin cá nhân</span>
+                  <div className="flex-1 h-px bg-border mr-10" />
+                </div>
+                <h3 className="md:text-[24px] text-[16px] font-semibold text-primary md:max-w-[100%] max-w-[80%] overflow-hidden whitespace-nowrap text-ellipsis">
+                  Họ tên: {tenant?.fullName ?? NA}
+                </h3>
+                <span className="text-sm font-medium">Mã: {tenant?.customerCode ?? NA}</span>
+                <span className="text-sm font-medium">Giới tính: {tenant?.gender ?? NA}</span>
+                <span className="text-sm font-medium">
+                  Ngày sinh: {tenant?.dob ? new Date(tenant?.dob).toLocaleDateString("vi-VN") : NA}
+                </span>
+                <span className="text-sm font-medium">SĐT: {tenant?.phoneNumber ?? NA}</span>
+                <span className="text-sm font-medium">CCCD/CMT: {tenant?.identityCardNumber ?? NA}</span>
+                <span className="text-sm font-medium break-words whitespace-normal">
+                  Địa chỉ: {tenant?.address ?? NA}
+                </span>
+              </div>
+              <div className="flex flex-col w-full justify-between h-full">
+                <div className="flex items-center w-full gap-2 mt-5 md:mt-0">
+                  <span className="uppercase text-[12px] whitespace-nowrap">Thông tin phòng</span>
+                  <div className="flex-1 h-px bg-border mr-10" />
+                </div>
+                <span className="md:text-[24px] text-[16px] font-semibold text-primary md:max-w-[100%] max-w-[80%] overflow-hidden whitespace-nowrap text-ellipsis">
+                  Mã phòng: {tenant?.roomCode ?? NA}
+                </span>
+                <span className="text-sm font-medium">Tên tầng: {tenant?.floorName ?? NA}</span>
+                <span className="text-sm font-medium">Tên tòa nhà: {tenant?.buildingName ?? NA}</span>
+                <span className="text-sm font-medium break-words whitespace-normal">
+                  Địa chỉ tòa nhà: {tenant?.buildingAddress ?? NA}
+                </span>
+              </div>
+              <div className="flex flex-col w-full justify-between h-full">
+                <div className="flex items-center w-full gap-2 mt-5 md:mt-0">
+                  <span className="uppercase text-[12px] whitespace-nowrap">Thông tin hợp đồng</span>
+                  <div className="flex-1 h-px bg-border mr-10" />
+                </div>
+                <span className="md:text-[24px] text-[16px] font-semibold text-primary md:max-w-[100%] max-w-[80%] overflow-hidden whitespace-nowrap text-ellipsis">
+                  Mã HĐ: {tenant?.contractCode ?? NA}
+                </span>
+                <span className="text-sm font-medium">
+                  Hạn HĐ: {tenant?.endDate ? new Date(tenant?.endDate).toLocaleDateString("vi-VN") : NA}
+                </span>
+              </div>
+            </main>
           </div>
-        </div>
-
-        <div className="p-6 overflow-y-auto grow">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="hover:shadow-lg border border-gray-200 hover:border-primary/30 transition">
-              <CardHeader className="flex flex-row items-center gap-3">
-                <div className="bg-blue-100 p-2 rounded-full">
-                  <UserRound className="text-sky-600 w-6 h-6" />
-                </div>
-                <CardTitle className="text-lg font-semibold text-gray-800">Thông tin cá nhân</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 text-gray-700 text-sm">
-                <p>
-                  <strong>Mã khách hàng:</strong> {tenant?.customerCode}
-                </p>
-                <p>
-                  <strong>Giới tính:</strong> {tenant?.gender === "MALE" ? "Nam" : "Nữ"}
-                </p>
-                <p>
-                  <strong>Ngày sinh:</strong> {tenant?.dob && formatDate(new Date(tenant.dob))}
-                </p>
-                <p>
-                  <strong>CMND/CCCD:</strong> {tenant?.identityCardNumber}
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg border border-gray-200 hover:border-primary/30 transition">
-              <CardHeader className="flex flex-row items-center gap-3">
-                <div className="bg-blue-100 p-2 rounded-full">
-                  <Mail className="text-amber-500 w-6 h-6" />
-                </div>
-                <CardTitle className="text-lg font-semibold text-gray-800">Thông tin liên hệ</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 text-gray-700 text-sm">
-                <p>
-                  <strong>Email:</strong> {tenant?.email}
-                </p>
-                <p>
-                  <strong>SĐT:</strong> {tenant?.phoneNumber}
-                </p>
-                <p>
-                  <strong>Địa chỉ:</strong> {tenant?.address}
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg border border-gray-200 hover:border-primary/30 transition">
-              <CardHeader className="flex flex-row items-center gap-3">
-                <div className="bg-blue-100 p-2 rounded-full">
-                  <FileSignature className="text-blue-600 w-6 h-6" />
-                </div>
-                <CardTitle className="text-lg font-semibold text-gray-800">Thông tin hợp đồng</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 text-gray-700 text-sm">
-                <p>
-                  <strong>Mã hợp đồng:</strong> {tenant?.contractCode}
-                </p>
-                <p>
-                  <strong>Ngày kết thúc:</strong> {tenant?.endDate && formatDate(new Date(tenant.endDate))}
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg border border-gray-200 hover:border-primary/30 transition">
-              <CardHeader className="flex flex-row items-center gap-3">
-                <div className="bg-blue-100 p-2 rounded-full">
-                  <Building2 className="text-cyan-500 w-6 h-6" />
-                </div>
-                <CardTitle className="text-lg font-semibold text-gray-800">Tòa nhà & Phòng</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 text-gray-700 text-sm">
-                <p>
-                  <strong>Tòa nhà:</strong> {tenant?.buildingName}
-                </p>
-                <p>
-                  <strong>Phòng:</strong> {tenant?.roomCode}
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-lg border border-gray-200 hover:border-primary/30 transition">
-              <CardHeader className="flex flex-row items-center gap-3">
-                <div className="bg-blue-100 p-2 rounded-full">
-                  <FileText className="text-purple-600 w-6 h-6" />
-                </div>
-                <CardTitle className="text-lg font-semibold text-gray-800">Tài liệu</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 text-gray-700 text-sm">
-                <p>Chưa có tài liệu đính kèm.</p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        <div className="shrink-0 flex justify-between text-xs text-muted-foreground px-6 py-4 border-t bg-white">
-          <span>Ngày tạo: {tenant?.createdAt && formatDateTime(new Date(tenant.createdAt))}</span>
-          <span>Cập nhật gần nhất: {tenant?.updatedAt && formatDateTime(new Date(tenant.updatedAt))}</span>
         </div>
       </div>
-    </div>
+    </Overlay>
   );
 };
 
