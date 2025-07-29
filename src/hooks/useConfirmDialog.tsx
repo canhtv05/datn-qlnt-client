@@ -87,7 +87,7 @@ export const useConfirmDialog = <T = void,>({ onConfirm, desc, type = "warn" }: 
                 }
               }}
             >
-              Xác nhận
+              <span className="text-white">Xác nhận</span>
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

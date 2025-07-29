@@ -1,8 +1,6 @@
 import { ChangeEvent } from "react";
 import DatePickerLabel from "@/components/DatePickerLabel";
-import FieldsSelectLabel, {
-  FieldsSelectLabelType,
-} from "@/components/FieldsSelectLabel";
+import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import FieldsMultiSelectLabel from "@/components/ui/FieldsMultiSelectLabel";
 import { ICreateAndUpdateContract, Option } from "@/types";
@@ -18,10 +16,7 @@ const contractStatuses: FieldsSelectLabelType[] = [
 
 interface Props {
   value: ICreateAndUpdateContract;
-  handleChange: <K extends keyof ICreateAndUpdateContract>(
-    field: K,
-    newValue: ICreateAndUpdateContract[K]
-  ) => void;
+  handleChange: <K extends keyof ICreateAndUpdateContract>(field: K, newValue: ICreateAndUpdateContract[K]) => void;
   errors: Partial<Record<keyof ICreateAndUpdateContract, string>>;
   roomOptions: Option[];
   tenantOptions: Option[];
@@ -40,10 +35,7 @@ const AddOrUpdateContract = ({
   servicesOptions,
   vehiclesOptions,
 }: Props) => {
-  const handleNumberChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    key: "numberOfPeople" | "deposit"
-  ) => {
+  const handleNumberChange = (e: ChangeEvent<HTMLInputElement>, key: "numberOfPeople" | "deposit") => {
     const parsed = Number(e.target.value.trim());
     handleChange(key, isNaN(parsed) ? 0 : parsed);
   };
@@ -54,7 +46,7 @@ const AddOrUpdateContract = ({
   return (
     <div className="flex flex-col gap-6">
       {/* === KHỐI 1: THÔNG TIN HỢP ĐỒNG === */}
-      <div className="border rounded-lg p-5 space-y-4 shadow-sm">
+      <div className="space-y-4">
         <h3 className="text-lg font-semibold">Thông tin hợp đồng</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -126,10 +118,7 @@ const AddOrUpdateContract = ({
             errorText={errors.status}
           />
         </div>
-      </div>
 
-      {/* === KHỐI 2: THÔNG TIN ĐÍNH KÈM === */}
-      <div className="border rounded-lg p-5 space-y-4 shadow-sm">
         <h3 className="text-lg font-semibold">Thông tin đính kèm</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -139,9 +128,7 @@ const AddOrUpdateContract = ({
             label="Khách thuê:"
             id="tenants"
             name="tenants"
-            value={toSelectType(tenantOptions).filter((opt) =>
-              value.tenants.includes(String(opt.value))
-            )}
+            value={toSelectType(tenantOptions).filter((opt) => value.tenants.includes(String(opt.value)))}
             onChange={(selected) =>
               handleChange(
                 "tenants",
@@ -158,9 +145,7 @@ const AddOrUpdateContract = ({
             label="Tài sản:"
             id="assets"
             name="assets"
-            value={toSelectType(assetOptions).filter((opt) =>
-              value.assets.includes(String(opt.value))
-            )}
+            value={toSelectType(assetOptions).filter((opt) => value.assets.includes(String(opt.value)))}
             onChange={(selected) =>
               handleChange(
                 "assets",
@@ -179,9 +164,7 @@ const AddOrUpdateContract = ({
             label="Dịch vụ:"
             id="services"
             name="services"
-            value={toSelectType(servicesOptions).filter((opt) =>
-              value.services.includes(String(opt.value))
-            )}
+            value={toSelectType(servicesOptions).filter((opt) => value.services.includes(String(opt.value)))}
             onChange={(selected) =>
               handleChange(
                 "services",
@@ -198,9 +181,7 @@ const AddOrUpdateContract = ({
             label="Phương tiện:"
             id="vehicles"
             name="vehicles"
-            value={toSelectType(vehiclesOptions).filter((opt) =>
-              value.vehicles.includes(String(opt.value))
-            )}
+            value={toSelectType(vehiclesOptions).filter((opt) => value.vehicles.includes(String(opt.value)))}
             onChange={(selected) =>
               handleChange(
                 "vehicles",

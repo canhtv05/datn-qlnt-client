@@ -30,9 +30,6 @@ import {
 import { IBtnType } from "@/types";
 import {
   Download,
-  Banknote,
-  Bell,
-  CalendarRange,
   Car,
   DoorOpen,
   FileText,
@@ -40,7 +37,6 @@ import {
   Layers,
   LucideIcon,
   PenTool,
-  PieChart,
   Plus,
   Scale,
   Trash2,
@@ -152,14 +148,14 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
       icon: Handshake,
       items: [
         {
-          title: "Hợp đồng",
-          url: "/customers/contracts",
-          icon: FileText,
-        },
-        {
           title: "Khách hàng",
           url: "/customers/tenants",
           icon: UsersRound,
+        },
+        {
+          title: "Hợp đồng",
+          url: "/customers/contracts",
+          icon: FileText,
         },
         {
           title: "Phương tiện",
@@ -188,34 +184,6 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
           title: "Hóa đơn",
           url: "/finance/invoice",
           icon: FileText,
-        },
-      ],
-    },
-    {
-      title: "Gửi thông báo",
-      url: "/notifications",
-      icon: Bell,
-    },
-    {
-      label: "Báo cáo",
-      title: "Báo cáo tài chính",
-      url: "/financial-reports",
-      icon: PieChart,
-      items: [
-        {
-          title: "Dòng tiền",
-          icon: Banknote,
-          url: "/financial-reports/cash-flow",
-        },
-        {
-          title: "Danh sách tiền cọc",
-          icon: FileText,
-          url: "/financial-reports/deposits",
-        },
-        {
-          title: "Lịch thanh toán",
-          icon: CalendarRange,
-          url: "/financial-reports/payment-schedule",
         },
       ],
     },
@@ -337,11 +305,6 @@ export const STATUS_BADGE = [
     value: RoomStatus.TRONG,
     label: "Còn trống",
     className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
-  },
-  {
-    value: RoomStatus.DANG_THUE,
-    label: "Đã thuê",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
   },
   {
     value: RoomStatus.DA_DAT_COC,
@@ -944,7 +907,7 @@ export const BTNS: IBtnType[] = [
     hasConfirm: true,
   },
   {
-    tooltipContent: "Xem chi tiết",
+    tooltipContent: "Xem",
     icon: Eye,
     arrowColor: "var(--color-emerald-500)",
     type: "view",

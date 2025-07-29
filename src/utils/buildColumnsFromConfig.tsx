@@ -6,24 +6,35 @@ import { ColumnConfig, CustomColumnDef } from "@/types";
 import { Row } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
-export default function buildColumnsFromConfig<T extends object>(configs: ColumnConfig[]): CustomColumnDef<T>[] {
+export default function buildColumnsFromConfig<T extends object>(
+  configs: ColumnConfig[],
+  hasSelect = true
+): CustomColumnDef<T>[] {
   const select: CustomColumnDef<T> = {
     id: "select",
     accessorKey: "select" as keyof T,
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
+    header: ({ table }) => {
+      return (
+        hasSelect && (
+          <Checkbox
+            checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
+          />
+        )
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        hasSelect && (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        )
+      );
+    },
     enableSorting: false,
     enableHiding: false,
   };
