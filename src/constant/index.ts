@@ -797,6 +797,30 @@ export const STATUS_BADGE = [
   },
 ];
 
+export const ACTION_BUTTONS_FOR_CONTRACT: IBtnType[] = [
+  {
+    tooltipContent: "Chỉnh sửa",
+    icon: PenTool,
+    arrowColor: "var(--color-primary)",
+    type: "default",
+    hasConfirm: true,
+  },
+  {
+    tooltipContent: "Tải lên Docx",
+    icon: Upload,
+    arrowColor: "var(--color-amber-500)",
+    type: "upload",
+    hasConfirm: false,
+  },
+  {
+    tooltipContent: "Tải xuống",
+    icon: Download,
+    arrowColor: "var(--color-emerald-500)",
+    type: "download",
+    hasConfirm: false,
+  },
+];
+
 export const ACTION_BUTTONS: IBtnType[] = [
   {
     tooltipContent: "Thêm mới",

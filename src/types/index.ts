@@ -20,9 +20,9 @@ import {
   MeterType,
   InvoiceStatus,
   InvoiceType,
- 
   ServiceCalculation,
   InvoiceItemType,
+  ServiceCategory,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -343,8 +343,6 @@ export type IUpdateAsset = ICreateAsset;
 // }
 
 // export type IUpdateAsset = ICreateAsset;
-
-
 
 export interface AssetResponse extends AbstractResponse {
   nameAsset: string;

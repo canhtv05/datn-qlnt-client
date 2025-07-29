@@ -165,7 +165,7 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: AddOr
         />
       </div> */}
 
-      <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full">
+      <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full">
         <FieldsSelectLabel
           data={assetType}
           placeholder="-- Chọn loại tài sản --"
@@ -174,8 +174,7 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: AddOr
           name="assetType"
           value={value.assetType ?? ""}
           onChange={(val) => {
-            console.log("Selected asset type:", val);
-            setValue((prev) => ({ ...prev, assetType: val as string }))
+            setValue((prev) => ({ ...prev, assetType: val as string }));
           }}
           labelSelect="Loại tài sản"
           showClear

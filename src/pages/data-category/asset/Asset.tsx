@@ -29,7 +29,6 @@ const Asset = () => {
     setValue,
     errors,
     ConfirmDialog,
-    assetsInfo,
   } = useAsset();
   const { page, size } = query;
 
@@ -84,7 +83,7 @@ const Asset = () => {
       },
     },
     { label: "Tài sản thuộc về", accessorKey: "assetBeLongTo", isSort: true, isCenter: true, hasBadge: true },
-    { label: "Tên loại tài sản", accessorKey: "assetType", isSort: true, isCenter: true },
+    { label: "Tên loại tài sản", accessorKey: "assetType", isSort: true, isCenter: true, hasBadge: true },
     // { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true, isCenter: true },
     // { label: "Tên tầng", accessorKey: "nameFloor", isSort: true, isCenter: true },
     // { label: "Mã phòng", accessorKey: "roomCode", isSort: true, hasHighlight: true, isCenter: true },
@@ -112,7 +111,7 @@ const Asset = () => {
 
   return (
     <div className="flex flex-col">
-      <AssetButton ids={rowSelection} assetsInfo={assetsInfo} />
+      <AssetButton ids={rowSelection} />
       <AssetFilter props={props} />
       <DataTable<AssetResponse>
         data={data?.data?.data ?? []}
@@ -133,14 +132,7 @@ const Asset = () => {
         onConfirm={handleUpdateFloor}
         desc={Notice.UPDATE}
       >
-        <AddOrUpdateAsset
-          assetsInfo={assetsInfo}
-          handleChange={handleChange}
-          value={value}
-          setValue={setValue}
-          errors={errors}
-          type="update"
-        />
+        <AddOrUpdateAsset handleChange={handleChange} value={value} setValue={setValue} errors={errors} type="update" />
       </Modal>
       <ConfirmDialog />
     </div>

@@ -13,21 +13,15 @@ import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
 import { createOrUpdateAssetSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { ApiResponse, CreateAssetInitResponse, IBtnType, ICreateAsset, IUpdateAsset } from "@/types";
+import { IBtnType, ICreateAsset, IUpdateAsset } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateAsset from "./AddOrUpdateAsset";
 
-const AssetButton = ({
-  ids,
-  assetsInfo,
-}: {
-  ids: Record<string, boolean>;
-  assetsInfo?: ApiResponse<CreateAssetInitResponse>;
-}) => {
+const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
   const [value, setValue] = useState<ICreateAsset>({
-    nameAsset: '',
+    nameAsset: "",
     assetType: "",
     assetBeLongTo: "",
     price: 0,
@@ -58,7 +52,7 @@ const AssetButton = ({
     onSuccess: () => {
       toast.success(Status.ADD_SUCCESS);
       setValue({
-        nameAsset: '',
+        nameAsset: "",
         assetType: "",
         assetBeLongTo: "",
         price: 0,
@@ -106,18 +100,11 @@ const AssetButton = ({
         assetStatus: assetStatus ?? "",
       };
 
-      console.log("Asset data:", data);
-
-      console.log("Asset data:");
-
-      console.log("before validation");
       await createOrUpdateAssetSchema.parseAsync(data);
-      console.log("after validation");
       await addAssetMutation.mutateAsync(data);
       clearErrors();
       return true;
     } catch (error) {
-      console.error("Validation error:", error);
       handleZodErrors(error);
       return false;
     }
@@ -189,7 +176,6 @@ const AssetButton = ({
                     onConfirm={handleAddAssetType}
                   >
                     <AddOrUpdateAsset
-                      assetsInfo={assetsInfo}
                       handleChange={handleChange}
                       value={value}
                       setValue={setValue}
