@@ -12,6 +12,7 @@ import { handleMutationError } from "@/utils/handleMutationError";
 import configs from "@/configs";
 import { RoleType } from "@/hooks/useHighestRole";
 import { getHighestRole } from "@/lib/utils";
+import axios from "axios";
 
 interface LoginValue {
   email: string;
@@ -31,11 +32,27 @@ export const useLogin = () => {
   const setIsLoading = useAuthStore((s) => s.setIsLoading);
 
   const loginMutation = useMutation({
-    mutationFn: async (): Promise<ApiResponse<UserResponse>> => {
-      const data = await httpRequest.post("/auth/login", { email: value.email, password: value.password });
-      return data.data;
+    // mutationFn: async (): Promise<ApiResponse<UserResponse>> => {
+    //   const data = await httpRequest.post("/auth/login", { email: value.email, password: value.password });
+    //   return data.data;
+    // },
+    mutationFn: async () => {
+      const payload = { email: value.email, password: value.password };
+      try {
+        const response = await httpRequest.post("/auth/login", payload);
+        return response.data;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.error("Error response:", error.response?.data);
+          console.error("Status:", error.response?.status);
+        } else {
+          console.error("Unknown error:", error);
+        }
+        throw error;
+      }
     },
     onSuccess: (data: ApiResponse<UserResponse>) => {
+      console.log(data)
       setUser(data.data, true);
       const token = {
         accessToken: data.meta?.tokenInfo?.accessToken,
@@ -54,6 +71,7 @@ export const useLogin = () => {
       }
     },
     onError: (error) => {
+      console.log(error);
       handleMutationError(error);
     },
   });

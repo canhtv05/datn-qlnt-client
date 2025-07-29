@@ -91,13 +91,14 @@ export const useServiceRoom = () => {
       if (query) params["query"] = query;
       if (status) params["status"] = status;
 
-      const res = await httpRequest.get("/service-rooms", {
-        params,
-      });
+      const res = await httpRequest.get("/service-rooms");
+
+      // console.log("Service Rooms Data:", res.data);
 
       return res.data;
     },
   });
+
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     e.stopPropagation();

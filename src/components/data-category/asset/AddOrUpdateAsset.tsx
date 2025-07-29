@@ -1,9 +1,9 @@
 import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
-import { AssetBeLongTo, AssetStatus } from "@/enums";
+import { AssetBeLongTo, AssetStatus, AssetType } from "@/enums";
 import { ApiResponse, CreateAssetInit2Response, ICreateAsset } from "@/types";
-import { Dispatch, useMemo } from "react";
+import { Dispatch } from "react";
 
 interface AddOrUpdateAssetProps {
   value: ICreateAsset;
@@ -15,10 +15,10 @@ interface AddOrUpdateAssetProps {
 }
 
 const assetBeLongTo: FieldsSelectLabelType[] = [
-  {
-    label: "Cá nhân",
-    value: AssetBeLongTo.CA_NHAN,
-  },
+  // {
+  //   label: "Cá nhân",
+  //   value: AssetBeLongTo.CA_NHAN,
+  // },
   {
     label: "Chung",
     value: AssetBeLongTo.CHUNG,
@@ -29,53 +29,71 @@ const assetBeLongTo: FieldsSelectLabelType[] = [
   },
 ];
 
-const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, type }: AddOrUpdateAssetProps) => {
-  const hasAnyLocationSelected = !!value.tenantId || !!value.buildingID || !!value.floorID || !!value.roomID;
+const assetType: FieldsSelectLabelType[] = [
+  {
+    label: "Gia dụng",
+    value: AssetType.GIA_DUNG,
+  },
+  {
+    label: "Vệ sinh",
+    value: AssetType.VE_SINH,
+  },
+  {
+    label: "Nội thất",
+    value: AssetType.NOI_THAT,
+  },
+  {
+    label: "Điện",
+    value: AssetType.DIEN,
+  },
+  {
+    label: "An ninh",
+    value: AssetType.AN_NINH,
+  },
+  {
+    label: "Khác",
+    value: AssetType.KHAC,
+  },
+];
 
-  const assetTypeOptions = useMemo(() => {
-    return (
-      assetsInfo?.data.assetTypes?.map((item) => ({
-        label: item.name,
-        value: item.id,
-      })) ?? []
-    );
-  }, [assetsInfo?.data.assetTypes]);
+const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: AddOrUpdateAssetProps) => {
+  // const hasAnyLocationSelected = !!value.tenantId || !!value.buildingID || !!value.floorID || !!value.roomID;
 
-  const buildingOptions = useMemo(() => {
-    return (
-      assetsInfo?.data.buildings?.map((item) => ({
-        label: item.name,
-        value: item.id,
-      })) ?? []
-    );
-  }, [assetsInfo?.data.buildings]);
+  // const buildingOptions = useMemo(() => {
+  //   return (
+  //     assetsInfo?.data.buildings?.map((item) => ({
+  //       label: item.name,
+  //       value: item.id,
+  //     })) ?? []
+  //   );
+  // }, [assetsInfo?.data.buildings]);
 
-  const floorOptions = useMemo(() => {
-    return (
-      assetsInfo?.data?.floors?.map((f) => ({
-        label: f.name,
-        value: f.id,
-      })) ?? []
-    );
-  }, [assetsInfo?.data?.floors]);
+  // const floorOptions = useMemo(() => {
+  //   return (
+  //     assetsInfo?.data?.floors?.map((f) => ({
+  //       label: f.name,
+  //       value: f.id,
+  //     })) ?? []
+  //   );
+  // }, [assetsInfo?.data?.floors]);
 
-  const roomOptions = useMemo(() => {
-    return (
-      assetsInfo?.data?.rooms?.map((r) => ({
-        label: r.name,
-        value: r.id,
-      })) ?? []
-    );
-  }, [assetsInfo?.data?.rooms]);
+  // const roomOptions = useMemo(() => {
+  //   return (
+  //     assetsInfo?.data?.rooms?.map((r) => ({
+  //       label: r.name,
+  //       value: r.id,
+  //     })) ?? []
+  //   );
+  // }, [assetsInfo?.data?.rooms]);
 
-  const tenantOptions = useMemo(() => {
-    return (
-      assetsInfo?.data?.tenants?.map((t) => ({
-        label: t.name,
-        value: t.id,
-      })) ?? []
-    );
-  }, [assetsInfo?.data?.tenants]);
+  // const tenantOptions = useMemo(() => {
+  //   return (
+  //     assetsInfo?.data?.tenants?.map((t) => ({
+  //       label: t.name,
+  //       value: t.id,
+  //     })) ?? []
+  //   );
+  // }, [assetsInfo?.data?.tenants]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -90,7 +108,7 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, t
         errorText={errors.nameAsset}
       />
 
-      <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full">
+      {/* <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full">
         <FieldsSelectLabel
           data={buildingOptions}
           placeholder="-- Chọn tòa nhà --"
@@ -145,20 +163,23 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, t
           errorText={errors.roomID}
           disabled={hasAnyLocationSelected && !value.roomID}
         />
-      </div>
+      </div> */}
 
       <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full">
         <FieldsSelectLabel
-          data={assetTypeOptions}
+          data={assetType}
           placeholder="-- Chọn loại tài sản --"
           label="Loại tài sản:"
-          id="assetTypeId"
-          name="assetTypeId"
-          value={value.assetTypeId ?? ""}
-          onChange={(val) => setValue((prev) => ({ ...prev, assetTypeId: val as string }))}
+          id="assetType"
+          name="assetType"
+          value={value.assetType ?? ""}
+          onChange={(val) => {
+            console.log("Selected asset type:", val);
+            setValue((prev) => ({ ...prev, assetType: val as string }))
+          }}
           labelSelect="Loại tài sản"
           showClear
-          errorText={errors.assetTypeId}
+          errorText={errors.assetType}
           required
         />
 
@@ -176,7 +197,7 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, t
           required
         />
 
-        <FieldsSelectLabel
+        {/* <FieldsSelectLabel
           data={tenantOptions}
           placeholder="-- Chọn khách thuê --"
           label="Khách thuê:"
@@ -188,7 +209,7 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, assetsInfo, t
           showClear
           errorText={errors.tenantId}
           disabled={hasAnyLocationSelected && !value.tenantId}
-        />
+        /> */}
       </div>
 
       {type === "update" && (

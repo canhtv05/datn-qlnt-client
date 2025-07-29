@@ -5,7 +5,7 @@ import { refreshTokenRequest } from "@/services/auth";
 export const httpRequest = axios.create({
   // baseURL: import.meta.env.VITE_BASE_URL,
   baseURL: "http://localhost:8080/api",
-  timeout: 10000,
+  timeout: 1000,
   headers: {
     "Content-Type": "application/json",
   },

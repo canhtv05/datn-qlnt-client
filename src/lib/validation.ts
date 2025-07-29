@@ -275,7 +275,7 @@ export const createOrUpdateRoomSchema = z
 /* ASSET */
 export const createOrUpdateAssetSchema = z.object({
   nameAsset: z.string().min(1, "Tên tài sản không được để trống"),
-  assetTypeId: z.string().min(1, "Vui lòng chọn loại tài sản"),
+  assetType: z.string().min(1, "Vui lòng chọn loại tài sản"),
   assetBeLongTo: z.enum([AssetBeLongTo.CA_NHAN, AssetBeLongTo.CHUNG, AssetBeLongTo.PHONG], {
     message: "Tài sản thuộc về không hợp lệ",
   }),

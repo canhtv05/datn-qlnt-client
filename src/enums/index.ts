@@ -92,6 +92,15 @@ export enum AssetBeLongTo {
   CA_NHAN = "CA_NHAN",
 }
 
+export enum AssetType {
+  GIA_DUNG = "GIA_DUNG",
+  VE_SINH = "VE_SINH",
+  NOI_THAT = "NOI_THAT",
+  DIEN = "DIEN",
+  AN_NINH = "AN_NINH",
+  KHAC = "KHAC",
+}
+
 export enum AssetStatus {
   SU_DUNG = "SU_DUNG",
   HU_HONG = "HU_HONG",

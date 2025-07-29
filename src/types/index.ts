@@ -20,7 +20,7 @@ import {
   MeterType,
   InvoiceStatus,
   InvoiceType,
-  ServiceCategory,
+ 
   ServiceCalculation,
   InvoiceItemType,
 } from "@/enums";
@@ -321,7 +321,7 @@ export interface CreateAssetInit2Response {
 /* Asset */
 export interface ICreateAsset {
   nameAsset: string;
-  assetTypeId: string;
+  assetType: string;
   assetBeLongTo: AssetBeLongTo | string;
   roomID: string;
   buildingID: string;
@@ -334,9 +334,21 @@ export interface ICreateAsset {
 
 export type IUpdateAsset = ICreateAsset;
 
+// export interface ICreateAsset {
+//   nameAsset: string;
+//   assetType: string;
+//   assetBeLongTo: string;
+//   price: number;
+//   descriptionAsset: string;
+// }
+
+// export type IUpdateAsset = ICreateAsset;
+
+
+
 export interface AssetResponse extends AbstractResponse {
   nameAsset: string;
-  assetTypeId: string;
+  assetType: string;
   nameAssetType: string;
   assetBeLongTo: AssetBeLongTo | string;
   roomID: string;
