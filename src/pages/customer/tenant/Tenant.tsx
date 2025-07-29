@@ -13,6 +13,7 @@ import TenantFilter from "@/components/customer/tenant/TenantFilter";
 import AddOrUpdateTenant from "@/components/customer/tenant/AddOrUpdateTenant";
 import { GET_BTNS } from "@/constant";
 import StatusBadge from "@/components/ui/StatusBadge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Tenant = () => {
   const {
@@ -81,6 +82,19 @@ const Tenant = () => {
       },
     },
     { label: "Họ tên", accessorKey: "fullName", isSort: true },
+    {
+      label: "Hình ảnh",
+      accessorKey: "pictureUrl",
+      isCenter: true,
+      render(row) {
+        return (
+          <Avatar className="h-8 w-8">
+            <AvatarImage src={row.pictureUrl} alt={row.fullName} />
+            <AvatarFallback>{row.fullName?.charAt(0).toUpperCase() || "N/A"}</AvatarFallback>
+          </Avatar>
+        );
+      },
+    },
     { label: "Giới tính", accessorKey: "gender", isSort: true, isCenter: true, hasBadge: true },
     { label: "Ngày sinh", accessorKey: "dob", isSort: true },
     { label: "Email", accessorKey: "email", isSort: true },

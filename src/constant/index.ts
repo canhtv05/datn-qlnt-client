@@ -29,9 +29,6 @@ import {
 import { IBtnType } from "@/types";
 import {
   Download,
-  Banknote,
-  Bell,
-  CalendarRange,
   Car,
   DoorOpen,
   FileText,
@@ -39,7 +36,6 @@ import {
   Layers,
   LucideIcon,
   PenTool,
-  PieChart,
   Plus,
   Scale,
   Trash2,
@@ -150,14 +146,14 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
       icon: Handshake,
       items: [
         {
-          title: "Hợp đồng",
-          url: "/customers/contracts",
-          icon: FileText,
-        },
-        {
           title: "Khách hàng",
           url: "/customers/tenants",
           icon: UsersRound,
+        },
+        {
+          title: "Hợp đồng",
+          url: "/customers/contracts",
+          icon: FileText,
         },
         {
           title: "Phương tiện",
@@ -186,34 +182,6 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
           title: "Hóa đơn",
           url: "/finance/invoice",
           icon: FileText,
-        },
-      ],
-    },
-    {
-      title: "Gửi thông báo",
-      url: "/notifications",
-      icon: Bell,
-    },
-    {
-      label: "Báo cáo",
-      title: "Báo cáo tài chính",
-      url: "/financial-reports",
-      icon: PieChart,
-      items: [
-        {
-          title: "Dòng tiền",
-          icon: Banknote,
-          url: "/financial-reports/cash-flow",
-        },
-        {
-          title: "Danh sách tiền cọc",
-          icon: FileText,
-          url: "/financial-reports/deposits",
-        },
-        {
-          title: "Lịch thanh toán",
-          icon: CalendarRange,
-          url: "/financial-reports/payment-schedule",
         },
       ],
     },

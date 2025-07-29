@@ -401,6 +401,8 @@ export interface VehicleStatisticsResponse {
 export interface TenantDetailResponse extends AbstractResponse {
   customerCode: string;
   buildingName: string;
+  buildingAddress: string;
+  floorName: string;
   roomCode: string;
   fullName: string;
   gender: Gender | string;
@@ -408,6 +410,7 @@ export interface TenantDetailResponse extends AbstractResponse {
   email: string;
   phoneNumber: string;
   identityCardNumber: string;
+  pictureUrl: string;
   address: string;
   contractCode: string;
   endDate: string;
@@ -420,6 +423,7 @@ export default interface TenantResponse extends AbstractResponse {
   gender: Gender | string;
   dob: string;
   email: string;
+  pictureUrl: string;
   phoneNumber: string;
   tenantStatus: TenantStatus | string;
   isRepresentative: string;

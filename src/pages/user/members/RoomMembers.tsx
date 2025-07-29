@@ -100,7 +100,7 @@ const RoomMembers = () => {
 
   return (
     <Overlay>
-      <div className="bg-background rounded-md w-full pb-5 max-h-[90vh] overflow-hidden flex flex-col">
+      <div className="bg-background rounded-ms w-full pb-5 max-h-[90vh] overflow-hidden flex flex-col">
         <div className="px-4 py-3 border-b border-border shrink-0">
           <h3 className="font-semibold">Thành viên trong phòng</h3>
         </div>

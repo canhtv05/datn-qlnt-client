@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { ReactNode, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -26,7 +25,7 @@ const Overlay = ({ children }: OverlayProps) => {
         if (e.target === e.currentTarget) navigate(-1);
       }}
     >
-      <div className={cn("relative mx-auto max-w-full w-full sm:w-auto")}>{children}</div>
+      <div className="w-full max-w-[90%]">{children}</div>
     </div>
   );
 };
