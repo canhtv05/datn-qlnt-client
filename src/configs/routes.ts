@@ -30,7 +30,6 @@ const routes = {
   },
   serviceMng: {
     roomService: "/service-management/room-services",
-    defaultService: "/service-management/default-services",
     service: "/service-management/services",
   },
   customer: {

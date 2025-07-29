@@ -1,12 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { useLogin } from "./useLogin";
 import InputLabel from "@/components/InputLabel";
 import { svg } from "@/assets/svg";
+import { FormEvent } from "react";
 
 const Login = () => {
   const { handleSubmitForm, value, setValue, errors, handleLoginWithGoogle } = useLogin();
+  const navigate = useNavigate();
+
+  const handleSubmitFormTest = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSubmitForm(e);
+    navigate("/dashboard");
+  }
 
   return (
     <>
@@ -14,7 +22,7 @@ const Login = () => {
       <p className="text-label mb-2 text-[14px] text-left w-full mt-2">
         Chào mừng bạn trở lại với TroHub, đăng nhập và tận hưởng
       </p>
-      <form className="w-full mt-5" onSubmit={handleSubmitForm}>
+      <form className="w-full mt-5" onSubmit={handleSubmitFormTest}>
         <InputLabel
           name="email"
           type="text"

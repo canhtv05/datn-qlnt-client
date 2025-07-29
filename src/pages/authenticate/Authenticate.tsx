@@ -97,8 +97,8 @@ const Authenticate = () => {
               {authStatus === "error"
                 ? "Vui lòng thử lại hoặc liên hệ với hỗ trợ nếu vấn đề vẫn còn."
                 : authStatus === "success" && showSuccessScreen
-                ? "Chuyển hướng trong giây lát..."
-                : "Vui lòng đợi trong khi chúng tôi thiết lập tài khoản của bạn."}
+                  ? "Chuyển hướng trong giây lát..."
+                  : "Vui lòng đợi trong khi chúng tôi thiết lập tài khoản của bạn."}
             </p>
           </div>
         </div>

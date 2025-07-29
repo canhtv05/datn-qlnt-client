@@ -31,7 +31,7 @@ export const useAsset = () => {
   const idRef = useRef<string>("");
   const [value, setValue] = useState<IUpdateAsset>({
     assetBeLongTo: "",
-    assetTypeId: "",
+    assetType: "",
     buildingID: "",
     descriptionAsset: "",
     floorID: "",
@@ -146,7 +146,7 @@ export const useAsset = () => {
     try {
       const {
         assetBeLongTo,
-        assetTypeId,
+        assetType,
         buildingID,
         descriptionAsset,
         floorID,
@@ -159,7 +159,7 @@ export const useAsset = () => {
 
       const data: IUpdateAsset = {
         assetBeLongTo,
-        assetTypeId: assetTypeId ?? "",
+        assetType: assetType ?? "",
         buildingID: buildingID ?? "",
         descriptionAsset: descriptionAsset.trim(),
         floorID: floorID ?? "",
@@ -176,7 +176,7 @@ export const useAsset = () => {
         onSuccess: () => {
           setValue({
             assetBeLongTo: "",
-            assetTypeId: "",
+            assetType: "",
             buildingID: "",
             descriptionAsset: "",
             floorID: "",
@@ -207,7 +207,7 @@ export const useAsset = () => {
       if (action === "update") {
         setValue({
           assetBeLongTo: asset.assetBeLongTo,
-          assetTypeId: asset.assetTypeId,
+          assetType: asset.assetType,
           buildingID: asset.buildingID,
           descriptionAsset: asset.descriptionAsset,
           floorID: asset.floorID,

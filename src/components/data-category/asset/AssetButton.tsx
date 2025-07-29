@@ -27,16 +27,16 @@ const AssetButton = ({
   assetsInfo?: ApiResponse<CreateAssetInitResponse>;
 }) => {
   const [value, setValue] = useState<ICreateAsset>({
+    nameAsset: '',
+    assetType: "",
     assetBeLongTo: "",
-    assetTypeId: "",
-    buildingID: "",
+    price: 0,
     descriptionAsset: "",
+    buildingID: "",
     floorID: "",
-    nameAsset: "",
-    price: undefined,
     roomID: "",
-    assetStatus: "",
     tenantId: "",
+    assetStatus: "",
   });
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAsset>();
@@ -58,13 +58,13 @@ const AssetButton = ({
     onSuccess: () => {
       toast.success(Status.ADD_SUCCESS);
       setValue({
+        nameAsset: '',
+        assetType: "",
         assetBeLongTo: "",
-        assetTypeId: "",
-        buildingID: "",
+        price: 0,
         descriptionAsset: "",
+        buildingID: "",
         floorID: "",
-        nameAsset: "",
-        price: undefined,
         roomID: "",
         tenantId: "",
         assetStatus: "",
@@ -81,7 +81,7 @@ const AssetButton = ({
     try {
       const {
         assetBeLongTo,
-        assetTypeId,
+        assetType,
         buildingID,
         descriptionAsset,
         floorID,
@@ -93,23 +93,31 @@ const AssetButton = ({
       } = value;
 
       const data: IUpdateAsset = {
-        assetBeLongTo,
-        assetTypeId: assetTypeId ?? "",
-        buildingID: buildingID ?? "",
-        descriptionAsset: descriptionAsset.trim(),
-        floorID: floorID ?? "",
         nameAsset: nameAsset.trim(),
-        price,
+        // assetType: assetType ?? "",
+        assetType: assetType ?? "",
+        assetBeLongTo: assetBeLongTo ?? "",
+        price: price ?? 0,
+        descriptionAsset: descriptionAsset.trim() ?? "",
+        buildingID: buildingID ?? "",
+        floorID: floorID ?? "",
         roomID: roomID ?? "",
         tenantId: tenantId ?? "",
-        assetStatus,
+        assetStatus: assetStatus ?? "",
       };
 
+      console.log("Asset data:", data);
+
+      console.log("Asset data:");
+
+      console.log("before validation");
       await createOrUpdateAssetSchema.parseAsync(data);
+      console.log("after validation");
       await addAssetMutation.mutateAsync(data);
       clearErrors();
       return true;
     } catch (error) {
+      console.error("Validation error:", error);
       handleZodErrors(error);
       return false;
     }
