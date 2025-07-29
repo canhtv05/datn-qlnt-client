@@ -106,13 +106,7 @@ const AssetButton = ({
         assetStatus: assetStatus ?? "",
       };
 
-      console.log("Asset data:", data);
-
-      console.log("Asset data:");
-
-      console.log("before validation");
       await createOrUpdateAssetSchema.parseAsync(data);
-      console.log("after validation");
       await addAssetMutation.mutateAsync(data);
       clearErrors();
       return true;
@@ -168,7 +162,7 @@ const AssetButton = ({
   });
 
   return (
-    <div className="h-full bg-background rounded-t-sm">
+    <div className="h-full bg-background rounded-t-sm mt-4">
       <div className="flex px-4 py-3 justify-between items-center">
         <h3 className="font-semibold">Tài sản</h3>
         <div className="flex gap-2">

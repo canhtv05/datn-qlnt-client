@@ -20,6 +20,7 @@ const buttonVariants = cva(
         upload: "bg-amber-500 hover:bg-amber-400",
         download: "bg-emerald-500 hover:bg-emerald-400",
         delete: "bg-red-400 hover:bg-red-300",
+        toggle: "bg-purple-400 hover:bg-purple-300",
         update: "bg-[#44475A] hover:bg-[#5a5e78]",
         status: "bg-sky-600 hover:bg-sky-500",
         view: "bg-emerald-500 hover:bg-emerald-400",

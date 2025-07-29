@@ -1,3 +1,4 @@
+import { StatisticCardType } from "@/components/StatisticCard";
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
 import { createOrUpdateAssetSchema } from "@/lib/validation";
@@ -6,6 +7,7 @@ import {
   AssetFilter,
   AssetResponse,
   CreateAssetInit2Response,
+  IAssetStatisticsResponse,
   IUpdateAsset,
   PaginatedResponse,
 } from "@/types";
@@ -13,6 +15,8 @@ import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { is } from "date-fns/locale";
+import { CircleCheck, CircleDollarSign, XCircle } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -105,6 +109,35 @@ export const useAsset = () => {
     }));
   };
 
+  const { data: statistics, isError: isStatisticsError } = useQuery<ApiResponse<IAssetStatisticsResponse>>({
+      queryKey: ["asset-statistics"],
+      queryFn: async () => {
+        const res = await httpRequest.get("/assets/statistics");
+        return res.data;
+      },
+      retry: 1,
+    });
+
+  console.log("Asset statistics:", statistics);
+
+  const dataAssets: StatisticCardType[] = [
+    {
+      icon: CircleDollarSign,
+      label: "Tòa nhà",
+      value: statistics?.data.totalAssets ?? 0,
+    },
+    {
+      icon: CircleCheck,
+      label: "Hoạt động",
+      value: statistics?.data.activeAssets ?? 0,
+    },
+    {
+      icon: XCircle,
+      label: "Không hoạt động",
+      value: statistics?.data.inactiveAssets ?? 0,
+    },
+  ];
+
   const updateAssetMutation = useMutation({
     mutationKey: ["update-assets"],
     mutationFn: async (payload: IUpdateAsset) => await httpRequest.put(`/assets/${idRef.current}`, payload),
@@ -115,15 +148,38 @@ export const useAsset = () => {
 
   const removeAssetMutation = useMutation({
     mutationKey: ["remove-assets"],
-    mutationFn: async (id: string) => await httpRequest.delete(`/assets/${id}`),
+    mutationFn: async (id: string) => await httpRequest.delete(`/assets/soft-delete/${id}`),
+  });
+
+  const toggleStatusBuildingMutation = useMutation({
+    mutationKey: ["toggle-assets"],
+    mutationFn: async (id: string) => await httpRequest.put(`/assets/toggle/${id}`),
   });
 
   const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" }>({
     onConfirm: async ({ id, type }) => {
       if (type === "delete") return await handleRemoveAssetById(id);
+      if (type === "toggle") return await handleToggleStatusBuildingById(id);
       return false;
     },
   });
+
+  const handleToggleStatusBuildingById = async (id: string): Promise<boolean> => {
+    try {
+      await toggleStatusBuildingMutation.mutateAsync(id, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
+          });
+          toast.success(Status.UPDATE_SUCCESS);
+        },
+      });
+      return true;
+    } catch (error) {
+      handleMutationError(error);
+      return false;
+    }
+  }
 
   const handleRemoveAssetById = async (id: string): Promise<boolean> => {
     try {
@@ -202,7 +258,7 @@ export const useAsset = () => {
   }, [updateAssetMutation, clearErrors, handleZodErrors, queryClient, value]);
 
   const handleActionClick = useCallback(
-    (asset: AssetResponse, action: "update") => {
+    (asset: AssetResponse, action: "update" | "toggle" | "delete") => {
       idRef.current = asset.id;
       if (action === "update") {
         setValue({
@@ -218,12 +274,20 @@ export const useAsset = () => {
           assetStatus: asset.assetStatus,
         });
         setIsModalOpen(true);
-      } else {
+      } else if(action === "delete") {
         openDialog(
           { id: asset.id, type: action },
           {
             type: "warn",
             desc: Notice.REMOVE,
+          }
+        );
+      } else {
+        openDialog(
+          { id: asset.id, type: action },
+          {
+            type: "info",
+            desc: Notice.TOGGLE_STATUS,
           }
         );
       }
@@ -266,6 +330,7 @@ export const useAsset = () => {
     setSearchParams,
     props,
     data,
+    dataAssets,
     isLoading,
     handleActionClick,
     rowSelection,

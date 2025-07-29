@@ -11,11 +11,13 @@ import AssetButton from "@/components/data-category/asset/AssetButton";
 import AssetFilter from "@/components/data-category/asset/AssetFilter";
 import AddOrUpdateAsset from "@/components/data-category/asset/AddOrUpdateAsset";
 import { GET_BTNS } from "@/constant";
+import StatisticCard from "@/components/StatisticCard";
 
 const Asset = () => {
   const {
     props,
     data,
+    dataAssets,
     isLoading,
     query,
     handleActionClick,
@@ -44,7 +46,7 @@ const Asset = () => {
         const asset: AssetResponse = row;
         return (
           <div className="flex gap-2">
-            {GET_BTNS("update", "delete").map((btn, index) => (
+            {GET_BTNS("update", "delete", "toggle").map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -53,7 +55,8 @@ const Asset = () => {
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => {
-                        const type = btn.type as "update";
+                        // const type = btn.type as "update";
+                        const type = btn.type as "update" | "delete" | "toggle";
                         handleActionClick(asset, type);
                       }}
                     >
@@ -83,8 +86,8 @@ const Asset = () => {
         );
       },
     },
+    { label: "Loại tài sản", accessorKey: "assetType", isSort: true, isCenter: true, hasBadge: true },
     { label: "Tài sản thuộc về", accessorKey: "assetBeLongTo", isSort: true, isCenter: true, hasBadge: true },
-    { label: "Tên loại tài sản", accessorKey: "assetType", isSort: true, isCenter: true },
     // { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true, isCenter: true },
     // { label: "Tên tầng", accessorKey: "nameFloor", isSort: true, isCenter: true },
     // { label: "Mã phòng", accessorKey: "roomCode", isSort: true, hasHighlight: true, isCenter: true },
@@ -112,6 +115,7 @@ const Asset = () => {
 
   return (
     <div className="flex flex-col">
+      <StatisticCard data={dataAssets} />
       <AssetButton ids={rowSelection} assetsInfo={assetsInfo} />
       <AssetFilter props={props} />
       <DataTable<AssetResponse>

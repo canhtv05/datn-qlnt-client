@@ -35,6 +35,7 @@ export interface IBtnType {
   arrowColor: string;
   type:
     | "default"
+    | "toggle"
     | "upload"
     | "delete"
     | "download"
@@ -330,6 +331,12 @@ export interface ICreateAsset {
   price: number | undefined;
   assetStatus: AssetStatus | string;
   descriptionAsset: string;
+}
+
+export interface IAssetStatisticsResponse {
+  activeAssets: number;
+  totalAssets: number;
+  inactiveAssets: number;
 }
 
 export type IUpdateAsset = ICreateAsset;

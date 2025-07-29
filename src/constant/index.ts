@@ -25,6 +25,7 @@ import {
   ServiceCategory,
   ServiceCalculation,
   InvoiceItemType,
+  AssetType,
 } from "@/enums";
 import { IBtnType } from "@/types";
 import {
@@ -62,6 +63,7 @@ import {
   Handshake,
   BookOpenCheck,
   Zap,
+  ToggleLeft,
 } from "lucide-react";
 
 export interface SideBarType {
@@ -470,6 +472,39 @@ export const STATUS_BADGE = [
     label: "Cá nhân",
     className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
   },
+
+    // --- Loại tài sản ---
+  {
+    value: AssetType.GIA_DUNG,
+    label: "Gia dụng",
+    className: "text-rose-600 bg-rose-100 border border-rose-200 hover:bg-rose-200 hover:text-rose-700",
+  },
+  {
+    value: AssetType.VE_SINH,
+    label: "Vệ sinh",
+    className: "text-lime-600 bg-lime-100 border border-lime-200 hover:bg-lime-200 hover:text-lime-700",
+  },
+  {
+    value: AssetType.NOI_THAT,
+    label: "Nội thất",
+    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+  },
+  {
+    value: AssetType.DIEN,
+    label: "Điện",
+    className: "text-pink-600 bg-pink-100 border border-pink-200 hover:bg-pink-200 hover:text-pink-700",
+  },
+  {
+    value: AssetType.AN_NINH,
+    label: "An ninh",
+    className: "text-sky-600 bg-sky-100 border border-sky-200 hover:bg-sky-200 hover:text-sky-700",
+  },
+  {
+    value: AssetType.KHAC,
+    label: "Khác",
+    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+  },
+
 
   // --- Trạng thái tài sản ---
   {
@@ -885,6 +920,13 @@ export const BTNS: IBtnType[] = [
     icon: SquarePen,
     arrowColor: "#44475A",
     type: "update",
+    hasConfirm: true,
+  },
+  {
+    tooltipContent: "Chuyển đổi",
+    icon: ToggleLeft,
+    arrowColor: "#44475A",
+    type: "toggle",
     hasConfirm: true,
   },
   {
