@@ -46,6 +46,7 @@ const routes = {
     meterReading: "/finance/meter-reading",
     meterReadingId: "/finance/meter-reading/:id",
     invoice: "/finance/invoice",
+    paymentReceipt: "/finance/payment-receipt",
     invoiceId: "/finance/invoice/:id",
     invoiceViewId: "/finance/invoice/view/:id",
   },

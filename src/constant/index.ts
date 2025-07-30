@@ -25,6 +25,8 @@ import {
   ServiceCategory,
   ServiceCalculation,
   InvoiceItemType,
+  PaymentStatus,
+  PaymentMethod,
 } from "@/enums";
 import { IBtnType } from "@/types";
 import {
@@ -58,6 +60,8 @@ import {
   Handshake,
   BookOpenCheck,
   Zap,
+  ScrollText,
+  Banknote,
 } from "lucide-react";
 
 export interface SideBarType {
@@ -182,6 +186,11 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
           title: "Hóa đơn",
           url: "/finance/invoice",
           icon: FileText,
+        },
+        {
+          title: "Phiếu thanh toán",
+          url: "/finance/payment-receipt",
+          icon: ScrollText,
         },
       ],
     },
@@ -795,6 +804,64 @@ export const STATUS_BADGE = [
     label: "Đền bù",
     className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
   },
+  // Phương thức thanh toán
+  {
+    value: PaymentMethod.CHON_PHUONG_THUC,
+    label: "Chọn phương thức",
+    className: "text-orange-500 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+  },
+  {
+    value: PaymentMethod.TIEN_MAT,
+    label: "Tiền mặt",
+    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+  },
+  {
+    value: PaymentMethod.CHUYEN_KHOAN,
+    label: "Chuyển khoản",
+    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+  },
+  {
+    value: PaymentMethod.VNPAY,
+    label: "VNPay",
+    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+  },
+  {
+    value: PaymentMethod.ZALOPAY,
+    label: "ZaloPay",
+    className: "text-pink-600 bg-pink-100 border border-pink-200 hover:bg-pink-200 hover:text-pink-700",
+  },
+  {
+    value: PaymentMethod.MOMO,
+    label: "MoMo",
+    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+  },
+
+  // Trạng thái thanh toán
+  {
+    value: PaymentStatus.CHO_THANH_TOAN,
+    label: "Chờ thanh toán",
+    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+  },
+  {
+    value: PaymentStatus.CHO_XAC_NHAN,
+    label: "Chờ xác nhận",
+    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+  },
+  {
+    value: PaymentStatus.DA_THANH_TOAN,
+    label: "Đã thanh toán",
+    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+  },
+  {
+    value: PaymentStatus.TU_CHOI,
+    label: "Từ chối",
+    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+  },
+  {
+    value: PaymentStatus.HUY,
+    label: "Hủy",
+    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+  },
 ];
 
 export const ACTION_BUTTONS_FOR_CONTRACT: IBtnType[] = [
@@ -896,3 +963,35 @@ export const BTNS: IBtnType[] = [
     hasConfirm: false,
   },
 ];
+
+/* PAYMENT RECEIPT */
+export const ACTION_BUTTONS_FOR_PAYMENT_RECEIPT = (type: PaymentMethod): IBtnType[] => {
+  const CASH: IBtnType[] = [
+    {
+      tooltipContent: "Thanh toán tiền mặt",
+      icon: Banknote,
+      arrowColor: "var(--color-amber-500)",
+      type: "cash",
+      hasConfirm: false,
+    },
+  ];
+
+  const res: IBtnType[] = [
+    {
+      tooltipContent: "Xem",
+      icon: Eye,
+      arrowColor: "var(--color-emerald-500)",
+      type: "view",
+      hasConfirm: false,
+    },
+    {
+      tooltipContent: "Xóa",
+      icon: Trash2,
+      arrowColor: "var(--color-red-400)",
+      type: "delete",
+      hasConfirm: true,
+    },
+  ];
+
+  return type === PaymentMethod.TIEN_MAT ? [...CASH, ...res] : res;
+};
