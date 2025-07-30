@@ -111,14 +111,19 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
       url: "/asset-management",
       icon: Scale,
       items: [
-        {
-          title: "Loại tài sản",
-          url: "/asset-management/asset-types",
-          icon: Wrench,
-        },
+        // {
+        //   title: "Loại tài sản",
+        //   url: "/asset-management/asset-types",
+        //   icon: Wrench,
+        // },
         {
           title: "Tài sản",
           url: "/asset-management/assets",
+          icon: Scale,
+        },
+        {
+          title: "Tài sản phòng",
+          url: "/asset-management/room-assets",
           icon: Scale,
         },
       ],
@@ -866,6 +871,7 @@ export const formatNumberField = {
   price: (val: number) => `${val.toLocaleString("vi-VN")} VNĐ`,
   acreage: (val: number) => `${val.toLocaleString("vi-VN")} m²`,
   maximumPeople: (val: number) => `${val} người/phòng`,
+  asset: (val: number) => `${val} tài sản`,
 };
 
 export const GENDER_OPTIONS = [

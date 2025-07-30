@@ -28,6 +28,8 @@ const routes = {
   assetMng: {
     assetType: "/asset-management/asset-types",
     asset: "/asset-management/assets",
+    roomAsset: "/asset-management/room-assets",
+    roomId: "/asset-management/room-assets/:id",
   },
   serviceMng: {
     roomService: "/service-management/room-services",

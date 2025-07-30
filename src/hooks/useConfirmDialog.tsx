@@ -52,8 +52,8 @@ export const useConfirmDialog = <T = void,>({ onConfirm, desc, type = "warn" }: 
       typeof mergedDesc === "function" && payload !== undefined
         ? mergedDesc(payload)
         : typeof mergedDesc === "string"
-        ? mergedDesc
-        : "Bạn có chắc chắn muốn tiếp tục không?";
+          ? mergedDesc
+          : "Bạn có chắc chắn muốn tiếp tục không?";
 
     return (
       <AlertDialog open={open} onOpenChange={setOpen}>
@@ -61,9 +61,8 @@ export const useConfirmDialog = <T = void,>({ onConfirm, desc, type = "warn" }: 
           <AlertDialogHeader className="items-center">
             <AlertDialogTitle>
               <div
-                className={`mb-2 mx-auto flex h-14 w-14 items-center justify-center rounded-full ${
-                  mergedType === "warn" ? "bg-orange-500/10" : "bg-primary/10"
-                }`}
+                className={`mb-2 mx-auto flex h-14 w-14 items-center justify-center rounded-full ${mergedType === "warn" ? "bg-orange-500/10" : "bg-primary/10"
+                  }`}
               >
                 <OctagonAlert className={`h-7 w-7 ${mergedType === "warn" ? "text-orange-500" : "text-primary"}`} />
               </div>
@@ -99,4 +98,4 @@ export const useConfirmDialog = <T = void,>({ onConfirm, desc, type = "warn" }: 
     ConfirmDialog,
     openDialog,
   };
-};
+}

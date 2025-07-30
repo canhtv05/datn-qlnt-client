@@ -225,6 +225,19 @@ export const createOrUpdateAssetTypeSchema = z.object({
   }),
   discriptionAssetType: z.string().min(1, "Mô tả không được để trống"),
 });
+
+/* ROOM ASSET */
+export const roomAssetFormSchema = z.object({
+  assetBeLongTo: z.string().min(1, { message: "Trường 'Thuộc về' không được để trống" }),
+  roomId: z.string().min(1, { message: "Phòng không được để trống" }),
+  assetId: z.string().min(1, { message: "Mã tài sản không được để trống" }),
+  assetName: z.string().min(1, { message: "Tên tài sản không được để trống" }),
+  price: z.number()
+           .refine((val) => typeof val === "number" && !isNaN(val), { message: "Giá phải là số" })
+           .nonnegative({ message: "Giá không được nhỏ hơn 0" }),
+  description: z.string().nullable(),
+});
+
 /* ROOM */
 export const createOrUpdateRoomSchema = z
   .object({

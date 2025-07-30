@@ -249,6 +249,7 @@ export type RoomFormValue = {
   description: string;
   buildingId?: string;
 };
+
 export type RoomDeleteRequest = {
   floorId: string;
   roomCode: string;
@@ -334,25 +335,12 @@ export interface ICreateAsset {
 }
 
 export interface IAssetStatisticsResponse {
-  activeAssets: number;
+  totalActiveAssets: number;
   totalAssets: number;
-  inactiveAssets: number;
+  totalDisabledAssets: number;
 }
 
 export type IUpdateAsset = ICreateAsset;
-
-// export interface ICreateAsset {
-//   nameAsset: string;
-//   assetType: string;
-//   assetBeLongTo: string;
-//   price: number;
-//   descriptionAsset: string;
-// }
-
-// export type IUpdateAsset = ICreateAsset;
-
-
-
 export interface AssetResponse extends AbstractResponse {
   nameAsset: string;
   assetType: string;
@@ -376,6 +364,46 @@ export interface AssetFilter {
   assetBeLongTo: AssetBeLongTo | string;
   assetStatus: AssetStatus | string;
 }
+
+/* Room Asset */
+export type AssetBeLongTo = "PHONG" | "CHUNG";
+
+export type RoomAssetFormValue = {
+  assetBeLongTo: "PHONG" | string; 
+  roomId: string;
+  assetId: string;
+  assetName: string;
+  price: number;
+  description: string;
+};
+
+export type RoomAssetAllFormValue = {
+  id: string;
+  roomCode: string;
+  totalAssets: number;
+  roomType: RoomType | string;
+  status: RoomStatus | string;
+  description: string;
+};
+
+export type RoomAssetAllResponse = {
+  id: string;
+  roomCode: string;
+  totalAssets: number;
+  roomType:  RoomType | string;
+  status: RoomStatus | string;
+  description: string;
+}
+
+export type RoomAssetResponse = {
+  id: string;
+  roomCode: string;
+  roomType:  RoomType; // or RoomType if you have an enum
+  status: RoomStatus;   // or RoomStatus if you have an enum
+  description: string;
+  assets: RoomAssetItem[];
+}
+
 
 /* VEHICLE */
 export interface VehicleResponse extends AbstractResponse {

@@ -21,8 +21,12 @@ import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
-export const useAsset = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+interface AssetProps {
+    roomId: string;
+}
+
+export const useRoomAsset = ({ roomId }: AssetProps) => {
+    const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
     size = "15",
@@ -81,7 +85,7 @@ export const useAsset = () => {
   }, [filterValues.assetBeLongTo, filterValues.assetStatus, filterValues.nameAsset, setSearchParams]);
 
   const { data, isLoading, isError } = useQuery<ApiResponse<PaginatedResponse<AssetResponse[]>>>({
-    queryKey: ["assets", page, size, nameAsset, assetBeLongTo, assetStatus],
+    queryKey: ["asset-rooms", page, size, nameAsset, assetBeLongTo, assetStatus],
     queryFn: async () => {
       const params: Record<string, string> = {
         page: page.toString(),
@@ -92,7 +96,7 @@ export const useAsset = () => {
       if (assetStatus) params["assetStatus"] = assetStatus;
       if (assetBeLongTo) params["assetBeLongTo"] = assetBeLongTo;
 
-      const res = await httpRequest.get("/assets", {
+      const res = await httpRequest.get(`/asset-rooms/${roomId}`, {
         params,
       });
 
@@ -118,7 +122,6 @@ export const useAsset = () => {
       retry: 1,
     });
 
-  console.log("Asset statistics:", statistics);
 
   const dataAssets: StatisticCardType[] = [
     {
@@ -146,30 +149,30 @@ export const useAsset = () => {
     },
   });
 
-  const removeAssetMutation = useMutation({
-    mutationKey: ["remove-assets"],
-    mutationFn: async (id: string) => await httpRequest.delete(`/assets/soft-delete/${id}`),
+  const removeRoomAssetMutation = useMutation({
+    mutationKey: ["remove-room-assets"],
+    mutationFn: async (id: string) => await httpRequest.delete(`/asset-rooms/${id}`),
   });
 
-  const toggleStatusBuildingMutation = useMutation({
-    mutationKey: ["toggle-assets"],
-    mutationFn: async (id: string) => await httpRequest.put(`/assets/toggle/${id}`),
+  const toggleStatusRoomAssetMutation = useMutation({
+    mutationKey: ["toggle-room-assets"],
+    mutationFn: async (id: string) => await httpRequest.put(`/asset-rooms/toggle/${id}`),
   });
 
   const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" }>({
     onConfirm: async ({ id, type }) => {
-      if (type === "delete") return await handleRemoveAssetById(id);
-      if (type === "toggle") return await handleToggleStatusBuildingById(id);
+      if (type === "delete") return await handleRemoveRoomAssetById(id);
+      if (type === "toggle") return await handleToggleStatusRoomAssetById(id);
       return false;
     },
   });
 
-  const handleToggleStatusBuildingById = async (id: string): Promise<boolean> => {
+  const handleToggleStatusRoomAssetById = async (id: string): Promise<boolean> => {
     try {
-      await toggleStatusBuildingMutation.mutateAsync(id, {
+      await toggleStatusRoomAssetMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
           });
           toast.success(Status.UPDATE_SUCCESS);
         },
@@ -181,12 +184,12 @@ export const useAsset = () => {
     }
   }
 
-  const handleRemoveAssetById = async (id: string): Promise<boolean> => {
+  const handleRemoveRoomAssetById = async (id: string): Promise<boolean> => {
     try {
-      await removeAssetMutation.mutateAsync(id, {
+      await removeRoomAssetMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
           });
           toast.success(Status.REMOVE_SUCCESS);
         },
@@ -275,6 +278,7 @@ export const useAsset = () => {
         });
         setIsModalOpen(true);
       } else if(action === "delete") {
+        console.log('hehehe')
         openDialog(
           { id: asset.id, type: action },
           {

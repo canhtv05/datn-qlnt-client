@@ -85,6 +85,7 @@ export enum RoomType {
   DON = "DON",
   KHAC = "KHAC",
 }
+
 /* Asset */
 export enum AssetBeLongTo {
   PHONG = "PHONG",
