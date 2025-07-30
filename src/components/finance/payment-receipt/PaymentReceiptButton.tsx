@@ -31,6 +31,32 @@ const PaymentReceiptButton = ({ ids }: { ids: Record<string, boolean> }) => {
     },
   });
 
+  const { ConfirmDialog, openDialog } = useConfirmDialog<Record<string, boolean>>({
+    onConfirm: async (ids?: Record<string, boolean>) => {
+      if (!ids || !Object.values(ids).some(Boolean)) return false;
+      return await handleRemovePaymentReceiptByIds(ids);
+    },
+    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các phiếu thanh toán đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    type: "warn",
+  });
+
+  const { ConfirmDialog: ConfirmDialogSendPaymentNotice, openDialog: openDialogSendPaymentNotice } = useConfirmDialog({
+    onConfirm: async () => {
+      return await handleSendPaymentNotice();
+    },
+    desc: "Thao tác này sẽ tạo phiếu thanh toán. Bạn có chắc chắn muốn tiếp tục không?",
+    type: "default",
+  });
+
+  const handleButton = useCallback(
+    (btn: IBtnType) => {
+      if (btn.type === "delete" || btn.type === "default") {
+        openDialog(ids);
+      }
+    },
+    [ids, openDialog]
+  );
+
   const handleSendPaymentNotice = useCallback(async () => {
     try {
       await sendPaymentNoticeMutation.mutateAsync();
@@ -61,24 +87,6 @@ const PaymentReceiptButton = ({ ids }: { ids: Record<string, boolean> }) => {
     }
   };
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<Record<string, boolean>>({
-    onConfirm: async (ids?: Record<string, boolean>) => {
-      if (!ids || !Object.values(ids).some(Boolean)) return false;
-      return await handleRemovePaymentReceiptByIds(ids);
-    },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các phiếu thanh toán đã chọn. Bạn có chắc chắn muốn tiếp tục?",
-    type: "warn",
-  });
-
-  const handleButton = useCallback(
-    (btn: IBtnType) => {
-      if (btn.type === "delete") {
-        openDialog(ids);
-      }
-    },
-    [ids, openDialog]
-  );
-
   const removePaymentReceiptMutation = useMutation({
     mutationKey: ["remove-payment-receipt"],
     mutationFn: async (id: string) => await httpRequest.delete(`/payment-receipts/${id}`),
@@ -98,7 +106,7 @@ const PaymentReceiptButton = ({ ids }: { ids: Record<string, boolean> }) => {
                       size={"icon"}
                       variant={btn.type}
                       className="cursor-pointer"
-                      onClick={handleSendPaymentNotice}
+                      onClick={() => openDialogSendPaymentNotice()}
                     >
                       <btn.icon className="text-white" />
                     </Button>
@@ -139,6 +147,7 @@ const PaymentReceiptButton = ({ ids }: { ids: Record<string, boolean> }) => {
         </div>
       </div>
       <ConfirmDialog />
+      <ConfirmDialogSendPaymentNotice />
     </div>
   );
 };

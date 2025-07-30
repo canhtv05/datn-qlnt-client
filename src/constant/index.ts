@@ -62,6 +62,7 @@ import {
   Zap,
   ScrollText,
   Banknote,
+  Receipt,
 } from "lucide-react";
 
 export interface SideBarType {
@@ -204,9 +205,9 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
       icon: BedDouble,
     },
     {
-      title: "Xem hợp đồng",
-      url: "/contracts",
-      icon: FileText,
+      title: "Xem phiếu thanh toán",
+      url: "/payment-receipts",
+      icon: Receipt,
     },
     {
       title: "Xem hóa đơn",
@@ -214,9 +215,9 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
       icon: CreditCard,
     },
     {
-      title: "Thanh toán hóa đơn",
-      url: "/payment",
-      icon: CreditCard,
+      title: "Xem hợp đồng",
+      url: "/contracts",
+      icon: FileText,
     },
     {
       title: "Xem hóa đơn cũ",

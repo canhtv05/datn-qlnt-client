@@ -1,16 +1,12 @@
-import { Notice, Status } from "@/enums";
-import { useConfirmDialog } from "@/hooks";
 import { ApiResponse, PaginatedResponse, PaymentReceiptFilter, PaymentReceiptResponse } from "@/types";
-import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const usePaymentReceipt = () => {
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
@@ -36,8 +32,6 @@ export const usePaymentReceipt = () => {
   );
 
   const [rowSelection, setRowSelection] = useState({});
-  const idRef = useRef<string>("");
-  const queryClient = useQueryClient();
 
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
@@ -123,7 +117,7 @@ export const usePaymentReceipt = () => {
       if (toAmount) params["toAmount"] = toAmount;
       if (toDate) params["toDate"] = toDate;
 
-      const res = await httpRequest.get("/payment-receipts", {
+      const res = await httpRequest.get("/payment-receipts/by-tenant", {
         params,
       });
 
@@ -131,81 +125,6 @@ export const usePaymentReceipt = () => {
     },
     retry: 1,
   });
-
-  const removePaymentReceiptMutation = useMutation({
-    mutationKey: ["remove-payment-receipt"],
-    mutationFn: async (id: string) => await httpRequest.delete(`/payment-receipts/${id}`),
-  });
-
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" }>({
-    onConfirm: async ({ id, type }) => {
-      if (type === "delete") return await handleRemovePaymentReceiptById(id);
-      return false;
-    },
-  });
-
-  const handleRemovePaymentReceiptById = async (id: string): Promise<boolean> => {
-    try {
-      await removePaymentReceiptMutation.mutateAsync(id, {
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "payment-receipts",
-          });
-          toast.success(Status.REMOVE_SUCCESS);
-        },
-      });
-      return true;
-    } catch (error) {
-      handleMutationError(error);
-      return false;
-    }
-  };
-
-  const confirmCashPaymentMutation = useMutation({
-    mutationKey: ["confirm-cash-payment"],
-    mutationFn: async (id: string) => await httpRequest.patch(`/payment-receipts/payment-confirm/${id}`),
-    onError: handleMutationError,
-    onSuccess: () => {
-      toast.success(Status.UPDATE_SUCCESS);
-      queryClient.invalidateQueries({
-        predicate: (prev) => {
-          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "payment-receipts";
-        },
-      });
-    },
-  });
-
-  const handleConfirmCashPaymentMutation = useCallback(
-    (id: string) => {
-      try {
-        confirmCashPaymentMutation.mutate(id);
-        return true;
-      } catch {
-        return false;
-      }
-    },
-    [confirmCashPaymentMutation]
-  );
-
-  const handleActionClick = useCallback(
-    (paymentReceipt: PaymentReceiptResponse, action: "delete" | "view" | "cash") => {
-      idRef.current = paymentReceipt.id;
-
-      if (action === "view") {
-        navigate(`/finance/invoice/view/${paymentReceipt.invoiceId}`, { replace: true });
-      } else if (action === "cash") {
-        handleConfirmCashPaymentMutation(paymentReceipt.id);
-      } else
-        openDialog(
-          { id: paymentReceipt.id, type: action },
-          {
-            type: "warn",
-            desc: Notice.REMOVE,
-          }
-        );
-    },
-    [handleConfirmCashPaymentMutation, navigate, openDialog]
-  );
 
   const props = {
     filterValues,
@@ -216,7 +135,7 @@ export const usePaymentReceipt = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải phiếu thanh toán");
+      toast.error("Có lỗi xảy ra khi tải hóa đơn");
     }
   }, [isError]);
 
@@ -236,9 +155,7 @@ export const usePaymentReceipt = () => {
     props,
     data,
     isLoading,
-    handleActionClick,
     rowSelection,
     setRowSelection,
-    ConfirmDialog,
   };
 };

@@ -53,6 +53,9 @@ const routes = {
   user: {
     room: "/room",
     roomDetail: "/room/detail/:id",
+    invoice: "/invoices",
+    paymentReceipt: "/payment-receipts",
+    viewInvoice: "/invoices/view/:id",
   },
 };
 
