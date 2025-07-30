@@ -318,6 +318,34 @@ export interface CreateAssetInit2Response {
   rooms: IdAndName[];
 }
 
+export interface RoomDetailsResponse {
+  buildingName: string;
+  buildingAddress: string;
+  ownerName: string;
+  ownerPhone: string;
+  roomCode: string;
+  acreage: number;
+  maximumPeople: number;
+  roomType: RoomType;
+  status: RoomStatus;
+  description: string;
+  contractCode: string;
+  numberOfPeople: number;
+  representativeName: string;
+  representativePhone: string;
+  dob: string;
+  identityCardNumber: string;
+  deposit: number;
+  roomPrice: number;
+  contractStatus: ContractStatus;
+  startDate: string;
+  endDate: string;
+  memberInRoomCount: number;
+  assetInRoomCount: number;
+  serviceInRoomCount: number;
+  vehicleInRoomCount: number;
+}
+
 /* Asset */
 export interface ICreateAsset {
   nameAsset: string;

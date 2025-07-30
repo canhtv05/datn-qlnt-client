@@ -24,6 +24,7 @@ const AuthLayout = lazy(() => import("@/layouts/AuthLayout"));
 const Profile = lazy(() => import("@/pages/profile"));
 const DetailTenant = lazy(() => import("@/pages/customer/tenant/DetailTenant"));
 const RoomMembers = lazy(() => import("@/pages/user/members"));
+const RoomDetail = lazy(() => import("@/pages/user/room-detail"));
 
 /* DASHBOARD */
 const DashBoard = lazy(() => import("@/pages/dashboard"));
@@ -200,10 +201,17 @@ const privateRoutes: RouteType[] = [
     component: ViewInvoiceDetail,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
+
+  // ROLE USER
   {
     path: configs.routes.user.room,
     component: UserRole,
-    allowedRoles: ["USER"],
+    allowedRoles: ["USER", "ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.user.roomDetail,
+    component: RoomDetail,
+    allowedRoles: ["USER", "ADMIN", "MANAGER"],
   },
 ];
 

@@ -51,6 +51,7 @@ const routes = {
   },
   user: {
     room: "/room",
+    roomDetail: "/room/detail/:id",
   },
 };
 
