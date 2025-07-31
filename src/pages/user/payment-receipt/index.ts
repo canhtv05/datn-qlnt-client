@@ -1,1 +1,1 @@
-export { default } from "./UserInvoice";
+export { default } from "./UserPaymentReceipt";

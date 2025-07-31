@@ -56,6 +56,7 @@ const routes = {
     invoice: "/invoices",
     paymentReceipt: "/payment-receipts",
     viewInvoice: "/invoices/view/:id",
+    invoicePayment: "/invoices/payment/:id",
   },
 };
 

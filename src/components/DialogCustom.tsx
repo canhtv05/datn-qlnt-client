@@ -1,4 +1,4 @@
-import { FormEvent, ReactNode, useCallback, useState } from "react";
+import { ReactNode, useState } from "react";
 import {
   Dialog,
   DialogTrigger,
@@ -11,23 +11,21 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import { X } from "lucide-react";
-import { useConfirmDialog } from "@/hooks";
 import { cn } from "@/lib/utils";
 
-const Modal = ({
+const DialogCustom = ({
   trigger,
   title,
   children,
-  onConfirm,
+  onContinue,
   open: controlledOpen,
   onOpenChange: controlledOnOpenChange,
-  desc,
   className,
 }: {
   trigger: ReactNode;
   title: string;
   children: ReactNode;
-  onConfirm: () => Promise<boolean>;
+  onContinue: () => void;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   desc?: string;
@@ -38,25 +36,6 @@ const Modal = ({
 
   const open = isControlled ? controlledOpen : internalOpen;
   const onOpenChange = isControlled ? controlledOnOpenChange! : setInternalOpen;
-
-  const handleConfirm = useCallback(async () => {
-    const result = await onConfirm();
-    if (result) {
-      onOpenChange(false);
-    }
-    return result;
-  }, [onConfirm, onOpenChange]);
-
-  const { ConfirmDialog, openDialog } = useConfirmDialog({ onConfirm: handleConfirm, desc });
-
-  const handleSubmit = useCallback(
-    (e: FormEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      openDialog(undefined);
-    },
-    [openDialog]
-  );
 
   return (
     <>
@@ -80,30 +59,19 @@ const Modal = ({
           </DialogHeader>
 
           <DialogDescription className="hidden" />
-
-          <form
-            id="modal-form"
-            name="modal-form"
-            className="flex-1 overflow-y-auto px-5 pt-4"
-            onSubmit={handleSubmit}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {children}
-          </form>
-
+          <div className="flex-1 overflow-y-auto px-5 pt-4">{children}</div>
           <DialogFooter className="border-t rounded-b-md bg-background px-5 py-3">
             <DialogClose asChild>
               <Button variant="outline">Hủy</Button>
             </DialogClose>
-            <Button type="submit" form="modal-form" className="text-white">
+            <Button type="button" onClick={onContinue} className="text-white">
               Tiếp tục
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <ConfirmDialog />
     </>
   );
 };
 
-export default Modal;
+export default DialogCustom;

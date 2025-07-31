@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
-export const usePaymentReceipt = () => {
+export const useUserPaymentReceipt = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
@@ -135,7 +135,7 @@ export const usePaymentReceipt = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải hóa đơn");
+      toast.error("Có lỗi xảy ra khi tải phiếu thanh toán");
     }
   }, [isError]);
 

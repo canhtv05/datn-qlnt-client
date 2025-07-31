@@ -208,6 +208,7 @@ export enum MeterType {
 export enum InvoiceStatus {
   CHUA_THANH_TOAN = "CHUA_THANH_TOAN",
   DA_THANH_TOAN = "DA_THANH_TOAN",
+  CHO_THANH_TOAN = "CHO_THANH_TOAN",
   QUA_HAN = "QUA_HAN",
   HUY = "HUY",
 }

@@ -582,3 +582,8 @@ export const invoiceDetailCreationSchema = invoiceDetailUpdateSchema
       path: ["serviceRoomId"],
     }
   );
+
+/* PAYMENT RECEIPT */
+export const rejectPaymentReceiptSchema = z.object({
+  reason: z.string().min(1, "Không được để trống lý do"),
+});

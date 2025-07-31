@@ -10,9 +10,9 @@ import {
   InvoiceDetailUpdateRequest,
   InvoiceItemResponse,
 } from "@/types";
+import cookieUtil from "@/utils/cookieUtil";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
-import { useRoomStore } from "@/zustand/invoiceStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Eye } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
@@ -24,7 +24,6 @@ export default function useInvoiceDetail() {
   const idRef = useRef<string>("");
   const typeRef = useRef<string>("");
   const navigate = useNavigate();
-  const { roomId } = useRoomStore();
   const [valueUpdate, setValueUpdate] = useState<InvoiceDetailUpdateRequest>({
     description: "",
     newIndex: undefined,
@@ -60,6 +59,7 @@ export default function useInvoiceDetail() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const queryClient = useQueryClient();
+  const roomId = cookieUtil.getStorage()?.roomId;
 
   const { data, isError, isLoading } = useQuery<ApiResponse<InvoiceDetailsResponse>>({
     queryKey: ["invoice-detail"],

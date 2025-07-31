@@ -814,6 +814,7 @@ export interface InvoiceFloorCreationRequest {
 export interface InvoiceResponse extends AbstractResponse {
   invoiceCode: string;
   buildingName: string;
+  paymentReceiptId: string;
   roomCode: string;
   roomId: string;
   tenantName: string;
@@ -922,4 +923,8 @@ export interface PaymentReceiptFilter {
   toAmount: number | undefined;
   fromDate: string;
   toDate: string;
+}
+
+export interface RejectPaymentRequest {
+  reason: string;
 }
