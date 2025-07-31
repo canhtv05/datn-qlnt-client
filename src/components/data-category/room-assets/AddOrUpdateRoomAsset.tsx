@@ -107,6 +107,8 @@ const AddOrUpdateRoomAsset = ({ value, setValue, handleChange, errors, roomList,
             showClear
             errorText={errors.assetId}
             required
+            disabled={value.assetBeLongTo === "CA_NHAN"} // Disable if asset belongs to personal
+
           />
 
           <InputLabel

@@ -227,16 +227,28 @@ export const createOrUpdateAssetTypeSchema = z.object({
 });
 
 /* ROOM ASSET */
-export const roomAssetFormSchema = z.object({
-  assetBeLongTo: z.string().min(1, { message: "Trường 'Thuộc về' không được để trống" }),
-  roomId: z.string().min(1, { message: "Phòng không được để trống" }),
-  assetId: z.string().min(1, { message: "Mã tài sản không được để trống" }),
-  assetName: z.string().min(1, { message: "Tên tài sản không được để trống" }),
-  price: z.number()
-           .refine((val) => typeof val === "number" && !isNaN(val), { message: "Giá phải là số" })
-           .nonnegative({ message: "Giá không được nhỏ hơn 0" }),
-  description: z.string().nullable(),
-});
+export const roomAssetFormSchema = z
+  .object({
+    assetBeLongTo: z.string().min(1, { message: "Trường 'Thuộc về' không được để trống" }),
+    roomId: z.string().min(1, { message: "Phòng không được để trống" }),
+    assetId: z.string(), // Không dùng .min(1) ở đây nữa
+    assetName: z.string().min(1, { message: "Tên tài sản không được để trống" }),
+    price: z
+      .number()
+      .refine((val) => typeof val === "number" && !isNaN(val), { message: "Giá phải là số" })
+      .nonnegative({ message: "Giá không được nhỏ hơn 0" }),
+    description: z.string().nullable(),
+  })
+  .superRefine((val, ctx) => {
+    if (val.assetBeLongTo === "PHONG" && !val.assetId) {
+      ctx.addIssue({
+        path: ["assetId"],
+        code: z.ZodIssueCode.custom,
+        message: "Mã tài sản không được để trống khi thuộc về phòng",
+      });
+    }
+  });
+
 
 
 export const roomAssetBulkSchema = z.object({

@@ -25,12 +25,9 @@ import {
   ServiceCategory,
   ServiceCalculation,
   InvoiceItemType,
-<<<<<<< HEAD
   AssetType,
-=======
   PaymentStatus,
   PaymentMethod,
->>>>>>> 960d77781a7217a60428fdfb02a60f9e8cd42830
 } from "@/enums";
 import { IBtnType } from "@/types";
 import {
@@ -64,13 +61,10 @@ import {
   Handshake,
   BookOpenCheck,
   Zap,
-<<<<<<< HEAD
   ToggleLeft,
-=======
   ScrollText,
   Banknote,
   Receipt,
->>>>>>> 960d77781a7217a60428fdfb02a60f9e8cd42830
 } from "lucide-react";
 
 export interface SideBarType {
