@@ -123,6 +123,11 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>, roomId
 
       let endpoint = "/asset-rooms";
 
+      if (roomIds.length === 1 && assetIds.length === 1) {
+        toast.error("Vui lòng chọn ít nhất hai phòng hoặc 2 tài sản.");
+        throw new Error("Vui lòng chọn ít nhất hai phòng hoặc 2 tài sản.");
+      }
+
       if (roomIds.length > 1) {
         endpoint = "/asset-rooms/by-asset";
       } else if (assetIds.length > 1) {
