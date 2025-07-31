@@ -57,7 +57,8 @@ export default function buildColumnsFromConfig<T extends object>(
       config.accessorKey === "pricesApply" ||
       config.accessorKey === "totalPrice" ||
       config.accessorKey === "totalAmount" ||
-      config.accessorKey === "amount"
+      config.accessorKey === "amount" ||
+      config.accessorKey === "unitPrice"
     ) {
       const raw = row.getValue(config.accessorKey);
       const price = parseFloat(String(raw ?? 0));

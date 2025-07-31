@@ -11,29 +11,80 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
-import { createServiceRoomSchema } from "@/lib/validation";
+import {
+  createServiceRoomForBuildingSchema,
+  createServiceRoomForRoomSchema,
+  createServiceRoomForServiceSchema,
+  createServiceRoomSchema,
+} from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { ApiResponse, CreateRoomServiceInitResponse, IBtnType, ServiceRoomCreationRequest } from "@/types";
-import { ACTION_BUTTONS } from "@/constant";
+import {
+  IBtnType,
+  Option,
+  ServiceRoomCreationForBuildingRequest,
+  ServiceRoomCreationForRoomRequest,
+  ServiceRoomCreationForServiceRequest,
+  ServiceRoomCreationRequest,
+} from "@/types";
+import { ACTION_BUTTONS_SERVICE_ROOM } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
-import AddOrUpdateServiceRoom from "./AddOrUpdateServiceRoom";
+import CreateRoomService from "./CreateRoomService";
+import { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
+import CreateRoomServiceForBuilding from "./CreateRoomServiceForBuilding";
+import CreateRoomServiceForService from "./CreateRoomServiceForService";
+import CreateRoomServiceForRoom from "./CreateRoomServiceForRoom";
 
 const ServiceRoomButton = ({
   ids,
-  serviceRoomInit,
+  roomOptions,
+  serviceOptions,
+  buildingOptions,
 }: {
   ids: Record<string, boolean>;
-  serviceRoomInit?: ApiResponse<CreateRoomServiceInitResponse>;
+  serviceOptions: FieldsSelectLabelType[] | Option[] | undefined;
+  roomOptions: FieldsSelectLabelType[] | Option[] | undefined;
+  buildingOptions: FieldsSelectLabelType[] | Option[] | undefined;
 }) => {
   const [value, setValue] = useState<ServiceRoomCreationRequest>({
-    descriptionServiceRoom: "",
     roomId: "",
     serviceId: "",
-    startDate: "",
+  });
+
+  const [valueForBuilding, setValueForBuilding] = useState<ServiceRoomCreationForBuildingRequest>({
+    buildingId: "",
+    serviceId: "",
+  });
+
+  const [valueForService, setValueForService] = useState<ServiceRoomCreationForServiceRequest>({
+    roomIds: [],
+    serviceId: "",
+  });
+
+  const [valueForRoom, setValueForRoom] = useState<ServiceRoomCreationForRoomRequest>({
+    serviceIds: [],
+    roomId: "",
   });
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<ServiceRoomCreationRequest>();
+
+  const {
+    clearErrors: clearErrorsForBuilding,
+    errors: errorsForBuilding,
+    handleZodErrors: handleZodErrorsForBuilding,
+  } = useFormErrors<ServiceRoomCreationForBuildingRequest>();
+
+  const {
+    clearErrors: clearErrorsForService,
+    errors: errorsForService,
+    handleZodErrors: handleZodErrorsForService,
+  } = useFormErrors<ServiceRoomCreationForServiceRequest>();
+
+  const {
+    clearErrors: clearErrorsForRoom,
+    errors: errorsForRoom,
+    handleZodErrors: handleZodErrorsForRoom,
+  } = useFormErrors<ServiceRoomCreationForRoomRequest>();
 
   const queryClient = useQueryClient();
 
@@ -52,10 +103,8 @@ const ServiceRoomButton = ({
     onSuccess: () => {
       toast.success(Status.ADD_SUCCESS);
       setValue({
-        descriptionServiceRoom: "",
         roomId: "",
         serviceId: "",
-        startDate: "",
       });
       queryClient.invalidateQueries({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
@@ -66,24 +115,22 @@ const ServiceRoomButton = ({
 
   const handleAddServiceRoom = useCallback(async () => {
     try {
-      const { descriptionServiceRoom, roomId, serviceId, startDate } = value;
+      const { roomId, serviceId } = value;
 
       const data: ServiceRoomCreationRequest = {
-        descriptionServiceRoom: descriptionServiceRoom.trim(),
         roomId: roomId ?? "",
         serviceId: serviceId ?? "",
-        startDate,
       };
 
       await createServiceRoomSchema.parseAsync(data);
       await addServiceRoomMutation.mutateAsync(data);
-      clearErrors();
+      clearErrorsForBuilding();
       return true;
     } catch (error) {
-      handleZodErrors(error);
+      handleZodErrorsForBuilding(error);
       return false;
     }
-  }, [addServiceRoomMutation, clearErrors, handleZodErrors, value]);
+  }, [addServiceRoomMutation, clearErrorsForBuilding, handleZodErrorsForBuilding, value]);
 
   const handleRemoveAssetTypeByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
@@ -127,20 +174,131 @@ const ServiceRoomButton = ({
 
   const removeServiceRoomMutation = useMutation({
     mutationKey: ["remove-service-rooms"],
-    mutationFn: async (id: string) => await httpRequest.put(`/service-rooms/soft-delete/${id}`),
+    mutationFn: async (id: string) => await httpRequest.delete(`/service-rooms/${id}`),
   });
+
+  const addServiceRoomForBuildingMutation = useMutation({
+    mutationKey: ["add-service-room-for-building"],
+    mutationFn: async (payload: ServiceRoomCreationForBuildingRequest) =>
+      await httpRequest.post("/service-rooms/by-building", payload),
+    onError: handleMutationError,
+    onSuccess: () => {
+      toast.success(Status.ADD_SUCCESS);
+      setValueForBuilding({
+        buildingId: "",
+        serviceId: "",
+      });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
+      });
+      queryClient.invalidateQueries({ queryKey: ["service-rooms-statistics"] });
+    },
+  });
+
+  const handleAddServiceRoomForBuilding = useCallback(async () => {
+    try {
+      const { buildingId, serviceId } = valueForBuilding;
+
+      const data: ServiceRoomCreationForBuildingRequest = {
+        buildingId: buildingId ?? "",
+        serviceId: serviceId ?? "",
+      };
+
+      await createServiceRoomForBuildingSchema.parseAsync(data);
+      await addServiceRoomForBuildingMutation.mutateAsync(data);
+      clearErrors();
+      return true;
+    } catch (error) {
+      handleZodErrors(error);
+      return false;
+    }
+  }, [addServiceRoomForBuildingMutation, clearErrors, handleZodErrors, valueForBuilding]);
+
+  const addServiceRoomForServiceMutation = useMutation({
+    mutationKey: ["add-service-room-for-service"],
+    mutationFn: async (payload: ServiceRoomCreationForServiceRequest) =>
+      await httpRequest.post("/service-rooms/by-service", payload),
+    onError: handleMutationError,
+    onSuccess: () => {
+      toast.success(Status.ADD_SUCCESS);
+      setValueForService({
+        roomIds: [],
+        serviceId: "",
+      });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
+      });
+      queryClient.invalidateQueries({ queryKey: ["service-rooms-statistics"] });
+    },
+  });
+
+  const handleAddServiceRoomForService = useCallback(async () => {
+    try {
+      const { serviceId, roomIds } = valueForService;
+
+      const data: ServiceRoomCreationForServiceRequest = {
+        roomIds: roomIds ?? [],
+        serviceId: serviceId ?? "",
+      };
+
+      await createServiceRoomForServiceSchema.parseAsync(data);
+      await addServiceRoomForServiceMutation.mutateAsync(data);
+      clearErrorsForService();
+      return true;
+    } catch (error) {
+      handleZodErrorsForService(error);
+      return false;
+    }
+  }, [addServiceRoomForServiceMutation, clearErrorsForService, handleZodErrorsForService, valueForService]);
+
+  const addServiceRoomForRoomMutation = useMutation({
+    mutationKey: ["add-service-room-for-room"],
+    mutationFn: async (payload: ServiceRoomCreationForRoomRequest) =>
+      await httpRequest.post("/service-rooms/by-room", payload),
+    onError: handleMutationError,
+    onSuccess: () => {
+      toast.success(Status.ADD_SUCCESS);
+      setValueForRoom({
+        serviceIds: [],
+        roomId: "",
+      });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
+      });
+      queryClient.invalidateQueries({ queryKey: ["service-rooms-statistics"] });
+    },
+  });
+
+  const handleAddServiceRoomForRoom = useCallback(async () => {
+    try {
+      const { roomId, serviceIds } = valueForRoom;
+
+      const data: ServiceRoomCreationForRoomRequest = {
+        serviceIds: serviceIds ?? [],
+        roomId: roomId ?? "",
+      };
+
+      await createServiceRoomForRoomSchema.parseAsync(data);
+      await addServiceRoomForRoomMutation.mutateAsync(data);
+      clearErrorsForRoom();
+      return true;
+    } catch (error) {
+      handleZodErrorsForRoom(error);
+      return false;
+    }
+  }, [addServiceRoomForRoomMutation, clearErrorsForRoom, handleZodErrorsForRoom, valueForRoom]);
 
   return (
     <div className="h-full bg-background rounded-t-sm mt-4">
       <div className="flex px-4 py-3 justify-between items-center">
         <h3 className="font-semibold">Dịch vụ phòng</h3>
         <div className="flex gap-2">
-          {ACTION_BUTTONS.map((btn, index) => (
+          {ACTION_BUTTONS_SERVICE_ROOM.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Dịch vụ phòng"
+                    title="Thêm 1 dịch vụ cho 1 phòng"
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -151,17 +309,86 @@ const ServiceRoomButton = ({
                     desc={Notice.ADD}
                     onConfirm={handleAddServiceRoom}
                   >
-                    <AddOrUpdateServiceRoom
-                      serviceRoomInit={serviceRoomInit}
+                    <CreateRoomService
                       handleChange={handleChange}
                       value={value}
                       setValue={setValue}
                       errors={errors}
-                      type="add"
+                      roomOptions={roomOptions}
+                      serviceOptions={serviceOptions}
                     />
                   </Modal>
                 </RenderIf>
-                <RenderIf value={btn.type !== "default"}>
+                <RenderIf value={btn.type === "building"}>
+                  <Modal
+                    title="Thêm 1 dịch vụ cho tất cả các phòng trong 1 tòa nhà"
+                    trigger={
+                      <TooltipTrigger asChild>
+                        <Button size={"icon"} variant={btn.type} className="cursor-pointer">
+                          <btn.icon className="text-white" />
+                        </Button>
+                      </TooltipTrigger>
+                    }
+                    desc={Notice.ADD}
+                    onConfirm={handleAddServiceRoomForBuilding}
+                  >
+                    <CreateRoomServiceForBuilding
+                      handleChange={handleChange}
+                      value={valueForBuilding}
+                      setValue={setValueForBuilding}
+                      errors={errorsForBuilding}
+                      buildingOptions={buildingOptions}
+                      serviceOptions={serviceOptions}
+                    />
+                  </Modal>
+                </RenderIf>
+                <RenderIf value={btn.type === "floor"}>
+                  <Modal
+                    title="Thêm 1 dịch vụ vào các phòng"
+                    trigger={
+                      <TooltipTrigger asChild>
+                        <Button size={"icon"} variant={btn.type} className="cursor-pointer">
+                          <btn.icon className="text-white" />
+                        </Button>
+                      </TooltipTrigger>
+                    }
+                    desc={Notice.ADD}
+                    onConfirm={handleAddServiceRoomForService}
+                  >
+                    <CreateRoomServiceForService
+                      handleChange={handleChange}
+                      value={valueForService}
+                      setValue={setValueForService}
+                      errors={errorsForService}
+                      serviceOptions={serviceOptions as Option[]}
+                      roomOptions={roomOptions as Option[]}
+                    />
+                  </Modal>
+                </RenderIf>
+                <RenderIf value={btn.type === "download"}>
+                  <Modal
+                    title="Thêm các dịch vụ vào phòng cho 1 phòng"
+                    trigger={
+                      <TooltipTrigger asChild>
+                        <Button size={"icon"} variant={btn.type} className="cursor-pointer">
+                          <btn.icon className="text-white" />
+                        </Button>
+                      </TooltipTrigger>
+                    }
+                    desc={Notice.ADD}
+                    onConfirm={handleAddServiceRoomForRoom}
+                  >
+                    <CreateRoomServiceForRoom
+                      handleChange={handleChange}
+                      value={valueForRoom}
+                      setValue={setValueForRoom}
+                      errors={errorsForRoom}
+                      serviceOptions={serviceOptions as Option[]}
+                      roomOptions={roomOptions as Option[]}
+                    />
+                  </Modal>
+                </RenderIf>
+                <RenderIf value={btn.type === "delete"}>
                   <TooltipTrigger asChild>
                     <Button
                       size={"icon"}

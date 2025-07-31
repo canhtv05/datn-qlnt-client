@@ -6,6 +6,7 @@ import { ApiResponse, FloorFilterValues, IBuildingCardsResponse } from "@/types"
 import { httpRequest } from "@/utils/httpRequest";
 import { useQuery } from "@tanstack/react-query";
 import { Dispatch, FormEvent, SetStateAction, useMemo } from "react";
+import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export interface FloorFilterProps {
@@ -18,6 +19,7 @@ export interface FloorFilterProps {
 const FloorFilter = ({ props }: { props: FloorFilterProps }) => {
   const { status, buildingId, maxRoom, nameFloor, floorType } = props.filterValues;
   const setFilterValues = props.setFilterValues;
+  const { id } = useParams();
 
   const handleChange = (key: keyof FloorFilterValues, value: string) => {
     setFilterValues((prev) => ({ ...prev, [key]: value }));
@@ -81,7 +83,7 @@ const FloorFilter = ({ props }: { props: FloorFilterProps }) => {
           placeholder="-- Tòa nhà --"
           labelSelect="Tòa nhà"
           data={mapValueAndLabel}
-          value={buildingId}
+          value={buildingId || id}
           onChange={(value) => handleChange("buildingId", String(value))}
           name="buildingId"
           showClear

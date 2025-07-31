@@ -1,22 +1,18 @@
 import { StatisticCardType } from "@/components/StatisticCard";
-import { Notice, Status } from "@/enums";
-import { useConfirmDialog, useFormErrors } from "@/hooks";
-import { updateServiceRoomSchema } from "@/lib/validation";
 import {
   ApiResponse,
   CreateRoomServiceInitResponse,
+  IBuildingCardsResponse,
+  IdAndName,
   ServiceRoomFilter,
-  ServiceRoomResponse,
   ServiceRoomStatistics,
-  ServiceRoomUpdateRequest,
+  ServiceRoomView,
 } from "@/types";
-import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { isNumber } from "lodash";
+import { useQuery } from "@tanstack/react-query";
 import { CircleCheck, Puzzle, XCircle } from "lucide-react";
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -26,41 +22,32 @@ export const useServiceRoom = () => {
     page = "1",
     size = "15",
     query = "",
-    minPrice = "",
-    maxPrice = "",
+    building = "",
+    floor = "",
+    roomType = "",
     status = "",
-  } = queryFilter(searchParams, "page", "size", "query", "minPrice", "maxPrice", "status");
+  } = queryFilter(searchParams, "page", "size", "query", "building", "floor", "floor", "status");
 
   const [rowSelection, setRowSelection] = useState({});
-  const idRef = useRef<string>("");
-  const [value, setValue] = useState<ServiceRoomUpdateRequest>({
-    descriptionServiceRoom: "",
-    roomId: "",
-    serviceId: "",
-    startDate: "",
-    serviceRoomStatus: "",
-  });
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const queryClient = useQueryClient();
 
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<ServiceRoomUpdateRequest>();
-
   const [filterValues, setFilterValues] = useState<ServiceRoomFilter>({
-    maxPrice: isNumber(maxPrice) ? Number(maxPrice) : undefined,
-    minPrice: isNumber(minPrice) ? Number(minPrice) : undefined,
+    building,
+    floor,
     query,
+    roomType,
     status,
   });
 
   const handleClear = () => {
     setFilterValues({
-      maxPrice: undefined,
-      minPrice: undefined,
+      building: "",
+      floor: "",
       query: "",
+      roomType: "",
       status: "",
     });
     setSearchParams({});
@@ -68,174 +55,50 @@ export const useServiceRoom = () => {
 
   const handleFilter = useCallback(() => {
     const params = new URLSearchParams();
-    if (filterValues.maxPrice) params.set("maxPrice", filterValues.maxPrice.toString());
-    if (filterValues.minPrice) params.set("minPrice", filterValues.minPrice.toString());
     if (filterValues.query) params.set("query", filterValues.query);
     if (filterValues.status) params.set("status", filterValues.status);
+    if (filterValues.building) params.set("building", filterValues.building);
+    if (filterValues.floor) params.set("floor", filterValues.floor);
+    if (filterValues.roomType) params.set("roomType", filterValues.roomType);
     params.set("page", "1");
-    if (filterValues.maxPrice || filterValues.minPrice || filterValues.query || filterValues.status) {
+    if (
+      filterValues.roomType ||
+      filterValues.floor ||
+      filterValues.building ||
+      filterValues.query ||
+      filterValues.status
+    ) {
       setSearchParams(params);
     }
-  }, [filterValues.maxPrice, filterValues.minPrice, filterValues.query, filterValues.status, setSearchParams]);
+  }, [
+    filterValues.floor,
+    filterValues.roomType,
+    filterValues.building,
+    filterValues.query,
+    filterValues.status,
+    setSearchParams,
+  ]);
 
-  const { data, isLoading, isError } = useQuery<ApiResponse<ServiceRoomResponse[]>>({
-    queryKey: ["service-rooms", page, size, maxPrice, minPrice, query, status],
+  const { data, isLoading, isError } = useQuery<ApiResponse<ServiceRoomView[]>>({
+    queryKey: ["service-rooms", page, size, query, status, building, floor, roomType],
     queryFn: async () => {
       const params: Record<string, string> = {
         page: page.toString(),
         size: size.toString(),
       };
 
-      if (maxPrice) params["maxPrice"] = maxPrice;
-      if (minPrice) params["minPrice"] = minPrice;
+      if (building) params["building"] = building;
+      if (floor) params["floor"] = floor;
       if (query) params["query"] = query;
+      if (roomType) params["roomType"] = roomType;
       if (status) params["status"] = status;
 
       const res = await httpRequest.get("/service-rooms");
 
-      // console.log("Service Rooms Data:", res.data);
-
       return res.data;
     },
+    retry: 1,
   });
-
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    e.stopPropagation();
-    const { name, value } = e.target;
-    setValue((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const updateServiceRoomMutation = useMutation({
-    mutationKey: ["update-service-room"],
-    mutationFn: async (payload: ServiceRoomUpdateRequest) =>
-      await httpRequest.put(`/service-rooms/${idRef.current}`, payload),
-    onError: (error) => {
-      handleMutationError(error);
-    },
-  });
-
-  const removeServiceRoomMutation = useMutation({
-    mutationKey: ["remove-service-rooms"],
-    mutationFn: async (id: string) => await httpRequest.put(`/service-rooms/soft-delete/${id}`),
-  });
-
-  const toggleStatusServiceRoomMutation = useMutation({
-    mutationKey: ["toggle-service-room"],
-    mutationFn: async (id: string) => await httpRequest.put(`/service-rooms/toggle-status/${id}`),
-  });
-
-  const handleToggleStatusServiceRoomById = async (id: string): Promise<boolean> => {
-    try {
-      await toggleStatusServiceRoomMutation.mutateAsync(id, {
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
-          });
-          queryClient.invalidateQueries({ queryKey: ["service-rooms-statistics"] });
-
-          toast.success(Status.UPDATE_SUCCESS);
-        },
-      });
-      return true;
-    } catch (error) {
-      handleMutationError(error);
-      return false;
-    }
-  };
-
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>({
-    onConfirm: async ({ id, type }) => {
-      if (type === "delete") return await handleRemoveServiceRoomById(id);
-      if (type === "status") return await handleToggleStatusServiceRoomById(id);
-      return false;
-    },
-  });
-
-  const handleRemoveServiceRoomById = async (id: string): Promise<boolean> => {
-    try {
-      await removeServiceRoomMutation.mutateAsync(id, {
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
-          });
-          queryClient.invalidateQueries({ queryKey: ["service-rooms-statistics"] });
-          toast.success(Status.REMOVE_SUCCESS);
-        },
-      });
-      return true;
-    } catch (error) {
-      handleMutationError(error);
-      return false;
-    }
-  };
-
-  const handleUpdateServiceRoom = useCallback(async () => {
-    try {
-      const { descriptionServiceRoom, roomId, serviceId, startDate, serviceRoomStatus } = value;
-
-      const data: ServiceRoomUpdateRequest = {
-        descriptionServiceRoom: descriptionServiceRoom.trim(),
-        roomId: roomId ?? "",
-        serviceId: serviceId ?? "",
-        serviceRoomStatus,
-        startDate,
-      };
-
-      await updateServiceRoomSchema.parseAsync(data);
-
-      updateServiceRoomMutation.mutate(data, {
-        onSuccess: () => {
-          setValue({
-            descriptionServiceRoom: "",
-            roomId: "",
-            serviceId: "",
-            serviceRoomStatus: "",
-            startDate: "",
-          });
-          queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
-          });
-          queryClient.invalidateQueries({ queryKey: ["service-rooms-statistics"] });
-          toast.success(Status.UPDATE_SUCCESS);
-          setIsModalOpen(false);
-        },
-      });
-      clearErrors();
-      return true;
-    } catch (error) {
-      handleZodErrors(error);
-      return false;
-    }
-  }, [updateServiceRoomMutation, clearErrors, handleZodErrors, queryClient, value]);
-
-  const handleActionClick = useCallback(
-    (serviceRoom: ServiceRoomResponse, action: "update" | "delete" | "status") => {
-      idRef.current = serviceRoom.id;
-      if (action === "update") {
-        setValue({
-          descriptionServiceRoom: serviceRoom.descriptionServiceRoom,
-          roomId: serviceRoom.roomId,
-          serviceId: serviceRoom.serviceId,
-          serviceRoomStatus: serviceRoom.serviceRoomStatus,
-          startDate: serviceRoom.startDate,
-        });
-        setIsModalOpen(true);
-      } else {
-        openDialog(
-          { id: serviceRoom.id, type: action },
-          {
-            type: "warn",
-            desc: action === "delete" ? Notice.REMOVE : Notice.TOGGLE_STATUS,
-          }
-        );
-      }
-    },
-    [openDialog]
-  );
 
   const { data: serviceRoomInit, isError: isErrorServiceRoom } = useQuery<ApiResponse<CreateRoomServiceInitResponse>>({
     queryKey: ["room-services-init"],
@@ -255,10 +118,62 @@ export const useServiceRoom = () => {
     retry: 1,
   });
 
+  const { data: buildingData, isError: isBuildingError } = useQuery<ApiResponse<IBuildingCardsResponse[]>>({
+    queryKey: ["buildings-cards"],
+    queryFn: async () => {
+      const res = await httpRequest.get("/buildings/cards");
+      return res.data;
+    },
+  });
+
+  const { data: floorsData, isError: isFloorsError } = useQuery<ApiResponse<IdAndName[]>>({
+    queryKey: ["floors-all"],
+    queryFn: async () => {
+      const res = await httpRequest.get("/floors/all");
+      return res.data;
+    },
+  });
+
+  const roomOptions = useMemo(() => {
+    return (
+      serviceRoomInit?.data?.rooms?.map((room) => ({
+        label: room.name,
+        value: room.id,
+      })) ?? []
+    );
+  }, [serviceRoomInit]);
+
+  const serviceOptions = useMemo(() => {
+    return (
+      serviceRoomInit?.data?.services?.map((room) => ({
+        label: room.name,
+        value: room.id,
+      })) ?? []
+    );
+  }, [serviceRoomInit]);
+
+  const buildingOptions = useMemo(() => {
+    return (
+      buildingData?.data?.map((b) => ({
+        label: b.buildingName,
+        value: b.id,
+      })) ?? []
+    );
+  }, [buildingData]);
+
+  const floorOptions = useMemo(() => {
+    return (
+      floorsData?.data?.map((f) => ({
+        label: f.name,
+        value: f.id,
+      })) ?? []
+    );
+  }, [floorsData]);
+
   const dataServices: StatisticCardType[] = [
     {
       icon: Puzzle,
-      label: "Tổng tài sản",
+      label: "Tổng",
       value: statistics?.data.total ?? 0,
     },
     {
@@ -278,6 +193,8 @@ export const useServiceRoom = () => {
     setFilterValues,
     onClear: handleClear,
     onFilter: handleFilter,
+    buildingOptions,
+    floorOptions,
   };
 
   useEffect(() => {
@@ -292,15 +209,24 @@ export const useServiceRoom = () => {
     if (isStatisticsError) {
       toast.error("Không lấy được dữ liệu thống kê");
     }
-  }, [isError, isErrorServiceRoom, isStatisticsError]);
+
+    if (isBuildingError) {
+      toast.error("Không lấy được dữ liệu tòa nhà");
+    }
+
+    if (isFloorsError) {
+      toast.error("Không lấy được dữ liệu tầng");
+    }
+  }, [isBuildingError, isError, isErrorServiceRoom, isFloorsError, isStatisticsError]);
 
   return {
     query: {
       page: parsedPage,
       size: parsedSize,
       query,
-      minPrice,
-      maxPrice,
+      building,
+      floor,
+      roomType,
       status,
     },
     setSearchParams,
@@ -309,16 +235,12 @@ export const useServiceRoom = () => {
     props,
     data,
     isLoading,
-    handleActionClick,
     rowSelection,
     setRowSelection,
     isModalOpen,
     setIsModalOpen,
-    handleChange,
-    handleUpdateFloor: handleUpdateServiceRoom,
-    value,
-    setValue,
-    errors,
-    ConfirmDialog,
+    roomOptions,
+    serviceOptions,
+    buildingOptions,
   };
 };

@@ -180,7 +180,7 @@ const Room = () => {
         setRowSelection={setRowSelection}
       />
       <Modal
-        title="Dự án/Phòng"
+        title="Phòng"
         trigger={null}
         open={isModalOpen}
         onOpenChange={setIsModalOpen}

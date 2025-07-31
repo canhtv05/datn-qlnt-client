@@ -769,34 +769,76 @@ export interface ServiceCountResponse {
 
 /* ROOM SERVICE */
 export interface ServiceRoomResponse extends AbstractResponse {
-  roomId: string;
   roomCode: string;
-  serviceId: string;
-  name: string;
-  usageCode: string;
-  applyTime: string;
+  serviceName: string;
+  unitPrice: string;
   startDate: string;
-  totalPrice: number;
-  serviceRoomStatus: ServiceRoomStatus | string;
-  descriptionServiceRoom: string;
+  endDate: string;
+  serviceRoomStatus: string;
+  description: string;
 }
 
-// export interface ServiceRoomView {}
+export interface ServiceRoomView {
+  id: string;
+  roomCode: string;
+  totalServices: number;
+  roomType: RoomType;
+  status: RoomStatus;
+  description: string;
+}
+
+export interface ServiceRoomDetailResponse {
+  id: string;
+  roomCode: string;
+  roomType: string;
+  status: string;
+  description: string;
+  services: ServiceLittleResponse[];
+}
+
+export interface ServiceLittleResponse {
+  id: string;
+  serviceName: string;
+  unitPrice: number;
+  unit: string;
+  serviceRoomStatus: string;
+  description: string;
+}
+
+export interface ServiceRoomCreationForBuildingRequest {
+  serviceId: string;
+  buildingId: string;
+}
+
+export interface ServiceRoomCreationForServiceRequest {
+  serviceId: string;
+  roomIds: string[];
+}
+
+export interface ServiceRoomCreationForRoomRequest {
+  roomId: string;
+  serviceIds: string[];
+}
+
+export interface ServiceUpdateUnitPriceRequest {
+  serviceId: string;
+  buildingId: string;
+  newUnitPrice: number | undefined;
+}
 
 export interface ServiceRoomCreationRequest {
   roomId: string;
   serviceId: string;
-  startDate: string;
-  descriptionServiceRoom: string;
 }
 
 export type ServiceRoomUpdateRequest = ServiceRoomCreationRequest & { serviceRoomStatus: ServiceRoomStatus | string };
 
 export interface ServiceRoomFilter {
   query: string;
-  minPrice: number | undefined;
-  maxPrice: number | undefined;
-  status: ServiceRoomStatus | string;
+  building: string;
+  floor: string;
+  roomType: RoomType | string;
+  status: RoomStatus | string;
 }
 
 export interface CreateRoomServiceInitResponse {

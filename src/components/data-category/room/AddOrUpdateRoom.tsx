@@ -14,6 +14,7 @@ interface Props {
 }
 
 const roomTypes: FieldsSelectLabelType[] = [
+  { label: "Cao cấp", value: RoomType.CAO_CAP },
   { label: "Phòng ghép", value: RoomType.GHEP },
   { label: "Phòng đơn", value: RoomType.DON },
   { label: "Khác", value: RoomType.KHAC },

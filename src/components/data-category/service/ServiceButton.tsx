@@ -1,8 +1,7 @@
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { TooltipTrigger } from "@radix-ui/react-tooltip";
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import Modal from "@/components/Modal";
 import { useCallback, useState } from "react";
 import { handleMutationError } from "@/utils/handleMutationError";

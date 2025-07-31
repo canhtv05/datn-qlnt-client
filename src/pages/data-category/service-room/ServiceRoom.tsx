@@ -3,15 +3,13 @@ import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { ColumnConfig, ServiceRoomResponse } from "@/types";
-import Modal from "@/components/Modal";
-import { Notice } from "@/enums";
+import { ColumnConfig, ServiceRoomResponse, ServiceRoomView } from "@/types";
 import { useServiceRoom } from "./useServiceRoom";
 import { GET_BTNS } from "@/constant";
 import ServiceRoomButton from "@/components/data-category/service-room/ServiceRoomButton";
 import ServiceRoomFilter from "@/components/data-category/service-room/ServiceRoomFilter";
-import AddOrUpdateServiceRoom from "@/components/data-category/service-room/AddOrUpdateServiceRoom";
 import StatisticCard from "@/components/StatisticCard";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ServiceRoom = () => {
   const {
@@ -19,34 +17,28 @@ const ServiceRoom = () => {
     data,
     isLoading,
     query,
-    handleActionClick,
     rowSelection,
     setRowSelection,
-    isModalOpen,
-    setIsModalOpen,
-    handleChange,
-    handleUpdateFloor,
-    value,
-    setValue,
-    errors,
-    ConfirmDialog,
     dataServices,
-    serviceRoomInit,
+    roomOptions,
+    serviceOptions,
+    buildingOptions,
   } = useServiceRoom();
   const { page, size } = query;
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Mã sử dụng", accessorKey: "usageCode", isSort: true, isCenter: true, hasHighlight: true },
+    { label: "Mã phòng", accessorKey: "roomCode", isSort: true, isCenter: true, hasHighlight: true },
     {
       label: "Thao tác",
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
       render: (row: ServiceRoomResponse) => {
-        const serviceRoom = row;
         return (
           <div className="flex gap-2">
-            {GET_BTNS("update", "delete", "status").map((btn, index) => (
+            {GET_BTNS("view").map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -55,7 +47,9 @@ const ServiceRoom = () => {
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => {
-                        handleActionClick(serviceRoom, btn.type as "update");
+                        navigate(`/service-management/room-services/detail/${row.id}?buildingId=${id}`, {
+                          replace: true,
+                        });
                       }}
                     >
                       <btn.icon className="text-white" />
@@ -78,36 +72,23 @@ const ServiceRoom = () => {
         );
       },
     },
-    { label: "Tên dịch vụ", accessorKey: "name", isSort: true },
-    { label: "Giá tổng", accessorKey: "totalPrice", isSort: true },
-    { label: "Trạng thái", accessorKey: "serviceRoomStatus", isSort: true, hasBadge: true, isCenter: true },
-    { label: "Mã phòng", accessorKey: "roomCode", isSort: true, isCenter: true },
-    { label: "Ngày bắt đầu", accessorKey: "startDate", isSort: true, hasDate: true },
-    { label: "Ngày áp dụng", accessorKey: "applyTime", isSort: true, hasDate: true },
+    { label: "Tổng dịch vụ", accessorKey: "totalServices", isSort: true, isCenter: true },
+    { label: "Loại phòng", accessorKey: "roomType", isSort: true, isCenter: true, hasBadge: true },
+    { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
     { label: "Mô tả", accessorKey: "descriptionServiceRoom", isSort: false },
-    {
-      label: "Ngày tạo",
-      accessorKey: "createdAt",
-      isSort: true,
-      hasDate: true,
-    },
-    {
-      label: "Ngày cập nhật",
-      accessorKey: "updatedAt",
-      isSort: true,
-      hasDate: true,
-    },
-
-    { label: "Mã phòng", accessorKey: "roomId", isHidden: true },
-    { label: "Mã dịch vụ", accessorKey: "serviceId", isHidden: true },
   ];
 
   return (
     <div className="flex flex-col">
       <StatisticCard data={dataServices} />
-      <ServiceRoomButton ids={rowSelection} serviceRoomInit={serviceRoomInit} />
+      <ServiceRoomButton
+        ids={rowSelection}
+        roomOptions={roomOptions}
+        serviceOptions={serviceOptions}
+        buildingOptions={buildingOptions}
+      />
       <ServiceRoomFilter props={props} />
-      <DataTable<ServiceRoomResponse>
+      <DataTable<ServiceRoomView>
         data={data?.data ?? []}
         columns={buildColumnsFromConfig(columnConfigs)}
         page={Number(page)}
@@ -118,24 +99,6 @@ const ServiceRoom = () => {
         rowSelection={rowSelection}
         setRowSelection={setRowSelection}
       />
-      <Modal
-        title="Tài sản phòng"
-        trigger={null}
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        onConfirm={handleUpdateFloor}
-        desc={Notice.UPDATE}
-      >
-        <AddOrUpdateServiceRoom
-          serviceRoomInit={serviceRoomInit}
-          handleChange={handleChange}
-          value={value}
-          setValue={setValue}
-          errors={errors}
-          type="update"
-        />
-      </Modal>
-      <ConfirmDialog />
     </div>
   );
 };

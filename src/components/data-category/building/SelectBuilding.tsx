@@ -44,7 +44,6 @@ const SelectBuilding = () => {
     queryKey: ["buildings-cards"],
     queryFn: async () => {
       const res = await httpRequest.get("/buildings/cards");
-      console.log(res.data);
       return res.data;
     },
     retry: 1,
