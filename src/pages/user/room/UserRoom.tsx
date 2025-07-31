@@ -8,11 +8,10 @@ import { formatNumberField, GET_BTNS } from "@/constant";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const UserRoom = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [rowSelection, setRowSelection] = useState({});
   const { data, isLoading } = useQuery<ApiResponse<RoomResponse[]>>({
     queryKey: ["room-by-tenant"],
@@ -46,7 +45,7 @@ const UserRoom = () => {
                     size="icon"
                     variant={btn.type}
                     className="cursor-pointer"
-                    onClick={() => navigate(`/room/members/${row.id}`, { state: { background: location } })}
+                    onClick={() => navigate(`/room/detail/${row.id}`)}
                   >
                     <btn.icon className="text-white" />
                   </Button>

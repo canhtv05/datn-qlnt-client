@@ -7,7 +7,6 @@ import {
   AssetFilter,
   AssetResponse,
   CreateAssetInit2Response,
-  IAssetStatisticsResponse,
   IUpdateAsset,
   PaginatedResponse,
 } from "@/types";
@@ -295,15 +294,6 @@ export const useAsset = () => {
     [openDialog]
   );
 
-  const { data: assetsInfo, isError: isErrorAssetInfo } = useQuery<ApiResponse<CreateAssetInit2Response>>({
-    queryKey: ["assets-init"],
-    queryFn: async () => {
-      const res = await httpRequest.get("/assets/init/2");
-      return res.data;
-    },
-    retry: 1,
-  });
-
   const props = {
     filterValues,
     setFilterValues,
@@ -315,11 +305,7 @@ export const useAsset = () => {
     if (isError) {
       toast.error("Có lỗi xảy ra khi tải loại tài sản");
     }
-
-    if (isErrorAssetInfo) {
-      toast.error("Không lấy được dữ liệu tài sản");
-    }
-  }, [isError, isErrorAssetInfo]);
+  }, [isError]);
 
   return {
     query: {
@@ -343,6 +329,5 @@ export const useAsset = () => {
     setValue,
     errors,
     ConfirmDialog,
-    assetsInfo,
   };
 };

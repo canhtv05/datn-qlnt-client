@@ -1,14 +1,6 @@
-import { ApiResponse, InvoiceDetailsResponse } from "@/types";
-import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { httpRequest } from "@/utils/httpRequest";
-import { useEffect } from "react";
-import { toast } from "sonner";
 import Logo from "@/components/Logo";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import StatusBadge from "@/components/ui/StatusBadge";
-import { useReactToPrint } from "react-to-print";
-import { useRef } from "react";
 import "@/assets/css/print.css";
 import { Button } from "@/components/ui/button";
 import { formattedVND } from "@/lib/utils";
@@ -16,29 +8,32 @@ import { formattedVND } from "@/lib/utils";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import readVNNumber from "@oorts/read-vn-number";
+import cookieUtil from "@/utils/cookieUtil";
+import Modal from "@/components/Modal";
+import { InvoiceStatus, Notice, PaymentMethod, PaymentStatus } from "@/enums";
+import TextareaLabel from "@/components/TextareaLabel";
+import RenderIf from "@/components/RenderIf";
+import useViewInvoiceDetail from "./useViewInvoiceDetail";
+import SelectPaymentMethod from "@/components/finance/invoice/SelectPaymentMethod";
 
+const NA = "N/A";
 const ViewInvoiceDetail = () => {
-  const { id } = useParams();
-
-  const contentRef = useRef<HTMLDivElement>(null);
-  const reactToPrintFn = useReactToPrint({
+  const {
+    handleRejectPayment,
+    isLoading,
     contentRef,
-    documentTitle: "HoaDon_" + id,
-  });
-
-  const { data, isError, isLoading } = useQuery<ApiResponse<InvoiceDetailsResponse>>({
-    queryKey: ["invoice-detail"],
-    queryFn: async () => {
-      const res = await httpRequest.get(`/invoices/${id}`);
-      return res.data;
-    },
-  });
-
-  useEffect(() => {
-    if (isError) {
-      toast.error("Có lỗi xảy ra khi xem chi tiết hóa đơn");
-    }
-  }, [isError]);
+    data,
+    errors,
+    reason,
+    role,
+    setReason,
+    reactToPrintFn,
+    handleContinue,
+    selectPaymentMethod,
+    paymentReceipt,
+    setSelectPaymentMethod,
+    switchDesc,
+  } = useViewInvoiceDetail();
 
   if (isLoading) {
     return (
@@ -48,12 +43,10 @@ const ViewInvoiceDetail = () => {
     );
   }
 
-  const NA = "N/A";
-
   return (
     <div className="p-10 bg-background rounded-md">
-      <div className="flex justify-end">
-        <Button variant={"default"} onClick={reactToPrintFn}>
+      <div className="flex justify-end gap-2">
+        <Button variant={"status"} className="text-white" onClick={reactToPrintFn}>
           Tải hóa đơn
         </Button>
       </div>
@@ -135,36 +128,95 @@ const ViewInvoiceDetail = () => {
             </TableBody>
           </Table>
         </main>
-        <div className="flex justify-end mt-4 text-sm">
-          <div className="text-end">
-            <div>
-              Thành tiền / Total amount:{" "}
-              <strong className="text-red-500 text-base">
-                {data?.data?.totalAmount ? formattedVND(data?.data?.totalAmount) : formattedVND(0)}
-              </strong>
+        <div className="flex md:flex-row flex-col justify-between items-end">
+          <div className="flex flex-row justify-between items-end">
+            <div className="flex flex-col justify-start text-sm mt-6">
+              <span>
+                Hóa đơn / Invoice for:{" "}
+                <strong>
+                  {data?.data?.month ?? NA} - {data?.data?.year ?? NA}
+                </strong>
+              </span>
+              <span className="mt-2">
+                <span className="text-red-500 font-medium">Ghi chú / Note:</span> {data?.data?.note || NA}
+              </span>
             </div>
-            <div className="italic text-xs mt-1 text-foreground">
-              (Bằng chữ:{" "}
-              {(() => {
-                const text = readVNNumber.toVNWord(data?.data?.totalAmount);
-                return text === "" ? "Miễn phí" : text.charAt(0).toUpperCase() + text.slice(1);
-              })()}
-              )
+          </div>
+
+          <div className="flex flex-col items-end mt-4 text-sm">
+            <div className="text-end">
+              <div>
+                Thành tiền / Total amount:{" "}
+                <strong className="text-red-500 text-base">
+                  {data?.data?.totalAmount ? formattedVND(data?.data?.totalAmount) : formattedVND(0)}
+                </strong>
+              </div>
+              <div className="italic text-xs mt-1 text-foreground">
+                (Bằng chữ:{" "}
+                {(() => {
+                  const text = readVNNumber.toVNWord(data?.data?.totalAmount);
+                  return text === "" ? "Miễn phí" : text.charAt(0).toUpperCase() + text.slice(1) + " đồng";
+                })()}
+                )
+              </div>
             </div>
           </div>
         </div>
+      </div>
+      <div className="flex justify-end mt-10 gap-5">
+        <RenderIf
+          value={
+            role === "USER" &&
+            cookieUtil.getStorage()?.statusInvoice !== InvoiceStatus.DA_THANH_TOAN &&
+            cookieUtil.getStorage()?.statusInvoice !== PaymentStatus.TU_CHOI
+          }
+        >
+          <RenderIf
+            value={
+              paymentReceipt?.data?.paymentStatus !== PaymentStatus.TU_CHOI &&
+              paymentReceipt?.data?.paymentMethod === PaymentMethod.CHON_PHUONG_THUC
+            }
+          >
+            <Modal
+              title="Lý do từ chối thanh toán"
+              trigger={
+                <Button variant={"delete"} className="cursor-pointer">
+                  <span className="text-white">Từ chối thanh toán</span>
+                </Button>
+              }
+              desc={Notice.UPDATE}
+              onConfirm={handleRejectPayment}
+            >
+              <TextareaLabel
+                required
+                errorText={errors.reason}
+                id="reason"
+                name="reason"
+                placeholder="Nhập lý do"
+                label="Lý do từ chối thanh toán:"
+                value={reason ?? ""}
+                onChange={(e) => setReason(e.target.value)}
+              />
+            </Modal>
+          </RenderIf>
 
-        <div className="flex flex-col justify-start text-sm mt-6">
-          <span>
-            Hóa đơn / Invoice for:{" "}
-            <strong>
-              {data?.data?.month ?? NA} - {data?.data?.year ?? NA}
-            </strong>
-          </span>
-          <span className="mt-2">
-            <span className="text-red-500 font-medium">Ghi chú / Note:</span> {data?.data?.note || NA}
-          </span>
-        </div>
+          <Modal
+            title="Chọn phương thức thanh toán"
+            trigger={
+              <Button variant={"default"} className="cursor-pointer">
+                <span className="text-white">Thanh toán</span>
+              </Button>
+            }
+            onConfirm={handleContinue}
+            className="md:!max-w-2xl"
+            desc={switchDesc(selectPaymentMethod as PaymentMethod)}
+          >
+            <SelectPaymentMethod
+              selectPaymentMethod={selectPaymentMethod}
+              setSelectPaymentMethod={setSelectPaymentMethod}
+            />
+          </Modal>
+        </RenderIf>
       </div>
     </div>
   );

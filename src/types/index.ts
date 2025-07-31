@@ -20,9 +20,11 @@ import {
   MeterType,
   InvoiceStatus,
   InvoiceType,
- 
   ServiceCalculation,
   InvoiceItemType,
+  ServiceCategory,
+  PaymentStatus,
+  PaymentMethod,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -47,7 +49,8 @@ export interface IBtnType {
     | "contract"
     | "floor"
     | "building"
-    | "finalize";
+    | "finalize"
+    | "cash";
   hasConfirm: boolean;
 }
 
@@ -322,6 +325,34 @@ export interface CreateAssetInit2Response {
   rooms: IdAndName[];
 }
 
+export interface RoomDetailsResponse {
+  buildingName: string;
+  buildingAddress: string;
+  ownerName: string;
+  ownerPhone: string;
+  roomCode: string;
+  acreage: number;
+  maximumPeople: number;
+  roomType: RoomType;
+  status: RoomStatus;
+  description: string;
+  contractCode: string;
+  numberOfPeople: number;
+  representativeName: string;
+  representativePhone: string;
+  dob: string;
+  identityCardNumber: string;
+  deposit: number;
+  roomPrice: number;
+  contractStatus: ContractStatus;
+  startDate: string;
+  endDate: string;
+  memberInRoomCount: number;
+  assetInRoomCount: number;
+  serviceInRoomCount: number;
+  vehicleInRoomCount: number;
+}
+
 /* Asset */
 export interface ICreateAsset {
   nameAsset: string;
@@ -336,6 +367,7 @@ export interface ICreateAsset {
   descriptionAsset: string;
 }
 
+<<<<<<< HEAD
 export interface IAssetStatisticsResponse {
   totalActiveAssets: number;
   totalAssets: number;
@@ -343,6 +375,20 @@ export interface IAssetStatisticsResponse {
 }
 
 export type IUpdateAsset = ICreateAsset;
+=======
+export type IUpdateAsset = ICreateAsset;
+
+// export interface ICreateAsset {
+//   nameAsset: string;
+//   assetType: string;
+//   assetBeLongTo: string;
+//   price: number;
+//   descriptionAsset: string;
+// }
+
+// export type IUpdateAsset = ICreateAsset;
+
+>>>>>>> 960d77781a7217a60428fdfb02a60f9e8cd42830
 export interface AssetResponse extends AbstractResponse {
   nameAsset: string;
   assetType: string;
@@ -870,6 +916,7 @@ export interface InvoiceFloorCreationRequest {
 export interface InvoiceResponse extends AbstractResponse {
   invoiceCode: string;
   buildingName: string;
+  paymentReceiptId: string;
   roomCode: string;
   roomId: string;
   tenantName: string;
@@ -949,4 +996,49 @@ export interface InvoiceDetailUpdateRequest {
   quantity: number | undefined;
   unitPrice: number | undefined;
   description: string;
+}
+
+/* PAYMENT RECEIPT */
+export interface PaymentReceiptResponse extends AbstractResponse {
+  invoiceId: string;
+  invoiceCode: string;
+  receiptCode: string;
+  amount: number;
+  paymentMethod: PaymentMethod;
+  paymentStatus: PaymentStatus;
+  collectedBy: string;
+  paymentDate: string;
+  note: string;
+}
+
+export interface PaymentBatchResponse {
+  totalInvoices: number;
+  createdReceipts: number;
+  notifiedUsers: number;
+}
+
+export interface PaymentReceiptFilter {
+  query: string;
+  paymentStatus: PaymentStatus | string;
+  paymentMethod: PaymentMethod | string;
+  fromAmount: number | undefined;
+  toAmount: number | undefined;
+  fromDate: string;
+  toDate: string;
+}
+
+export interface RejectPaymentRequest {
+  reason: string;
+}
+
+export interface PaymentCreationURL {
+  amount: number;
+  bankCode?: string;
+  language?: string;
+  transactionReferenceCode: string;
+}
+
+export interface PaymentMethodResponse {
+  id: string;
+  paymentMethod: PaymentMethod;
 }

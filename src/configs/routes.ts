@@ -48,11 +48,18 @@ const routes = {
     meterReading: "/finance/meter-reading",
     meterReadingId: "/finance/meter-reading/:id",
     invoice: "/finance/invoice",
+    paymentReceipt: "/finance/payment-receipt",
     invoiceId: "/finance/invoice/:id",
     invoiceViewId: "/finance/invoice/view/:id",
   },
   user: {
     room: "/room",
+    roomDetail: "/room/detail/:id",
+    invoice: "/invoices",
+    paymentReceipt: "/payment-receipts",
+    viewInvoice: "/invoices/view/:id",
+    invoicePayment: "/invoices/payment/:id",
+    paymentCallback: "/payments/payment-callback",
   },
 };
 

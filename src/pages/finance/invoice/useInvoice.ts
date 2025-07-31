@@ -10,10 +10,10 @@ import {
   InvoiceResponse,
   InvoiceUpdateRequest,
 } from "@/types";
+import cookieUtil from "@/utils/cookieUtil";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
-import { useRoomStore } from "@/zustand/invoiceStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isNumber } from "lodash";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
@@ -21,7 +21,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useInvoice = () => {
-  const { setRoomId } = useRoomStore();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
@@ -300,10 +299,10 @@ export const useInvoice = () => {
         navigate(`/finance/invoice/${invoice.id}`, {
           replace: true,
         });
-        setRoomId(invoice.roomId);
+        cookieUtil.setStorage({ roomId: invoice.roomId });
       }
     },
-    [navigate, openDialog, setRoomId]
+    [navigate, openDialog]
   );
 
   const { data: contractInitToAdd, isError: errorContractInitToAdd } = useQuery<ApiResponse<ContractResponse[]>>({

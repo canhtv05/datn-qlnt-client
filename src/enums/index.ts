@@ -209,6 +209,7 @@ export enum MeterType {
 export enum InvoiceStatus {
   CHUA_THANH_TOAN = "CHUA_THANH_TOAN",
   DA_THANH_TOAN = "DA_THANH_TOAN",
+  CHO_THANH_TOAN = "CHO_THANH_TOAN",
   QUA_HAN = "QUA_HAN",
   HUY = "HUY",
 }
@@ -224,4 +225,22 @@ export enum InvoiceItemType {
   DICH_VU = "DICH_VU",
   TIEN_PHONG = "TIEN_PHONG",
   DEN_BU = "DEN_BU",
+}
+
+/* PAYMENT RECEIPT */
+export enum PaymentMethod {
+  CHON_PHUONG_THUC = "CHON_PHUONG_THUC",
+  TIEN_MAT = "TIEN_MAT",
+  CHUYEN_KHOAN = "CHUYEN_KHOAN",
+  VNPAY = "VNPAY",
+  ZALOPAY = "ZALOPAY",
+  MOMO = "MOMO",
+}
+
+export enum PaymentStatus {
+  CHO_THANH_TOAN = "CHO_THANH_TOAN",
+  CHO_XAC_NHAN = "CHO_XAC_NHAN",
+  DA_THANH_TOAN = "DA_THANH_TOAN",
+  TU_CHOI = "TU_CHOI",
+  HUY = "HUY",
 }

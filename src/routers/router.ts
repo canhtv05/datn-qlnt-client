@@ -24,6 +24,7 @@ const AuthLayout = lazy(() => import("@/layouts/AuthLayout"));
 const Profile = lazy(() => import("@/pages/profile"));
 const DetailTenant = lazy(() => import("@/pages/customer/tenant/DetailTenant"));
 const RoomMembers = lazy(() => import("@/pages/user/members"));
+const RoomDetail = lazy(() => import("@/pages/user/room-detail"));
 
 /* DASHBOARD */
 const DashBoard = lazy(() => import("@/pages/dashboard"));
@@ -52,9 +53,14 @@ const MeterReading = lazy(() => import("@/pages/finance/meter-reading"));
 const Invoice = lazy(() => import("@/pages/finance/invoice"));
 const InvoiceDetail = lazy(() => import("@/pages/finance/invoice/invoice-detail/InvoiceDetail"));
 const ViewInvoiceDetail = lazy(() => import("@/pages/finance/invoice/invoice-detail/ViewInvoiceDetail"));
+const PaymentReceipt = lazy(() => import("@/pages/finance/payment-receipt"));
 
 /* USER ROLE */
-const UserRole = lazy(() => import("@/pages/user/room"));
+const UserRoom = lazy(() => import("@/pages/user/room"));
+const UserPaymentReceipt = lazy(() => import("@/pages/user/payment-receipt"));
+const UserInvoice = lazy(() => import("@/pages/user/invoice"));
+const UserInvoicePayment = lazy(() => import("@/components/finance/invoice/InvoicePayment"));
+const PaymentCallbackVnPay = lazy(() => import("@/pages/payment-callback"));
 
 const publicRoutes: RouteType[] = [
   /* AUTH */
@@ -212,9 +218,47 @@ const privateRoutes: RouteType[] = [
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
+    path: configs.routes.finance.paymentReceipt,
+    component: PaymentReceipt,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+
+  // ROLE USER
+  {
     path: configs.routes.user.room,
-    component: UserRole,
+    component: UserRoom,
     allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.roomDetail,
+    component: RoomDetail,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.paymentReceipt,
+    component: UserPaymentReceipt,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.viewInvoice,
+    component: ViewInvoiceDetail,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.invoice,
+    component: UserInvoice,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.invoicePayment,
+    component: UserInvoicePayment,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.paymentCallback,
+    component: PaymentCallbackVnPay,
+    allowedRoles: ["USER"],
+    layout: null,
   },
 ];
 

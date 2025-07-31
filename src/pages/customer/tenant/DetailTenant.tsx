@@ -1,31 +1,23 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { httpRequest } from "@/utils/httpRequest";
 import { toast } from "sonner";
 import { ApiResponse, TenantDetailResponse } from "@/types";
-import { Building2, FileSignature, Mail, UserRound, X, FileText, Check } from "lucide-react";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { useEffect } from "react";
 import Overlay from "@/components/Overlay";
 import Image from "@/components/Image";
 import { Badge } from "@/components/ui/badge";
 
-const formatDate = (date: Date) => date.toLocaleDateString("vi-VN");
-const formatDateTime = (date: Date) => date.toLocaleString("vi-VN");
-
 const NA = "N/A";
 
 const DetailTenant = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
 
   const { data, isError } = useQuery<ApiResponse<TenantDetailResponse>>({
     queryKey: ["tenantDetail", id],
     queryFn: async () => {
       const res = await httpRequest.get(`/tenants/detail/${id}`);
-      console.log(res.data);
       return res.data;
     },
     enabled: !!id,
@@ -87,6 +79,7 @@ const DetailTenant = () => {
                 </span>
                 <span className="text-sm font-medium">SĐT: {tenant?.phoneNumber ?? NA}</span>
                 <span className="text-sm font-medium">CCCD/CMT: {tenant?.identityCardNumber ?? NA}</span>
+                <span className="text-sm font-medium break-words whitespace-normal">Email: {tenant?.email ?? NA}</span>
                 <span className="text-sm font-medium break-words whitespace-normal">
                   Địa chỉ: {tenant?.address ?? NA}
                 </span>
