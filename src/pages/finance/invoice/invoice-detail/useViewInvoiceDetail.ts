@@ -1,4 +1,10 @@
-import { ApiResponse, InvoiceDetailsResponse, PaymentReceiptResponse, RejectPaymentRequest } from "@/types";
+import {
+  ApiResponse,
+  InvoiceDetailsResponse,
+  PaymentCreationURL,
+  PaymentReceiptResponse,
+  RejectPaymentRequest,
+} from "@/types";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { httpRequest } from "@/utils/httpRequest";
@@ -67,7 +73,6 @@ export default function useViewInvoiceDetail() {
   const handleConfirmTransferPayment = useCallback(async () => {
     const paymentReceiptId = cookieUtil.getStorage()?.paymentReceiptId;
     if (!paymentReceiptId) return false;
-
     try {
       await confirmTransferPaymentMutation.mutateAsync(paymentReceiptId);
       return true;
@@ -75,6 +80,13 @@ export default function useViewInvoiceDetail() {
       return false;
     }
   }, [confirmTransferPaymentMutation]);
+
+  const createPaymentUrlMutation = useMutation({
+    mutationKey: ["create-payment-url"],
+    mutationFn: async (payload: PaymentCreationURL) =>
+      await httpRequest.post(`/payment-receipts/create-payment-url`, payload),
+    onError: handleMutationError,
+  });
 
   const handleContinue = useCallback(async () => {
     switch (selectPaymentMethod) {
@@ -99,13 +111,28 @@ export default function useViewInvoiceDetail() {
         setSelectPaymentMethod(PaymentMethod.TIEN_MAT);
         break;
       }
+      case PaymentMethod.VNPAY: {
+        if (!paymentReceipt) return;
+        const data: PaymentCreationURL = {
+          amount: paymentReceipt?.data?.amount,
+          transactionReferenceCode: paymentReceipt?.data?.id,
+        };
+        createPaymentUrlMutation.mutate(data, {
+          onSuccess: (data) => {
+            if (data.data?.data) {
+              location.href = data.data?.data;
+            }
+          },
+        });
+      }
     }
     return true;
   }, [
+    createPaymentUrlMutation,
     data?.data?.invoiceId,
     handleConfirmTransferPayment,
     navigate,
-    paymentReceipt?.data?.paymentMethod,
+    paymentReceipt,
     selectPaymentMethod,
   ]);
 

@@ -57,6 +57,7 @@ const routes = {
     paymentReceipt: "/payment-receipts",
     viewInvoice: "/invoices/view/:id",
     invoicePayment: "/invoices/payment/:id",
+    paymentCallback: "/payments/payment-callback",
   },
 };
 

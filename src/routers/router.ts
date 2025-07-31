@@ -59,6 +59,7 @@ const UserRoom = lazy(() => import("@/pages/user/room"));
 const UserPaymentReceipt = lazy(() => import("@/pages/user/payment-receipt"));
 const UserInvoice = lazy(() => import("@/pages/user/invoice"));
 const UserInvoicePayment = lazy(() => import("@/components/finance/invoice/InvoicePayment"));
+const PaymentCallbackVnPay = lazy(() => import("@/pages/payment-callback"));
 
 const publicRoutes: RouteType[] = [
   /* AUTH */
@@ -241,6 +242,12 @@ const privateRoutes: RouteType[] = [
     path: configs.routes.user.invoicePayment,
     component: UserInvoicePayment,
     allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.paymentCallback,
+    component: PaymentCallbackVnPay,
+    allowedRoles: ["USER"],
+    layout: null,
   },
 ];
 

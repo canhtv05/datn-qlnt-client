@@ -928,3 +928,15 @@ export interface PaymentReceiptFilter {
 export interface RejectPaymentRequest {
   reason: string;
 }
+
+export interface PaymentCreationURL {
+  amount: number;
+  bankCode?: string;
+  language?: string;
+  transactionReferenceCode: string;
+}
+
+export interface PaymentMethodResponse {
+  id: string;
+  paymentMethod: PaymentMethod;
+}
