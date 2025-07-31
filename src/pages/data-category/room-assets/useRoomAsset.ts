@@ -1,5 +1,5 @@
 import { StatisticCardType } from "@/components/StatisticCard";
-import { Notice, Status } from "@/enums";
+import { AssetStatus, Notice, RoomStatus, RoomType, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
 import { createOrUpdateAssetSchema } from "@/lib/validation";
 import {
@@ -9,7 +9,10 @@ import {
   CreateAssetInit2Response,
   IAssetStatisticsResponse,
   IUpdateAsset,
+  IUpdateRoomAsset,
   PaginatedResponse,
+  RoomAssetFilter,
+  RoomAssetResponse,
 } from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
@@ -27,27 +30,30 @@ interface AssetProps {
 
 export const useRoomAsset = ({ roomId }: AssetProps) => {
     const [searchParams, setSearchParams] = useSearchParams();
-  const {
-    page = "1",
-    size = "15",
-    nameAsset = "",
-    assetBeLongTo = "",
-    assetStatus = "",
-  } = queryFilter(searchParams, "page", "size", "nameAsset", "assetBeLongTo", "assetStatus");
-
+    const {
+      page = "1",
+      size = "15",
+      building = "",
+      floor = "",
+      roomType = "",
+      status = "",
+    } = queryFilter(
+      searchParams,
+      "page",
+      "size",
+      "building",
+      "floor",
+      "roomType",
+      "status"
+    );
+    
   const [rowSelection, setRowSelection] = useState({});
   const idRef = useRef<string>("");
-  const [value, setValue] = useState<IUpdateAsset>({
-    assetBeLongTo: "",
-    assetType: "",
-    buildingID: "",
-    descriptionAsset: "",
-    floorID: "",
-    nameAsset: "",
-    price: undefined,
-    roomID: "",
-    tenantId: "",
-    assetStatus: "",
+  const [value, setValue] = useState<IUpdateRoomAsset>({
+   assetName: "",
+  price: 0,
+  assetStatus: "",
+  description: ""
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -58,49 +64,55 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<IUpdateAsset>();
 
-  const [filterValues, setFilterValues] = useState<AssetFilter>({
-    nameAsset,
-    assetBeLongTo,
-    assetStatus,
+  const [filterValues, setFilterValues] = useState<RoomAssetFilter>({
+    building: "",
+    floor: "",
+    roomType: RoomType.DON,
+    status: RoomStatus.TRONG || "",
   });
 
   const handleClear = () => {
     setFilterValues({
-      assetBeLongTo: "",
-      assetStatus: "",
-      nameAsset: "",
+      building: "",
+      floor: "",
+      roomType: RoomType.DON,
+      status: RoomStatus.TRONG || "",
     });
     setSearchParams({});
   };
 
   const handleFilter = useCallback(() => {
     const params = new URLSearchParams();
-    if (filterValues.nameAsset) params.set("nameAsset", filterValues.nameAsset);
-    if (filterValues.assetBeLongTo) params.set("assetBeLongTo", filterValues.assetBeLongTo);
-    if (filterValues.assetStatus) params.set("assetStatus", filterValues.assetStatus);
+    if (filterValues.building) params.set("building", filterValues.building);
+    if (filterValues.floor) params.set("floor", filterValues.floor);
+    if (filterValues.roomType) params.set("roomType", filterValues.roomType);
+    if (filterValues.status) params.set("status", filterValues.status);
     params.set("page", "1");
-    if (filterValues.nameAsset || filterValues.assetStatus || filterValues.assetBeLongTo) {
+    if (filterValues.building || filterValues.floor || filterValues.roomType || filterValues.status) {
       setSearchParams(params);
     }
-  }, [filterValues.assetBeLongTo, filterValues.assetStatus, filterValues.nameAsset, setSearchParams]);
+  }, [filterValues.building, filterValues.floor, filterValues.roomType, filterValues.status, setSearchParams]);
 
-  const { data, isLoading, isError } = useQuery<ApiResponse<PaginatedResponse<AssetResponse[]>>>({
-    queryKey: ["asset-rooms", page, size, nameAsset, assetBeLongTo, assetStatus],
+  const { data, isLoading, isError } = useQuery<ApiResponse<PaginatedResponse<RoomAssetResponse[]>>>({
+    queryKey: ["asset-rooms", page, size, building, floor, status, roomType],
     queryFn: async () => {
       const params: Record<string, string> = {
         page: page.toString(),
         size: size.toString(),
       };
 
-      if (nameAsset) params["nameAsset"] = nameAsset;
-      if (assetStatus) params["assetStatus"] = assetStatus;
-      if (assetBeLongTo) params["assetBeLongTo"] = assetBeLongTo;
+      if (building) params["building"] = building;
+      if (floor) params["floor"] = floor;
+      if (roomType) params["roomType"] = roomType;
+      if (status) params["status"] = status;
 
-      const res = await httpRequest.get(`/asset-rooms/${roomId}`, {
+      const res = await httpRequest.get(`/asset-rooms/${roomId}`
+        , {
         params,
-      });
+      }
+    );
 
-      return res.data;
+      return res.data.data;
     },
   });
 
@@ -141,9 +153,9 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
     },
   ];
 
-  const updateAssetMutation = useMutation({
-    mutationKey: ["update-assets"],
-    mutationFn: async (payload: IUpdateAsset) => await httpRequest.put(`/assets/${idRef.current}`, payload),
+  const updateRoomAssetMutation = useMutation({
+    mutationKey: ["update-room-assets"],
+    mutationFn: async (payload: IUpdateRoomAsset) => await httpRequest.put(`/asset-rooms/${idRef.current}`, payload),
     onError: (error) => {
       handleMutationError(error);
     },
@@ -159,7 +171,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
     mutationFn: async (id: string) => await httpRequest.put(`/asset-rooms/toggle/${id}`),
   });
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" }>({
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "toggle" }>({
     onConfirm: async ({ id, type }) => {
       if (type === "delete") return await handleRemoveRoomAssetById(id);
       if (type === "toggle") return await handleToggleStatusRoomAssetById(id);
@@ -201,96 +213,109 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
     }
   };
 
-  const handleUpdateFloor = useCallback(async () => {
+  // const handleUpdateFloor = useCallback(async () => {
+  //   try {
+  //     const {
+  //       assetBeLongTo,
+  //       assetType,
+  //       buildingID,
+  //       descriptionAsset,
+  //       floorID,
+  //       nameAsset,
+  //       price,
+  //       roomID,
+  //       tenantId,
+  //       assetStatus,
+  //     } = value;
+
+  //     const data: IUpdateAsset = {
+  //       assetBeLongTo,
+  //       assetType: assetType ?? "",
+  //       buildingID: buildingID ?? "",
+  //       descriptionAsset: descriptionAsset.trim(),
+  //       floorID: floorID ?? "",
+  //       nameAsset: nameAsset.trim(),
+  //       price,
+  //       roomID: roomID ?? "",
+  //       tenantId: tenantId ?? "",
+  //       assetStatus,
+  //     };
+
+  //     await createOrUpdateAssetSchema.parseAsync(data);
+
+  //     updateRoomAssetMutation.mutate(data, {
+  //       onSuccess: () => {
+  //         setValue({
+  //           assetBeLongTo: "",
+  //           assetType: "",
+  //           buildingID: "",
+  //           descriptionAsset: "",
+  //           floorID: "",
+  //           nameAsset: "",
+  //           price: undefined,
+  //           roomID: "",
+  //           tenantId: "",
+  //           assetStatus: "",
+  //         });
+  //         queryClient.invalidateQueries({
+  //           predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
+  //         });
+  //         toast.success(Status.UPDATE_SUCCESS);
+  //         setIsModalOpen(false);
+  //       },
+  //     });
+  //     clearErrors();
+  //     return true;
+  //   } catch (error) {
+  //     handleZodErrors(error);
+  //     return false;
+  //   }
+  // }, [updateRoomAssetMutation, clearErrors, handleZodErrors, queryClient, value]);
+
+  const handleSaveRoomAsset = useCallback(async () => {
     try {
-      const {
-        assetBeLongTo,
-        assetType,
-        buildingID,
-        descriptionAsset,
-        floorID,
-        nameAsset,
-        price,
-        roomID,
-        tenantId,
-        assetStatus,
-      } = value;
-
-      const data: IUpdateAsset = {
-        assetBeLongTo,
-        assetType: assetType ?? "",
-        buildingID: buildingID ?? "",
-        descriptionAsset: descriptionAsset.trim(),
-        floorID: floorID ?? "",
-        nameAsset: nameAsset.trim(),
-        price,
-        roomID: roomID ?? "",
-        tenantId: tenantId ?? "",
-        assetStatus,
-      };
-
-      await createOrUpdateAssetSchema.parseAsync(data);
-
-      updateAssetMutation.mutate(data, {
+      await updateRoomAssetMutation.mutateAsync(value, {
         onSuccess: () => {
-          setValue({
-            assetBeLongTo: "",
-            assetType: "",
-            buildingID: "",
-            descriptionAsset: "",
-            floorID: "",
-            nameAsset: "",
-            price: undefined,
-            roomID: "",
-            tenantId: "",
-            assetStatus: "",
-          });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
           });
           toast.success(Status.UPDATE_SUCCESS);
-          setIsModalOpen(false);
         },
       });
-      clearErrors();
+    
+      setIsModalOpen(false);
       return true;
     } catch (error) {
       handleZodErrors(error);
       return false;
     }
-  }, [updateAssetMutation, clearErrors, handleZodErrors, queryClient, value]);
+  }, [value ,updateRoomAssetMutation, handleZodErrors]);
 
   const handleActionClick = useCallback(
-    (asset: AssetResponse, action: "update" | "toggle" | "delete") => {
-      idRef.current = asset.id;
+    (assetRooms: AssetResponse, action: "update" | "toggle" | "delete") => {
+      idRef.current = assetRooms.id;
       if (action === "update") {
+        console.log("Updating asset:", assetRooms);
         setValue({
-          assetBeLongTo: asset.assetBeLongTo,
-          assetType: asset.assetType,
-          buildingID: asset.buildingID,
-          descriptionAsset: asset.descriptionAsset,
-          floorID: asset.floorID,
-          nameAsset: asset.nameAsset,
-          price: asset.price,
-          roomID: asset.roomID,
-          tenantId: asset.tenantId,
-          assetStatus: asset.assetStatus,
+          assetName: assetRooms.assetName,
+          price: assetRooms.price,
+          assetStatus: assetRooms.assetStatus,
+          description: assetRooms.description,
         });
         setIsModalOpen(true);
       } else if(action === "delete") {
-        console.log('hehehe')
         openDialog(
-          { id: asset.id, type: action },
+          { id: assetRooms.id, type: action },
           {
             type: "warn",
             desc: Notice.REMOVE,
           }
         );
-      } else {
+      } else if(action === "toggle") {
         openDialog(
-          { id: asset.id, type: action },
+          { id: assetRooms.id, type: action },
           {
-            type: "info",
+            type: "default",
             desc: Notice.TOGGLE_STATUS,
           }
         );
@@ -329,7 +354,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
     query: {
       page: parsedPage,
       size: parsedSize,
-      nameAsset,
+      // nameAsset,
     },
     setSearchParams,
     props,
@@ -339,10 +364,11 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
     handleActionClick,
     rowSelection,
     setRowSelection,
+    handleSaveRoomAsset,
     isModalOpen,
     setIsModalOpen,
     handleChange,
-    handleUpdateFloor,
+    // handleUpdateFloor,
     value,
     setValue,
     errors,

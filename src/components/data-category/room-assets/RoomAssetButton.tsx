@@ -10,13 +10,19 @@ import { useFormErrors } from "@/hooks/useFormErrors";
 import { useConfirmDialog } from "@/hooks";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
-import { IBtnType, ApiResponse, RoomAssetFormValue, RoomResponse, AssetResponse } from "@/types";
+import { IBtnType, ApiResponse, RoomAssetFormValue, RoomResponse, AssetResponse, ICreateAndUpdateContract, ICreateAndUpdateBulkRoomAsset, RoomAssetBulkFormValue, AllRoomAssetFormValue } from "@/types";
 import { AssetBeLongTo, Notice, Status } from "@/enums";
 import { httpRequest } from "@/utils/httpRequest";
-import { roomAssetFormSchema } from "@/lib/validation";
+import { addToAllRoomAssetSchema, roomAssetBulkSchema, roomAssetFormSchema } from "@/lib/validation";
 import { handleMutationError } from "@/utils/handleMutationError";
+import { Building, Layers } from "lucide-react";
+import { all } from "axios";
+import { useParams } from "react-router-dom";
 
-const RoomAssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
+const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>, roomId: string }) => {
+
+  const { buildingId: buildingId } = useParams();
+
   const [value, setValue] = useState<RoomAssetFormValue>({
     assetBeLongTo: "PHONG",
     roomId: "",
@@ -25,6 +31,36 @@ const RoomAssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
     price: 0,
     description: "",
   });
+
+
+
+  const [bulkValue, setBulkValue] = useState<RoomAssetBulkFormValue>({
+    assetId: "",
+    roomId: "",
+  });
+
+  const [allRoomValue, setAllRoomValue] = useState<AllRoomAssetFormValue>({
+    assetId: "",
+    buildingId: "",
+  });
+
+  const LOCAL_ACTION_BUTTONS: IBtnType[] = [
+    ...ACTION_BUTTONS,
+    {
+      tooltipContent: "Thêm nhiều",
+      icon: Layers,
+      arrowColor: "var(--color-green-500)",
+      type: "bulkAdd",
+      hasConfirm: false,
+    },
+    {
+      tooltipContent: "Thêm vào tòa nhà",
+      icon: Building,
+      arrowColor: "var(--color-green-500)",
+      type: "addToAllRoom",
+      hasConfirm: false,
+    },
+  ];
 
   // const { id: buildingId } = useParams();
   const { errors, clearErrors, handleZodErrors } = useFormErrors<RoomAssetFormValue>();
@@ -48,11 +84,15 @@ const RoomAssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
     },
   });
 
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setValue((prev) => ({ ...prev, [name]: value }));
-  };
+  const handleChange = useCallback(
+    <K extends keyof ICreateAndUpdateBulkRoomAsset>(
+      field: K,
+      newValue: ICreateAndUpdateBulkRoomAsset[K]
+    ) => {
+      setValue((prev) => ({ ...prev, [field]: newValue }));
+    },
+    []
+  );
 
   const addRoomAssetMutation = useMutation({
     mutationKey: ["add-room-asset"],
@@ -73,11 +113,105 @@ const RoomAssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
     },
   });
 
+  const bulkAddRoomAssetMutation = useMutation({
+    mutationKey: ["bulk-add-room-asset"],
+    mutationFn: async (payload: RoomAssetBulkFormValue) => {
+      const { roomId, assetId } = payload;
+
+      const roomIds = Array.isArray(roomId) ? roomId : [roomId];
+      const assetIds = Array.isArray(assetId) ? assetId : [assetId];
+
+      let endpoint = "/asset-rooms";
+
+      if (roomIds.length > 1) {
+        endpoint = "/asset-rooms/by-asset";
+      } else if (assetIds.length > 1) {
+        endpoint = "/asset-rooms/by-room";
+      }
+
+      return await httpRequest.post(endpoint, payload);
+    },
+    onError: handleMutationError,
+    onSuccess: () => {
+      toast.success(Status.ADD_SUCCESS);
+      setBulkValue({
+        roomId: "",
+        assetId: "",
+      });
+      queryClient.invalidateQueries({ queryKey: ["asset-rooms"] });
+      queryClient.invalidateQueries({ queryKey: ["room-asset-statistics"] });
+    },
+  });
+
+
+  const handleBulkAddRoomAsset = useCallback(async () => {
+    try {
+      const fullValue = {
+        ...bulkValue,
+        ...(Array.isArray(bulkValue.roomId) && bulkValue.roomId.length === 1
+          ? { roomId: bulkValue.roomId[0] }
+          : Array.isArray(bulkValue.roomId) && bulkValue.roomId.length > 1
+            ? { roomIds: bulkValue.roomId }
+            : {}),
+        ...(Array.isArray(bulkValue.assetId) && bulkValue.assetId.length === 1
+          ? { assetId: bulkValue.assetId[0] }
+          : Array.isArray(bulkValue.assetId) && bulkValue.assetId.length > 1
+            ? { assetIds: bulkValue.assetId }
+            : {}),
+      };
+
+      await roomAssetBulkSchema.parseAsync(fullValue);
+      await bulkAddRoomAssetMutation.mutateAsync(fullValue);
+      clearErrors();
+      return true;
+    } catch (error) {
+      console.log("Error adding room asset:", error);
+      handleZodErrors(error);
+      return false;
+    }
+  }, [bulkValue, bulkAddRoomAssetMutation, clearErrors, handleZodErrors]);
+
+  const addToAllRoomAssetMutation = useMutation({
+    mutationKey: ["add-all-room-asset"],
+    mutationFn: async (payload: AllRoomAssetFormValue) => await httpRequest.post("/asset-rooms/by-building", payload),
+    onError: handleMutationError,
+    onSuccess: () => {
+      toast.success(Status.ADD_SUCCESS);
+      setAllRoomValue({
+        assetId: "",
+        buildingId: "",
+      });
+      queryClient.invalidateQueries({ queryKey: ["asset-rooms"] });
+      queryClient.invalidateQueries({ queryKey: ["room-asset-statistics"] });
+      queryClient.invalidateQueries({ queryKey: ["room-asset-all"] });
+    },
+  });
+
+  const handleAddToAllRoom = useCallback(async () => {
+    try {
+      const fullValue = {
+        ...allRoomValue,
+        buildingId: buildingId ?? ""
+      };
+
+
+      await addToAllRoomAssetSchema.parseAsync(fullValue);
+      await addToAllRoomAssetMutation.mutateAsync(fullValue);
+      clearErrors();
+      return true;
+    } catch (error) {
+      console.log("Error adding room asset:", error);
+      handleZodErrors(error);
+      return false;
+    }
+  }, [allRoomValue, addToAllRoomAssetMutation, clearErrors, handleZodErrors, buildingId]);
   const handleAddRoomAsset = useCallback(async () => {
     try {
       const fullValue = {
         ...value,
+        roomId: roomId ?? ""
       };
+
       await roomAssetFormSchema.parseAsync(fullValue);
       await addRoomAssetMutation.mutateAsync(fullValue);
       clearErrors();
@@ -87,7 +221,7 @@ const RoomAssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
       handleZodErrors(error);
       return false;
     }
-  }, [value, addRoomAssetMutation, clearErrors, handleZodErrors]);
+  }, [value, addRoomAssetMutation, clearErrors, handleZodErrors, roomId]);
 
   const removeRoomAssetMutation = useMutation({
     mutationKey: ["remove-room-asset"],
@@ -105,6 +239,7 @@ const RoomAssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
       toast.success(Status.REMOVE_SUCCESS);
       queryClient.invalidateQueries({ queryKey: ["asset-rooms"] });
       queryClient.invalidateQueries({ queryKey: ["room-asset-statistics"] });
+      queryClient.invalidateQueries({ queryKey: ["room-asset-all"] });
 
       return true;
     } catch (error) {
@@ -136,10 +271,10 @@ const RoomAssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
       <div className="flex px-4 py-3 justify-between items-center">
         <h3 className="font-semibold">Tài sản phòng</h3>
         <div className="flex gap-2">
-          {ACTION_BUTTONS.map((btn, index) => (
+          {LOCAL_ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
-                <RenderIf value={btn.type === "default"}>
+                <RenderIf value={btn.type === "default" || btn.type === "bulkAdd" || btn.type === "addToAllRoom"}>
                   <Modal
                     title="Thêm tài sản phòng"
                     trigger={
@@ -150,19 +285,29 @@ const RoomAssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
                       </TooltipTrigger>
                     }
                     desc={Notice.ADD}
-                    onConfirm={handleAddRoomAsset}
-                  >
+                    onConfirm={
+                      btn.type === "bulkAdd"
+                        ? handleBulkAddRoomAsset
+                        : btn.type === "addToAllRoom"
+                          ? handleAddToAllRoom
+                          : handleAddRoomAsset
+                    }                  >
                     <AddOrUpdateRoomAsset
                       handleChange={handleChange}
                       value={value}
+                      bulkValue={bulkValue}
+                      setBulkValue={setBulkValue}
                       setValue={setValue}
+                      allRoomValue={allRoomValue}
+                      setAllRoomValue={setAllRoomValue}
                       errors={errors}
                       roomList={roomListData?.data || []}
                       assetsList={assetsListData?.data || []}
+                      type={btn.type as "default" | "addToAllRoom" | "update" | "bulkAdd"}
                     />
                   </Modal>
                 </RenderIf>
-                <RenderIf value={btn.type !== "default"}>
+                <RenderIf value={btn.type !== "default" && btn.type !== "bulkAdd" && btn.type !== "addToAllRoom"}>
                   <TooltipTrigger asChild>
                     <Button
                       size="icon"

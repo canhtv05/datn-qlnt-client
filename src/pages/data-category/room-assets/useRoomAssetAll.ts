@@ -8,6 +8,8 @@ import {
   FloorBasicResponse,
   FilterRoomValues,
   RoomAssetAllResponse,
+  RoomAssetFilter,
+  RoomAssetStatisticsResponse,
 } from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
@@ -15,63 +17,49 @@ import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useRef, useEffect, useCallback, ChangeEvent } from "react";
 import { toast } from "sonner";
-import { Status, Notice, AssetBeLongTo } from "@/enums";
+import { Status, Notice, AssetBeLongTo, RoomType, RoomStatus } from "@/enums";
 import { useParams, useSearchParams } from "react-router-dom";
 import { Building2, HandCoins, DoorOpen } from "lucide-react";
 import { useRoomAssetDrawerStore } from "@/zustand/openModalStore";
 
-const mapStatistics = (data?: IRoomStatisticsResponse) => ({
-  renting: data?.getTotalDangThue ?? 0,
-  depositing: data?.getTotalDaDatCoc ?? 0,
-  empty: data?.getTotalTrong ?? 0,
+const mapStatistics = (data?: RoomAssetStatisticsResponse) => ({
+  total: data?.totalAssets ?? 0,
+  totalActive: data?.totalActiveAssets ?? 0,
+  disabled: data?.totalDisabledAssets ?? 0,
 });
 
 export const useRoomAssetAll = () => {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { id: buildingIdParam } = useParams();
+
+  const { buildingId: buildingId } = useParams();
 
   const {
     page = "1",
     size = "15",
-    status = "",
-    maxPrice = "",
-    minPrice = "",
-    maxAcreage = "",
-    minAcreage = "",
-    maximumPeople = "",
-    nameFloor = "",
-    buildingId = "",
-    floorId = "",
+    building = buildingId,
+    // floor = "",
+    // roomType = "",
+    // status = "",
   } = queryFilter(
     searchParams,
     "page",
     "size",
-    "status",
-    "maxPrice",
-    "minPrice",
-    "maxAcreage",
-    "minAcreage",
-    "maximumPeople",
-    "nameFloor",
-    "buildingId",
-    "floorId"
+    "building",
+    // "floor",
+    // "roomType",
+    // "status"
   );
 
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
 
-  const [filterValues, setFilterValues] = useState<FilterRoomValues>({
-    status,
-    maxPrice,
-    minPrice,
-    maxAcreage,
-    minAcreage,
-    maximumPeople,
-    nameFloor,
-    buildingId: buildingId || buildingIdParam || "",
-    floorId,
-  });
+  const [filterValues, setFilterValues] = useState<RoomAssetFilter>({
+      building: "",
+      floor: "",
+      roomType: '',
+      status: "",
+    });
 
   const idRef = useRef<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -88,36 +76,15 @@ export const useRoomAssetAll = () => {
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<RoomAssetAllFormValue>();
 
-  useEffect(() => {
-    setFilterValues({
-      status,
-      maxPrice,
-      minPrice,
-      maxAcreage,
-      minAcreage,
-      maximumPeople,
-      nameFloor,
-      buildingId: buildingId || buildingIdParam || "",
-      floorId,
-    });
-  }, [status, maxPrice, minPrice, maxAcreage, minAcreage, maximumPeople, nameFloor, buildingId, buildingIdParam, floorId]);
-
   const handleClear = () => {
     setFilterValues({
-      status: "",
-      maxPrice: "",
-      minPrice: "",
-      maxAcreage: "",
-      minAcreage: "",
-      maximumPeople: "",
-      nameFloor: "",
-      buildingId: "",
-      floorId: "",
+      building: "",
+      floor: "",
+      roomType: RoomType.DON,
+      status: RoomStatus.TRONG || "",
     });
     setSearchParams({});
   };
-
-
 
   const handleFilter = useCallback(() => {
     const params = new URLSearchParams();
@@ -133,9 +100,9 @@ export const useRoomAssetAll = () => {
     isLoading,
     isError: isRoomAssetAllError,
   } = useQuery<ApiResponse<RoomAssetAllResponse[]>>({
-    queryKey: ["room-asset-all", page, size, ...Object.values(filterValues)],
+    queryKey: ["room-asset-all", page, size,building, ...Object.values(filterValues)],
     queryFn: async () => {
-      const params: Record<string, string> = { page: parsedPage.toString(), size: parsedSize.toString() };
+      const params: Record<string, string> = { page: parsedPage.toString(), size: parsedSize.toString(), building: buildingId || "" };
       Object.entries(filterValues).forEach(([k, v]) => {
         if (v) params[k] = v;
       });
@@ -155,98 +122,30 @@ export const useRoomAssetAll = () => {
     retry: 1,
   });
 
-  const { data: statisticsRaw } = useQuery<ApiResponse<IRoomStatisticsResponse>>({
-    queryKey: ["room-statistics", filterValues.buildingId],
+  const { data: statisticsRaw } = useQuery<ApiResponse<RoomAssetStatisticsResponse>>({
+    queryKey: ["room-statistics", filterValues.building],
     queryFn: async () =>
-      (await httpRequest.get("/rooms/statistics", { params: { buildingId: filterValues.buildingId } })).data,
-    enabled: !!filterValues.buildingId,
+      (await httpRequest.get(`/asset-rooms/statistics/${buildingId}`)).data,
+    // enabled: !!filterValues.building,
     retry: 1,
   });
 
   const roomStats = [
-    { icon: DoorOpen, label: "Đang trống", value: mapStatistics(statisticsRaw?.data).empty },
-    { icon: HandCoins, label: "Đang đặt cọc", value: mapStatistics(statisticsRaw?.data).depositing },
-    { icon: Building2, label: "Đang thuê", value: mapStatistics(statisticsRaw?.data).renting },
+    { icon: DoorOpen, label: "Tổng số tài sản", value: mapStatistics(statisticsRaw?.data).total },
+    { icon: HandCoins, label: "Tổng số tài sản hoạt động", value: mapStatistics(statisticsRaw?.data).totalActive },
+    { icon: Building2, label: "Tổng số tài sản không hoạt động", value: mapStatistics(statisticsRaw?.data).disabled },
   ];
-
-  const createRoomMutation = useMutation({
-    mutationKey: ["create-room"],
-    mutationFn: (payload: RoomAssetAllFormValue) => httpRequest.post("/rooms", payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["rooms"] });
-      queryClient.invalidateQueries({ queryKey: ["room-statistics"] });
-      toast.success(Status.ADD_SUCCESS);
-    },
-    onError: handleMutationError,
-  });
-
-  const updateRoomMutation = useMutation({
-    mutationKey: ["update-room"],
-    mutationFn: (payload: RoomAssetAllFormValue) => httpRequest.put(`/rooms/update/${idRef.current}`, payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["rooms"] });
-      queryClient.invalidateQueries({ queryKey: ["room-statistics"] });
-      toast.success(Status.UPDATE_SUCCESS);
-    },
-    onError: handleMutationError,
-  });
-
-  const deleteRoomMutation = useMutation({
-    mutationKey: ["delete-room"],
-    mutationFn: (id: string) => httpRequest.delete(`/rooms/delete/${id}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["rooms"] });
-      queryClient.invalidateQueries({ queryKey: ["room-statistics"] });
-      toast.success(Status.REMOVE_SUCCESS);
-    },
-    onError: handleMutationError,
-  });
 
   const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string }>({
     onConfirm: async ({ id }) => {
       try {
-        await deleteRoomMutation.mutateAsync(id);
+        // await deleteRoomMutation.mutateAsync(id);
         return true;
       } catch {
         return false;
       }
     },
   });
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setValue((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const resetForm = useCallback(() => {
-    setValue({
-      id: "",
-  roomCode: "",
-  totalAssets: 0,
-  roomType: "",
-  status: "",
-  description: "",
-    });
-    idRef.current = "";
-    clearErrors();
-  }, [clearErrors]);
-
-  const handleSaveRoom = useCallback(async () => {
-    try {
-      await createOrUpdateRoomSchema.parseAsync(value);
-      if (idRef.current) {
-        await updateRoomMutation.mutateAsync(value);
-      } else {
-        await createRoomMutation.mutateAsync(value);
-      }
-      resetForm();
-      setIsModalOpen(false);
-      return true;
-    } catch (error) {
-      handleZodErrors(error);
-      return false;
-    }
-  }, [value, resetForm, updateRoomMutation, createRoomMutation, handleZodErrors]);
 
   const handleActionClick = (roomAsset: RoomAssetAllResponse, type: "update" | "delete" | "view") => {
     if (type === "update") {
@@ -261,7 +160,6 @@ export const useRoomAssetAll = () => {
       });
       setIsModalOpen(true);
     } else if (type === 'view'){
-      console.log("View room details:", roomAsset);
       const openDrawer = useRoomAssetDrawerStore.getState().openDrawer
       openDrawer(roomAsset);
     } else {
@@ -278,8 +176,8 @@ export const useRoomAssetAll = () => {
     statistics: roomStats,
     value,
     setValue,
-    handleChange,
-    handleSaveRoom,
+    // handleChange,
+    // handleSaveRoom,
     isModalOpen,
     setIsModalOpen,
     errors,

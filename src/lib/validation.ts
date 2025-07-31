@@ -238,6 +238,36 @@ export const roomAssetFormSchema = z.object({
   description: z.string().nullable(),
 });
 
+
+export const roomAssetBulkSchema = z.object({
+  roomId: z.union([z.string(), z.array(z.string())])
+    .refine((val) => {
+      if (typeof val === "string") return val.trim() !== "";
+      return Array.isArray(val) && val.length > 0 && val.every((v) => v.trim() !== "");
+    }, {
+      message: "Vui lòng chọn ít nhất một phòng.",
+    }),
+  assetId: z.union([z.string(), z.array(z.string())])
+    .refine((val) => {
+      if (typeof val === "string") return val.trim() !== "";
+      return Array.isArray(val) && val.length > 0 && val.every((v) => v.trim() !== "");
+    }, {
+      message: "Vui lòng chọn ít nhất một tài sản.",
+    }),
+});
+
+
+export const addToAllRoomAssetSchema = z.object({
+  assetId: z
+    .string()
+    .min(1, "Tài sản không được để trống"),
+  buildingId: z
+    .string()
+    .min(1, "Tòa nhà không được để trống"),
+});
+
+
+
 /* ROOM */
 export const createOrUpdateRoomSchema = z
   .object({

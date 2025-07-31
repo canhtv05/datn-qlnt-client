@@ -14,29 +14,30 @@ import { formatNumberField } from "@/constant";
 import RoomAssetDetailsDrawer from "@/components/data-category/room-assets/RoomAssetDetailsModal";
 import RoomAssetButton from "@/components/data-category/room-assets/RoomAssetButton";
 import AddOrUpdateRoomAsset from "@/components/data-category/room-assets/AddOrUpdateRoomAsset";
+import RoomAssetFilter from "@/components/data-category/room-assets/RoomAssetFilter";
 
 const btns: IBtnType[] = [
   {
-    tooltipContent: "Chỉnh sửa",
+    tooltipContent: "Xem chi tiết",
     icon: EyeIcon,
     arrowColor: "#44475A",
     type: "view",
     hasConfirm: false,
   },
-  {
-    tooltipContent: "Chỉnh sửa",
-    icon: SquarePen,
-    arrowColor: "#44475A",
-    type: "update",
-    hasConfirm: true,
-  },
-  {
-    tooltipContent: "Xóa",
-    icon: Trash2,
-    arrowColor: "var(--color-red-400)",
-    type: "delete",
-    hasConfirm: true,
-  },
+  // {
+  //   tooltipContent: "Chỉnh sửa",
+  //   icon: SquarePen,
+  //   arrowColor: "#44475A",
+  //   type: "update",
+  //   hasConfirm: true,
+  // },
+  // {
+  //   tooltipContent: "Xóa",
+  //   icon: Trash2,
+  //   arrowColor: "var(--color-red-400)",
+  //   type: "delete",
+  //   hasConfirm: true,
+  // },
 ];
 
 const RoomAsset = () => {
@@ -150,7 +151,7 @@ const RoomAsset = () => {
     <div className="flex flex-col">
       <StatisticCard data={statistics} />
       {/* <RoomAssetButton ids={rowSelection} /> */}
-      <RoomFilter props={props} />
+      <RoomAssetFilter props={props} />
       <RoomAssetDetailsDrawer />
       <DataTable<RoomAssetAllResponse>
         data={data?.data ?? []}

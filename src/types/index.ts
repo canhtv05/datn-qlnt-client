@@ -38,8 +38,10 @@ export interface IBtnType {
     | "toggle"
     | "upload"
     | "delete"
+    | 'addToAllRoom'
     | "download"
     | "update"
+    | "bulkAdd"
     | "status"
     | "view"
     | "contract"
@@ -368,14 +370,39 @@ export interface AssetFilter {
 /* Room Asset */
 export type AssetBeLongTo = "PHONG" | "CHUNG";
 
+export interface IUpdateRoomAsset {
+  assetName: string;
+  price: number;
+  assetStatus: AssetStatus | string;
+  description: string;
+}
+export interface RoomAssetFilter {
+  building: string;
+  floor: string;
+  roomType: RoomType | string; 
+  status: RoomStatus | string;
+}
+
 export type RoomAssetFormValue = {
-  assetBeLongTo: "PHONG" | string; 
-  roomId: string;
-  assetId: string;
+  assetBeLongTo?: "PHONG" | string; 
+  roomId?: string;
+  assetId?: string;
   assetName: string;
   price: number;
   description: string;
+  assetStatus?: AssetStatus | string;
 };
+
+export type AllRoomAssetFormValue = {
+  assetId:  string;
+  buildingId: string;
+}
+
+
+export type RoomAssetBulkFormValue = {
+  assetId: string[] | string;
+  roomId: string[] | string;
+}
 
 export type RoomAssetAllFormValue = {
   id: string;
@@ -393,6 +420,29 @@ export type RoomAssetAllResponse = {
   roomType:  RoomType | string;
   status: RoomStatus | string;
   description: string;
+}
+
+export type ICreateAndUpdateBulkRoomAsset = {
+  roomId: string[] ;
+  assetId: string[];
+}
+
+export interface RoomAssetStatisticsResponse {
+  totalAssets: number;
+  totalActiveAssets: number;
+  totalBrokenAssets: number;
+  totalMaintenanceAssets: number;
+  totalLostAssets: number;
+  totalDisabledAssets: number;
+}
+
+export interface RoomAssetItem {
+  id: string;
+  assetName: string;
+  assetBeLongTo: AssetBeLongTo; // Add other enum values if needed
+  price: number;
+  assetStatus: AssetStatus; // Add other status types as needed
+  description: string | null;
 }
 
 export type RoomAssetResponse = {

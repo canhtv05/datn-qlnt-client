@@ -3,11 +3,14 @@ import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { AssetResponse, ColumnConfig } from "@/types";
+import { AssetResponse, ColumnConfig, RoomAssetResponse } from "@/types";
 import { GET_BTNS } from "@/constant";
 import { useRoomAsset } from "@/pages/data-category/room-assets/useRoomAsset";
 import RoomAssetButton from "./RoomAssetButton";
 import RoomAssetFilter from "./RoomAssetFilter";
+import Modal from "@/components/Modal";
+import { Notice } from "@/enums";
+import AddOrUpdateRoomAsset from "./AddOrUpdateRoomAsset";
 
 interface RoomAssetTableProps {
     roomId: string;
@@ -29,10 +32,12 @@ const RoomAssetTable: React.FC<RoomAssetTableProps> = ({ roomId }) => {
         value,
         setValue,
         errors,
+        handleSaveRoomAsset,
         ConfirmDialog,
         assetsInfo,
     } = useRoomAsset({ roomId });
     const { page, size } = query;
+
 
     const columnConfigs: ColumnConfig[] = [
         { label: "Tên tài sản", accessorKey: "assetName", isSort: true },
@@ -94,26 +99,14 @@ const RoomAssetTable: React.FC<RoomAssetTableProps> = ({ roomId }) => {
         // { label: "Tên khách thuê", accessorKey: "fullName", isSort: true },
         { label: "Giá", accessorKey: "price", isSort: true },
         { label: "Mô tả", accessorKey: "description", isSort: false },
-        // {
-        //     label: "Ngày tạo",
-        //     accessorKey: "createdAt",
-        //     isSort: true,
-        //     hasDate: true,
-        // },
-        // {
-        //     label: "Ngày cập nhật",
-        //     accessorKey: "updatedAt",
-        //     isSort: true,
-        //     hasDate: true,
-        // },
     ];
+
 
     return (
         <div className="flex flex-col">
-            <RoomAssetButton ids={rowSelection} assetsInfo={assetsInfo} />
-            <RoomAssetFilter props={props} />
-            <DataTable<AssetResponse>
-                data={data?.data?.assets ?? []}
+            <RoomAssetButton ids={rowSelection} roomId={roomId} />
+            <DataTable<RoomAssetResponse>
+                data={data?.assets ?? []}
                 columns={buildColumnsFromConfig(columnConfigs)}
                 page={Number(page)}
                 size={Number(size)}
@@ -123,6 +116,27 @@ const RoomAssetTable: React.FC<RoomAssetTableProps> = ({ roomId }) => {
                 rowSelection={rowSelection}
                 setRowSelection={setRowSelection}
             />
+            <Modal
+                title="Cập nhật tài sản phòng"
+                trigger={null}
+                open={isModalOpen}
+                onOpenChange={setIsModalOpen}
+                onConfirm={handleSaveRoomAsset}
+                desc={Notice.UPDATE}
+            >
+                <AddOrUpdateRoomAsset
+                    value={value}
+                    handleChange={(field, newValue) => {
+                        // @ts-expect-error: handleChange expects a synthetic event, but we are calling it with a custom object here
+                        handleChange({ target: { name: field, value: newValue } });
+                    }}
+                    setValue={setValue}
+                    errors={errors}
+                    roomList={[]}
+                    assetsList={[]}
+                    type="update"
+                />
+            </Modal>
             <ConfirmDialog />
         </div>
     );

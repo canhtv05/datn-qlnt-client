@@ -8,26 +8,24 @@ import RoomAssetTable from "./RoomAssetTable"
 const RoomAssetDetailsDrawer = () => {
     const { open, closeDrawer, room } = useRoomAssetDrawerStore()
     const roomId = room?.id || ""
+    console.log("Room Asset Details Drawer - Room ID:", room)
     return (
         <Drawer open={open} onOpenChange={closeDrawer} direction="right">
             <DrawerContent className="!w-[1000px] !max-w-none">
                 <DrawerHeader>
-                    <DrawerTitle>Room Details</DrawerTitle>
+                    <DrawerTitle>Thông tin phòng</DrawerTitle>
                 </DrawerHeader>
-                <Card className="w-fit border border-black rounded-[20px]">
+                <Card className="w-fit border border-black rounded-[20px] mx-4">
                     <CardHeader>
                         <h3 className="text-lg font-bold">{room?.roomCode ?? "Room Details"}</h3>
                     </CardHeader>
-                    <CardContent className="p-4 text-sm space-y-1">
+                    <CardContent className="px-4 py-0 text-sm space-y-1">
                         {room ? (
                             <>
-                                <p><strong>Acreage:</strong> {room.roomCode} m²</p>
-                                {/* <p><strong>Price:</strong> {room.price.toLocaleString()} VND</p>
-                                <p><strong>Maximum People:</strong> {room.maximumPeople}</p>
-                                <p><strong>Room Type:</strong> {room.roomType}</p>
-                                <p><strong>Status:</strong> {room.status}</p>
-                                <p><strong>Description:</strong> {room.description || "N/A"}</p>
-                                <p><strong>Floor:</strong> {room.floor?.nameFloor}</p> */}
+                                <p><strong>Mã phòng:</strong> {room.roomCode}</p>
+                                <p><strong>Loại phòng:</strong> {room.roomType}</p>
+                                <p><strong>Trạng thái:</strong> {room.status}</p>
+                                <p><strong>Số người tối đa:</strong> {room.totalAssets} người</p>
                             </>
                         ) : (
                             <p>No data.</p>

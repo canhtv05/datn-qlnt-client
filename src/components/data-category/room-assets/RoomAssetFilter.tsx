@@ -23,11 +23,6 @@ const RoomAssetFilter = ({ props }: { props: RoomFilterProps }) => {
   const { filterValues, setFilterValues, onClear, onFilter } = props;
   const {
     status,
-    maxPrice,
-    minPrice,
-    maxAcreage,
-    minAcreage,
-    maximumPeople,
     buildingId,
     floorId,
   } = filterValues;
@@ -84,7 +79,7 @@ const RoomAssetFilter = ({ props }: { props: RoomFilterProps }) => {
     >
       <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end">
         {/* 1. Tòa nhà */}
-        <FieldsSelectLabel
+        {/* <FieldsSelectLabel
           placeholder="-- Tòa nhà --"
           labelSelect="Tòa nhà"
           data={buildingOptions}
@@ -92,7 +87,7 @@ const RoomAssetFilter = ({ props }: { props: RoomFilterProps }) => {
           onChange={(value) => handleChange("buildingId", String(value))}
           name="buildingId"
           showClear
-        />
+        /> */}
 
         {/* 2. Tầng */}
         <FieldsSelectLabel
@@ -123,60 +118,10 @@ const RoomAssetFilter = ({ props }: { props: RoomFilterProps }) => {
           name="status"
           showClear
         />
-
-        {/* 4. Số người tối đa */}
-        <InputLabel
-          type="number"
-          id="maximumPeople"
-          name="maximumPeople"
-          placeholder="Số người tối đa"
-          value={maximumPeople}
-          onChange={(e) => handleChange("maximumPeople", e.target.value)}
-        />
-
-        {/* 5. Khoảng giá */}
-        <div className="flex gap-2">
-          <InputLabel
-            type="number"
-            id="minPrice"
-            name="minPrice"
-            placeholder="Giá từ"
-            value={minPrice}
-            onChange={(e) => handleChange("minPrice", e.target.value)}
-          />
-          <InputLabel
-            type="number"
-            id="maxPrice"
-            name="maxPrice"
-            placeholder="Giá đến"
-            value={maxPrice}
-            onChange={(e) => handleChange("maxPrice", e.target.value)}
-          />
-        </div>
-
-        {/* 6. Khoảng diện tích */}
-        <div className="flex gap-2">
-          <InputLabel
-            type="number"
-            id="minAcreage"
-            name="minAcreage"
-            placeholder="DT từ"
-            value={minAcreage}
-            onChange={(e) => handleChange("minAcreage", e.target.value)}
-          />
-          <InputLabel
-            type="number"
-            id="maxAcreage"
-            name="maxAcreage"
-            placeholder="DT đến"
-            value={maxAcreage}
-            onChange={(e) => handleChange("maxAcreage", e.target.value)}
-          />
-        </div>
       </div>
 
       <ButtonFilter onClear={onClear} />
-    </form>
+    </form >
   );
 };
 

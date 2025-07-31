@@ -19,6 +19,8 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         upload: "bg-amber-500 hover:bg-amber-400",
         download: "bg-emerald-500 hover:bg-emerald-400",
+        bulkAdd: "bg-emerald-500 hover:bg-emerald-400",
+        addToAllRoom: "bg-emerald-500 hover:bg-emerald-400",
         delete: "bg-red-400 hover:bg-red-300",
         toggle: "bg-purple-400 hover:bg-purple-300",
         update: "bg-[#44475A] hover:bg-[#5a5e78]",
