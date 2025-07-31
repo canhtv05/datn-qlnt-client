@@ -63,6 +63,7 @@ import {
   ScrollText,
   Banknote,
   Receipt,
+  Gavel,
 } from "lucide-react";
 
 export interface SideBarType {
@@ -133,14 +134,14 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
       icon: Hammer,
       items: [
         {
-          title: "Dịch vụ phòng",
-          url: "/service-management/room-services",
-          icon: Building2,
-        },
-        {
           title: "Dịch vụ",
           url: "/service-management/services",
           icon: Hammer,
+        },
+        {
+          title: "Dịch vụ phòng",
+          url: "/service-management/room-services",
+          icon: Building2,
         },
       ],
     },
@@ -284,6 +285,12 @@ export const STATUS_BADGE = [
   {
     value: BuildingStatus.HUY_HOAT_DONG,
     label: "Hủy hoạt động",
+    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+  },
+
+  {
+    value: RoomType.CAO_CAP,
+    label: "Cao cấp",
     className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
   },
 
@@ -919,6 +926,45 @@ export const ACTION_BUTTONS: IBtnType[] = [
     hasConfirm: true,
   },
 ];
+
+export const ACTION_BUTTONS_SERVICE_ROOM: IBtnType[] = [
+  {
+    tooltipContent: "Thêm 1 dịch vụ cho 1 phòng",
+    icon: Plus,
+    arrowColor: "var(--color-primary)",
+    type: "default",
+    hasConfirm: true,
+  },
+  {
+    tooltipContent: "Thêm 1 dịch vụ cho tất cả các phòng trong 1 tòa nhà",
+    icon: Building2,
+    arrowColor: "var(--color-sky-600)",
+    type: "building",
+    hasConfirm: true,
+  },
+  {
+    tooltipContent: "Thêm 1 dịch vụ vào các phòng",
+    icon: DoorOpen,
+    arrowColor: "var(--color-teal-500)",
+    type: "floor",
+    hasConfirm: true,
+  },
+  {
+    tooltipContent: "Thêm các dịch vụ vào phòng cho 1 phòng",
+    icon: Gavel,
+    arrowColor: "var(--color-emerald-500)",
+    type: "download",
+    hasConfirm: true,
+  },
+  {
+    tooltipContent: "Xóa",
+    icon: Trash2,
+    arrowColor: "var(--color-red-400)",
+    type: "delete",
+    hasConfirm: true,
+  },
+];
+
 export const formatNumberField = {
   price: (val: number) => `${val.toLocaleString("vi-VN")} VNĐ`,
   acreage: (val: number) => `${val.toLocaleString("vi-VN")} m²`,

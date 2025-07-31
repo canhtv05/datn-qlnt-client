@@ -439,13 +439,25 @@ export const creationDefaultServiceSchema = updateDefaultServiceSchema.extend({
 export const createServiceRoomSchema = z.object({
   roomId: z.string().min(1, "Vui lòng chọn phòng"),
   serviceId: z.string().min(1, "Vui lòng chọn dịch vụ"),
-  startDate: z
-    .string()
-    .refine((val) => {
-      return !isNaN(Date.parse(val));
-    }, "Ngày bắt đầu không hợp lệ")
-    .transform((val) => new Date(val)),
-  descriptionServiceRoom: z.string().optional(),
+});
+
+export const createServiceRoomForBuildingSchema = z.object({
+  buildingId: z.string().min(1, "Vui lòng chọn tòa nhà"),
+  serviceId: z.string().min(1, "Vui lòng chọn dịch vụ"),
+});
+
+export const createServiceRoomForServiceSchema = z.object({
+  roomIds: z.array(z.string()).min(1, "Phải có ít nhất một phòng"),
+  serviceId: z.string().min(1, "Vui lòng chọn dịch vụ"),
+});
+
+export const createServiceRoomForRoomSchema = z.object({
+  serviceIds: z.array(z.string()).min(1, "Phải có ít nhất một dịch vụ"),
+  roomId: z.string().min(1, "Vui lòng chọn dịch vụ"),
+});
+
+export const updateServicePriceInBuildingSchema = z.object({
+  newUnitPrice: zSafeNumber("Đơn giá mới", { min: 0 }),
 });
 
 export const updateServiceRoomSchema = createServiceRoomSchema.extend({
