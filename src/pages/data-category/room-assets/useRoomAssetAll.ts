@@ -10,6 +10,7 @@ import {
   RoomAssetAllResponse,
   RoomAssetFilter,
   RoomAssetStatisticsResponse,
+  AssetRoomFilter,
 } from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
@@ -37,29 +38,21 @@ export const useRoomAssetAll = () => {
   const {
     page = "1",
     size = "15",
-    building = buildingId,
-    // floor = "",
-    // roomType = "",
-    // status = "",
-  } = queryFilter(
-    searchParams,
-    "page",
-    "size",
-    "building",
-    // "floor",
-    // "roomType",
-    // "status"
-  );
+    query = "",
+    roomType = "",
+    status = "",
+  } = queryFilter(searchParams, "page", "size", "query", "roomType", "status");
 
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
 
-  const [filterValues, setFilterValues] = useState<RoomAssetFilter>({
-      building: "",
-      floor: "",
-      roomType: '',
-      status: "",
-    });
+  const [filterValues, setFilterValues] = useState<AssetRoomFilter>({
+    building: "",
+    floor: "",
+    roomType: "",
+    status: "",
+    query: "",
+  });
 
   const idRef = useRef<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -67,11 +60,11 @@ export const useRoomAssetAll = () => {
   const [rowSelection, setRowSelection] = useState({});
   const [value, setValue] = useState<RoomAssetAllFormValue>({
     id: "",
-  roomCode: "",
-  totalAssets: 0,
-  roomType: "",
-  status: "",
-  description: "",
+    roomCode: "",
+    totalAssets: 0,
+    roomType: "",
+    status: "",
+    description: "",
   });
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<RoomAssetAllFormValue>();
@@ -80,29 +73,35 @@ export const useRoomAssetAll = () => {
     setFilterValues({
       building: "",
       floor: "",
-      roomType: RoomType.DON,
-      status: RoomStatus.TRONG || "",
+      roomType: "",
+      status: "",
+      query: "",
     });
     setSearchParams({});
   };
 
   const handleFilter = useCallback(() => {
     const params = new URLSearchParams();
-    Object.entries(filterValues).forEach(([key, val]) => {
-      if (val) params.set(key, val);
-    });
+    if (filterValues.roomType) params.set("roomType", filterValues.roomType);
+    if (filterValues.status) params.set("status", filterValues.status);
+    if (filterValues.query) params.set("query", filterValues.query);
     params.set("page", "1");
-    setSearchParams(params);
-  }, [filterValues, setSearchParams]);
+    if (filterValues.query || filterValues.roomType || filterValues.status) {
+      setSearchParams(params);
+    }
+  }, [filterValues.query, filterValues.roomType, filterValues.status, setSearchParams]);
 
   const {
     data: roomAssetAllData,
     isLoading,
     isError: isRoomAssetAllError,
   } = useQuery<ApiResponse<RoomAssetAllResponse[]>>({
-    queryKey: ["room-asset-all", page, size,building, ...Object.values(filterValues)],
+    queryKey: ["room-asset-all", page, size, ...Object.values(filterValues)],
     queryFn: async () => {
-      const params: Record<string, string> = { page: parsedPage.toString(), size: parsedSize.toString(), building: buildingId || "" };
+      const params: Record<string, string> = {
+        page: parsedPage.toString(),
+        size: parsedSize.toString(),
+      };
       Object.entries(filterValues).forEach(([k, v]) => {
         if (v) params[k] = v;
       });
@@ -117,15 +116,13 @@ export const useRoomAssetAll = () => {
 
   const { data: roomListData, isLoading: isLoadingRoomList } = useQuery<ApiResponse<RoomResponse[]>>({
     queryKey: ["room-list"],
-    queryFn: async () =>
-      (await httpRequest.get("/rooms/all")).data,
+    queryFn: async () => (await httpRequest.get("/rooms/all")).data,
     retry: 1,
   });
 
   const { data: statisticsRaw } = useQuery<ApiResponse<RoomAssetStatisticsResponse>>({
     queryKey: ["room-statistics", filterValues.building],
-    queryFn: async () =>
-      (await httpRequest.get(`/asset-rooms/statistics/${buildingId}`)).data,
+    queryFn: async () => (await httpRequest.get(`/asset-rooms/statistics/${buildingId}`)).data,
     // enabled: !!filterValues.building,
     retry: 1,
   });
@@ -159,8 +156,8 @@ export const useRoomAssetAll = () => {
         description: roomAsset.description ?? "",
       });
       setIsModalOpen(true);
-    } else if (type === 'view'){
-      const openDrawer = useRoomAssetDrawerStore.getState().openDrawer
+    } else if (type === "view") {
+      const openDrawer = useRoomAssetDrawerStore.getState().openDrawer;
       openDrawer(roomAsset);
     } else {
       openDialog({ id: roomAsset.id }, { type: "warn", desc: Notice.REMOVE });

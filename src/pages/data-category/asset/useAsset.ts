@@ -6,7 +6,7 @@ import {
   ApiResponse,
   AssetFilter,
   AssetResponse,
-  CreateAssetInit2Response,
+  IAssetStatisticsResponse,
   IUpdateAsset,
   PaginatedResponse,
 } from "@/types";
@@ -14,7 +14,6 @@ import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { is } from "date-fns/locale";
 import { CircleCheck, CircleDollarSign, XCircle } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -109,15 +108,13 @@ export const useAsset = () => {
   };
 
   const { data: statistics, isError: isStatisticsError } = useQuery<ApiResponse<IAssetStatisticsResponse>>({
-      queryKey: ["asset-statistics"],
-      queryFn: async () => {
-        const res = await httpRequest.get("/assets/statistics");
-        return res.data;
-      },
-      retry: 1,
-    });
-
-  console.log("Asset statistics:", statistics);
+    queryKey: ["asset-statistics"],
+    queryFn: async () => {
+      const res = await httpRequest.get("/assets/statistics");
+      return res.data;
+    },
+    retry: 1,
+  });
 
   const dataAssets: StatisticCardType[] = [
     {
@@ -155,10 +152,10 @@ export const useAsset = () => {
     mutationFn: async (id: string) => await httpRequest.put(`/assets/toggle/${id}`),
   });
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" }>({
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>({
     onConfirm: async ({ id, type }) => {
       if (type === "delete") return await handleRemoveAssetById(id);
-      if (type === "toggle") return await handleToggleStatusBuildingById(id);
+      if (type === "status") return await handleToggleStatusBuildingById(id);
       return false;
     },
   });
@@ -178,7 +175,7 @@ export const useAsset = () => {
       handleMutationError(error);
       return false;
     }
-  }
+  };
 
   const handleRemoveAssetById = async (id: string): Promise<boolean> => {
     try {
@@ -257,7 +254,7 @@ export const useAsset = () => {
   }, [updateAssetMutation, clearErrors, handleZodErrors, queryClient, value]);
 
   const handleActionClick = useCallback(
-    (asset: AssetResponse, action: "update" | "toggle" | "delete") => {
+    (asset: AssetResponse, action: "update" | "status" | "delete") => {
       idRef.current = asset.id;
       if (action === "update") {
         setValue({
@@ -273,7 +270,7 @@ export const useAsset = () => {
           assetStatus: asset.assetStatus,
         });
         setIsModalOpen(true);
-      } else if(action === "delete") {
+      } else if (action === "delete") {
         openDialog(
           { id: asset.id, type: action },
           {
@@ -285,7 +282,7 @@ export const useAsset = () => {
         openDialog(
           { id: asset.id, type: action },
           {
-            type: "info",
+            type: "default",
             desc: Notice.TOGGLE_STATUS,
           }
         );
@@ -305,7 +302,10 @@ export const useAsset = () => {
     if (isError) {
       toast.error("Có lỗi xảy ra khi tải loại tài sản");
     }
-  }, [isError]);
+    if (isStatisticsError) {
+      toast.error("Có lỗi xảy ra khi tải thống kê tài sản");
+    }
+  }, [isError, isStatisticsError]);
 
   return {
     query: {

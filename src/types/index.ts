@@ -40,7 +40,7 @@ export interface IBtnType {
     | "toggle"
     | "upload"
     | "delete"
-    | 'addToAllRoom'
+    | "addToAllRoom"
     | "download"
     | "update"
     | "bulkAdd"
@@ -367,15 +367,12 @@ export interface ICreateAsset {
   descriptionAsset: string;
 }
 
-<<<<<<< HEAD
 export interface IAssetStatisticsResponse {
   totalActiveAssets: number;
   totalAssets: number;
   totalDisabledAssets: number;
 }
 
-export type IUpdateAsset = ICreateAsset;
-=======
 export type IUpdateAsset = ICreateAsset;
 
 // export interface ICreateAsset {
@@ -388,7 +385,6 @@ export type IUpdateAsset = ICreateAsset;
 
 // export type IUpdateAsset = ICreateAsset;
 
->>>>>>> 960d77781a7217a60428fdfb02a60f9e8cd42830
 export interface AssetResponse extends AbstractResponse {
   nameAsset: string;
   assetType: string;
@@ -416,6 +412,14 @@ export interface AssetFilter {
 /* Room Asset */
 export type AssetBeLongTo = "PHONG" | "CHUNG";
 
+export interface AssetRoomFilter {
+  query: string;
+  building: string;
+  floor: string;
+  roomType: RoomType | string;
+  status: RoomStatus | string;
+}
+
 export interface IUpdateRoomAsset {
   assetName: string;
   price: number;
@@ -425,12 +429,12 @@ export interface IUpdateRoomAsset {
 export interface RoomAssetFilter {
   building: string;
   floor: string;
-  roomType: RoomType | string; 
+  roomType: RoomType | string;
   status: RoomStatus | string;
 }
 
 export type RoomAssetFormValue = {
-  assetBeLongTo?: "PHONG" | string; 
+  assetBeLongTo?: "PHONG" | string;
   roomId?: string;
   assetId?: string;
   assetName: string;
@@ -440,15 +444,14 @@ export type RoomAssetFormValue = {
 };
 
 export type AllRoomAssetFormValue = {
-  assetId:  string;
+  assetId: string;
   buildingId: string;
-}
-
+};
 
 export type RoomAssetBulkFormValue = {
   assetId: string[] | string;
   roomId: string[] | string;
-}
+};
 
 export type RoomAssetAllFormValue = {
   id: string;
@@ -463,15 +466,15 @@ export type RoomAssetAllResponse = {
   id: string;
   roomCode: string;
   totalAssets: number;
-  roomType:  RoomType | string;
+  roomType: RoomType | string;
   status: RoomStatus | string;
   description: string;
-}
+};
 
 export type ICreateAndUpdateBulkRoomAsset = {
-  roomId: string[] ;
+  roomId: string[];
   assetId: string[];
-}
+};
 
 export interface RoomAssetStatisticsResponse {
   totalAssets: number;
@@ -494,12 +497,11 @@ export interface RoomAssetItem {
 export type RoomAssetResponse = {
   id: string;
   roomCode: string;
-  roomType:  RoomType; // or RoomType if you have an enum
-  status: RoomStatus;   // or RoomStatus if you have an enum
+  roomType: RoomType; // or RoomType if you have an enum
+  status: RoomStatus; // or RoomStatus if you have an enum
   description: string;
   assets: RoomAssetItem[];
-}
-
+};
 
 /* VEHICLE */
 export interface VehicleResponse extends AbstractResponse {

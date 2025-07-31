@@ -61,7 +61,6 @@ const RoomAsset = () => {
     roomList,
   } = useRoomAssetAll();
 
-
   const { page, size } = query;
   const columnConfigs: ColumnConfig[] = [
     {

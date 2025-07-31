@@ -45,7 +45,6 @@ import {
   Upload,
   UsersRound,
   Building,
-  Wrench,
   SquarePen,
   ArrowRightLeft,
   Eye,
@@ -117,11 +116,6 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
       url: "/asset-management",
       icon: Scale,
       items: [
-        // {
-        //   title: "Loại tài sản",
-        //   url: "/asset-management/asset-types",
-        //   icon: Wrench,
-        // },
         {
           title: "Tài sản",
           url: "/asset-management/assets",
@@ -458,7 +452,7 @@ export const STATUS_BADGE = [
     className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
   },
 
-    // --- Loại tài sản ---
+  // --- Loại tài sản ---
   {
     value: AssetType.GIA_DUNG,
     label: "Gia dụng",
@@ -489,7 +483,6 @@ export const STATUS_BADGE = [
     label: "Khác",
     className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
   },
-
 
   // --- Trạng thái tài sản ---
   {

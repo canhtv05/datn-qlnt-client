@@ -45,7 +45,7 @@ const Asset = () => {
         const asset: AssetResponse = row;
         return (
           <div className="flex gap-2">
-            {GET_BTNS("update", "delete", "toggle").map((btn, index) => (
+            {GET_BTNS("update", "delete", "status").map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -55,7 +55,7 @@ const Asset = () => {
                       className="cursor-pointer"
                       onClick={() => {
                         // const type = btn.type as "update";
-                        const type = btn.type as "update" | "delete" | "toggle";
+                        const type = btn.type as "update" | "delete" | "status";
                         handleActionClick(asset, type);
                       }}
                     >
@@ -87,10 +87,7 @@ const Asset = () => {
     },
     { label: "Loại tài sản", accessorKey: "assetType", isSort: true, isCenter: true, hasBadge: true },
     { label: "Tài sản thuộc về", accessorKey: "assetBeLongTo", isSort: true, isCenter: true, hasBadge: true },
-<<<<<<< HEAD
-=======
     { label: "Tên loại tài sản", accessorKey: "assetType", isSort: true, isCenter: true, hasBadge: true },
->>>>>>> 960d77781a7217a60428fdfb02a60f9e8cd42830
     // { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true, isCenter: true },
     // { label: "Tên tầng", accessorKey: "nameFloor", isSort: true, isCenter: true },
     // { label: "Mã phòng", accessorKey: "roomCode", isSort: true, hasHighlight: true, isCenter: true },
@@ -118,12 +115,8 @@ const Asset = () => {
 
   return (
     <div className="flex flex-col">
-<<<<<<< HEAD
       <StatisticCard data={dataAssets} />
-      <AssetButton ids={rowSelection} assetsInfo={assetsInfo} />
-=======
       <AssetButton ids={rowSelection} />
->>>>>>> 960d77781a7217a60428fdfb02a60f9e8cd42830
       <AssetFilter props={props} />
       <DataTable<AssetResponse>
         data={data?.data?.data ?? []}

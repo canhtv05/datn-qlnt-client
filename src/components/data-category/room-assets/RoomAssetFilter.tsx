@@ -1,33 +1,22 @@
 import ButtonFilter from "@/components/ButtonFilter";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
-import {
-  ApiResponse,
-  IBuildingCardsResponse,
-  FloorBasicResponse,
-  FilterRoomValues,
-} from "@/types";
-import { httpRequest } from "@/utils/httpRequest";
-import { useQuery } from "@tanstack/react-query";
-import { Dispatch, FormEvent, SetStateAction, useMemo } from "react";
-import { toast } from "sonner";
+import { RoomStatus, RoomType } from "@/enums";
+import { AssetRoomFilter } from "@/types";
+import { Dispatch, FormEvent, SetStateAction } from "react";
 
 export interface RoomFilterProps {
-  filterValues: FilterRoomValues;
-  setFilterValues: Dispatch<SetStateAction<FilterRoomValues>>;
+  filterValues: AssetRoomFilter;
+  setFilterValues: Dispatch<SetStateAction<AssetRoomFilter>>;
   onClear: () => void;
   onFilter: () => void;
 }
 
 const RoomAssetFilter = ({ props }: { props: RoomFilterProps }) => {
   const { filterValues, setFilterValues, onClear, onFilter } = props;
-  const {
-    status,
-    buildingId,
-    floorId,
-  } = filterValues;
+  const { status, roomType, query } = filterValues;
 
-  const handleChange = (key: keyof FilterRoomValues, value: string) => {
+  const handleChange = (key: keyof AssetRoomFilter, value: string) => {
     setFilterValues((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -36,92 +25,51 @@ const RoomAssetFilter = ({ props }: { props: RoomFilterProps }) => {
     onFilter();
   };
 
-  const { data: buildingData, isError: isBuildingError } = useQuery<ApiResponse<IBuildingCardsResponse[]>>({
-    queryKey: ["buildings-cards"],
-    queryFn: async () => {
-      const res = await httpRequest.get("/buildings/cards");
-      return res.data;
-    },
-  });
-
-  const { data: floorData, isError: isFloorError } = useQuery<ApiResponse<FloorBasicResponse[]>>({
-    queryKey: ["floor-list", buildingId],
-    queryFn: async () => {
-      const res = await httpRequest.get("/floors/find-all", {
-        params: { buildingId },
-      });
-      return res.data;
-    },
-    enabled: !!buildingId,
-  });
-
-  if (isBuildingError) toast.error("Không lấy được danh sách tòa nhà");
-  if (isFloorError) toast.error("Không lấy được danh sách tầng");
-
-  const buildingOptions = useMemo(() => {
-    return (buildingData?.data ?? []).map((b) => ({
-      label: b.buildingName,
-      value: b.id,
-    }));
-  }, [buildingData]);
-
-  const floorOptions = useMemo(() => {
-    return (floorData?.data ?? []).map((f) => ({
-      label: f.nameFloor,
-      value: f.id,
-    }));
-  }, [floorData]);
-
   return (
-    <form
-      className="bg-background p-5 flex flex-col gap-2 items-end"
-      onSubmit={handleSubmit}
-    >
-      <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end">
-        {/* 1. Tòa nhà */}
-        {/* <FieldsSelectLabel
-          placeholder="-- Tòa nhà --"
-          labelSelect="Tòa nhà"
-          data={buildingOptions}
-          value={buildingId}
-          onChange={(value) => handleChange("buildingId", String(value))}
-          name="buildingId"
-          showClear
-        /> */}
-
-        {/* 2. Tầng */}
+    <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
+      <div className="grid grid-cols-3 gap-5 w-full items-end">
         <FieldsSelectLabel
-          placeholder="-- Tầng --"
-          labelSelect="Tầng"
-          data={floorOptions}
-          value={floorId}
-          onChange={(value) => handleChange("floorId", String(value))}
-          name="floorId"
+          placeholder="-- Loại phòng --"
+          labelSelect="Loại phòng"
+          data={[
+            { label: "Cao cấp", value: RoomType.CAO_CAP },
+            { label: "Đơn", value: RoomType.DON },
+            { label: "Ghép", value: RoomType.GHEP },
+            { label: "Khác", value: RoomType.KHAC },
+          ]}
+          value={roomType}
+          onChange={(value) => handleChange("roomType", String(value))}
+          name="roomType"
           showClear
         />
-
-        {/* 3. Trạng thái */}
         <FieldsSelectLabel
           placeholder="-- Trạng thái --"
           labelSelect="Trạng thái"
           data={[
-            { label: "Trống", value: "TRONG" },
-            { label: "Đang thuê", value: "DANG_THUE" },
-            { label: "Đã đặt cọc", value: "DA_DAT_COC" },
-            { label: "Đang bảo trì", value: "DANG_BAO_TRI" },
-            { label: "Chưa hoàn thiện", value: "CHUA_HOAN_THIEN" },
-            { label: "Tạm khóa", value: "TAM_KHOA" },
-            { label: "Hủy hoạt động", value: "HUY_HOAT_DONG" },
+            { label: "Còn trống", value: RoomStatus.TRONG },
+            { label: "Đã thuê", value: RoomStatus.DANG_THUE },
+            { label: "Đặt cọc", value: RoomStatus.DA_DAT_COC },
+            { label: "Bảo trì", value: RoomStatus.DANG_BAO_TRI },
+            { label: "Chưa hoàn thiện", value: RoomStatus.CHUA_HOAN_THIEN },
+            { label: "Tạm khóa", value: RoomStatus.TAM_KHOA },
           ]}
           value={status}
           onChange={(value) => handleChange("status", String(value))}
           name="status"
           showClear
         />
+        <InputLabel
+          type="text"
+          id="query"
+          name="query"
+          placeholder="Tìm kiếm"
+          value={query}
+          onChange={(e) => handleChange("query", e.target.value)}
+        />
       </div>
 
       <ButtonFilter onClear={onClear} />
-    </form >
+    </form>
   );
 };
 

@@ -174,11 +174,7 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: AddOr
           name="assetType"
           value={value.assetType ?? ""}
           onChange={(val) => {
-<<<<<<< HEAD
-            setValue((prev) => ({ ...prev, assetType: val as AssetType }))
-=======
             setValue((prev) => ({ ...prev, assetType: val as string }));
->>>>>>> 960d77781a7217a60428fdfb02a60f9e8cd42830
           }}
           labelSelect="Loại tài sản"
           showClear
