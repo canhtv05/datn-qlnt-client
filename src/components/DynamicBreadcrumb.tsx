@@ -29,10 +29,11 @@ export function DynamicBreadcrumb({ role }: { role: "USER" | "MANAGER" | "ADMIN"
       if (found) {
         result.push({ title: found.title, url: found.url });
         if (found.items) currentItems = found.items;
-      } else {
-        // fallback nếu không tìm được (có thể là dynamic param hoặc slug)
-        result.push({ title: decodeURIComponent(segment), url: currentPath });
       }
+      // else {
+      //   // fallback nếu không tìm được (có thể là dynamic param hoặc slug)
+      //   result.push({ title: decodeURIComponent(segment), url: currentPath });
+      // }
     }
 
     return result;
