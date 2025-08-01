@@ -26,7 +26,7 @@ const RoomAssetFilter = ({ props }: { props: RoomFilterProps }) => {
   };
 
   return (
-    <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
+    <form className="bg-background p-5 flex flex-col gap-2 items-end rounded-t-sm" onSubmit={handleSubmit}>
       <div className="grid grid-cols-3 gap-5 w-full items-end">
         <FieldsSelectLabel
           placeholder="-- Loại phòng --"

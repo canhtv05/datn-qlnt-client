@@ -136,7 +136,7 @@ const VehicleButton = ({ ids, tenants }: { ids: Record<string, boolean>; tenants
   });
 
   return (
-    <div className="h-full bg-background rounded-t-sm mt-4">
+    <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
         <h3 className="font-semibold">Phương tiện</h3>
         <div className="flex gap-2">

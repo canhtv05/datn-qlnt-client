@@ -215,8 +215,8 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: AddOr
         <FieldsSelectLabel
           data={[
             {
-              label: "Sử dụng",
-              value: AssetStatus.SU_DUNG,
+              label: "Hoạt động",
+              value: AssetStatus.HOAT_DONG,
             },
             {
               label: "Cần bảo trì",
@@ -233,6 +233,14 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: AddOr
             {
               label: "Thất lạc",
               value: AssetStatus.THAT_LAC,
+            },
+            {
+              label: "Không sử dụng",
+              value: AssetStatus.KHONG_SU_DUNG,
+            },
+            {
+              label: "Hủy",
+              value: AssetStatus.HUY,
             },
           ]}
           placeholder="-- Chọn trạng thái --"

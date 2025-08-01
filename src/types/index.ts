@@ -1,6 +1,5 @@
 import {
   AssetGroup,
-  AssetBeLongTo,
   AssetStatus,
   BuildingStatus,
   BuildingType,
@@ -1085,4 +1084,22 @@ export interface PaymentCreationURL {
 export interface PaymentMethodResponse {
   id: string;
   paymentMethod: PaymentMethod;
+}
+
+export interface AssetRoomDetailResponse {
+  id: string;
+  roomCode: string;
+  roomType: string;
+  status: string;
+  description: string;
+  assets: AssetLittleResponse[];
+}
+
+export interface AssetLittleResponse {
+  id: string;
+  assetName: string;
+  assetBeLongTo: AssetBeLongTo;
+  price: number;
+  assetStatus: AssetStatus;
+  description: string;
 }

@@ -30,6 +30,7 @@ const routes = {
     asset: "/asset-management/assets",
     roomAsset: "/asset-management/room-assets",
     roomId: "/asset-management/room-assets/:buildingId",
+    roomAssetDetail: "/asset-management/room-assets/detail/:roomId",
   },
   serviceMng: {
     roomService: "/service-management/room-services",

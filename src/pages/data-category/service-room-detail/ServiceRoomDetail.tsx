@@ -7,6 +7,7 @@ import { ColumnConfig, ServiceLittleResponse } from "@/types";
 import { useServiceRoomDetail } from "./useServiceRoomDetail";
 import { GET_BTNS } from "@/constant";
 import { Trash2 } from "lucide-react";
+import StatusBadge from "@/components/ui/StatusBadge";
 
 const ServiceRoomDetail = () => {
   const {
@@ -78,7 +79,7 @@ const ServiceRoomDetail = () => {
   return (
     <div className="flex flex-col">
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
-        <div className="h-full bg-background rounded-t-sm mt-4">
+        <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-4 py-3 justify-between items-center">
             <h3 className="font-semibold">Chi tiết dịch vụ phòng</h3>
             <div className="flex gap-2">
@@ -113,6 +114,28 @@ const ServiceRoomDetail = () => {
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
+            </div>
+          </div>
+        </div>
+
+        <div className="px-5 py-2">
+          <div className="max-w-sm">
+            <h3 className="font-semibold rounded-sm p-2 bg-primary/50 text-sm text-white mb-2 pl-5 border-b-2">
+              Thông tin phòng
+            </h3>
+            <div className="px-5 flex border-primary/20 flex-col space-y-2 [&_>span]:text-sm [&_>strong]:text-sm border-b-2 border-r-2 border-l-2 -mt-3 rounded-b-sm">
+              <strong className="mt-2">
+                - Mã phòng: <span>{data?.data?.roomCode}</span>
+              </strong>
+              <strong>
+                - Loại phòng: <span>{data?.data?.roomType && <StatusBadge status={data?.data?.roomType} />}</span>
+              </strong>
+              <strong>
+                - Trạng thái: <span>{data?.data?.status && <StatusBadge status={data?.data?.status} />}</span>
+              </strong>
+              <strong className="pb-2">
+                - Mô tả: <p className="inline-block">{data?.data?.description || "..."}</p>
+              </strong>
             </div>
           </div>
         </div>

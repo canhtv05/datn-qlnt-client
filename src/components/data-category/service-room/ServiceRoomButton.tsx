@@ -289,7 +289,7 @@ const ServiceRoomButton = ({
   }, [addServiceRoomForRoomMutation, clearErrorsForRoom, handleZodErrorsForRoom, valueForRoom]);
 
   return (
-    <div className="h-full bg-background rounded-t-sm mt-4">
+    <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
         <h3 className="font-semibold">Dịch vụ phòng</h3>
         <div className="flex gap-2">

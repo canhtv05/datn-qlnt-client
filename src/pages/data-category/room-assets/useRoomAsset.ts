@@ -1,25 +1,19 @@
 import { StatisticCardType } from "@/components/StatisticCard";
-import { AssetStatus, Notice, RoomStatus, RoomType, Status } from "@/enums";
+import { Notice, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
-import { createOrUpdateAssetSchema } from "@/lib/validation";
 import {
   ApiResponse,
-  AssetFilter,
   AssetResponse,
+  AssetRoomDetailResponse,
   AssetRoomFilter,
-  CreateAssetInit2Response,
   IAssetStatisticsResponse,
   IUpdateAsset,
   IUpdateRoomAsset,
-  PaginatedResponse,
-  RoomAssetFilter,
-  RoomAssetResponse,
 } from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { is } from "date-fns/locale";
 import { CircleCheck, CircleDollarSign, XCircle } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -85,7 +79,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
     }
   }, [filterValues.query, filterValues.roomType, filterValues.status, setSearchParams]);
 
-  const { data, isLoading, isError } = useQuery<ApiResponse<PaginatedResponse<RoomAssetResponse[]>>>({
+  const { data, isLoading, isError } = useQuery<ApiResponse<AssetRoomDetailResponse>>({
     queryKey: ["asset-rooms", page, size, query, status, roomType],
     queryFn: async () => {
       const params: Record<string, string> = {
@@ -101,7 +95,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
         params,
       });
 
-      return res.data.data;
+      return res.data;
     },
   });
 
@@ -159,10 +153,10 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
     mutationFn: async (id: string) => await httpRequest.put(`/asset-rooms/toggle/${id}`),
   });
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "toggle" }>({
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>({
     onConfirm: async ({ id, type }) => {
       if (type === "delete") return await handleRemoveRoomAssetById(id);
-      if (type === "toggle") return await handleToggleStatusRoomAssetById(id);
+      if (type === "status") return await handleToggleStatusRoomAssetById(id);
       return false;
     },
   });
@@ -201,68 +195,9 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
     }
   };
 
-  // const handleUpdateFloor = useCallback(async () => {
-  //   try {
-  //     const {
-  //       assetBeLongTo,
-  //       assetType,
-  //       buildingID,
-  //       descriptionAsset,
-  //       floorID,
-  //       nameAsset,
-  //       price,
-  //       roomID,
-  //       tenantId,
-  //       assetStatus,
-  //     } = value;
-
-  //     const data: IUpdateAsset = {
-  //       assetBeLongTo,
-  //       assetType: assetType ?? "",
-  //       buildingID: buildingID ?? "",
-  //       descriptionAsset: descriptionAsset.trim(),
-  //       floorID: floorID ?? "",
-  //       nameAsset: nameAsset.trim(),
-  //       price,
-  //       roomID: roomID ?? "",
-  //       tenantId: tenantId ?? "",
-  //       assetStatus,
-  //     };
-
-  //     await createOrUpdateAssetSchema.parseAsync(data);
-
-  //     updateRoomAssetMutation.mutate(data, {
-  //       onSuccess: () => {
-  //         setValue({
-  //           assetBeLongTo: "",
-  //           assetType: "",
-  //           buildingID: "",
-  //           descriptionAsset: "",
-  //           floorID: "",
-  //           nameAsset: "",
-  //           price: undefined,
-  //           roomID: "",
-  //           tenantId: "",
-  //           assetStatus: "",
-  //         });
-  //         queryClient.invalidateQueries({
-  //           predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
-  //         });
-  //         toast.success(Status.UPDATE_SUCCESS);
-  //         setIsModalOpen(false);
-  //       },
-  //     });
-  //     clearErrors();
-  //     return true;
-  //   } catch (error) {
-  //     handleZodErrors(error);
-  //     return false;
-  //   }
-  // }, [updateRoomAssetMutation, clearErrors, handleZodErrors, queryClient, value]);
-
   const handleSaveRoomAsset = useCallback(async () => {
     try {
-      await updateRoomAssetMutation.mutateAsync(value, {
+      await updateRoomAssetMutation.mutateAsync(value as IUpdateRoomAsset, {
         onSuccess: () => {
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
@@ -272,23 +207,24 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
       });
 
       setIsModalOpen(false);
+      clearErrors();
       return true;
     } catch (error) {
       handleZodErrors(error);
       return false;
     }
-  }, [value, updateRoomAssetMutation, handleZodErrors]);
+  }, [updateRoomAssetMutation, value, clearErrors, queryClient, handleZodErrors]);
 
   const handleActionClick = useCallback(
-    (assetRooms: AssetResponse, action: "update" | "toggle" | "delete") => {
+    (assetRooms: AssetResponse, action: "update" | "status" | "delete") => {
       idRef.current = assetRooms.id;
       if (action === "update") {
         console.log("Updating asset:", assetRooms);
         setValue({
-          assetName: assetRooms.assetName,
+          assetName: assetRooms.nameAsset,
           price: assetRooms.price,
           assetStatus: assetRooms.assetStatus,
-          description: assetRooms.description,
+          description: assetRooms.descriptionAsset,
         });
         setIsModalOpen(true);
       } else if (action === "delete") {
@@ -299,7 +235,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
             desc: Notice.REMOVE,
           }
         );
-      } else if (action === "toggle") {
+      } else if (action === "status") {
         openDialog(
           { id: assetRooms.id, type: action },
           {
@@ -311,16 +247,6 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
     },
     [openDialog]
   );
-
-  // const { data: assetsInfo, isError: isErrorAssetInfo } = useQuery<ApiResponse<CreateAssetInit2Response>>({
-  //   queryKey: ["assets-init"],
-  //   queryFn: async () => {
-  //     const res = await httpRequest.get("/assets/init/2");
-  //     console.log(res.data);
-  //     return res.data;
-  //   },
-  //   retry: 1,
-  // });
 
   const props = {
     filterValues,
@@ -334,10 +260,10 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
       toast.error("Có lỗi xảy ra khi tải loại tài sản");
     }
 
-    // if (isErrorAssetInfo) {
-    //   toast.error("Không lấy được dữ liệu tài sản");
-    // }
-  }, [isError]);
+    if (isStatisticsError) {
+      toast.error("Có lỗi xảy ra khi tải thống kê");
+    }
+  }, [isError, isStatisticsError]);
 
   return {
     query: {

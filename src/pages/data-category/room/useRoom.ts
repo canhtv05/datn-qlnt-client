@@ -98,7 +98,18 @@ export const useRoom = () => {
       buildingId: buildingId || buildingIdParam || "",
       floorId,
     });
-  }, [status, maxPrice, minPrice, maxAcreage, minAcreage, maximumPeople, nameFloor, buildingId, buildingIdParam, floorId]);
+  }, [
+    status,
+    maxPrice,
+    minPrice,
+    maxAcreage,
+    minAcreage,
+    maximumPeople,
+    nameFloor,
+    buildingId,
+    buildingIdParam,
+    floorId,
+  ]);
 
   const handleClear = () => {
     setFilterValues({
@@ -129,7 +140,19 @@ export const useRoom = () => {
     isLoading,
     isError: isRoomError,
   } = useQuery<ApiResponse<RoomResponse[]>>({
-    queryKey: ["rooms", page, size, ...Object.values(filterValues)],
+    queryKey: [
+      "rooms",
+      page,
+      size,
+      status,
+      floorId,
+      buildingId,
+      nameFloor,
+      maxAcreage,
+      maxAcreage,
+      minAcreage,
+      maxPrice,
+    ],
     queryFn: async () => {
       const params: Record<string, string> = { page: parsedPage.toString(), size: parsedSize.toString() };
       Object.entries(filterValues).forEach(([k, v]) => {

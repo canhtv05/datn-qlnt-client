@@ -104,11 +104,13 @@ export enum AssetType {
 }
 
 export enum AssetStatus {
-  SU_DUNG = "SU_DUNG",
   HU_HONG = "HU_HONG",
   CAN_BAO_TRI = "CAN_BAO_TRI",
   THAT_LAC = "THAT_LAC",
   DA_THANH_LY = "DA_THANH_LY",
+  KHONG_SU_DUNG = "KHONG_SU_DUNG",
+  HOAT_DONG = "HOAT_DONG",
+  HUY = "HUY",
 }
 
 /* VEHICLE */

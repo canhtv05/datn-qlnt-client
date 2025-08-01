@@ -41,7 +41,6 @@ const UserRoomDetail = () => {
     queryKey: ["room-detail"],
     queryFn: async () => {
       const res = (await httpRequest.get(`/rooms/details/${id}`)).data;
-      console.log(res);
       return res;
     },
     retry: 1,

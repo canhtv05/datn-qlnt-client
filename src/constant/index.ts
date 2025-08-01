@@ -158,14 +158,14 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
           icon: UsersRound,
         },
         {
-          title: "Hợp đồng",
-          url: "/customers/contracts",
-          icon: FileText,
-        },
-        {
           title: "Phương tiện",
           url: "/customers/vehicles",
           icon: Car,
+        },
+        {
+          title: "Hợp đồng",
+          url: "/customers/contracts",
+          icon: FileText,
         },
       ],
     },
@@ -486,9 +486,14 @@ export const STATUS_BADGE = [
 
   // --- Trạng thái tài sản ---
   {
-    value: AssetStatus.SU_DUNG,
+    value: AssetStatus.HOAT_DONG,
     label: "Đang sử dụng",
     className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+  },
+  {
+    value: AssetStatus.HUY,
+    label: "Đang sử dụng",
+    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
   },
   {
     value: AssetStatus.HU_HONG,

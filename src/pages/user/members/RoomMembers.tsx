@@ -16,7 +16,6 @@ const RoomMembers = () => {
     queryKey: ["room-tenants-detail", id],
     queryFn: async () => {
       const res = await httpRequest.get(`/tenants/room-tenants/detail/${id}`);
-      console.log(res.data);
       return res.data;
     },
     enabled: !!id,

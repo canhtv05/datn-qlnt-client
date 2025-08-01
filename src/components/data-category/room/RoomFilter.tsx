@@ -1,12 +1,7 @@
 import ButtonFilter from "@/components/ButtonFilter";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
-import {
-  ApiResponse,
-  IBuildingCardsResponse,
-  FloorBasicResponse,
-  FilterRoomValues,
-} from "@/types";
+import { ApiResponse, IBuildingCardsResponse, FloorBasicResponse, FilterRoomValues } from "@/types";
 import { httpRequest } from "@/utils/httpRequest";
 import { useQuery } from "@tanstack/react-query";
 import { Dispatch, FormEvent, SetStateAction, useMemo } from "react";
@@ -21,16 +16,7 @@ export interface RoomFilterProps {
 
 const RoomFilter = ({ props }: { props: RoomFilterProps }) => {
   const { filterValues, setFilterValues, onClear, onFilter } = props;
-  const {
-    status,
-    maxPrice,
-    minPrice,
-    maxAcreage,
-    minAcreage,
-    maximumPeople,
-    buildingId,
-    floorId,
-  } = filterValues;
+  const { status, maxPrice, minPrice, maxAcreage, minAcreage, maximumPeople, buildingId, floorId } = filterValues;
 
   const handleChange = (key: keyof FilterRoomValues, value: string) => {
     setFilterValues((prev) => ({ ...prev, [key]: value }));
@@ -78,10 +64,7 @@ const RoomFilter = ({ props }: { props: RoomFilterProps }) => {
   }, [floorData]);
 
   return (
-    <form
-      className="bg-background p-5 flex flex-col gap-2 items-end"
-      onSubmit={handleSubmit}
-    >
+    <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
       <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end">
         {/* 1. Tòa nhà */}
         <FieldsSelectLabel

@@ -1,27 +1,20 @@
-import { useConfirmDialog, useFormErrors } from "@/hooks";
-import { createOrUpdateRoomSchema } from "@/lib/validation";
+import { useConfirmDialog } from "@/hooks";
 import {
   ApiResponse,
   RoomAssetAllFormValue,
   RoomResponse,
-  IRoomStatisticsResponse,
-  FloorBasicResponse,
-  FilterRoomValues,
   RoomAssetAllResponse,
-  RoomAssetFilter,
   RoomAssetStatisticsResponse,
   AssetRoomFilter,
 } from "@/types";
-import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState, useRef, useEffect, useCallback, ChangeEvent } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { toast } from "sonner";
-import { Status, Notice, AssetBeLongTo, RoomType, RoomStatus } from "@/enums";
+import { Notice } from "@/enums";
 import { useParams, useSearchParams } from "react-router-dom";
 import { Building2, HandCoins, DoorOpen } from "lucide-react";
-import { useRoomAssetDrawerStore } from "@/zustand/openModalStore";
 
 const mapStatistics = (data?: RoomAssetStatisticsResponse) => ({
   total: data?.totalAssets ?? 0,
@@ -30,18 +23,11 @@ const mapStatistics = (data?: RoomAssetStatisticsResponse) => ({
 });
 
 export const useRoomAssetAll = () => {
-  // const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const { buildingId: buildingId } = useParams();
 
-  const {
-    page = "1",
-    size = "15",
-    query = "",
-    roomType = "",
-    status = "",
-  } = queryFilter(searchParams, "page", "size", "query", "roomType", "status");
+  const { page = "1", size = "15" } = queryFilter(searchParams, "page", "size");
 
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
@@ -66,8 +52,6 @@ export const useRoomAssetAll = () => {
     status: "",
     description: "",
   });
-
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<RoomAssetAllFormValue>();
 
   const handleClear = () => {
     setFilterValues({
@@ -134,9 +118,8 @@ export const useRoomAssetAll = () => {
   ];
 
   const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string }>({
-    onConfirm: async ({ id }) => {
+    onConfirm: async () => {
       try {
-        // await deleteRoomMutation.mutateAsync(id);
         return true;
       } catch {
         return false;
@@ -156,10 +139,7 @@ export const useRoomAssetAll = () => {
         description: roomAsset.description ?? "",
       });
       setIsModalOpen(true);
-    } else if (type === "view") {
-      const openDrawer = useRoomAssetDrawerStore.getState().openDrawer;
-      openDrawer(roomAsset);
-    } else {
+    } else if (type === "delete") {
       openDialog({ id: roomAsset.id }, { type: "warn", desc: Notice.REMOVE });
     }
   };
@@ -173,11 +153,8 @@ export const useRoomAssetAll = () => {
     statistics: roomStats,
     value,
     setValue,
-    // handleChange,
-    // handleSaveRoom,
     isModalOpen,
     setIsModalOpen,
-    errors,
     handleActionClick,
     ConfirmDialog,
     rowSelection,

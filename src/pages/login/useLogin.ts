@@ -52,7 +52,6 @@ export const useLogin = () => {
       }
     },
     onSuccess: (data: ApiResponse<UserResponse>) => {
-      console.log(data)
       setUser(data.data, true);
       const token = {
         accessToken: data.meta?.tokenInfo?.accessToken,
@@ -71,7 +70,6 @@ export const useLogin = () => {
       }
     },
     onError: (error) => {
-      console.log(error);
       handleMutationError(error);
     },
   });

@@ -2,8 +2,15 @@ import { Dispatch } from "react";
 import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
-import { AssetBeLongTo, AssetStatus, AssetType } from "@/enums";
-import { AllRoomAssetFormValue, AssetResponse, ICreateAndUpdateBulkRoomAsset, Option, RoomAssetBulkFormValue, RoomAssetFormValue, RoomResponse } from "@/types";
+import { AssetBeLongTo, AssetStatus } from "@/enums";
+import {
+  AllRoomAssetFormValue,
+  AssetResponse,
+  ICreateAndUpdateBulkRoomAsset,
+  RoomAssetBulkFormValue,
+  RoomAssetFormValue,
+  RoomResponse,
+} from "@/types";
 import FieldsMultiSelectLabel from "@/components/ui/FieldsMultiSelectLabel";
 import { toast } from "sonner";
 
@@ -11,12 +18,15 @@ interface Props {
   value: RoomAssetFormValue;
   bulkValue: RoomAssetBulkFormValue;
   allRoomValue: AllRoomAssetFormValue;
-  handleChange: <K extends keyof ICreateAndUpdateBulkRoomAsset>(field: K, newValue: ICreateAndUpdateBulkRoomAsset[K]) => void;
+  handleChange: <K extends keyof ICreateAndUpdateBulkRoomAsset>(
+    field: K,
+    newValue: ICreateAndUpdateBulkRoomAsset[K]
+  ) => void;
   setValue: Dispatch<React.SetStateAction<RoomAssetFormValue>>;
   setBulkValue: Dispatch<React.SetStateAction<RoomAssetBulkFormValue>>;
   setAllRoomValue: Dispatch<React.SetStateAction<AllRoomAssetFormValue>>;
   errors: Partial<Record<keyof RoomAssetFormValue, string>>;
-  type: "default" | "bulkAdd" | 'update' | 'addToAllRoom';
+  type: "default" | "bulkAdd" | "update" | "addToAllRoom";
   roomList: RoomResponse[] | [];
   assetsList: AssetResponse[] | [];
   currentAsset?: AssetResponse;
@@ -28,12 +38,22 @@ type AssetOption = FieldsSelectLabelType & {
 };
 
 const assetBeLongTo: FieldsSelectLabelType[] = [
-  { label: "PHONG", value: AssetBeLongTo.PHONG },
-  { label: "CA_NHAN", value: AssetBeLongTo.CA_NHAN },
+  { label: "Phòng", value: AssetBeLongTo.PHONG },
+  { label: "Cá nhân", value: AssetBeLongTo.CA_NHAN },
 ];
 
-
-const AddOrUpdateRoomAsset = ({ value, setValue, handleChange, errors, roomList, assetsList, type, bulkValue, setBulkValue, currentAsset, allRoomValue, setAllRoomValue }: Props) => {
+const AddOrUpdateRoomAsset = ({
+  value,
+  setValue,
+  errors,
+  roomList,
+  assetsList,
+  type,
+  bulkValue,
+  setBulkValue,
+  allRoomValue,
+  setAllRoomValue,
+}: Props) => {
   const toSelectType = (options: (AssetOption | FieldsSelectLabelType)[]): FieldsSelectLabelType[] =>
     options.map((o) => ({
       label: o.label,
@@ -108,7 +128,6 @@ const AddOrUpdateRoomAsset = ({ value, setValue, handleChange, errors, roomList,
             errorText={errors.assetId}
             required
             disabled={value.assetBeLongTo === "CA_NHAN"} // Disable if asset belongs to personal
-
           />
 
           <InputLabel
@@ -119,9 +138,7 @@ const AddOrUpdateRoomAsset = ({ value, setValue, handleChange, errors, roomList,
             label="Tên tài sản:"
             required
             value={value.assetName ?? ""}
-            onChange={(e) =>
-              setValue((prev) => ({ ...prev, assetName: e.target.value }))
-            }
+            onChange={(e) => setValue((prev) => ({ ...prev, assetName: e.target.value }))}
             errorText={errors.assetName}
             disabled={value.assetBeLongTo === "PHONG"}
           />
@@ -130,16 +147,14 @@ const AddOrUpdateRoomAsset = ({ value, setValue, handleChange, errors, roomList,
             id="price"
             name="price"
             type="number"
-            placeholder="Enter Price"
-            label="Price:"
+            placeholder="100000"
+            label="Giá (VND):"
             required
             value={value.price ?? ""}
             onChange={handleNumberChange}
             errorText={errors.price}
             disabled={value.assetBeLongTo === "PHONG"}
           />
-
-
         </div>
       )}
 
@@ -152,16 +167,10 @@ const AddOrUpdateRoomAsset = ({ value, setValue, handleChange, errors, roomList,
             id="assets"
             name="assets"
             value={toSelectType(assetOptions).filter((opt) =>
-              Array.isArray(bulkValue.assetId)
-                ? bulkValue.assetId.includes(String(opt.value))
-                : false
+              Array.isArray(bulkValue.assetId) ? bulkValue.assetId.includes(String(opt.value)) : false
             )}
             onChange={(selected) => {
-              if (
-                Array.isArray(bulkValue.roomId) &&
-                bulkValue.roomId.length > 1 &&
-                selected.length > 1
-              ) {
+              if (Array.isArray(bulkValue.roomId) && bulkValue.roomId.length > 1 && selected.length > 1) {
                 toast.error("Chỉ được chọn 1 tài sản nếu đã chọn nhiều phòng.");
                 return;
               }
@@ -182,16 +191,10 @@ const AddOrUpdateRoomAsset = ({ value, setValue, handleChange, errors, roomList,
             id="rooms"
             name="rooms"
             value={toSelectType(roomOptions).filter((opt) =>
-              Array.isArray(bulkValue.roomId)
-                ? bulkValue.roomId.includes(String(opt.value))
-                : false
+              Array.isArray(bulkValue.roomId) ? bulkValue.roomId.includes(String(opt.value)) : false
             )}
             onChange={(selected) => {
-              if (
-                Array.isArray(bulkValue.assetId) &&
-                bulkValue.assetId.length > 1 &&
-                selected.length > 1
-              ) {
+              if (Array.isArray(bulkValue.assetId) && bulkValue.assetId.length > 1 && selected.length > 1) {
                 toast.error("Chỉ được chọn 1 phòng nếu đã chọn nhiều tài sản.");
                 return;
               }
@@ -209,8 +212,6 @@ const AddOrUpdateRoomAsset = ({ value, setValue, handleChange, errors, roomList,
 
       {type === "update" && (
         <div className="grid grid-cols-2 gap-4">
-          {/* Nội dung phần cập nhật tùy bạn viết tiếp */}
-          {/* Ví dụ như: */}
           <InputLabel
             id="assetName"
             name="assetName"
@@ -219,9 +220,7 @@ const AddOrUpdateRoomAsset = ({ value, setValue, handleChange, errors, roomList,
             label="Tên tài sản:"
             required
             value={value.assetName ?? ""}
-            onChange={(e) =>
-              setValue((prev) => ({ ...prev, assetName: e.target.value }))
-            }
+            onChange={(e) => setValue((prev) => ({ ...prev, assetName: e.target.value }))}
             errorText={errors.assetName}
           />
 
@@ -230,73 +229,75 @@ const AddOrUpdateRoomAsset = ({ value, setValue, handleChange, errors, roomList,
             name="price"
             type="number"
             placeholder="Enter Price"
-            label="Price:"
+            label="Giá (VND):"
             required
             value={value.price ?? ""}
             onChange={handleNumberChange}
             errorText={errors.price}
           />
-
-          <FieldsSelectLabel
-            data={[
-              {
-                label: "Sử dụng",
-                value: AssetStatus.SU_DUNG,
-              },
-              {
-                label: "Cần bảo trì",
-                value: AssetStatus.CAN_BAO_TRI,
-              },
-              {
-                label: "Đã thanh lý",
-                value: AssetStatus.DA_THANH_LY,
-              },
-              {
-                label: "Hư hỏng",
-                value: AssetStatus.HU_HONG,
-              },
-              {
-                label: "Thất lạc",
-                value: AssetStatus.THAT_LAC,
-              },
-            ]}
-            placeholder="-- Chọn trạng thái tài sản --"
-            label="Trạng thái tài sản:"
-            id="assetStatus"
-            name="assetStatus"
-            value={value.assetStatus ?? ""}
-            onChange={(val) => {
-              setValue((prev) => ({ ...prev, assetStatus: val as AssetStatus }))
-            }}
-            labelSelect="Trạng thái tài sản"
-            showClear
-            errorText={errors.assetStatus}
-            required
-          />
         </div>
       )}
+      <FieldsSelectLabel
+        data={[
+          {
+            label: "Hoạt động",
+            value: AssetStatus.HOAT_DONG,
+          },
+          {
+            label: "Cần bảo trì",
+            value: AssetStatus.CAN_BAO_TRI,
+          },
+          {
+            label: "Đã thanh lý",
+            value: AssetStatus.DA_THANH_LY,
+          },
+          {
+            label: "Hư hỏng",
+            value: AssetStatus.HU_HONG,
+          },
+          {
+            label: "Thất lạc",
+            value: AssetStatus.THAT_LAC,
+          },
+          {
+            label: "Không sử dụng",
+            value: AssetStatus.KHONG_SU_DUNG,
+          },
+          {
+            label: "Hủy",
+            value: AssetStatus.HUY,
+          },
+        ]}
+        placeholder="-- Chọn trạng thái tài sản --"
+        label="Trạng thái tài sản:"
+        id="assetStatus"
+        name="assetStatus"
+        value={value.assetStatus ?? ""}
+        onChange={(val) => {
+          setValue((prev) => ({ ...prev, assetStatus: val as AssetStatus }));
+        }}
+        labelSelect="Trạng thái tài sản"
+        showClear
+        errorText={errors.assetStatus}
+        required
+      />
 
       {type === "addToAllRoom" && (
-        <div className="grid grid-cols-2 gap-4">
-          <FieldsSelectLabel
-            data={assetOptions}
-            placeholder="-- Chọn tài sản --"
-            label="Tài sản:"
-            id="assetId"
-            name="assetId"
-            value={allRoomValue.assetId ?? ""}
-            onChange={(val) => setAllRoomValue((prev) => ({ ...prev, assetId: val as string }))}
-            labelSelect="Tài sản"
-            showClear
-            errorText={errors.assetId}
-            required
-          />
-        </div>
+        <FieldsSelectLabel
+          data={assetOptions}
+          placeholder="-- Chọn tài sản --"
+          label="Tài sản:"
+          id="assetId"
+          name="assetId"
+          value={allRoomValue.assetId ?? ""}
+          onChange={(val) => setAllRoomValue((prev) => ({ ...prev, assetId: val as string }))}
+          labelSelect="Tài sản"
+          showClear
+          errorText={errors.assetId}
+          required
+        />
       )}
 
-
-
-      {/* DESCRIPTION */}
       <TextareaLabel
         id="description"
         name="description"

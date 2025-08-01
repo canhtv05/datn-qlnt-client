@@ -129,7 +129,7 @@ const ServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
   });
 
   return (
-    <div className="h-full bg-background rounded-t-sm mt-4">
+    <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
         <h3 className="font-semibold">Dịch vụ</h3>
         <div className="flex gap-2">

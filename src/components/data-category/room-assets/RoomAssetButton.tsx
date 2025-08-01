@@ -1,4 +1,4 @@
-import { useState, useCallback, ChangeEvent } from "react";
+import { useState, useCallback } from "react";
 import { toast } from "sonner";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -10,17 +10,24 @@ import { useFormErrors } from "@/hooks/useFormErrors";
 import { useConfirmDialog } from "@/hooks";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
-import { IBtnType, ApiResponse, RoomAssetFormValue, RoomResponse, AssetResponse, ICreateAndUpdateContract, ICreateAndUpdateBulkRoomAsset, RoomAssetBulkFormValue, AllRoomAssetFormValue } from "@/types";
-import { AssetBeLongTo, Notice, Status } from "@/enums";
+import {
+  IBtnType,
+  ApiResponse,
+  RoomAssetFormValue,
+  RoomResponse,
+  AssetResponse,
+  ICreateAndUpdateBulkRoomAsset,
+  RoomAssetBulkFormValue,
+  AllRoomAssetFormValue,
+} from "@/types";
+import { Notice, Status } from "@/enums";
 import { httpRequest } from "@/utils/httpRequest";
 import { addToAllRoomAssetSchema, roomAssetBulkSchema, roomAssetFormSchema } from "@/lib/validation";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { Building, Layers } from "lucide-react";
-import { all } from "axios";
 import { useParams } from "react-router-dom";
 
-const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>, roomId: string }) => {
-
+const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>; roomId: string }) => {
   const { buildingId: buildingId } = useParams();
 
   const [value, setValue] = useState<RoomAssetFormValue>({
@@ -31,8 +38,6 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>, roomId
     price: 0,
     description: "",
   });
-
-
 
   const [bulkValue, setBulkValue] = useState<RoomAssetBulkFormValue>({
     assetId: "",
@@ -69,8 +74,7 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>, roomId
   const { data: roomListData } = useQuery<ApiResponse<RoomResponse[]>>({
     queryKey: ["room-list"],
     queryFn: async () => {
-      const res = await httpRequest.get("/rooms/all"
-      );
+      const res = await httpRequest.get("/rooms/all");
       return res.data;
     },
   });
@@ -78,17 +82,13 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>, roomId
   const { data: assetsListData } = useQuery<ApiResponse<AssetResponse[]>>({
     queryKey: ["assets"],
     queryFn: async () => {
-      const res = await httpRequest.get("/assets"
-      );
+      const res = await httpRequest.get("/assets");
       return res.data.data;
     },
   });
 
   const handleChange = useCallback(
-    <K extends keyof ICreateAndUpdateBulkRoomAsset>(
-      field: K,
-      newValue: ICreateAndUpdateBulkRoomAsset[K]
-    ) => {
+    <K extends keyof ICreateAndUpdateBulkRoomAsset>(field: K, newValue: ICreateAndUpdateBulkRoomAsset[K]) => {
       setValue((prev) => ({ ...prev, [field]: newValue }));
     },
     []
@@ -143,7 +143,6 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>, roomId
     },
   });
 
-
   const handleBulkAddRoomAsset = useCallback(async () => {
     try {
       const fullValue = {
@@ -151,13 +150,13 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>, roomId
         ...(Array.isArray(bulkValue.roomId) && bulkValue.roomId.length === 1
           ? { roomId: bulkValue.roomId[0] }
           : Array.isArray(bulkValue.roomId) && bulkValue.roomId.length > 1
-            ? { roomIds: bulkValue.roomId }
-            : {}),
+          ? { roomIds: bulkValue.roomId }
+          : {}),
         ...(Array.isArray(bulkValue.assetId) && bulkValue.assetId.length === 1
           ? { assetId: bulkValue.assetId[0] }
           : Array.isArray(bulkValue.assetId) && bulkValue.assetId.length > 1
-            ? { assetIds: bulkValue.assetId }
-            : {}),
+          ? { assetIds: bulkValue.assetId }
+          : {}),
       };
 
       await roomAssetBulkSchema.parseAsync(fullValue);
@@ -191,9 +190,8 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>, roomId
     try {
       const fullValue = {
         ...allRoomValue,
-        buildingId: buildingId ?? ""
+        buildingId: buildingId ?? "",
       };
-
 
       await addToAllRoomAssetSchema.parseAsync(fullValue);
       await addToAllRoomAssetMutation.mutateAsync(fullValue);
@@ -209,7 +207,7 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>, roomId
     try {
       const fullValue = {
         ...value,
-        roomId: roomId ?? ""
+        roomId: roomId ?? "",
       };
 
       await roomAssetFormSchema.parseAsync(fullValue);
@@ -267,7 +265,7 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>, roomId
   );
 
   return (
-    <div className="h-full bg-background rounded-t-sm mt-4">
+    <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
         <h3 className="font-semibold">Tài sản phòng</h3>
         <div className="flex gap-2">
@@ -279,7 +277,7 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>, roomId
                     title="Thêm tài sản phòng"
                     trigger={
                       <TooltipTrigger asChild>
-                        <Button size="icon" variant={btn.type}>
+                        <Button size="icon" variant={btn.type} className="cursor-pointer">
                           <btn.icon className="text-white" />
                         </Button>
                       </TooltipTrigger>
@@ -289,9 +287,10 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>, roomId
                       btn.type === "bulkAdd"
                         ? handleBulkAddRoomAsset
                         : btn.type === "addToAllRoom"
-                          ? handleAddToAllRoom
-                          : handleAddRoomAsset
-                    }                  >
+                        ? handleAddToAllRoom
+                        : handleAddRoomAsset
+                    }
+                  >
                     <AddOrUpdateRoomAsset
                       handleChange={handleChange}
                       value={value}

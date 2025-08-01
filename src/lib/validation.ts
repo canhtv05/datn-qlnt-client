@@ -233,10 +233,7 @@ export const roomAssetFormSchema = z
     roomId: z.string().min(1, { message: "Phòng không được để trống" }),
     assetId: z.string(), // Không dùng .min(1) ở đây nữa
     assetName: z.string().min(1, { message: "Tên tài sản không được để trống" }),
-    price: z
-      .number()
-      .refine((val) => typeof val === "number" && !isNaN(val), { message: "Giá phải là số" })
-      .nonnegative({ message: "Giá không được nhỏ hơn 0" }),
+    price: zSafeNumber("Giá", { min: 1 }),
     description: z.string().nullable(),
   })
   .superRefine((val, ctx) => {
@@ -249,36 +246,31 @@ export const roomAssetFormSchema = z
     }
   });
 
-
-
 export const roomAssetBulkSchema = z.object({
-  roomId: z.union([z.string(), z.array(z.string())])
-    .refine((val) => {
+  roomId: z.union([z.string(), z.array(z.string())]).refine(
+    (val) => {
       if (typeof val === "string") return val.trim() !== "";
       return Array.isArray(val) && val.length > 0 && val.every((v) => v.trim() !== "");
-    }, {
+    },
+    {
       message: "Vui lòng chọn ít nhất một phòng.",
-    }),
-  assetId: z.union([z.string(), z.array(z.string())])
-    .refine((val) => {
+    }
+  ),
+  assetId: z.union([z.string(), z.array(z.string())]).refine(
+    (val) => {
       if (typeof val === "string") return val.trim() !== "";
       return Array.isArray(val) && val.length > 0 && val.every((v) => v.trim() !== "");
-    }, {
+    },
+    {
       message: "Vui lòng chọn ít nhất một tài sản.",
-    }),
+    }
+  ),
 });
-
 
 export const addToAllRoomAssetSchema = z.object({
-  assetId: z
-    .string()
-    .min(1, "Tài sản không được để trống"),
-  buildingId: z
-    .string()
-    .min(1, "Tòa nhà không được để trống"),
+  assetId: z.string().min(1, "Tài sản không được để trống"),
+  buildingId: z.string().min(1, "Tòa nhà không được để trống"),
 });
-
-
 
 /* ROOM */
 export const createOrUpdateRoomSchema = z
@@ -299,7 +291,7 @@ export const createOrUpdateRoomSchema = z
         message: "Số người tối đa phải ≥ 1",
       }),
 
-    roomType: z.enum([RoomType.GHEP, RoomType.DON, RoomType.KHAC], {
+    roomType: z.enum([RoomType.GHEP, RoomType.DON, RoomType.KHAC, RoomType.CAO_CAP], {
       message: "Loại phòng không hợp lệ",
     }),
 

@@ -85,14 +85,11 @@ export const useContract = () => {
     queryKey: ["vehicles"],
     queryFn: async () => (await httpRequest.get("/vehicles")).data,
   });
-  // console.log(roomsData?.data)
   const roomOptions =
     roomsData?.data?.map((room) => ({
       label: `${room.roomCode} - ${room.floor.buildingName}`,
       value: room.id,
     })) || [];
-  // console.log("roomOptions", roomOptions);
-  // console.log("roomsData", roomsData?.data);
 
   const tenantOptions =
     tenantsData?.data?.map((tenant) => ({
@@ -106,28 +103,24 @@ export const useContract = () => {
       value: asset.id,
     })) || [];
 
-    const servicesOptions =
+  const servicesOptions =
     servicesDaTa?.data?.map((services) => ({
       label: services.name,
       value: services.id,
     })) || [];
 
-    const vehiclesOptions =
+  const vehiclesOptions =
     vehiclesDaTa?.data?.map((vehicles) => ({
       label: `${vehicles.fullName} - ${vehicles.vehicleType}`,
       value: vehicles.id,
     })) || [];
-  const { clearErrors, errors, handleZodErrors } =
-    useFormErrors<ICreateAndUpdateContract>();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAndUpdateContract>();
 
   useEffect(() => {
     setFilterValues({ query, status });
   }, [query, status]);
 
-  const handleChange = <K extends keyof ICreateAndUpdateContract>(
-    field: K,
-    newValue: ICreateAndUpdateContract[K]
-  ) => {
+  const handleChange = <K extends keyof ICreateAndUpdateContract>(field: K, newValue: ICreateAndUpdateContract[K]) => {
     setValue((prev) => ({
       ...prev,
       [field]: newValue,
@@ -148,12 +141,9 @@ export const useContract = () => {
     setSearchParams(params);
   }, [filterValues, setSearchParams]);
 
-  const endpoint =
-    filterValues.status === "DA_HUY" ? "/contracts/cancel" : "/contracts";
+  const endpoint = filterValues.status === "DA_HUY" ? "/contracts/cancel" : "/contracts";
 
-  const { data, isLoading, isError } = useQuery<
-    ApiResponse<ContractResponse[]>
-  >({
+  const { data, isLoading, isError } = useQuery<ApiResponse<ContractResponse[]>>({
     queryKey: ["contracts", page, size, ...Object.values(filterValues)],
     queryFn: async () => {
       const params: Record<string, string> = {
@@ -168,9 +158,7 @@ export const useContract = () => {
     },
     retry: 1,
   });
-  const { data: statistics, isError: errorStatistics } = useQuery<
-    ApiResponse<IContractStatisticsResponse>
-  >({
+  const { data: statistics, isError: errorStatistics } = useQuery<ApiResponse<IContractStatisticsResponse>>({
     queryKey: ["contracts-statistics"],
     queryFn: async () => (await httpRequest.get("/contracts/statistics")).data,
     retry: 1,
@@ -205,8 +193,7 @@ export const useContract = () => {
   ];
 
   const createContractMutation = useMutation({
-    mutationFn: (payload: ICreateAndUpdateContract) =>
-      httpRequest.post("/contracts", payload),
+    mutationFn: (payload: ICreateAndUpdateContract) => httpRequest.post("/contracts", payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
@@ -216,13 +203,8 @@ export const useContract = () => {
   });
 
   const updateContractMutation = useMutation({
-    mutationFn: ({
-      id,
-      payload,
-    }: {
-      id: string;
-      payload: ICreateAndUpdateContract;
-    }) => httpRequest.put(`/contracts/${id}`, payload),
+    mutationFn: ({ id, payload }: { id: string; payload: ICreateAndUpdateContract }) =>
+      httpRequest.put(`/contracts/${id}`, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
@@ -291,7 +273,6 @@ export const useContract = () => {
   }, [clearErrors]);
 
   const handleSaveContract = useCallback(async () => {
-    //  console.log("Dữ liệu gửi:", value); 
     try {
       await createOrUpdateContractSchema.parseAsync(value);
 
@@ -301,9 +282,7 @@ export const useContract = () => {
           payload: value,
         });
       } else {
-        const selectedRoom = roomsData?.data?.find(
-          (room) => room.id === value.roomId
-        );
+        const selectedRoom = roomsData?.data?.find((room) => room.id === value.roomId);
         const roomPrice = selectedRoom?.price ?? 0;
 
         await createContractMutation.mutateAsync({
@@ -319,26 +298,14 @@ export const useContract = () => {
       handleZodErrors(error);
       return false;
     }
-  }, [
-    value,
-    updateContractMutation,
-    createContractMutation,
-    resetForm,
-    handleZodErrors,
-    roomsData,
-  ]);
+  }, [value, updateContractMutation, createContractMutation, resetForm, handleZodErrors, roomsData]);
 
   const handleActionClick = useCallback(
-    (
-      contract: ContractResponse,
-      type: "update" | "delete" | "view" | "status"
-    ) => {
+    (contract: ContractResponse, type: "update" | "delete" | "view" | "status") => {
       idRef.current = contract.id;
 
       if (type === "update") {
-        const matchedRoom = roomsData?.data?.find(
-          (r) => r.roomCode === contract.roomCode
-        );
+        const matchedRoom = roomsData?.data?.find((r) => r.roomCode === contract.roomCode);
         setValue({
           roomId: matchedRoom?.id ?? "",
           numberOfPeople: contract.numberOfPeople,

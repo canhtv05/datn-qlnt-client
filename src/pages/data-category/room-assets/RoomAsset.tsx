@@ -1,65 +1,18 @@
 import { useRoomAssetAll } from "./useRoomAssetAll";
 import StatisticCard from "@/components/StatisticCard";
 import DataTable from "@/components/DataTable";
-import Modal from "@/components/Modal";
-import RoomFilter from "@/components/data-category/room/RoomFilter";
-import { EyeIcon, SquarePen, Trash2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { ColumnConfig, IBtnType, RoomAssetAllResponse } from "@/types";
-import { Notice } from "@/enums";
+import { ColumnConfig, RoomAssetAllResponse } from "@/types";
 import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
-import { formatNumberField } from "@/constant";
-import RoomAssetDetailsDrawer from "@/components/data-category/room-assets/RoomAssetDetailsModal";
-import RoomAssetButton from "@/components/data-category/room-assets/RoomAssetButton";
-import AddOrUpdateRoomAsset from "@/components/data-category/room-assets/AddOrUpdateRoomAsset";
+import { formatNumberField, GET_BTNS } from "@/constant";
 import RoomAssetFilter from "@/components/data-category/room-assets/RoomAssetFilter";
-
-const btns: IBtnType[] = [
-  {
-    tooltipContent: "Xem chi tiết",
-    icon: EyeIcon,
-    arrowColor: "#44475A",
-    type: "view",
-    hasConfirm: false,
-  },
-  // {
-  //   tooltipContent: "Chỉnh sửa",
-  //   icon: SquarePen,
-  //   arrowColor: "#44475A",
-  //   type: "update",
-  //   hasConfirm: true,
-  // },
-  // {
-  //   tooltipContent: "Xóa",
-  //   icon: Trash2,
-  //   arrowColor: "var(--color-red-400)",
-  //   type: "delete",
-  //   hasConfirm: true,
-  // },
-];
+import { useNavigate } from "react-router-dom";
 
 const RoomAsset = () => {
-  const {
-    data,
-    isLoading,
-    statistics,
-    value,
-    setValue,
-    handleChange,
-    handleSaveRoom,
-    isModalOpen,
-    setIsModalOpen,
-    errors,
-    handleActionClick,
-    ConfirmDialog,
-    query,
-    rowSelection,
-    setRowSelection,
-    props,
-    roomList,
-  } = useRoomAssetAll();
+  const { data, isLoading, statistics, ConfirmDialog, query, rowSelection, setRowSelection, props } = useRoomAssetAll();
+  const navigate = useNavigate();
 
   const { page, size } = query;
   const columnConfigs: ColumnConfig[] = [
@@ -70,12 +23,12 @@ const RoomAsset = () => {
       hasHighlight: true,
     },
     {
-      label: "Xem chi tiết",
+      label: "Thao tác",
       accessorKey: "actions",
       isCenter: true,
       render: (row: RoomAssetAllResponse) => (
         <div className="flex gap-2 justify-center">
-          {btns.map((btn, index) => (
+          {GET_BTNS("view").map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -83,7 +36,9 @@ const RoomAsset = () => {
                     size="icon"
                     variant={btn.type}
                     className="cursor-pointer"
-                    onClick={() => handleActionClick(row, btn.type as "update" | "delete")}
+                    onClick={() => {
+                      navigate(`/asset-management/room-assets/detail/${row.id}`, { replace: true });
+                    }}
                   >
                     <btn.icon className="text-white" />
                   </Button>
@@ -132,26 +87,12 @@ const RoomAsset = () => {
       isCenter: true,
     },
     { label: "Mô tả", accessorKey: "description" },
-    // {
-    //   label: "Ngày tạo",
-    //   accessorKey: "createdAt",
-    //   isSort: true,
-    //   hasDate: true,
-    // },
-    // {
-    //   label: "Ngày cập nhật",
-    //   accessorKey: "updatedAt",
-    //   isSort: true,
-    //   hasDate: true,
-    // },
   ];
 
   return (
     <div className="flex flex-col">
       <StatisticCard data={statistics} />
-      {/* <RoomAssetButton ids={rowSelection} /> */}
       <RoomAssetFilter props={props} />
-      <RoomAssetDetailsDrawer />
       <DataTable<RoomAssetAllResponse>
         data={data?.data ?? []}
         columns={buildColumnsFromConfig(columnConfigs)}
@@ -163,22 +104,6 @@ const RoomAsset = () => {
         rowSelection={rowSelection}
         setRowSelection={setRowSelection}
       />
-      {/* <Modal
-        title="Dự án/Phòng"
-        trigger={null}
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        onConfirm={handleSaveRoom}
-        desc={Notice.UPDATE}
-      >
-        <AddOrUpdateRoomAsset
-          value={value}
-          handleChange={handleChange}
-          setValue={setValue}
-          errors={errors}
-          roomList={roomList}
-        />
-      </Modal> */}
       <ConfirmDialog />
     </div>
   );

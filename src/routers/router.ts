@@ -40,6 +40,7 @@ const Room = lazy(() => import("@/pages/data-category/room"));
 const Service = lazy(() => import("@/pages/data-category/service"));
 const ServiceRoom = lazy(() => import("@/pages/data-category/service-room"));
 const ServiceRoomDetail = lazy(() => import("@/pages/data-category/service-room-detail"));
+const RoomAssetDetail = lazy(() => import("@/components/data-category/room-assets/RoomAssetDetail"));
 
 /* CUSTOMER */
 const Vehicle = lazy(() => import("@/pages/customer/vehicle"));
@@ -140,6 +141,11 @@ const privateRoutes: RouteType[] = [
   {
     path: configs.routes.assetMng.roomId,
     component: RoomAsset,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.assetMng.roomAssetDetail,
+    component: RoomAssetDetail,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
 
