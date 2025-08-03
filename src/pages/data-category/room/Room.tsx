@@ -193,6 +193,7 @@ const Room = () => {
           setValue={setValue}
           errors={errors}
           floorList={floorList}
+          type="update"
         />
       </Modal>
       <ConfirmDialog />

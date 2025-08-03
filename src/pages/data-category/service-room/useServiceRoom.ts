@@ -13,7 +13,7 @@ import { queryFilter } from "@/utils/queryFilter";
 import { useQuery } from "@tanstack/react-query";
 import { CircleCheck, Puzzle, XCircle } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useServiceRoom = () => {
@@ -22,20 +22,21 @@ export const useServiceRoom = () => {
     page = "1",
     size = "15",
     query = "",
-    building = "",
     floor = "",
     roomType = "",
     status = "",
   } = queryFilter(searchParams, "page", "size", "query", "building", "floor", "floor", "status");
 
+  const { id } = useParams();
   const [rowSelection, setRowSelection] = useState({});
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
 
   const [filterValues, setFilterValues] = useState<ServiceRoomFilter>({
-    building,
+    building: "",
     floor,
     query,
     roomType,
@@ -80,20 +81,20 @@ export const useServiceRoom = () => {
   ]);
 
   const { data, isLoading, isError } = useQuery<ApiResponse<ServiceRoomView[]>>({
-    queryKey: ["service-rooms", page, size, query, status, building, floor, roomType],
+    queryKey: ["service-rooms", page, size, query, status, id, floor, roomType],
     queryFn: async () => {
       const params: Record<string, string> = {
         page: page.toString(),
         size: size.toString(),
       };
 
-      if (building) params["building"] = building;
+      if (id) params["building"] = id;
       if (floor) params["floor"] = floor;
       if (query) params["query"] = query;
       if (roomType) params["roomType"] = roomType;
       if (status) params["status"] = status;
 
-      const res = await httpRequest.get("/service-rooms");
+      const res = await httpRequest.get("/service-rooms", { params });
 
       return res.data;
     },
@@ -112,10 +113,11 @@ export const useServiceRoom = () => {
   const { data: statistics, isError: isStatisticsError } = useQuery<ApiResponse<ServiceRoomStatistics>>({
     queryKey: ["service-rooms-statistics"],
     queryFn: async () => {
-      const res = await httpRequest.get("/service-rooms/statistics");
+      const res = await httpRequest.get(`/service-rooms/statistics/${id}`);
       return res.data;
     },
     retry: 1,
+    enabled: !!id,
   });
 
   const { data: buildingData, isError: isBuildingError } = useQuery<ApiResponse<IBuildingCardsResponse[]>>({
@@ -224,7 +226,7 @@ export const useServiceRoom = () => {
       page: parsedPage,
       size: parsedSize,
       query,
-      building,
+      id,
       floor,
       roomType,
       status,

@@ -80,6 +80,35 @@ const AddOrUpdateMeterReading = ({
         onChange={handleChangeMeterReading}
         errorText={errors.newIndex}
       />
+      {type === "add" && (
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full">
+          <InputLabel
+            id="month"
+            name="month"
+            placeholder="1"
+            min={1}
+            max={12}
+            step={1}
+            type="number"
+            label="Tháng:"
+            required
+            value={value.month ?? ""}
+            onChange={handleChangeMeterReading}
+            errorText={errors.month}
+          />
+          <InputLabel
+            id="year"
+            name="year"
+            placeholder={new Date().getFullYear() + ""}
+            type="number"
+            label="Năm:"
+            required
+            value={value.year ?? ""}
+            onChange={handleChangeMeterReading}
+            errorText={errors.year}
+          />
+        </div>
+      )}
       <TextareaLabel
         id="descriptionMeterReading"
         name="descriptionMeterReading"

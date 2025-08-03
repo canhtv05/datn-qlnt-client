@@ -12,6 +12,7 @@ import VehicleButton from "@/components/customer/vehicle/VehicleButton";
 import VehicleFilter from "@/components/customer/vehicle/VehicleFilter";
 import AddOrUpdateVehicle from "@/components/customer/vehicle/AddOrUpdateVehicle";
 import { GET_BTNS } from "@/constant";
+import StatusBadge from "@/components/ui/StatusBadge";
 
 const Vehicle = () => {
   const {
@@ -109,6 +110,13 @@ const Vehicle = () => {
       accessorKey: "registrationDate",
       isSort: true,
       hasDate: true,
+      render: (row: VehicleResponse) =>
+        row.registrationDate ? (
+          new Date(row.registrationDate).toLocaleDateString("vi-VN")
+        ) : (
+          <StatusBadge status={"__EMPTY__"} />
+        ),
+      isCenter: true,
     },
     {
       label: "Mô tả",

@@ -148,12 +148,12 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
     },
     {
       label: "Quản lý khách thuê",
-      title: "Khách hàng",
+      title: "Khách thuê",
       url: "/customers",
       icon: Handshake,
       items: [
         {
-          title: "Khách hàng",
+          title: "Khách thuê",
           url: "/customers/tenants",
           icon: UsersRound,
         },
@@ -994,13 +994,6 @@ export const ACTION_BUTTONS_SERVICE_ROOM: IBtnType[] = [
     type: "download",
     hasConfirm: true,
   },
-  {
-    tooltipContent: "Xóa",
-    icon: Trash2,
-    arrowColor: "var(--color-red-400)",
-    type: "delete",
-    hasConfirm: true,
-  },
 ];
 
 export const formatNumberField = {
@@ -1058,10 +1051,10 @@ export const BTNS: IBtnType[] = [
 ];
 
 /* PAYMENT RECEIPT */
-export const ACTION_BUTTONS_FOR_PAYMENT_RECEIPT = (type: PaymentMethod): IBtnType[] => {
+export const ACTION_BUTTONS_FOR_PAYMENT_RECEIPT = (type: PaymentMethod, status: PaymentStatus): IBtnType[] => {
   const CASH: IBtnType[] = [
     {
-      tooltipContent: "Thanh toán tiền mặt",
+      tooltipContent: "Xác nhận đã thanh toán",
       icon: Banknote,
       arrowColor: "var(--color-amber-500)",
       type: "cash",
@@ -1086,5 +1079,8 @@ export const ACTION_BUTTONS_FOR_PAYMENT_RECEIPT = (type: PaymentMethod): IBtnTyp
     },
   ];
 
-  return type === PaymentMethod.TIEN_MAT ? [...CASH, ...res] : res;
+  return (type === PaymentMethod.TIEN_MAT || type === PaymentMethod.CHUYEN_KHOAN) &&
+    status !== PaymentStatus.DA_THANH_TOAN
+    ? [...CASH, ...res]
+    : res;
 };

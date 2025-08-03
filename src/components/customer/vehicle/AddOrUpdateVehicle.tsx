@@ -62,10 +62,18 @@ const AddOrUpdateVehicle = (props: AddOrUpdateVehicleProps) => {
 
   const tenantOptions = useMemo(() => {
     return (
-      tenants?.data?.map((tenant) => ({
-        label: tenant.fullName,
-        value: tenant.id,
-      })) || []
+      tenants?.data?.map((tenant) => {
+        const activeContract = tenant.contracts
+          ?.filter((c) => c.status === "HIEU_LUC")
+          ?.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime())[0];
+
+        const room = activeContract?.roomCode || "N/A";
+
+        return {
+          label: `${tenant.fullName} - ${room}`,
+          value: tenant.id,
+        };
+      }) || []
     );
   }, [tenants?.data]);
 
@@ -109,40 +117,35 @@ const AddOrUpdateVehicle = (props: AddOrUpdateVehicleProps) => {
           type === "add" && "md:grid-cols-2"
         )}
       >
-        <FieldsSelectLabel
-          data={vehicleStatus}
-          placeholder="-- Trạng thái xe --"
-          label="Trạng thái xe:"
-          id="vehicleStatus"
-          name="vehicleStatus"
-          value={value.vehicleStatus ?? ""}
-          onChange={(val) => {
-            if (props.type === "add") {
-              props.setValue((prev: ICreateVehicle) => ({
-                ...prev,
-                vehicleStatus: val as VehicleStatus,
-              }));
-            } else {
+        {type === "update" && (
+          <FieldsSelectLabel
+            data={vehicleStatus}
+            placeholder="-- Trạng thái xe --"
+            label="Trạng thái xe:"
+            id="vehicleStatus"
+            name="vehicleStatus"
+            value={value.vehicleStatus ?? ""}
+            onChange={(val) => {
               props.setValue((prev: IUpdateVehicle) => ({
                 ...prev,
                 vehicleStatus: val as VehicleStatus,
               }));
-            }
-          }}
-          labelSelect="Trạng thái xe"
-          showClear
-          errorText={errors.vehicleStatus}
-          required
-        />
-        {type === "add" && (
-          <DatePickerLabel
-            date={value?.registrationDate ? new Date(value?.registrationDate) : new Date()}
-            setDate={(d) => setValue((prev) => ({ ...prev, registrationDate: d.toISOString() }))}
-            label="Ngày đăng ký:"
-            errorText={errors?.registrationDate}
+            }}
+            labelSelect="Trạng thái xe"
+            showClear
+            errorText={errors.vehicleStatus}
+            required
           />
         )}
       </div>
+      {type === "add" && (
+        <DatePickerLabel
+          date={value?.registrationDate ? new Date(value?.registrationDate) : new Date()}
+          setDate={(d) => setValue((prev) => ({ ...prev, registrationDate: d.toISOString() }))}
+          label="Ngày đăng ký:"
+          errorText={errors?.registrationDate}
+        />
+      )}
 
       {type === "add" && (
         <InputLabel

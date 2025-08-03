@@ -25,11 +25,19 @@ import { httpRequest } from "@/utils/httpRequest";
 import { addToAllRoomAssetSchema, roomAssetBulkSchema, roomAssetFormSchema } from "@/lib/validation";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { Building, Layers } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 
-const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>; roomId: string }) => {
-  const { buildingId: buildingId } = useParams();
-
+const RoomAssetButton = ({
+  ids,
+  roomId,
+  type = "detail",
+  buildingOptions,
+}: {
+  ids: Record<string, boolean>;
+  roomId: string;
+  type: "default" | "detail" | "asset";
+  buildingOptions: FieldsSelectLabelType[] | undefined;
+}) => {
   const [value, setValue] = useState<RoomAssetFormValue>({
     assetBeLongTo: "PHONG",
     roomId: "",
@@ -37,6 +45,7 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>; roomId
     assetName: "",
     price: 0,
     description: "",
+    buildingId: "",
   });
 
   const [bulkValue, setBulkValue] = useState<RoomAssetBulkFormValue>({
@@ -49,23 +58,34 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>; roomId
     buildingId: "",
   });
 
-  const LOCAL_ACTION_BUTTONS: IBtnType[] = [
-    ...ACTION_BUTTONS,
-    {
+  let LOCAL_ACTION_BUTTONS: IBtnType[] = [];
+
+  if (type === "default") {
+    LOCAL_ACTION_BUTTONS.push({
       tooltipContent: "Thêm nhiều",
       icon: Layers,
-      arrowColor: "var(--color-green-500)",
+      arrowColor: "var(--color-emerald-500)",
       type: "bulkAdd",
       hasConfirm: false,
-    },
-    {
-      tooltipContent: "Thêm vào tòa nhà",
-      icon: Building,
-      arrowColor: "var(--color-green-500)",
-      type: "addToAllRoom",
-      hasConfirm: false,
-    },
-  ];
+    });
+  }
+
+  LOCAL_ACTION_BUTTONS.push(...ACTION_BUTTONS);
+  if (type === "default") {
+    LOCAL_ACTION_BUTTONS = LOCAL_ACTION_BUTTONS.filter((b) => b.type !== "default" && b.type !== "delete");
+  }
+
+  if (type === "asset") {
+    LOCAL_ACTION_BUTTONS = [
+      {
+        tooltipContent: "Thêm vào tòa nhà",
+        icon: Building,
+        arrowColor: "var(--color-green-600)",
+        type: "addToAllRoom",
+        hasConfirm: false,
+      },
+    ];
+  }
 
   // const { id: buildingId } = useParams();
   const { errors, clearErrors, handleZodErrors } = useFormErrors<RoomAssetFormValue>();
@@ -164,7 +184,7 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>; roomId
       clearErrors();
       return true;
     } catch (error) {
-      console.log("Error adding room asset:", error);
+      // console.log("Error adding room asset:", error);
       handleZodErrors(error);
       return false;
     }
@@ -190,7 +210,6 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>; roomId
     try {
       const fullValue = {
         ...allRoomValue,
-        buildingId: buildingId ?? "",
       };
 
       await addToAllRoomAssetSchema.parseAsync(fullValue);
@@ -198,11 +217,11 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>; roomId
       clearErrors();
       return true;
     } catch (error) {
-      console.log("Error adding room asset:", error);
+      // console.log("Error adding room asset:", error);
       handleZodErrors(error);
       return false;
     }
-  }, [allRoomValue, addToAllRoomAssetMutation, clearErrors, handleZodErrors, buildingId]);
+  }, [allRoomValue, addToAllRoomAssetMutation, clearErrors, handleZodErrors]);
   const handleAddRoomAsset = useCallback(async () => {
     try {
       const fullValue = {
@@ -215,7 +234,7 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>; roomId
       clearErrors();
       return true;
     } catch (error) {
-      console.log("Error adding room asset:", error);
+      // console.log("Error adding room asset:", error);
       handleZodErrors(error);
       return false;
     }
@@ -223,7 +242,7 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>; roomId
 
   const removeRoomAssetMutation = useMutation({
     mutationKey: ["remove-room-asset"],
-    mutationFn: async (id: string) => await httpRequest.put(`/asset-rooms/${id}`),
+    mutationFn: async (id: string) => await httpRequest.delete(`/asset-rooms/${id}`),
   });
 
   const handleRemoveRoomAsset = async (ids: Record<string, boolean>): Promise<boolean> => {
@@ -234,10 +253,12 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>; roomId
 
       await Promise.all(selectedIds.map((id) => removeRoomAssetMutation.mutateAsync(id)));
 
-      toast.success(Status.REMOVE_SUCCESS);
-      queryClient.invalidateQueries({ queryKey: ["asset-rooms"] });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
+      });
       queryClient.invalidateQueries({ queryKey: ["room-asset-statistics"] });
       queryClient.invalidateQueries({ queryKey: ["room-asset-all"] });
+      toast.success(Status.REMOVE_SUCCESS);
 
       return true;
     } catch (error) {
@@ -251,7 +272,7 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>; roomId
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveRoomAsset(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các phòng đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tài sản phòng đã chọn. Bạn có chắc chắn muốn tiếp tục?",
     type: "warn",
   });
 
@@ -266,8 +287,8 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>; roomId
 
   return (
     <div className="h-full bg-background rounded-t-sm">
-      <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Tài sản phòng</h3>
+      <div className={type !== "asset" ? "flex px-4 py-3 justify-between items-center" : ""}>
+        {type !== "asset" && <h3 className="font-semibold">Tài sản phòng</h3>}
         <div className="flex gap-2">
           {LOCAL_ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>
@@ -303,10 +324,19 @@ const RoomAssetButton = ({ ids, roomId }: { ids: Record<string, boolean>; roomId
                       roomList={roomListData?.data || []}
                       assetsList={assetsListData?.data || []}
                       type={btn.type as "default" | "addToAllRoom" | "update" | "bulkAdd"}
+                      buildingOptions={buildingOptions}
                     />
                   </Modal>
                 </RenderIf>
-                <RenderIf value={btn.type !== "default" && btn.type !== "bulkAdd" && btn.type !== "addToAllRoom"}>
+                <RenderIf
+                  value={
+                    btn.type !== "default" &&
+                    btn.type !== "bulkAdd" &&
+                    btn.type !== "addToAllRoom" &&
+                    btn.type !== "download" &&
+                    btn.type !== "upload"
+                  }
+                >
                   <TooltipTrigger asChild>
                     <Button
                       size="icon"

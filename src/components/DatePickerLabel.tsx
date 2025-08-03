@@ -14,9 +14,11 @@ interface DateValue {
   label: string;
   required?: boolean;
   errorText?: string;
+  fromYear?: number;
+  toYear?: number;
 }
 
-const DatePickerLabel = ({ date, setDate, label, errorText, required }: DateValue) => {
+const DatePickerLabel = ({ date, setDate, label, errorText, required, fromYear, toYear }: DateValue) => {
   const [touched, setTouched] = useState(false);
 
   const isEmpty = !date && required && touched;
@@ -48,6 +50,8 @@ const DatePickerLabel = ({ date, setDate, label, errorText, required }: DateValu
               if (value) setDate(value);
             }}
             captionLayout="dropdown"
+            fromYear={fromYear}
+            toYear={toYear}
           />
         </PopoverContent>
       </Popover>

@@ -32,7 +32,6 @@ const AssetFilter = ({ props }: { props: AssetFilterProps }) => {
           placeholder="-- Tài sản thuộc về --"
           labelSelect="Tài sản thuộc về"
           data={[
-            { label: "Cá nhân", value: AssetBeLongTo.CA_NHAN },
             { label: "Chung", value: AssetBeLongTo.CHUNG },
             { label: "Phòng", value: AssetBeLongTo.PHONG },
           ]}
@@ -48,8 +47,8 @@ const AssetFilter = ({ props }: { props: AssetFilterProps }) => {
             { label: "Cần bảo trì", value: AssetStatus.CAN_BAO_TRI },
             { label: "Đã thanh lý", value: AssetStatus.DA_THANH_LY },
             { label: "Bị hư hỏng", value: AssetStatus.HU_HONG },
-            { label: "Sử dụng", value: AssetStatus.SU_DUNG },
             { label: "Bị thất lạc", value: AssetStatus.THAT_LAC },
+            { label: "Không sử dụng", value: AssetStatus.KHONG_SU_DUNG },
           ]}
           value={assetStatus}
           onChange={(value) => handleChange("assetStatus", String(value))}

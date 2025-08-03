@@ -179,6 +179,8 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
   };
 
   const handleRemoveRoomAssetById = async (id: string): Promise<boolean> => {
+    console.log(id);
+    return false;
     try {
       await removeRoomAssetMutation.mutateAsync(id, {
         onSuccess: () => {
@@ -219,13 +221,13 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
     (assetRooms: AssetResponse, action: "update" | "status" | "delete") => {
       idRef.current = assetRooms.id;
       if (action === "update") {
-        console.log("Updating asset:", assetRooms);
-        setValue({
-          assetName: assetRooms.nameAsset,
+        const data = {
+          assetName: assetRooms.assetName,
           price: assetRooms.price,
           assetStatus: assetRooms.assetStatus,
-          description: assetRooms.descriptionAsset,
-        });
+          description: assetRooms.description,
+        };
+        setValue(data);
         setIsModalOpen(true);
       } else if (action === "delete") {
         openDialog(

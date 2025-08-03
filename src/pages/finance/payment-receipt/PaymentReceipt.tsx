@@ -35,7 +35,7 @@ const PaymentReceipt = () => {
       render: (row: PaymentReceiptResponse) => {
         return (
           <div className="flex gap-2">
-            {ACTION_BUTTONS_FOR_PAYMENT_RECEIPT(row.paymentMethod).map((btn, index) => (
+            {ACTION_BUTTONS_FOR_PAYMENT_RECEIPT(row.paymentMethod, row.paymentStatus).map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>

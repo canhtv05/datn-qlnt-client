@@ -118,8 +118,20 @@ const ServiceRoomDetail = () => {
           </div>
         </div>
 
-        <div className="px-5 py-2">
-          <div className="max-w-sm">
+        <DataTable<ServiceLittleResponse>
+          data={data?.data?.services ?? []}
+          columns={buildColumnsFromConfig(columnConfigs)}
+          page={0}
+          size={0}
+          totalElements={data?.meta?.pagination?.total || 0}
+          totalPages={data?.meta?.pagination?.totalPages || 0}
+          loading={isLoading}
+          rowSelection={rowSelection}
+          setRowSelection={setRowSelection}
+          disablePagination
+        />
+        <div className="px-5 py-2 mt-5 w-full">
+          <div className="w-full">
             <h3 className="font-semibold rounded-sm p-2 bg-primary/50 text-sm text-white mb-2 pl-5 border-b-2">
               Thông tin phòng
             </h3>
@@ -139,19 +151,6 @@ const ServiceRoomDetail = () => {
             </div>
           </div>
         </div>
-
-        <DataTable<ServiceLittleResponse>
-          data={data?.data?.services ?? []}
-          columns={buildColumnsFromConfig(columnConfigs)}
-          page={0}
-          size={0}
-          totalElements={data?.meta?.pagination?.total || 0}
-          totalPages={data?.meta?.pagination?.totalPages || 0}
-          loading={isLoading}
-          rowSelection={rowSelection}
-          setRowSelection={setRowSelection}
-          disablePagination
-        />
       </div>
       <ConfirmDialog />
       <ConfirmDialogRemoveAll />

@@ -65,6 +65,7 @@ export default function useInvoiceDetail() {
     queryKey: ["invoice-detail"],
     queryFn: async () => {
       const res = await httpRequest.get(`/invoices/${id}`);
+      console.log(res.data);
       return {
         ...res.data,
         id: res.data.invoiceId,

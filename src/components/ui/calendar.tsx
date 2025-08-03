@@ -13,16 +13,20 @@ function Calendar({
   buttonVariant = "ghost",
   formatters,
   components,
+  fromYear = 1950,
+  toYear = 2025,
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>["variant"];
+  fromYear?: number;
+  toYear?: number;
 }) {
   const defaultClassNames = getDefaultClassNames();
 
   return (
     <DayPicker
-      fromYear={2010}
-      toYear={2050}
+      fromYear={fromYear}
+      toYear={toYear}
       showOutsideDays={showOutsideDays}
       className={cn(
         "bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",

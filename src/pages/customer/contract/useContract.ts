@@ -18,10 +18,23 @@ import {
 } from "@/types";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
 import { createOrUpdateContractSchema } from "@/lib/validation";
-import { Status, Notice } from "@/enums";
+import { Status, Notice, VehicleType } from "@/enums";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { queryFilter } from "@/utils/queryFilter";
 import { httpRequest } from "@/utils/httpRequest";
+
+export const switchVehicleType = (vehicleType: VehicleType | string) => {
+  switch (vehicleType) {
+    case VehicleType.O_TO:
+      return "Ô tô";
+    case VehicleType.XE_DAP:
+      return "Xe đạp";
+    case VehicleType.XE_MAY:
+      return "Xe máy";
+    default:
+      return "Khác";
+  }
+};
 
 export const useContract = () => {
   const queryClient = useQueryClient();
@@ -111,9 +124,10 @@ export const useContract = () => {
 
   const vehiclesOptions =
     vehiclesDaTa?.data?.map((vehicles) => ({
-      label: `${vehicles.fullName} - ${vehicles.vehicleType}`,
+      label: `${vehicles.fullName} - ${switchVehicleType(vehicles.vehicleType)}`,
       value: vehicles.id,
     })) || [];
+
   const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAndUpdateContract>();
 
   useEffect(() => {
@@ -144,7 +158,7 @@ export const useContract = () => {
   const endpoint = filterValues.status === "DA_HUY" ? "/contracts/cancel" : "/contracts";
 
   const { data, isLoading, isError } = useQuery<ApiResponse<ContractResponse[]>>({
-    queryKey: ["contracts", page, size, ...Object.values(filterValues)],
+    queryKey: ["contracts", page, size, query, status],
     queryFn: async () => {
       const params: Record<string, string> = {
         page: parsedPage.toString(),

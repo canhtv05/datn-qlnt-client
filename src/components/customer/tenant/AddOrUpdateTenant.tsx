@@ -51,6 +51,8 @@ const AddOrUpdateTenant = ({ value, handleChange, setValue, errors, onBlur }: Ad
           label="Ngày sinh:"
           errorText={errors?.dob}
           required
+          fromYear={1950}
+          toYear={new Date().getFullYear()}
         />
         <InputLabel
           id="phoneNumber"

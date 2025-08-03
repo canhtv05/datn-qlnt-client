@@ -29,7 +29,9 @@ const MeterReadingButton = ({
   const [value, setValue] = useState<MeterReadingCreationRequest>({
     descriptionMeterReading: "",
     meterId: "",
-    newIndex: undefined,
+    newIndex: 0,
+    month: 1,
+    year: new Date().getFullYear(),
   });
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<MeterReadingCreationRequest>();
@@ -53,7 +55,9 @@ const MeterReadingButton = ({
       setValue({
         descriptionMeterReading: "",
         meterId: "",
-        newIndex: undefined,
+        newIndex: 0,
+        month: 1,
+        year: new Date().getFullYear(),
       });
       queryClient.invalidateQueries({
         predicate: (prev) => {
@@ -65,16 +69,17 @@ const MeterReadingButton = ({
 
   const handleMeterReadingType = useCallback(async () => {
     try {
-      const { descriptionMeterReading, meterId, newIndex } = value;
-
-      await createMeterReadingSchema.parseAsync(value);
+      const { descriptionMeterReading, meterId, newIndex, year, month } = value;
 
       const data: MeterReadingCreationRequest = {
         descriptionMeterReading: descriptionMeterReading.trim(),
         meterId: meterId.trim(),
-        newIndex,
+        newIndex: newIndex || 0,
+        month: month || 0,
+        year: year || new Date().getFullYear(),
       };
 
+      await createMeterReadingSchema.parseAsync(data);
       await addMeterReadingMutation.mutateAsync(data);
       clearErrors();
       return true;

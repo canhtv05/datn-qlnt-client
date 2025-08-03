@@ -64,6 +64,8 @@ const FieldsMultiSelectLabel = ({
           "rounded-md border shadow-sm text-sm focus:outline-none " +
           (isInvalid || errorText ? "border-red-500" : "border-input")
         }
+        menuPortalTarget={typeof window !== "undefined" ? document.body : null}
+        menuPosition="absolute"
         styles={{
           control: (base, state) => ({
             ...base,
@@ -80,6 +82,10 @@ const FieldsMultiSelectLabel = ({
           multiValueLabel: (base) => ({
             ...base,
             fontSize: "13px",
+          }),
+          menuPortal: (base) => ({
+            ...base,
+            zIndex: 9999,
           }),
         }}
       />

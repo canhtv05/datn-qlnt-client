@@ -8,7 +8,7 @@ import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Notice, Status } from "@/enums";
+import { ContractStatus, Notice, Status } from "@/enums";
 import { createOrUpdateContractSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
 import { ACTION_BUTTONS } from "@/constant";
@@ -26,6 +26,7 @@ import {
   TenantBasicResponse,
   VehicleResponse,
 } from "@/types";
+import { switchVehicleType } from "@/pages/customer/contract/useContract";
 
 const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
   const [value, setValue] = useState<ICreateAndUpdateContract>({
@@ -38,7 +39,7 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
     assets: [],
     services: [],
     vehicles: [],
-    status: undefined,
+    status: ContractStatus.HIEU_LUC,
     roomPrice: 0,
   });
 
@@ -177,7 +178,7 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
   });
   const vehiclesOptions: Option[] =
     vehiclesDaTa?.data?.map((vehicles) => ({
-      label: `${vehicles.fullName} - ${vehicles.vehicleType}`,
+      label: `${vehicles.fullName} - ${switchVehicleType(vehicles.vehicleType)}`,
       value: vehicles.id,
     })) || [];
   return (
@@ -210,6 +211,7 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
                       assetOptions={assetOptions}
                       servicesOptions={servicesOptions}
                       vehiclesOptions={vehiclesOptions}
+                      type="add"
                     />
                   </Modal>
                 </RenderIf>

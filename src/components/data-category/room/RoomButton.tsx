@@ -11,7 +11,7 @@ import { useConfirmDialog } from "@/hooks";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { IBtnType, RoomFormValue, ApiResponse, FloorBasicResponse } from "@/types";
-import { Notice, Status } from "@/enums";
+import { Notice, RoomStatus, Status } from "@/enums";
 import { httpRequest } from "@/utils/httpRequest";
 import { createOrUpdateRoomSchema } from "@/lib/validation";
 import { handleMutationError } from "@/utils/handleMutationError";
@@ -72,6 +72,7 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
     try {
       const fullValue = {
         ...value,
+        status: RoomStatus.TRONG,
         buildingId,
       };
       await createOrUpdateRoomSchema.parseAsync(fullValue);
@@ -153,6 +154,7 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
                       setValue={setValue}
                       errors={errors}
                       floorList={floorListData?.data || []}
+                      type="add"
                     />
                   </Modal>
                 </RenderIf>

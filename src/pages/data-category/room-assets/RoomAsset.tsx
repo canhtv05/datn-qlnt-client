@@ -6,9 +6,10 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { ColumnConfig, RoomAssetAllResponse } from "@/types";
 import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
-import { formatNumberField, GET_BTNS } from "@/constant";
+import { GET_BTNS } from "@/constant";
 import RoomAssetFilter from "@/components/data-category/room-assets/RoomAssetFilter";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import RoomAssetButton from "@/components/data-category/room-assets/RoomAssetButton";
 
 const RoomAsset = () => {
   const { data, isLoading, statistics, ConfirmDialog, query, rowSelection, setRowSelection, props } = useRoomAssetAll();
@@ -64,13 +65,6 @@ const RoomAsset = () => {
       accessorKey: "totalAssets",
       isSort: true,
       isCenter: true,
-      render: (row: RoomAssetAllResponse) => (
-        <span
-          dangerouslySetInnerHTML={{
-            __html: row.totalAssets ? formatNumberField.asset(row.totalAssets) : "Chưa có",
-          }}
-        />
-      ),
     },
     {
       label: "Loại phòng",
@@ -89,9 +83,12 @@ const RoomAsset = () => {
     { label: "Mô tả", accessorKey: "description" },
   ];
 
+  const { roomId } = useParams();
+
   return (
     <div className="flex flex-col">
       <StatisticCard data={statistics} />
+      <RoomAssetButton ids={rowSelection} roomId={roomId ?? ""} type="default" buildingOptions={[]} />
       <RoomAssetFilter props={props} />
       <DataTable<RoomAssetAllResponse>
         data={data?.data ?? []}

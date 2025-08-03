@@ -2,12 +2,7 @@ import StatisticCard from "@/components/StatisticCard";
 import DataTable from "@/components/DataTable";
 import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import StatusBadge from "@/components/ui/StatusBadge";
 import Modal from "@/components/Modal";
@@ -65,21 +60,12 @@ const Contract = () => {
                     size="icon"
                     variant={btn.type}
                     className="cursor-pointer"
-                    onClick={() =>
-                      handleActionClick(
-                        row,
-                        btn.type as "update" | "delete" | "view" | "status"
-                      )
-                    }
+                    onClick={() => handleActionClick(row, btn.type as "update" | "delete" | "view" | "status")}
                   >
                     <btn.icon className="text-white" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent
-                  className="text-white"
-                  style={{ background: btn.arrowColor }}
-                  arrow={false}
-                >
+                <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
                   <p>{btn.tooltipContent}</p>
                   <TooltipPrimitive.Arrow
                     style={{
@@ -104,8 +90,7 @@ const Contract = () => {
     {
       label: "Khách thuê",
       accessorKey: "tenants",
-      render: (row: ContractResponse) =>
-        row.tenants?.map((t) => t.fullName).join(", ") || "—",
+      render: (row: ContractResponse) => row.tenants?.map((t) => t.fullName).join(", ") || "—",
     },
     {
       label: "Số người",
@@ -114,24 +99,6 @@ const Contract = () => {
       isCenter: true,
       render: (row: ContractResponse) => `${row.numberOfPeople} người/phòng`,
     },
-    {
-    label: "Tài sản",
-    accessorKey: "assets",
-    render: (row: ContractResponse) =>
-      row.assets?.map((a) => a.nameAsset).join(", ") || "—",
-  },
-  {
-    label: "Dịch vụ",
-    accessorKey: "services",
-    render: (row: ContractResponse) =>
-      row.services?.map((a) => a.name).join(", ") || "—",
-  },
-  {
-    label: "Phương tiện",
-    accessorKey: "vehicles",
-    render: (row: ContractResponse) =>
-      row.vehicles?.map((a) => a.fullName).join(", ") || "—",
-  },
     {
       label: "Ngày bắt đầu",
       accessorKey: "startDate",
@@ -159,16 +126,14 @@ const Contract = () => {
       accessorKey: "deposit",
       isSort: true,
       isCenter: true,
-      render: (row: ContractResponse) =>
-        `${row.deposit?.toLocaleString("vi-VN")} VNĐ`,
+      render: (row: ContractResponse) => `${row.deposit?.toLocaleString("vi-VN")} VNĐ`,
     },
     {
       label: "Tiền phòng",
       accessorKey: "roomPrice",
       isSort: true,
       isCenter: true,
-      render: (row: ContractResponse) =>
-        `${row.roomPrice?.toLocaleString("vi-VN")} VNĐ`,
+      render: (row: ContractResponse) => `${row.roomPrice?.toLocaleString("vi-VN")} VNĐ`,
     },
     {
       label: "Trạng thái",
@@ -179,6 +144,8 @@ const Contract = () => {
       render: (row: ContractResponse) => <StatusBadge status={row.status} />,
     },
   ];
+
+  console.log(data);
 
   return (
     <div className="flex flex-col">
@@ -213,6 +180,7 @@ const Contract = () => {
           assetOptions={assetOptions}
           servicesOptions={servicesOptions}
           vehiclesOptions={vehiclesOptions}
+          type="update"
         />
       </Modal>
 

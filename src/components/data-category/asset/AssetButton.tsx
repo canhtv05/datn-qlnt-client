@@ -4,20 +4,21 @@ import { TooltipTrigger } from "@radix-ui/react-tooltip";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import Modal from "@/components/Modal";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
 import { createOrUpdateAssetSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { IBtnType, ICreateAsset, IUpdateAsset } from "@/types";
+import { ApiResponse, IBtnType, ICreateAsset, IdAndName, IUpdateAsset } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateAsset from "./AddOrUpdateAsset";
+import RoomAssetButton from "../room-assets/RoomAssetButton";
 
 const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
   const [value, setValue] = useState<ICreateAsset>({
@@ -154,6 +155,30 @@ const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
     mutationFn: async (id: string) => await httpRequest.delete(`/assets/${id}`),
   });
 
+  const { data: buildingInitToAdd, isError: errorBuildingInitToAdd } = useQuery<ApiResponse<IdAndName[]>>({
+    queryKey: ["buildingInitToAdd"],
+    queryFn: async () => {
+      const res = await httpRequest.get("/buildings/all");
+      return res.data;
+    },
+    retry: false,
+  });
+
+  const buildingOptions = useMemo(() => {
+    return (
+      buildingInitToAdd?.data?.map((item) => ({
+        label: item.name,
+        value: item.id,
+      })) ?? []
+    );
+  }, [buildingInitToAdd?.data]);
+
+  useEffect(() => {
+    if (errorBuildingInitToAdd) {
+      toast.error("Có lỗi xảy ra khi tải tòa nhà");
+    }
+  }, [errorBuildingInitToAdd]);
+
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
@@ -216,6 +241,7 @@ const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
               </Tooltip>
             </TooltipProvider>
           ))}
+          <RoomAssetButton ids={{}} roomId="" type="asset" buildingOptions={buildingOptions} />
         </div>
       </div>
       <ConfirmDialog />

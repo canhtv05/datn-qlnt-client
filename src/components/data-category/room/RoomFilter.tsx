@@ -1,7 +1,7 @@
 import ButtonFilter from "@/components/ButtonFilter";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
-import { ApiResponse, IBuildingCardsResponse, FloorBasicResponse, FilterRoomValues } from "@/types";
+import { ApiResponse, FloorBasicResponse, FilterRoomValues } from "@/types";
 import { httpRequest } from "@/utils/httpRequest";
 import { useQuery } from "@tanstack/react-query";
 import { Dispatch, FormEvent, SetStateAction, useMemo } from "react";
@@ -27,13 +27,13 @@ const RoomFilter = ({ props }: { props: RoomFilterProps }) => {
     onFilter();
   };
 
-  const { data: buildingData, isError: isBuildingError } = useQuery<ApiResponse<IBuildingCardsResponse[]>>({
-    queryKey: ["buildings-cards"],
-    queryFn: async () => {
-      const res = await httpRequest.get("/buildings/cards");
-      return res.data;
-    },
-  });
+  // const { data: buildingData, isError: isBuildingError } = useQuery<ApiResponse<IBuildingCardsResponse[]>>({
+  //   queryKey: ["buildings-cards"],
+  //   queryFn: async () => {
+  //     const res = await httpRequest.get("/buildings/cards");
+  //     return res.data;
+  //   },
+  // });
 
   const { data: floorData, isError: isFloorError } = useQuery<ApiResponse<FloorBasicResponse[]>>({
     queryKey: ["floor-list", buildingId],
@@ -46,15 +46,15 @@ const RoomFilter = ({ props }: { props: RoomFilterProps }) => {
     enabled: !!buildingId,
   });
 
-  if (isBuildingError) toast.error("Không lấy được danh sách tòa nhà");
+  // if (isBuildingError) toast.error("Không lấy được danh sách tòa nhà");
   if (isFloorError) toast.error("Không lấy được danh sách tầng");
 
-  const buildingOptions = useMemo(() => {
-    return (buildingData?.data ?? []).map((b) => ({
-      label: b.buildingName,
-      value: b.id,
-    }));
-  }, [buildingData]);
+  // const buildingOptions = useMemo(() => {
+  //   return (buildingData?.data ?? []).map((b) => ({
+  //     label: b.buildingName,
+  //     value: b.id,
+  //   }));
+  // }, [buildingData]);
 
   const floorOptions = useMemo(() => {
     return (floorData?.data ?? []).map((f) => ({
@@ -67,7 +67,7 @@ const RoomFilter = ({ props }: { props: RoomFilterProps }) => {
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
       <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end">
         {/* 1. Tòa nhà */}
-        <FieldsSelectLabel
+        {/* <FieldsSelectLabel
           placeholder="-- Tòa nhà --"
           labelSelect="Tòa nhà"
           data={buildingOptions}
@@ -75,7 +75,7 @@ const RoomFilter = ({ props }: { props: RoomFilterProps }) => {
           onChange={(value) => handleChange("buildingId", String(value))}
           name="buildingId"
           showClear
-        />
+        /> */}
 
         {/* 2. Tầng */}
         <FieldsSelectLabel
@@ -116,7 +116,9 @@ const RoomFilter = ({ props }: { props: RoomFilterProps }) => {
           value={maximumPeople}
           onChange={(e) => handleChange("maximumPeople", e.target.value)}
         />
+      </div>
 
+      <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full items-end">
         {/* 5. Khoảng giá */}
         <div className="flex gap-2">
           <InputLabel
@@ -143,7 +145,7 @@ const RoomFilter = ({ props }: { props: RoomFilterProps }) => {
             type="number"
             id="minAcreage"
             name="minAcreage"
-            placeholder="DT từ"
+            placeholder="Diện tích từ"
             value={minAcreage}
             onChange={(e) => handleChange("minAcreage", e.target.value)}
           />
@@ -151,13 +153,12 @@ const RoomFilter = ({ props }: { props: RoomFilterProps }) => {
             type="number"
             id="maxAcreage"
             name="maxAcreage"
-            placeholder="DT đến"
+            placeholder="Diện tích đến"
             value={maxAcreage}
             onChange={(e) => handleChange("maxAcreage", e.target.value)}
           />
         </div>
       </div>
-
       <ButtonFilter onClear={onClear} />
     </form>
   );

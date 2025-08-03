@@ -11,6 +11,7 @@ interface Props {
   setValue: Dispatch<React.SetStateAction<RoomFormValue>>;
   errors: Partial<Record<keyof RoomFormValue, string>>;
   floorList: FloorBasicResponse[];
+  type: "add" | "update";
 }
 
 const roomTypes: FieldsSelectLabelType[] = [
@@ -29,7 +30,7 @@ const roomStatuses: FieldsSelectLabelType[] = [
   { label: "Tạm khóa", value: RoomStatus.TAM_KHOA },
 ];
 
-const AddOrUpdateRoom = ({ value, setValue, errors, floorList }: Props) => {
+const AddOrUpdateRoom = ({ value, setValue, errors, floorList, type = "add" }: Props) => {
   const floorOptions: FieldsSelectLabelType[] = floorList.map((floor) => ({
     label: `${floor.nameFloor} - ${floor.buildingName}`,
     value: floor.id,
@@ -101,20 +102,24 @@ const AddOrUpdateRoom = ({ value, setValue, errors, floorList }: Props) => {
         />
 
         {/* ROOM TYPE */}
-        <FieldsSelectLabel
-          data={roomTypes}
-          placeholder="-- Chọn loại phòng --"
-          label="Loại phòng:"
-          id="roomType"
-          name="roomType"
-          value={value.roomType ?? ""}
-          onChange={(val) => setValue((prev) => ({ ...prev, roomType: val as RoomType }))}
-          labelSelect="Loại phòng"
-          showClear
-          errorText={errors.roomType}
-        />
 
         {/* STATUS */}
+      </div>
+
+      <FieldsSelectLabel
+        data={roomTypes}
+        placeholder="-- Chọn loại phòng --"
+        label="Loại phòng:"
+        id="roomType"
+        name="roomType"
+        value={value.roomType ?? ""}
+        onChange={(val) => setValue((prev) => ({ ...prev, roomType: val as RoomType }))}
+        labelSelect="Loại phòng"
+        showClear
+        errorText={errors.roomType}
+        required
+      />
+      {type === "update" && (
         <FieldsSelectLabel
           data={roomStatuses}
           placeholder="-- Chọn trạng thái --"
@@ -126,8 +131,9 @@ const AddOrUpdateRoom = ({ value, setValue, errors, floorList }: Props) => {
           labelSelect="Trạng thái"
           showClear
           errorText={errors.status}
+          required
         />
-      </div>
+      )}
 
       {/* DESCRIPTION */}
       <TextareaLabel

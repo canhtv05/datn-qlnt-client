@@ -31,7 +31,7 @@ const MeterButton = ({
 
   const [value, setValue] = useState<MeterCreationAndUpdatedRequest>({
     descriptionMeter: "",
-    closestIndex: undefined,
+    closestIndex: 0,
     manufactureDate: "",
     meterCode: "",
     meterName: "",
@@ -82,8 +82,6 @@ const MeterButton = ({
       const { descriptionMeter, closestIndex, manufactureDate, meterCode, meterName, meterType, roomId, serviceId } =
         value;
 
-      await createOrUpdateMeterSchema.parseAsync(value);
-
       const data: MeterCreationAndUpdatedRequest = {
         descriptionMeter: descriptionMeter.trim(),
         closestIndex: closestIndex || 0,
@@ -94,7 +92,7 @@ const MeterButton = ({
         roomId: roomId.trim(),
         serviceId: serviceId.trim(),
       };
-
+      await createOrUpdateMeterSchema.parseAsync(value);
       await addMeterMutation.mutateAsync(data);
       clearErrors();
       return true;

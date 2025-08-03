@@ -2,7 +2,7 @@ import { Dispatch } from "react";
 import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
-import { AssetBeLongTo, AssetStatus } from "@/enums";
+import { AssetBeLongTo, AssetStatus, RoomType } from "@/enums";
 import {
   AllRoomAssetFormValue,
   AssetResponse,
@@ -30,6 +30,7 @@ interface Props {
   roomList: RoomResponse[] | [];
   assetsList: AssetResponse[] | [];
   currentAsset?: AssetResponse;
+  buildingOptions: FieldsSelectLabelType[] | undefined;
 }
 
 type AssetOption = FieldsSelectLabelType & {
@@ -42,6 +43,19 @@ const assetBeLongTo: FieldsSelectLabelType[] = [
   { label: "Cá nhân", value: AssetBeLongTo.CA_NHAN },
 ];
 
+const switchRoomType = (roomType: RoomType) => {
+  switch (roomType) {
+    case RoomType.CAO_CAP:
+      return "Cao cấp";
+    case RoomType.DON:
+      return "Đơn";
+    case RoomType.GHEP:
+      return "Ghép";
+    case RoomType.KHAC:
+      return "Khác";
+  }
+};
+
 const AddOrUpdateRoomAsset = ({
   value,
   setValue,
@@ -52,6 +66,7 @@ const AddOrUpdateRoomAsset = ({
   bulkValue,
   setBulkValue,
   allRoomValue,
+  buildingOptions,
   setAllRoomValue,
 }: Props) => {
   const toSelectType = (options: (AssetOption | FieldsSelectLabelType)[]): FieldsSelectLabelType[] =>
@@ -61,12 +76,12 @@ const AddOrUpdateRoomAsset = ({
     }));
 
   const roomOptions: FieldsSelectLabelType[] = roomList.map((room) => ({
-    label: `${room.roomCode} - ${room.roomType}`,
+    label: `${room.roomCode} - ${switchRoomType(room.roomType)}`,
     value: room.id,
   }));
 
   const assetOptions: AssetOption[] = assetsList.map((asset) => ({
-    label: `${asset.nameAsset}`,
+    label: `${asset.nameAsset} - ${Number(asset.price).toLocaleString("vi-VN")} VND`,
     value: asset.id,
     price: asset.price,
     description: asset.descriptionAsset,
@@ -237,6 +252,23 @@ const AddOrUpdateRoomAsset = ({
           />
         </div>
       )}
+      {type === "addToAllRoom" && (
+        <FieldsSelectLabel
+          data={buildingOptions ?? []}
+          placeholder="-- Chọn tòa nhà --"
+          label="Tòa nhà:"
+          id="buildingId"
+          name="buildingId"
+          value={allRoomValue.buildingId ?? ""}
+          onChange={(val) => {
+            setAllRoomValue((prev) => ({ ...prev, buildingId: val as string }));
+          }}
+          labelSelect="Tòa nhà"
+          showClear
+          errorText={errors.buildingId}
+          required
+        />
+      )}
       <FieldsSelectLabel
         data={[
           {
@@ -281,7 +313,6 @@ const AddOrUpdateRoomAsset = ({
         errorText={errors.assetStatus}
         required
       />
-
       {type === "addToAllRoom" && (
         <FieldsSelectLabel
           data={assetOptions}

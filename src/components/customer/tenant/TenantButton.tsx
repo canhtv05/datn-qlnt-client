@@ -79,8 +79,6 @@ const TenantButton = ({ ids }: { ids: Record<string, boolean> }) => {
     try {
       const { address, dob, email, fullName, gender, identityCardNumber, phoneNumber } = value;
 
-      await createOrUpdateTenantSchema.parseAsync(value);
-
       const data: ICreateAndUpdateTenant = {
         address: address.trim(),
         dob,
@@ -91,6 +89,7 @@ const TenantButton = ({ ids }: { ids: Record<string, boolean> }) => {
         phoneNumber: phoneNumber.trim(),
       };
 
+      await createOrUpdateTenantSchema.parseAsync(value);
       await addTenantMutation.mutateAsync(data);
       clearErrors();
       return true;

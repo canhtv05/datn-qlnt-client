@@ -2,7 +2,7 @@ import DatePickerLabel from "@/components/DatePickerLabel";
 import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
-import { MeterType } from "@/enums";
+import { MeterType, ServiceCategory } from "@/enums";
 import { ApiResponse, CreateMeterInitResponse, MeterCreationAndUpdatedRequest } from "@/types";
 import { Dispatch, useMemo } from "react";
 
@@ -17,12 +17,14 @@ interface AddOrUpdateMeterProps {
 const AddOrUpdateMeter = ({ value, handleChange, meterInit, setValue, errors }: AddOrUpdateMeterProps) => {
   const serviceOptions = useMemo((): FieldsSelectLabelType[] => {
     return (
-      meterInit?.data?.services?.map((service) => {
-        return {
-          label: service.name,
-          value: service.id,
-        };
-      }) ?? []
+      meterInit?.data?.services
+        ?.filter((service) => service.type === ServiceCategory.DIEN || service.type === ServiceCategory.NUOC)
+        ?.map((service) => {
+          return {
+            label: service.name,
+            value: service.id,
+          };
+        }) ?? []
     );
   }, [meterInit?.data?.services]);
 
@@ -122,6 +124,7 @@ const AddOrUpdateMeter = ({ value, handleChange, meterInit, setValue, errors }: 
         type="number"
         label="Chỉ số gần nhất:"
         required
+        min={0}
         value={value.closestIndex ?? ""}
         onChange={handleChange}
         errorText={errors.closestIndex}

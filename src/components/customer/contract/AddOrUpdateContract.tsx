@@ -23,6 +23,7 @@ interface Props {
   assetOptions: Option[];
   servicesOptions: Option[];
   vehiclesOptions: Option[];
+  type: "add" | "update";
 }
 
 const AddOrUpdateContract = ({
@@ -34,6 +35,7 @@ const AddOrUpdateContract = ({
   assetOptions,
   servicesOptions,
   vehiclesOptions,
+  type,
 }: Props) => {
   const handleNumberChange = (e: ChangeEvent<HTMLInputElement>, key: "numberOfPeople" | "deposit") => {
     const parsed = Number(e.target.value.trim());
@@ -89,11 +91,39 @@ const AddOrUpdateContract = ({
             date={value.endDate ? new Date(value.endDate) : undefined}
             setDate={(d) => handleChange("endDate", d)}
             errorText={errors.endDate}
-            required
+            toYear={2030}
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {type === "update" && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <InputLabel
+              id="deposit"
+              name="deposit"
+              placeholder="1000000"
+              type="number"
+              label="Tiền cọc:"
+              required
+              value={value.deposit.toString()}
+              onChange={(e) => handleNumberChange(e, "deposit")}
+              errorText={errors.deposit}
+            />
+            <FieldsSelectLabel
+              data={contractStatuses}
+              placeholder="-- Chọn trạng thái --"
+              label="Trạng thái:"
+              id="status"
+              name="status"
+              value={value.status ?? ""}
+              onChange={(val) => handleChange("status", val as ContractStatus)}
+              labelSelect="Trạng thái"
+              showClear
+              errorText={errors.status}
+            />
+          </div>
+        )}
+
+        {type === "add" && (
           <InputLabel
             id="deposit"
             name="deposit"
@@ -105,20 +135,7 @@ const AddOrUpdateContract = ({
             onChange={(e) => handleNumberChange(e, "deposit")}
             errorText={errors.deposit}
           />
-          <FieldsSelectLabel
-            data={contractStatuses}
-            placeholder="-- Chọn trạng thái --"
-            label="Trạng thái:"
-            id="status"
-            name="status"
-            value={value.status ?? ""}
-            onChange={(val) => handleChange("status", val as ContractStatus)}
-            labelSelect="Trạng thái"
-            showClear
-            errorText={errors.status}
-          />
-        </div>
-
+        )}
         <h3 className="text-lg font-semibold">Thông tin đính kèm</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -171,7 +188,6 @@ const AddOrUpdateContract = ({
                 selected.map((item) => String(item.value))
               )
             }
-            required
             errorText={errors.services}
           />
 
@@ -188,7 +204,6 @@ const AddOrUpdateContract = ({
                 selected.map((item) => String(item.value))
               )
             }
-            required
             errorText={errors.vehicles}
           />
         </div>

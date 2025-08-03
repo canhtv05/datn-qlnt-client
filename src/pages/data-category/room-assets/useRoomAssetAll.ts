@@ -88,6 +88,7 @@ export const useRoomAssetAll = () => {
       };
       Object.entries(filterValues).forEach(([k, v]) => {
         if (v) params[k] = v;
+        if (buildingId) params.building = buildingId;
       });
       const res = await httpRequest.get("/asset-rooms", { params });
       return res.data;
@@ -112,9 +113,9 @@ export const useRoomAssetAll = () => {
   });
 
   const roomStats = [
-    { icon: DoorOpen, label: "Tổng số tài sản", value: mapStatistics(statisticsRaw?.data).total },
-    { icon: HandCoins, label: "Tổng số tài sản hoạt động", value: mapStatistics(statisticsRaw?.data).totalActive },
-    { icon: Building2, label: "Tổng số tài sản không hoạt động", value: mapStatistics(statisticsRaw?.data).disabled },
+    { icon: DoorOpen, label: "Tổng", value: mapStatistics(statisticsRaw?.data).total },
+    { icon: HandCoins, label: "Hoạt động", value: mapStatistics(statisticsRaw?.data).totalActive },
+    { icon: Building2, label: "Không hoạt động", value: mapStatistics(statisticsRaw?.data).disabled },
   ];
 
   const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string }>({

@@ -78,6 +78,8 @@ const Register = () => {
           }
           label="Ngày sinh:"
           errorText={errors.dob}
+          fromYear={1950}
+          toYear={new Date().getFullYear()}
         />
         <div className="my-3"></div>
         <FieldsSelectLabel

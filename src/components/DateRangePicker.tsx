@@ -12,9 +12,11 @@ type DateRangePickerProps = {
   className?: string;
   value?: DateRange;
   onChange?: (date: DateRange | undefined) => void;
+  fromYear?: number;
+  toYear?: number;
 };
 
-export function DateRangePicker({ className, value, onChange }: DateRangePickerProps) {
+export function DateRangePicker({ className, value, onChange, fromYear, toYear }: DateRangePickerProps) {
   const { width } = useViewport();
 
   return (
@@ -54,6 +56,8 @@ export function DateRangePicker({ className, value, onChange }: DateRangePickerP
             selected={value}
             onSelect={onChange}
             numberOfMonths={2}
+            fromYear={fromYear}
+            toYear={toYear}
           />
         </PopoverContent>
       </Popover>

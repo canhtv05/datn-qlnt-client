@@ -2,12 +2,12 @@ import ButtonFilter from "@/components/ButtonFilter";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import { FloorStatus, FloorType } from "@/enums";
-import { ApiResponse, FloorFilterValues, IBuildingCardsResponse } from "@/types";
-import { httpRequest } from "@/utils/httpRequest";
-import { useQuery } from "@tanstack/react-query";
-import { Dispatch, FormEvent, SetStateAction, useMemo } from "react";
-import { useParams } from "react-router-dom";
-import { toast } from "sonner";
+import { FloorFilterValues } from "@/types";
+// import { httpRequest } from "@/utils/httpRequest";
+// import { useQuery } from "@tanstack/react-query";
+import { Dispatch, FormEvent, SetStateAction } from "react";
+// import { useParams } from "react-router-dom";
+// import { toast } from "sonner";
 
 export interface FloorFilterProps {
   filterValues: FloorFilterValues;
@@ -17,9 +17,9 @@ export interface FloorFilterProps {
 }
 
 const FloorFilter = ({ props }: { props: FloorFilterProps }) => {
-  const { status, buildingId, maxRoom, nameFloor, floorType } = props.filterValues;
+  const { status, maxRoom, nameFloor, floorType } = props.filterValues;
   const setFilterValues = props.setFilterValues;
-  const { id } = useParams();
+  // const { id } = useParams();
 
   const handleChange = (key: keyof FloorFilterValues, value: string) => {
     setFilterValues((prev) => ({ ...prev, [key]: value }));
@@ -30,28 +30,28 @@ const FloorFilter = ({ props }: { props: FloorFilterProps }) => {
     props.onFilter();
   };
 
-  const { data, isError } = useQuery<ApiResponse<IBuildingCardsResponse[]>>({
-    queryKey: ["buildings-cards"],
-    queryFn: async () => {
-      const res = await httpRequest.get("/buildings/cards");
-      return res.data;
-    },
-    retry: 1,
-  });
+  // const { data, isError } = useQuery<ApiResponse<IBuildingCardsResponse[]>>({
+  //   queryKey: ["buildings-cards"],
+  //   queryFn: async () => {
+  //     const res = await httpRequest.get("/buildings/cards");
+  //     return res.data;
+  //   },
+  //   retry: 1,
+  // });
 
-  if (isError) toast.error("Không lấy được dữ liệu tòa nhà");
+  // if (isError) toast.error("Không lấy được dữ liệu tòa nhà");
 
-  const mapValueAndLabel = useMemo(() => {
-    const buildings: IBuildingCardsResponse[] = data?.data ?? [];
-    return buildings.map((building) => ({
-      label: building.buildingName,
-      value: building.id,
-    }));
-  }, [data]);
+  // const mapValueAndLabel = useMemo(() => {
+  //   const buildings: IBuildingCardsResponse[] = data?.data ?? [];
+  //   return buildings.map((building) => ({
+  //     label: building.buildingName,
+  //     value: building.id,
+  //   }));
+  // }, [data]);
 
   return (
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
-      <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end">
+      <div className="grid md:grid-cols-4 grid-cols-1 gap-5 w-full items-end">
         <FieldsSelectLabel
           placeholder="-- Trạng thái hoạt động --"
           labelSelect="Trạng thái"
@@ -79,7 +79,7 @@ const FloorFilter = ({ props }: { props: FloorFilterProps }) => {
           name="floorType"
           showClear
         />
-        <FieldsSelectLabel
+        {/* <FieldsSelectLabel
           placeholder="-- Tòa nhà --"
           labelSelect="Tòa nhà"
           data={mapValueAndLabel}
@@ -87,7 +87,7 @@ const FloorFilter = ({ props }: { props: FloorFilterProps }) => {
           onChange={(value) => handleChange("buildingId", String(value))}
           name="buildingId"
           showClear
-        />
+        /> */}
         <InputLabel
           type="text"
           id="nameFloor"

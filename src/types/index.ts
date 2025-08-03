@@ -385,6 +385,8 @@ export type IUpdateAsset = ICreateAsset;
 // export type IUpdateAsset = ICreateAsset;
 
 export interface AssetResponse extends AbstractResponse {
+  description: string;
+  assetName: string;
   nameAsset: string;
   assetType: string;
   nameAssetType: string;
@@ -440,6 +442,7 @@ export type RoomAssetFormValue = {
   price: number;
   description: string;
   assetStatus?: AssetStatus | string;
+  buildingId?: string;
 };
 
 export type AllRoomAssetFormValue = {
@@ -574,6 +577,7 @@ export default interface TenantResponse extends AbstractResponse {
   identityCardNumber: string;
   identificationNumber: string;
   address: string;
+  contracts: ContractResponse[];
 }
 
 export interface ICreateAndUpdateTenant {
@@ -863,7 +867,7 @@ export interface MeterResponse extends AbstractResponse {
   meterName: string;
   meterCode: string;
   manufactureDate: string;
-  initialIndex: number;
+  closestIndex: number;
   descriptionMeter: string;
 }
 
@@ -887,7 +891,7 @@ export interface MeterFilter {
 
 export interface CreateMeterInitResponse {
   rooms: IdAndName[];
-  services: IdAndName[];
+  services: IdNameAndType[];
 }
 
 export interface MeterInitFilterResponse {
@@ -929,6 +933,8 @@ export interface MeterReadingCreationRequest {
   newIndex: number | undefined;
   descriptionMeterReading: string;
   meterId: string;
+  month: number;
+  year: number;
 }
 
 export interface MeterReadingFilter {

@@ -201,7 +201,7 @@ export const useMeter = () => {
       if (action === "update") {
         setValue({
           descriptionMeter: meter.descriptionMeter,
-          closestIndex: meter.initialIndex,
+          closestIndex: meter.closestIndex,
           manufactureDate: meter.manufactureDate,
           meterCode: meter.meterCode,
           meterName: meter.meterName,

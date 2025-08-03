@@ -99,9 +99,10 @@ const Meter = () => {
       isCenter: true,
     },
     {
-      label: "Chỉ số khởi tạo",
-      accessorKey: "initialIndex",
+      label: "Chỉ số gần nhất",
+      accessorKey: "closestIndex",
       isSort: true,
+      isCenter: true,
     },
     {
       label: "Phòng",

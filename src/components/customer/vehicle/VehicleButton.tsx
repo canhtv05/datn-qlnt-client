@@ -10,7 +10,7 @@ import { httpRequest } from "@/utils/httpRequest";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
-import { Notice, Status } from "@/enums";
+import { Notice, Status, VehicleStatus } from "@/enums";
 import { createVehicleSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
 import TenantResponse, { ApiResponse, IBtnType, ICreateVehicle } from "@/types";
@@ -24,7 +24,7 @@ const VehicleButton = ({ ids, tenants }: { ids: Record<string, boolean>; tenants
     describe: "",
     licensePlate: "",
     registrationDate: "",
-    vehicleStatus: "",
+    vehicleStatus: VehicleStatus.SU_DUNG,
     vehicleType: "",
     tenantId: "",
   });

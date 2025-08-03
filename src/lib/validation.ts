@@ -49,25 +49,30 @@ const isValidPhoneNumber = (number: string) => {
   return regex.test(number);
 };
 
-const zSafeNumber = (fieldName: string, options?: { min?: number }) =>
-  z
-    .any()
-    .transform((val) => {
-      // parse value
+const zSafeNumber = (fieldName: string, options?: { min?: number; max?: number }) =>
+  z.preprocess(
+    (val) => {
       if (typeof val === "number") return val;
       if (typeof val === "string") {
         const trimmed = val.trim();
+        if (trimmed === "") return undefined;
         const parsed = Number(trimmed);
-        return isNaN(parsed) ? NaN : parsed;
+        return isNaN(parsed) ? undefined : parsed;
       }
-      return NaN;
-    })
-    .refine((val) => !isNaN(val), {
-      message: `${fieldName} không hợp lệ`,
-    })
-    .refine((val) => options?.min === undefined || val >= options.min!, {
-      message: `${fieldName} phải ≥ ${options?.min ?? 0}`,
-    });
+      return undefined;
+    },
+    z
+      .number({ error: "Số không hợp lệ" })
+      .refine((val) => !isNaN(val), {
+        message: `${fieldName} không hợp lệ`,
+      })
+      .refine((val) => options?.min === undefined || val >= options.min!, {
+        message: `${fieldName} phải ≥ ${options?.min ?? 0}`,
+      })
+      .refine((val) => options?.max === undefined || val <= options.max!, {
+        message: `${fieldName} phải <= ${options?.max ?? 0}`,
+      })
+  );
 
 /* CHECK */
 
@@ -330,9 +335,7 @@ export const createOrUpdateAssetSchema = z.object({
   buildingID: z.string().optional(),
   tenantId: z.string().optional(),
   descriptionAsset: z.string(),
-  price: zSafeNumber("Giá")
-    .transform((val) => Number(val))
-    .refine((val) => val >= 0.0, "Giá không được âm"),
+  price: zSafeNumber("Giá", { min: 1 }),
 });
 
 /* TENANT */
@@ -345,10 +348,9 @@ export const createOrUpdateTenantSchema = z.object({
 
   dob: z
     .string()
-    .refine((val) => {
-      return !isNaN(Date.parse(val));
-    }, "Ngày sinh không hợp lệ")
-    .transform((val) => new Date(val)),
+    .refine((val) => !isNaN(Date.parse(val)), "Ngày sinh không hợp lệ")
+    .transform((val) => new Date(val))
+    .refine((date) => isValidDob(date), "Tuổi của khách phải lớn hơn hoặc bằng 18"),
   phoneNumber: z
     .string()
     .min(9, "Số điện thoại phải có ít nhất 9 chữ số")
@@ -542,6 +544,8 @@ export const updateMeterReadingSchema = z.object({
 
 export const createMeterReadingSchema = updateMeterReadingSchema.extend({
   meterId: z.string().min(1, "Vui lòng chọn công tơ"),
+  year: zSafeNumber("Năm", { min: new Date().getFullYear() }),
+  month: zSafeNumber("Tháng", { min: 1, max: 12 }),
 });
 
 // invoice

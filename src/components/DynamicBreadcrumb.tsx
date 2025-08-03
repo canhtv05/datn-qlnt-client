@@ -45,9 +45,9 @@ export function DynamicBreadcrumb({ role }: { role: "USER" | "MANAGER" | "ADMIN"
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">
+          <Link to="/">
             <Home className="h-4 w-4" />
-          </BreadcrumbLink>
+          </Link>
         </BreadcrumbItem>
         {crumbs.map((crumb, index) => {
           const isLast = index === crumbs.length - 1;

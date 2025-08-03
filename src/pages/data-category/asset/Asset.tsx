@@ -87,12 +87,7 @@ const Asset = () => {
     },
     { label: "Loại tài sản", accessorKey: "assetType", isSort: true, isCenter: true, hasBadge: true },
     { label: "Tài sản thuộc về", accessorKey: "assetBeLongTo", isSort: true, isCenter: true, hasBadge: true },
-    { label: "Tên loại tài sản", accessorKey: "assetType", isSort: true, isCenter: true, hasBadge: true },
-    // { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true, isCenter: true },
-    // { label: "Tên tầng", accessorKey: "nameFloor", isSort: true, isCenter: true },
-    // { label: "Mã phòng", accessorKey: "roomCode", isSort: true, hasHighlight: true, isCenter: true },
     { label: "Trạng thái", accessorKey: "assetStatus", isSort: true, hasBadge: true, isCenter: true },
-    // { label: "Tên khách thuê", accessorKey: "fullName", isSort: true },
     { label: "Giá", accessorKey: "price", isSort: true },
     { label: "Mô tả", accessorKey: "descriptionAsset", isSort: false },
     {
