@@ -145,8 +145,6 @@ const Contract = () => {
     },
   ];
 
-  console.log(data);
-
   return (
     <div className="flex flex-col">
       <StatisticCard data={dataStatisticsContracts} />

@@ -1,3 +1,4 @@
+import images from "@/assets/imgs";
 import {
   AssetGroup,
   AssetBeLongTo,
@@ -32,38 +33,17 @@ import {
 import { IBtnType } from "@/types";
 import {
   Download,
-  Car,
   DoorOpen,
-  FileText,
-  House,
-  Layers,
-  LucideIcon,
   PenTool,
   Plus,
-  Scale,
   Trash2,
   Upload,
-  UsersRound,
-  Building,
   SquarePen,
   ArrowRightLeft,
   Eye,
   Building2,
-  Hammer,
-  CircleGauge,
-  BedDouble,
-  CreditCard,
-  History,
-  Users,
-  Droplet,
-  Landmark,
-  Handshake,
-  BookOpenCheck,
-  Zap,
   ToggleLeft,
-  ScrollText,
   Banknote,
-  Receipt,
   Gavel,
 } from "lucide-react";
 
@@ -71,11 +51,11 @@ export interface SideBarType {
   label?: string;
   title: string;
   url: string;
-  icon: LucideIcon;
+  icon: string;
   items?: {
     title: string;
     url: string;
-    icon: LucideIcon;
+    icon: string;
   }[];
 }
 
@@ -85,28 +65,28 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
       label: "Theo dõi nhanh",
       title: "Bảng tin",
       url: "/dashboard",
-      icon: Layers,
+      icon: images.bulletinBoard,
     },
     {
       label: "Quản lý vận hành",
       title: "Cơ sở vật chất",
       url: "/facilities",
-      icon: Landmark,
+      icon: images.building,
       items: [
         {
           title: "Tòa nhà",
           url: "/facilities/buildings",
-          icon: House,
+          icon: images.oneBuilding,
         },
         {
           title: "Tầng",
           url: "/facilities/floors",
-          icon: Building,
+          icon: images.floor,
         },
         {
           title: "Phòng",
           url: "/facilities/rooms",
-          icon: DoorOpen,
+          icon: images.room,
         },
       ],
     },
@@ -114,17 +94,17 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
       label: "Quản lý tài sản",
       title: "Tài sản",
       url: "/asset-management",
-      icon: Scale,
+      icon: images.fixedAsset,
       items: [
         {
           title: "Tài sản",
           url: "/asset-management/assets",
-          icon: Scale,
+          icon: images.assets,
         },
         {
           title: "Tài sản phòng",
           url: "/asset-management/room-assets",
-          icon: Scale,
+          icon: images.coolingDevice,
         },
       ],
     },
@@ -132,17 +112,17 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
       label: "Quản lý dịch vụ",
       title: "Dịch vụ",
       url: "/service-management",
-      icon: Hammer,
+      icon: images.customerReview,
       items: [
         {
           title: "Dịch vụ",
           url: "/service-management/services",
-          icon: Hammer,
+          icon: images.optimizing,
         },
         {
           title: "Dịch vụ phòng",
           url: "/service-management/room-services",
-          icon: Building2,
+          icon: images.mattress,
         },
       ],
     },
@@ -150,22 +130,22 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
       label: "Quản lý khách thuê",
       title: "Khách thuê",
       url: "/customers",
-      icon: Handshake,
+      icon: images.lender,
       items: [
         {
           title: "Khách thuê",
           url: "/customers/tenants",
-          icon: UsersRound,
+          icon: images.team,
         },
         {
           title: "Phương tiện",
           url: "/customers/vehicles",
-          icon: Car,
+          icon: images.hatchback,
         },
         {
           title: "Hợp đồng",
           url: "/customers/contracts",
-          icon: FileText,
+          icon: images.contract,
         },
       ],
     },
@@ -173,27 +153,27 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
       label: "Quản lý tài chính",
       title: "Tài chính",
       url: "/finance",
-      icon: BookOpenCheck,
+      icon: images.finance,
       items: [
         {
           title: "Công tơ",
           url: "/finance/meters",
-          icon: CircleGauge,
+          icon: images.usage,
         },
         {
           title: "Ghi chỉ số",
           url: "/finance/meter-reading",
-          icon: PenTool,
+          icon: images.writing,
         },
         {
           title: "Hóa đơn",
           url: "/finance/invoice",
-          icon: FileText,
+          icon: images.invoice,
         },
         {
           title: "Phiếu thanh toán",
           url: "/finance/payment-receipt",
-          icon: ScrollText,
+          icon: images.receipt,
         },
       ],
     },
@@ -204,42 +184,42 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
       label: "Thông tin",
       title: "Xem thông tin phòng",
       url: "/room",
-      icon: BedDouble,
+      icon: images.room,
     },
     {
       title: "Xem phiếu thanh toán",
       url: "/payment-receipts",
-      icon: Receipt,
+      icon: images.receipt,
     },
     {
       title: "Xem hóa đơn",
       url: "/invoices",
-      icon: CreditCard,
+      icon: images.invoice,
     },
     {
       title: "Xem hợp đồng",
       url: "/contracts",
-      icon: FileText,
+      icon: images.contract,
     },
     {
       title: "Xem hóa đơn cũ",
       url: "/invoices/history",
-      icon: History,
+      icon: images.history,
     },
     {
       title: "Xem thành viên trong phòng",
       url: "/members",
-      icon: Users,
+      icon: images.usage,
     },
     {
       title: "Xem điện",
       url: "/electric",
-      icon: Zap,
+      icon: images.energy,
     },
     {
       title: "Xem nước",
       url: "/water",
-      icon: Droplet,
+      icon: images.water,
     },
   ];
 
@@ -248,665 +228,697 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
   else return [];
 };
 
+export const COLOR_CLASS = {
+  gray: "text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-100",
+
+  green:
+    "text-green-600 dark:text-green-300 bg-green-100 dark:bg-green-900 border border-green-200 dark:border-green-700 hover:bg-green-200 dark:hover:bg-green-800 hover:text-green-700 dark:hover:text-green-100",
+
+  yellow:
+    "text-yellow-600 dark:text-yellow-300 bg-yellow-100 dark:bg-yellow-900 border border-yellow-200 dark:border-yellow-700 hover:bg-yellow-200 dark:hover:bg-yellow-800 hover:text-yellow-700 dark:hover:text-yellow-100",
+
+  red: "text-red-600 dark:text-red-300 bg-red-100 dark:bg-red-900 border border-red-200 dark:border-red-700 hover:bg-red-200 dark:hover:bg-red-800 hover:text-red-700 dark:hover:text-red-100",
+
+  blue: "text-blue-600 dark:text-blue-300 bg-blue-100 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 hover:bg-blue-200 dark:hover:bg-blue-800 hover:text-blue-700 dark:hover:text-blue-100",
+
+  purple:
+    "text-purple-600 dark:text-purple-300 bg-purple-100 dark:bg-purple-900 border border-purple-200 dark:border-purple-700 hover:bg-purple-200 dark:hover:bg-purple-800 hover:text-purple-700 dark:hover:text-purple-100",
+
+  orange:
+    "text-orange-600 dark:text-orange-300 bg-orange-100 dark:bg-orange-900 border border-orange-200 dark:border-orange-700 hover:bg-orange-200 dark:hover:bg-orange-800 hover:text-orange-700 dark:hover:text-orange-100",
+
+  pink: "text-pink-600 dark:text-pink-300 bg-pink-100 dark:bg-pink-900 border border-pink-200 dark:border-pink-700 hover:bg-pink-200 dark:hover:bg-pink-800 hover:text-pink-700 dark:hover:text-pink-100",
+
+  indigo:
+    "text-indigo-600 dark:text-indigo-300 bg-indigo-100 dark:bg-indigo-900 border border-indigo-200 dark:border-indigo-700 hover:bg-indigo-200 dark:hover:bg-indigo-800 hover:text-indigo-700 dark:hover:text-indigo-100",
+
+  teal: "text-teal-600 dark:text-teal-300 bg-teal-100 dark:bg-teal-900 border border-teal-200 dark:border-teal-700 hover:bg-teal-200 dark:hover:bg-teal-800 hover:text-teal-700 dark:hover:text-teal-100",
+
+  cyan: "text-cyan-600 dark:text-cyan-300 bg-cyan-100 dark:bg-cyan-900 border border-cyan-200 dark:border-cyan-700 hover:bg-cyan-200 dark:hover:bg-cyan-800 hover:text-cyan-700 dark:hover:text-cyan-100",
+
+  sky: "text-sky-600 dark:text-sky-300 bg-sky-100 dark:bg-sky-900 border border-sky-200 dark:border-sky-700 hover:bg-sky-200 dark:hover:bg-sky-800 hover:text-sky-700 dark:hover:text-sky-100",
+
+  neutral:
+    "text-neutral-600 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-200 dark:hover:bg-neutral-800 hover:text-neutral-700 dark:hover:text-neutral-100",
+
+  amber:
+    "text-amber-600 dark:text-amber-300 bg-amber-100 dark:bg-amber-900 border border-amber-200 dark:border-amber-700 hover:bg-amber-200 dark:hover:bg-amber-800 hover:text-amber-700 dark:hover:text-amber-100",
+
+  rose: "text-rose-600 dark:text-rose-300 bg-rose-100 dark:bg-rose-900 border border-rose-200 dark:border-rose-700 hover:bg-rose-200 dark:hover:bg-rose-800 hover:text-rose-700 dark:hover:text-rose-100",
+
+  lime: "text-lime-600 dark:text-lime-300 bg-lime-100 dark:bg-lime-900 border border-lime-200 dark:border-lime-700 hover:bg-lime-200 dark:hover:bg-lime-800 hover:text-lime-700 dark:hover:text-lime-100",
+
+  stone:
+    "text-stone-600 dark:text-stone-300 bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-700 hover:bg-stone-200 dark:hover:bg-stone-800 hover:text-stone-700 dark:hover:text-stone-100",
+
+  zinc: "text-zinc-600 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-100",
+
+  black:
+    "text-black dark:text-white bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-300 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white",
+};
+
 export const STATUS_BADGE = [
   {
     value: "__EMPTY__",
     label: "Trống",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.gray,
   },
-
   {
     value: null,
     label: "Trống",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.gray,
   },
-
   {
     value: "isRepresentative=true",
     label: "Có",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: "isRepresentative=false",
     label: "Không",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.stone,
   },
-
   // --- Trạng thái hoạt động của tòa nhà ---
   {
     value: BuildingStatus.HOAT_DONG,
     label: "Hoạt động",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: BuildingStatus.TAM_KHOA,
     label: "Tạm khóa",
-    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+    className: COLOR_CLASS.yellow,
   },
   {
     value: BuildingStatus.HUY_HOAT_DONG,
     label: "Hủy hoạt động",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+    className: COLOR_CLASS.red,
   },
-
+  // --- Loại phòng ---
   {
     value: RoomType.CAO_CAP,
     label: "Cao cấp",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+    className: COLOR_CLASS.rose,
   },
-
   // --- Loại tòa nhà ---
   {
     value: BuildingType.NHA_TRO,
     label: "Nhà trọ",
-    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+    className: COLOR_CLASS.blue,
   },
   {
     value: BuildingType.CHUNG_CU_MINI,
     label: "Chung cư mini",
-    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+    className: COLOR_CLASS.purple,
   },
   {
     value: BuildingType.CAN_HO_DICH_VU,
     label: "Căn hộ dịch vụ",
-    className: "text-indigo-600 bg-indigo-100 border border-indigo-200 hover:bg-indigo-200 hover:text-indigo-700",
+    className: COLOR_CLASS.indigo,
   },
   {
     value: BuildingType.KHAC,
     label: "Khác",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.neutral,
   },
   // --- Trạng thái phòng ---
   {
     value: RoomStatus.TRONG,
     label: "Còn trống",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: RoomStatus.DA_DAT_COC,
     label: "Đã đặt cọc",
-    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+    className: COLOR_CLASS.yellow,
   },
   {
     value: RoomStatus.DANG_BAO_TRI,
     label: "Bảo trì",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.gray,
   },
   {
     value: RoomStatus.CHUA_HOAN_THIEN,
     label: "Chưa hoàn thiện",
-    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+    className: COLOR_CLASS.blue,
   },
   {
     value: RoomStatus.TAM_KHOA,
     label: "Tạm khóa",
-    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+    className: COLOR_CLASS.purple,
   },
   {
     value: RoomStatus.HUY_HOAT_DONG,
     label: "Huỷ hoạt động",
-    className: "text-black bg-gray-200 border border-gray-300 hover:bg-gray-300 hover:text-black",
+    className: COLOR_CLASS.black,
   },
   // --- Loại Phòng ---
   {
     value: RoomType.GHEP,
     label: "Phòng ghép",
-    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+    className: COLOR_CLASS.blue,
   },
   {
     value: RoomType.DON,
     label: "Phòng đơn",
-    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+    className: COLOR_CLASS.purple,
   },
   {
     value: RoomType.KHAC,
     label: "Khác",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.neutral,
   },
-
   // --- Trạng thái tầng ---
   {
     value: FloorStatus.HOAT_DONG,
     label: "Đang sử dụng",
-    className: "text-emerald-600 bg-emerald-100 border border-emerald-200 hover:bg-emerald-200 hover:text-emerald-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: FloorStatus.KHONG_SU_DUNG,
     label: "Không sử dụng",
-    className: "text-stone-600 bg-stone-100 border border-stone-200 hover:bg-stone-200 hover:text-stone-700",
+    className: COLOR_CLASS.stone,
   },
   {
     value: FloorStatus.TAM_KHOA,
     label: "Tạm khóa",
-    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+    className: COLOR_CLASS.yellow,
   },
-
   // --- Loại tầng ---
   {
     value: FloorType.CHO_THUE,
     label: "Cho thuê",
-    className: "text-sky-600 bg-sky-100 border border-sky-200 hover:bg-sky-200 hover:text-sky-700",
+    className: COLOR_CLASS.sky,
   },
   {
     value: FloorType.KHONG_CHO_THUE,
     label: "Không cho thuê",
-    className: "text-zinc-600 bg-zinc-100 border border-zinc-200 hover:bg-zinc-200 hover:text-zinc-700",
+    className: COLOR_CLASS.zinc,
   },
   {
     value: FloorType.DE_O,
     label: "Để ở",
-    className: "text-cyan-600 bg-cyan-100 border border-cyan-200 hover:bg-cyan-200 hover:text-cyan-700",
+    className: COLOR_CLASS.cyan,
   },
   {
     value: FloorType.KHO,
     label: "Kho",
-    className: "text-amber-600 bg-amber-100 border border-amber-200 hover:bg-amber-200 hover:text-amber-700",
+    className: COLOR_CLASS.amber,
   },
   {
     value: FloorType.KHAC,
     label: "Khác",
-    className: "text-neutral-600 bg-neutral-100 border border-neutral-200 hover:bg-neutral-200 hover:text-neutral-700",
+    className: COLOR_CLASS.neutral,
   },
-
   // --- Nhóm tài sản ---
   {
     value: AssetGroup.GIA_DUNG,
     label: "Gia dụng",
-    className: "text-rose-600 bg-rose-100 border border-rose-200 hover:bg-rose-200 hover:text-rose-700",
+    className: COLOR_CLASS.rose,
   },
   {
     value: AssetGroup.NOI_THAT,
     label: "Nội thất",
-    className: "text-lime-600 bg-lime-100 border border-lime-200 hover:bg-lime-200 hover:text-lime-700",
+    className: COLOR_CLASS.lime,
   },
   {
     value: AssetGroup.DIEN,
     label: "Điện",
-    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+    className: COLOR_CLASS.orange,
   },
   {
     value: AssetGroup.CA_NHAN,
     label: "Cá nhân",
-    className: "text-pink-600 bg-pink-100 border border-pink-200 hover:bg-pink-200 hover:text-pink-700",
+    className: COLOR_CLASS.pink,
   },
   {
     value: AssetGroup.KHAC,
     label: "Khác",
-    className: "text-slate-600 bg-slate-100 border border-slate-200 hover:bg-slate-200 hover:text-slate-700",
+    className: COLOR_CLASS.neutral,
   },
-
   // --- Thuộc về tài sản ---
   {
     value: AssetBeLongTo.PHONG,
     label: "Phòng",
-    className: "text-teal-600 bg-teal-100 border border-teal-200 hover:bg-teal-200 hover:text-teal-700",
+    className: COLOR_CLASS.teal,
   },
   {
     value: AssetBeLongTo.CHUNG,
     label: "Dùng chung",
-    className: "text-indigo-600 bg-indigo-100 border border-indigo-200 hover:bg-indigo-200 hover:text-indigo-700",
+    className: COLOR_CLASS.indigo,
   },
   {
     value: AssetBeLongTo.CA_NHAN,
     label: "Cá nhân",
-    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+    className: COLOR_CLASS.purple,
   },
-
   // --- Loại tài sản ---
   {
     value: AssetType.GIA_DUNG,
     label: "Gia dụng",
-    className: "text-rose-600 bg-rose-100 border border-rose-200 hover:bg-rose-200 hover:text-rose-700",
+    className: COLOR_CLASS.rose,
   },
   {
     value: AssetType.VE_SINH,
     label: "Vệ sinh",
-    className: "text-lime-600 bg-lime-100 border border-lime-200 hover:bg-lime-200 hover:text-lime-700",
+    className: COLOR_CLASS.lime,
   },
   {
     value: AssetType.NOI_THAT,
     label: "Nội thất",
-    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+    className: COLOR_CLASS.orange,
   },
   {
     value: AssetType.DIEN,
     label: "Điện",
-    className: "text-pink-600 bg-pink-100 border border-pink-200 hover:bg-pink-200 hover:text-pink-700",
+    className: COLOR_CLASS.pink,
   },
   {
     value: AssetType.AN_NINH,
     label: "An ninh",
-    className: "text-sky-600 bg-sky-100 border border-sky-200 hover:bg-sky-200 hover:text-sky-700",
+    className: COLOR_CLASS.sky,
   },
   {
     value: AssetType.KHAC,
     label: "Khác",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.neutral,
   },
-
   // --- Trạng thái tài sản ---
   {
     value: AssetStatus.HOAT_DONG,
     label: "Đang sử dụng",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: AssetStatus.HUY,
     label: "Đang sử dụng",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+    className: COLOR_CLASS.red,
   },
   {
     value: AssetStatus.HU_HONG,
     label: "Hư hỏng",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+    className: COLOR_CLASS.red,
   },
   {
     value: AssetStatus.CAN_BAO_TRI,
     label: "Cần bảo trì",
-    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+    className: COLOR_CLASS.yellow,
   },
   {
     value: AssetStatus.THAT_LAC,
     label: "Thất lạc",
-    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+    className: COLOR_CLASS.orange,
   },
   {
     value: AssetStatus.DA_THANH_LY,
     label: "Đã thanh lý",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.gray,
   },
-
-  /* TENANT */
+  // --- TENANT ---
   {
     value: TenantStatus.DANG_THUE,
     label: "Đang thuê",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: TenantStatus.DA_TRA_PHONG,
     label: "Đã trả phòng",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.gray,
   },
   {
     value: TenantStatus.TIEM_NANG,
     label: "Tiềm năng",
-    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+    className: COLOR_CLASS.yellow,
   },
   {
     value: TenantStatus.KHOA,
     label: "Bị khóa",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+    className: COLOR_CLASS.red,
   },
-
-  /* GENDER*/
+  // --- GENDER ---
   {
     value: Gender.MALE,
     label: "Nam",
-    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+    className: COLOR_CLASS.blue,
   },
   {
     value: Gender.FEMALE,
     label: "Nữ",
-    className: "text-pink-600 bg-pink-100 border border-pink-200 hover:bg-pink-200 hover:text-pink-700",
+    className: COLOR_CLASS.pink,
   },
-
-  // Vehicle Types
+  // --- Vehicle Types ---
   {
     value: VehicleType.XE_MAY,
     label: "Xe máy",
-    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+    className: COLOR_CLASS.blue,
   },
   {
     value: VehicleType.O_TO,
     label: "Ô tô",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: VehicleType.XE_DAP,
     label: "Xe đạp",
-    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+    className: COLOR_CLASS.orange,
   },
   {
     value: VehicleType.KHAC,
     label: "Khác",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.neutral,
   },
-
-  // Vehicle Status
+  // --- Vehicle Status ---
   {
     value: VehicleStatus.SU_DUNG,
     label: "Đang sử dụng",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: VehicleStatus.KHONG_SU_DUNG,
     label: "Ngừng sử dụng",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.gray,
   },
   {
     value: VehicleStatus.TAM_KHOA,
     label: "Tạm khóa",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+    className: COLOR_CLASS.red,
   },
-  // Contract status
+  // --- Contract status ---
   {
     value: ContractStatus.HIEU_LUC,
     label: "Hiệu lực",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: ContractStatus.SAP_HET_HAN,
     label: "Sắp hết hạn",
-    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+    className: COLOR_CLASS.yellow,
   },
   {
     value: ContractStatus.HET_HAN,
     label: "Hết hạn",
-    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+    className: COLOR_CLASS.orange,
   },
   {
     value: ContractStatus.DA_THANH_LY,
     label: "Đã thanh lý",
-    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+    className: COLOR_CLASS.blue,
   },
   {
     value: ContractStatus.DA_HUY,
     label: "Đã hủy",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+    className: COLOR_CLASS.red,
   },
-
-  // Loại dịch vụ
+  // --- Loại dịch vụ ---
   {
     value: ServiceType.CO_DINH,
     label: "Cố định",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: ServiceType.TINH_THEO_SO,
     label: "Tính theo số",
-    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+    className: COLOR_CLASS.blue,
   },
-
-  // Áp dụng theo
+  // --- Áp dụng theo ---
   {
     value: ServiceAppliedBy.PHONG,
     label: "Phòng",
-    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+    className: COLOR_CLASS.orange,
   },
   {
     value: ServiceAppliedBy.TANG,
     label: "Tầng",
-    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+    className: COLOR_CLASS.purple,
   },
   {
     value: ServiceAppliedBy.NGUOI,
     label: "Người",
-    className: "text-pink-600 bg-pink-100 border border-pink-200 hover:bg-pink-200 hover:text-pink-700",
+    className: COLOR_CLASS.pink,
   },
-
-  // Trạng thái
+  // --- Trạng thái dịch vụ ---
   {
     value: ServiceStatus.HOAT_DONG,
     label: "Hoạt động",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: ServiceStatus.TAM_KHOA,
     label: "Tạm khóa",
-    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+    className: COLOR_CLASS.yellow,
   },
   {
     value: ServiceStatus.KHONG_SU_DUNG,
     label: "Ngừng sử dụng",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.gray,
   },
-
-  // DEFAULT SERVICE
+  // --- DEFAULT SERVICE ---
   {
     value: DefaultServiceAppliesTo.PHONG,
     label: "Phòng",
-    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+    className: COLOR_CLASS.orange,
   },
   {
     value: DefaultServiceAppliesTo.HOP_DONG,
     label: "Hợp đồng",
-    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+    className: COLOR_CLASS.purple,
   },
   {
     value: DefaultServiceStatus.HOAT_DONG,
     label: "Hoạt động",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: DefaultServiceStatus.TAM_DUNG,
     label: "Tạm dừng",
-    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+    className: COLOR_CLASS.yellow,
   },
   {
     value: DefaultServiceStatus.HUY_BO,
     label: "Hủy bỏ",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+    className: COLOR_CLASS.red,
   },
   {
     value: ServiceRoomStatus.DANG_SU_DUNG,
     label: "Đang sử dụng",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: ServiceRoomStatus.TAM_DUNG,
     label: "Tạm dừng",
-    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+    className: COLOR_CLASS.yellow,
   },
   {
     value: ServiceRoomStatus.DA_HUY,
     label: "Đã hủy",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+    className: COLOR_CLASS.red,
   },
-
+  // --- Meter Types ---
   {
     value: MeterType.DIEN,
     label: "Công tơ điện",
-    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+    className: COLOR_CLASS.yellow,
   },
   {
     value: MeterType.NUOC,
     label: "Công tơ nước",
-    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+    className: COLOR_CLASS.blue,
   },
-
+  // --- Invoice Status ---
   {
     value: InvoiceStatus.CHUA_THANH_TOAN,
     label: "Chưa thanh toán",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+    className: COLOR_CLASS.red,
   },
   {
     value: InvoiceStatus.DA_THANH_TOAN,
     label: "Đã thanh toán",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: InvoiceStatus.QUA_HAN,
     label: "Quá hạn",
-    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+    className: COLOR_CLASS.orange,
   },
   {
     value: InvoiceStatus.HUY,
     label: "Đã hủy",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.gray,
   },
-
+  // --- Invoice Type ---
   {
     value: InvoiceType.HANG_THANG,
     label: "Hàng tháng",
-    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+    className: COLOR_CLASS.blue,
   },
   {
     value: InvoiceType.CUOI_CUNG,
     label: "Cuối cùng",
-    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+    className: COLOR_CLASS.purple,
   },
+  // --- Service Category ---
   {
     value: ServiceCategory.DIEN,
     label: "Điện",
-    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+    className: COLOR_CLASS.yellow,
   },
   {
     value: ServiceCategory.NUOC,
     label: "Nước",
-    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+    className: COLOR_CLASS.blue,
   },
   {
     value: ServiceCategory.GUI_XE,
     label: "Gửi xe",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.gray,
   },
   {
     value: ServiceCategory.INTERNET,
     label: "Internet",
-    className: "text-indigo-600 bg-indigo-100 border border-indigo-200 hover:bg-indigo-200 hover:text-indigo-700",
+    className: COLOR_CLASS.indigo,
   },
   {
     value: ServiceCategory.VE_SINH,
     label: "Vệ sinh",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: ServiceCategory.THANG_MAY,
     label: "Thang máy",
-    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+    className: COLOR_CLASS.purple,
   },
   {
     value: ServiceCategory.BAO_TRI,
     label: "Bảo trì",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+    className: COLOR_CLASS.red,
   },
   {
     value: ServiceCategory.AN_NINH,
     label: "An ninh",
-    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+    className: COLOR_CLASS.orange,
   },
   {
     value: ServiceCategory.GIAT_SAY,
     label: "Giặt sấy",
-    className: "text-pink-600 bg-pink-100 border border-pink-200 hover:bg-pink-200 hover:text-pink-700",
+    className: COLOR_CLASS.pink,
   },
   {
     value: ServiceCategory.TIEN_PHONG,
     label: "Tiền phòng",
-    className: "text-teal-600 bg-teal-100 border border-teal-200 hover:bg-teal-200 hover:text-teal-700",
+    className: COLOR_CLASS.teal,
   },
   {
     value: ServiceCategory.KHAC,
     label: "Khác",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.neutral,
   },
   {
     value: ServiceCalculation.TINH_THEO_SO,
     label: "Tính theo số",
-    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+    className: COLOR_CLASS.blue,
   },
   {
     value: ServiceCalculation.TINH_THEO_NGUOI,
     label: "Tính theo người",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: ServiceCalculation.TINH_THEO_PHONG,
     label: "Tính theo phòng",
-    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+    className: COLOR_CLASS.purple,
   },
   {
     value: ServiceCalculation.TINH_THEO_PHUONG_TIEN,
     label: "Tính theo phương tiện",
-    className: "text-indigo-600 bg-indigo-100 border border-indigo-200 hover:bg-indigo-200 hover:text-indigo-700",
+    className: COLOR_CLASS.indigo,
   },
+  // --- Invoice Item Type ---
   {
     value: InvoiceItemType.DIEN,
     label: "Điện",
-    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+    className: COLOR_CLASS.yellow,
   },
   {
     value: ServiceCategory.DEN_BU,
     label: "Trống",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.gray,
   },
   {
     value: InvoiceItemType.NUOC,
     label: "Nước",
-    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+    className: COLOR_CLASS.blue,
   },
   {
     value: InvoiceItemType.DICH_VU,
     label: "Dịch vụ",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: InvoiceItemType.TIEN_PHONG,
     label: "Tiền phòng",
-    className: "text-teal-600 bg-teal-100 border border-teal-200 hover:bg-teal-200 hover:text-teal-700",
+    className: COLOR_CLASS.teal,
   },
   {
     value: InvoiceItemType.DEN_BU,
     label: "Đền bù",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+    className: COLOR_CLASS.red,
   },
-  // Phương thức thanh toán
+  // --- Phương thức thanh toán ---
   {
     value: PaymentMethod.CHON_PHUONG_THUC,
     label: "Chọn phương thức",
-    className: "text-orange-500 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+    className: COLOR_CLASS.orange,
   },
   {
     value: PaymentMethod.TIEN_MAT,
     label: "Tiền mặt",
-    className: "text-orange-600 bg-orange-100 border border-orange-200 hover:bg-orange-200 hover:text-orange-700",
+    className: COLOR_CLASS.amber,
   },
   {
     value: PaymentMethod.CHUYEN_KHOAN,
     label: "Chuyển khoản",
-    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+    className: COLOR_CLASS.blue,
   },
   {
     value: PaymentMethod.VNPAY,
     label: "VNPay",
-    className: "text-purple-600 bg-purple-100 border border-purple-200 hover:bg-purple-200 hover:text-purple-700",
+    className: COLOR_CLASS.purple,
   },
   {
     value: PaymentMethod.ZALOPAY,
     label: "ZaloPay",
-    className: "text-pink-600 bg-pink-100 border border-pink-200 hover:bg-pink-200 hover:text-pink-700",
+    className: COLOR_CLASS.pink,
   },
   {
     value: PaymentMethod.MOMO,
     label: "MoMo",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+    className: COLOR_CLASS.red,
   },
-
-  // Trạng thái thanh toán
+  // --- Trạng thái thanh toán ---
   {
     value: PaymentStatus.CHO_THANH_TOAN,
     label: "Chờ thanh toán",
-    className: "text-yellow-600 bg-yellow-100 border border-yellow-200 hover:bg-yellow-200 hover:text-yellow-700",
+    className: COLOR_CLASS.yellow,
   },
   {
     value: PaymentStatus.CHO_XAC_NHAN,
     label: "Chờ xác nhận",
-    className: "text-blue-600 bg-blue-100 border border-blue-200 hover:bg-blue-200 hover:text-blue-700",
+    className: COLOR_CLASS.blue,
   },
   {
     value: PaymentStatus.DA_THANH_TOAN,
     label: "Đã thanh toán",
-    className: "text-green-600 bg-green-100 border border-green-200 hover:bg-green-200 hover:text-green-700",
+    className: COLOR_CLASS.green,
   },
   {
     value: PaymentStatus.TU_CHOI,
     label: "Từ chối",
-    className: "text-red-600 bg-red-100 border border-red-200 hover:bg-red-200 hover:text-red-700",
+    className: COLOR_CLASS.red,
   },
   {
     value: PaymentStatus.HUY,
     label: "Hủy",
-    className: "text-gray-600 bg-gray-100 border border-gray-200 hover:bg-gray-200 hover:text-gray-700",
+    className: COLOR_CLASS.gray,
   },
 ];
 

@@ -20,7 +20,7 @@ import RenderIf from "@/components/RenderIf";
 import useHighestRole from "@/hooks/useHighestRole";
 
 const NavBarParent = ({ props, isActive }: { props: SideBarType; isActive: boolean }) => {
-  const { title, icon: ItemIcon, items, url } = props;
+  const { title, icon, items, url } = props;
   const { setOpen } = useSidebar();
 
   const commonClasses = cn(
@@ -32,7 +32,7 @@ const NavBarParent = ({ props, isActive }: { props: SideBarType; isActive: boole
     return (
       <Link to={url} className="w-full">
         <SidebarMenuButton tooltip={title} isActive={isActive} className={cn(commonClasses, "h-10")}>
-          {ItemIcon && <ItemIcon className={cn("icon", isActive && "stroke-white")} />}
+          <img src={props.icon as string} className="size-6 !rounded-none" />
           <span className={cn("icon", isActive && "text-white")}>{title}</span>
         </SidebarMenuButton>
       </Link>
@@ -42,7 +42,7 @@ const NavBarParent = ({ props, isActive }: { props: SideBarType; isActive: boole
   return (
     <CollapsibleTrigger asChild>
       <SidebarMenuButton tooltip={title} className={commonClasses} onClick={() => setOpen(true)}>
-        {ItemIcon && <ItemIcon className={cn("icon", isActive && "stroke-black dark:stroke-white")} />}
+        <img src={icon as string} className="size-6 !rounded-none" />
         <span className={cn("icon", isActive && "text-black dark:text-white")}>{title}</span>
         <ChevronRight
           className={cn(
@@ -94,7 +94,8 @@ export function NavMain() {
                                 )}
                               >
                                 <Link to={subItem.url} className="group flex items-center gap-2">
-                                  <subItem.icon className="icon !size-3 dark:!text-white !text-black transition-colors duration-200" />
+                                  {/* <subItem.icon className="icon !size-3 dark:!text-white !text-black transition-colors duration-200" /> */}
+                                  <img src={subItem.icon as string} className="size-5 !rounded-none" />
                                   <span className="w-full h-full flex items-center dark:!text-white !text-black icon">
                                     {subItem.title}
                                   </span>

@@ -316,11 +316,11 @@ export const useTenant = () => {
     if (isErrorTenants) toast.error("Có lỗi xảy ra khi tải khách thuê");
 
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải tầng");
+      toast.error("Có lỗi xảy ra khi tải danh sách khách thuê");
     }
 
     if (errorStatistics) {
-      toast.error("Có lỗi xảy ra khi tải thống kê tầng");
+      toast.error("Có lỗi xảy ra khi tải thống kê khách thuê");
     }
   }, [isError, isErrorTenants, errorStatistics]);
 
