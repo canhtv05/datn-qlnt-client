@@ -11,6 +11,7 @@ import InvoiceFilter from "@/components/finance/invoice/InvoiceFilter";
 import Modal from "@/components/Modal";
 import { Notice } from "@/enums";
 import UpdateInvoice from "@/components/finance/invoice/UpdateInvoice";
+import StatisticCard from "@/components/StatisticCard";
 
 const Invoice = () => {
   const {
@@ -30,6 +31,7 @@ const Invoice = () => {
     errors,
     contractInitToAdd,
     buildingInitToAdd,
+    dataInvoiceStatistics,
     floorInitToAdd,
     ConfirmDialog,
   } = useInvoice();
@@ -148,36 +150,38 @@ const Invoice = () => {
 
   return (
     <div className="flex flex-col">
-      {/* <StatisticCard data={dataDefaultServices} /> */}
-      <InvoiceButton
-        ids={rowSelection}
-        contractInitToAdd={contractInitToAdd}
-        buildingInitToAdd={buildingInitToAdd}
-        floorInitToAdd={floorInitToAdd}
-      />
-      <InvoiceFilter props={props} />
-      <DataTable<InvoiceResponse>
-        data={data?.data ?? []}
-        columns={buildColumnsFromConfig(columnConfigs)}
-        page={Number(page)}
-        size={Number(size)}
-        totalElements={data?.meta?.pagination?.total || 0}
-        totalPages={data?.meta?.pagination?.totalPages || 0}
-        loading={isLoading}
-        rowSelection={rowSelection}
-        setRowSelection={setRowSelection}
-      />
-      <Modal
-        title="Cập nhật hóa đơn"
-        trigger={null}
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        onConfirm={handleUpdateFloor}
-        desc={Notice.UPDATE}
-      >
-        <UpdateInvoice handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
-      </Modal>
-      <ConfirmDialog />
+      <StatisticCard data={dataInvoiceStatistics} />
+      <div className="shadow-lg">
+        <InvoiceButton
+          ids={rowSelection}
+          contractInitToAdd={contractInitToAdd}
+          buildingInitToAdd={buildingInitToAdd}
+          floorInitToAdd={floorInitToAdd}
+        />
+        <InvoiceFilter props={props} />
+        <DataTable<InvoiceResponse>
+          data={data?.data ?? []}
+          columns={buildColumnsFromConfig(columnConfigs)}
+          page={Number(page)}
+          size={Number(size)}
+          totalElements={data?.meta?.pagination?.total || 0}
+          totalPages={data?.meta?.pagination?.totalPages || 0}
+          loading={isLoading}
+          rowSelection={rowSelection}
+          setRowSelection={setRowSelection}
+        />
+        <Modal
+          title="Cập nhật hóa đơn"
+          trigger={null}
+          open={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          onConfirm={handleUpdateFloor}
+          desc={Notice.UPDATE}
+        >
+          <UpdateInvoice handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
+        </Modal>
+        <ConfirmDialog />
+      </div>
     </div>
   );
 };

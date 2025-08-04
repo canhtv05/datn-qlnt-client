@@ -149,35 +149,37 @@ const Meter = () => {
     <div className="flex flex-col">
       {/* <StatisticCard data={dataDefaultServices} /> */}
       <MeterButton ids={rowSelection} meterInit={meterInit} />
-      <MeterFilter props={props} />
-      <DataTable<MeterResponse>
-        data={data?.data?.data ?? []}
-        columns={buildColumnsFromConfig(columnConfigs)}
-        page={Number(page)}
-        size={Number(size)}
-        totalElements={data?.data?.meta?.pagination?.total || 0}
-        totalPages={data?.data?.meta?.pagination?.totalPages || 0}
-        loading={isLoading}
-        rowSelection={rowSelection}
-        setRowSelection={setRowSelection}
-      />
-      <Modal
-        title="Công tơ"
-        trigger={null}
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        onConfirm={handleUpdateFloor}
-        desc={Notice.UPDATE}
-      >
-        <AddOrUpdateMeter
-          meterInit={meterInit}
-          handleChange={handleChange}
-          value={value}
-          setValue={setValue}
-          errors={errors}
+      <div className="shadow-lg">
+        <MeterFilter props={props} />
+        <DataTable<MeterResponse>
+          data={data?.data?.data ?? []}
+          columns={buildColumnsFromConfig(columnConfigs)}
+          page={Number(page)}
+          size={Number(size)}
+          totalElements={data?.data?.meta?.pagination?.total || 0}
+          totalPages={data?.data?.meta?.pagination?.totalPages || 0}
+          loading={isLoading}
+          rowSelection={rowSelection}
+          setRowSelection={setRowSelection}
         />
-      </Modal>
-      <ConfirmDialog />
+        <Modal
+          title="Công tơ"
+          trigger={null}
+          open={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          onConfirm={handleUpdateFloor}
+          desc={Notice.UPDATE}
+        >
+          <AddOrUpdateMeter
+            meterInit={meterInit}
+            handleChange={handleChange}
+            value={value}
+            setValue={setValue}
+            errors={errors}
+          />
+        </Modal>
+        <ConfirmDialog />
+      </div>
     </div>
   );
 };

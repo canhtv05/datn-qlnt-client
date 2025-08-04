@@ -28,7 +28,7 @@ const DefaultLayout = ({ children }: { children: ReactNode }) => {
             <HeaderLayout />
           </header>
           <main className="flex-1 overflow-auto p-4 bg-secondary w-full animate-fade-in-up" key={location.pathname}>
-            <div className="rounded-sm bg-background py-2 px-5 mb-4">
+            <div className="rounded-sm bg-background py-2 px-5 mb-4 shadow-lg">
               <DynamicBreadcrumb role={highestRole} />
             </div>
             {children}

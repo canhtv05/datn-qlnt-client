@@ -2,23 +2,30 @@ import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSel
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
 import { AssetBeLongTo, AssetStatus, AssetType } from "@/enums";
-import { ApiResponse, CreateAssetInit2Response, ICreateAsset } from "@/types";
+import { ApiResponse, CreateAssetInit2Response, ICreateAsset, IUpdateAsset } from "@/types";
 import { Dispatch } from "react";
 
-interface AddOrUpdateAssetProps {
+interface CreateAssetProps {
   value: ICreateAsset;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setValue: Dispatch<React.SetStateAction<ICreateAsset>>;
   errors: Partial<Record<keyof ICreateAsset, string>>;
   assetsInfo?: ApiResponse<CreateAssetInit2Response>;
-  type: "add" | "update";
+  type: "add";
 }
 
+interface UpdateAssetProps {
+  value: IUpdateAsset;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setValue: Dispatch<React.SetStateAction<IUpdateAsset>>;
+  errors: Partial<Record<keyof IUpdateAsset, string>>;
+  assetsInfo?: ApiResponse<CreateAssetInit2Response>;
+  type: "update";
+}
+
+type Props = CreateAssetProps | UpdateAssetProps;
+
 const assetBeLongTo: FieldsSelectLabelType[] = [
-  // {
-  //   label: "Cá nhân",
-  //   value: AssetBeLongTo.CA_NHAN,
-  // },
   {
     label: "Chung",
     value: AssetBeLongTo.CHUNG,
@@ -56,7 +63,7 @@ const assetType: FieldsSelectLabelType[] = [
   },
 ];
 
-const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: AddOrUpdateAssetProps) => {
+const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: Props) => {
   // const hasAnyLocationSelected = !!value.tenantId || !!value.buildingID || !!value.floorID || !!value.roomID;
 
   // const buildingOptions = useMemo(() => {
@@ -174,7 +181,8 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: AddOr
           name="assetType"
           value={value.assetType ?? ""}
           onChange={(val) => {
-            setValue((prev) => ({ ...prev, assetType: val as string }));
+            if (type === "update") setValue((prev) => ({ ...prev, assetType: val as string }));
+            else setValue((prev) => ({ ...prev, assetType: val as string }));
           }}
           labelSelect="Loại tài sản"
           showClear
@@ -189,7 +197,10 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: AddOr
           id="assetBeLongTo"
           name="assetBeLongTo"
           value={value.assetBeLongTo ?? ""}
-          onChange={(val) => setValue((prev) => ({ ...prev, assetBeLongTo: val as AssetBeLongTo }))}
+          onChange={(val) => {
+            if (type === "add") setValue((prev) => ({ ...prev, assetBeLongTo: val as AssetBeLongTo }));
+            else setValue((prev) => ({ ...prev, assetBeLongTo: val as AssetBeLongTo }));
+          }}
           labelSelect="Tài sản thuộc về"
           showClear
           errorText={errors.assetBeLongTo}
@@ -256,17 +267,30 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: AddOr
         />
       )}
 
-      <InputLabel
-        type="number"
-        id="price"
-        name="price"
-        placeholder="1"
-        required
-        label="Giá trị (VND):"
-        value={value.price ?? ""}
-        onChange={handleChange}
-        errorText={errors.price}
-      />
+      <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full">
+        <InputLabel
+          type="number"
+          id="price"
+          name="price"
+          placeholder="1"
+          required
+          label="Giá trị (VND):"
+          value={value.price ?? ""}
+          onChange={handleChange}
+          errorText={errors.price}
+        />
+        <InputLabel
+          type="number"
+          id="quantity"
+          name="quantity"
+          placeholder="1"
+          required
+          label="Số lượng:"
+          value={value.quantity ?? ""}
+          onChange={handleChange}
+          errorText={errors.quantity}
+        />
+      </div>
 
       <TextareaLabel
         id="descriptionAsset"
@@ -274,7 +298,10 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: AddOr
         placeholder="Nhập mô tả"
         label="Mô tả:"
         value={value.descriptionAsset ?? ""}
-        onChange={(e) => setValue((prev) => ({ ...prev, descriptionAsset: e.target.value }))}
+        onChange={(e) => {
+          if (type === "add") setValue((prev) => ({ ...prev, descriptionAsset: e.target.value }));
+          else setValue((prev) => ({ ...prev, descriptionAsset: e.target.value }));
+        }}
         errorText={errors.descriptionAsset}
       />
     </div>

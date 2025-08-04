@@ -1,3 +1,4 @@
+import { StatisticCardType } from "@/components/StatisticCard";
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
 import { updateInvoiceSchema } from "@/lib/validation";
@@ -8,6 +9,7 @@ import {
   IdAndName,
   InvoiceFilter,
   InvoiceResponse,
+  InvoiceStatistics,
   InvoiceUpdateRequest,
 } from "@/types";
 import cookieUtil from "@/utils/cookieUtil";
@@ -16,6 +18,7 @@ import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isNumber } from "lodash";
+import { AlarmClock, Ban, CheckCircle2, Clock3, ReceiptText } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -341,6 +344,15 @@ export const useInvoice = () => {
     retry: false,
   });
 
+  const { data: invoiceStatistics, isError: errorInvoiceStatistics } = useQuery<ApiResponse<InvoiceStatistics>>({
+    queryKey: ["invoice-statistics"],
+    queryFn: async () => {
+      const res = await httpRequest.get("/invoices/statistics");
+      return res.data;
+    },
+    retry: false,
+  });
+
   const props = {
     filterValues,
     setFilterValues,
@@ -369,8 +381,46 @@ export const useInvoice = () => {
     if (errorBuildingFilter) {
       toast.error("Có lỗi xảy ra khi tải tòa nhà");
     }
-  }, [errorBuildingFilter, isError, errorContractInitToAdd, errorBuildingInitToAdd, errorFloorInitToAdd]);
 
+    if (errorInvoiceStatistics) {
+      toast.error("Có lỗi xảy ra khi tải thống kê hóa đơn");
+    }
+  }, [
+    errorBuildingFilter,
+    isError,
+    errorContractInitToAdd,
+    errorBuildingInitToAdd,
+    errorFloorInitToAdd,
+    errorInvoiceStatistics,
+  ]);
+
+  const dataInvoiceStatistics: StatisticCardType[] = [
+    {
+      icon: ReceiptText,
+      label: "Tổng hoá đơn",
+      value: invoiceStatistics?.data.total ?? 0,
+    },
+    {
+      icon: CheckCircle2,
+      label: "Đã thanh toán",
+      value: invoiceStatistics?.data.totalPaid ?? 0,
+    },
+    {
+      icon: Clock3,
+      label: "Chưa thanh toán",
+      value: invoiceStatistics?.data.totalNotYetPaid ?? 0,
+    },
+    {
+      icon: AlarmClock,
+      label: "Quá hạn",
+      value: invoiceStatistics?.data.totalOverdue ?? 0,
+    },
+    {
+      icon: Ban,
+      label: "Đã huỷ",
+      value: invoiceStatistics?.data.totalCancelled ?? 0,
+    },
+  ];
   return {
     query: {
       page: parsedPage,
@@ -387,6 +437,7 @@ export const useInvoice = () => {
     },
     setSearchParams,
     contractInitToAdd,
+    dataInvoiceStatistics,
     props,
     data,
     isLoading,

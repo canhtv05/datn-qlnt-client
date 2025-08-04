@@ -54,7 +54,7 @@ const SelectBuilding = () => {
   return (
     <div
       className={cn(
-        "gap-4 mb-4 bg-background p-4 rounded-md transition-all",
+        "gap-4 mb-4 bg-background p-4 shadow-lg rounded-md transition-all",
         !data?.data.length && !isLoading && "md:grid-cols-1 lg:grid-cols-1",
         styleGridItemWithSidebar(open)
       )}

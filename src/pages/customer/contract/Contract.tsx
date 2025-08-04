@@ -148,41 +148,42 @@ const Contract = () => {
   return (
     <div className="flex flex-col">
       <StatisticCard data={dataStatisticsContracts} />
-      <ContractButton ids={rowSelection} />
-      <ContractFilter props={props} />
-      <DataTable<ContractResponse>
-        data={data?.data ?? []}
-        columns={buildColumnsFromConfig(columnConfigs)}
-        page={Number(page)}
-        size={Number(size)}
-        totalElements={data?.meta?.pagination?.total || 0}
-        totalPages={data?.meta?.pagination?.totalPages || 0}
-        loading={isLoading}
-        rowSelection={rowSelection}
-        setRowSelection={setRowSelection}
-      />
-      <Modal
-        title="Hợp đồng"
-        trigger={null}
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        onConfirm={handleSaveContract}
-        desc={Notice.UPDATE}
-      >
-        <AddOrUpdateContract
-          value={value}
-          errors={errors}
-          handleChange={handleChange}
-          roomOptions={roomOptions}
-          tenantOptions={tenantOptions}
-          assetOptions={assetOptions}
-          servicesOptions={servicesOptions}
-          vehiclesOptions={vehiclesOptions}
-          type="update"
+      <div className="shadow-lg">
+        <ContractButton ids={rowSelection} />
+        <ContractFilter props={props} />
+        <DataTable<ContractResponse>
+          data={data?.data ?? []}
+          columns={buildColumnsFromConfig(columnConfigs)}
+          page={Number(page)}
+          size={Number(size)}
+          totalElements={data?.meta?.pagination?.total || 0}
+          totalPages={data?.meta?.pagination?.totalPages || 0}
+          loading={isLoading}
+          rowSelection={rowSelection}
+          setRowSelection={setRowSelection}
         />
-      </Modal>
-
-      <ConfirmDialog />
+        <Modal
+          title="Hợp đồng"
+          trigger={null}
+          open={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          onConfirm={handleSaveContract}
+          desc={Notice.UPDATE}
+        >
+          <AddOrUpdateContract
+            value={value}
+            errors={errors}
+            handleChange={handleChange}
+            roomOptions={roomOptions}
+            tenantOptions={tenantOptions}
+            assetOptions={assetOptions}
+            servicesOptions={servicesOptions}
+            vehiclesOptions={vehiclesOptions}
+            type="update"
+          />
+        </Modal>
+        <ConfirmDialog />
+      </div>
     </div>
   );
 };

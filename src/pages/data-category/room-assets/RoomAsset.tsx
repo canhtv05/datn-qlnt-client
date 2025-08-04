@@ -38,7 +38,9 @@ const RoomAsset = () => {
                     variant={btn.type}
                     className="cursor-pointer"
                     onClick={() => {
-                      navigate(`/asset-management/room-assets/detail/${row.id}`, { replace: true });
+                      navigate(`/asset-management/room-assets/detail/${row.id}`, {
+                        replace: true,
+                      });
                     }}
                   >
                     <btn.icon className="text-white" />
@@ -88,20 +90,22 @@ const RoomAsset = () => {
   return (
     <div className="flex flex-col">
       <StatisticCard data={statistics} />
-      <RoomAssetButton ids={rowSelection} roomId={roomId ?? ""} type="default" buildingOptions={[]} />
-      <RoomAssetFilter props={props} />
-      <DataTable<RoomAssetAllResponse>
-        data={data?.data ?? []}
-        columns={buildColumnsFromConfig(columnConfigs)}
-        page={Number(page)}
-        size={Number(size)}
-        totalElements={data?.meta?.pagination?.total || 0}
-        totalPages={data?.meta?.pagination?.totalPages || 0}
-        loading={isLoading}
-        rowSelection={rowSelection}
-        setRowSelection={setRowSelection}
-      />
-      <ConfirmDialog />
+      <div className="shadow-lg">
+        <RoomAssetButton ids={rowSelection} roomId={roomId ?? ""} type="default" buildingOptions={[]} />
+        <RoomAssetFilter props={props} />
+        <DataTable<RoomAssetAllResponse>
+          data={data?.data ?? []}
+          columns={buildColumnsFromConfig(columnConfigs)}
+          page={Number(page)}
+          size={Number(size)}
+          totalElements={data?.meta?.pagination?.total || 0}
+          totalPages={data?.meta?.pagination?.totalPages || 0}
+          loading={isLoading}
+          rowSelection={rowSelection}
+          setRowSelection={setRowSelection}
+        />
+        <ConfirmDialog />
+      </div>
     </div>
   );
 };

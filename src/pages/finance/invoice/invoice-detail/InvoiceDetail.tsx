@@ -162,7 +162,7 @@ const InvoiceDetail = () => {
   const CUSTOM_ACTION_BUTTONS = [...viewBtn, ...ACTION_BUTTONS];
 
   return (
-    <div className="py-5 bg-background rounded-md flex flex-col">
+    <div className="py-5 bg-background rounded-md flex flex-col shadow-lg">
       <div className="flex lg:flex-row flex-col justify-between items-center px-5">
         <h3 className="font-semibold md:py-0 py-3 text-2xl md:text-[16px]">Hóa đơn chi tiết</h3>
         <div className="flex gap-2">

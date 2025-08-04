@@ -36,7 +36,7 @@ const StatisticCard = ({ data }: { data: StatisticCardType[] }) => {
   return (
     <div className={cn("grid w-full mb-4", gridCols, length > 1 && "gap-4")}>
       {data.map((item, index) => (
-        <Card className="shadow-none border-none rounded-sm py-3" key={index}>
+        <Card className="border-none rounded-sm py-3 shadow-lg" key={index}>
           <CardContent className="flex justify-between items-center px-4">
             <div className="flex-col flex flex-1">
               <span className="font-black text-[20px] text-foreground">{item.value}</span>

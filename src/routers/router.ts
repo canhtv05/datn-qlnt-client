@@ -135,6 +135,11 @@ const privateRoutes: RouteType[] = [
   },
   {
     path: configs.routes.assetMng.asset,
+    component: SelectBuilding,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.assetMng.assetId,
     component: Asset,
     allowedRoles: ["ADMIN", "MANAGER"],
   },

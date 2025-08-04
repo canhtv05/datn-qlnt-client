@@ -130,20 +130,22 @@ const PaymentReceipt = () => {
 
   return (
     <div className="flex flex-col">
-      <PaymentReceiptButton ids={rowSelection} />
-      <PaymentReceiptFilter props={props} />
-      <DataTable<PaymentReceiptResponse>
-        data={data?.data?.data ?? []}
-        columns={buildColumnsFromConfig(columnConfigs)}
-        page={Number(page)}
-        size={Number(size)}
-        totalElements={data?.data?.meta?.pagination?.total || 0}
-        totalPages={data?.data?.meta?.pagination?.totalPages || 0}
-        loading={isLoading}
-        rowSelection={rowSelection}
-        setRowSelection={setRowSelection}
-      />
-      <ConfirmDialog />
+      <div className="shadow-lg">
+        <PaymentReceiptButton ids={rowSelection} />
+        <PaymentReceiptFilter props={props} />
+        <DataTable<PaymentReceiptResponse>
+          data={data?.data?.data ?? []}
+          columns={buildColumnsFromConfig(columnConfigs)}
+          page={Number(page)}
+          size={Number(size)}
+          totalElements={data?.data?.meta?.pagination?.total || 0}
+          totalPages={data?.data?.meta?.pagination?.totalPages || 0}
+          loading={isLoading}
+          rowSelection={rowSelection}
+          setRowSelection={setRowSelection}
+        />
+        <ConfirmDialog />
+      </div>
     </div>
   );
 };

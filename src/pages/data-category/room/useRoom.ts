@@ -161,6 +161,7 @@ export const useRoom = () => {
       const res = await httpRequest.get("/rooms", { params });
       return res.data;
     },
+    retry: 1,
   });
 
   useEffect(() => {

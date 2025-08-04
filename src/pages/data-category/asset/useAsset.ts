@@ -1,12 +1,12 @@
 import { StatisticCardType } from "@/components/StatisticCard";
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
-import { createOrUpdateAssetSchema } from "@/lib/validation";
+import { updateAssetSchema } from "@/lib/validation";
 import {
   ApiResponse,
   AssetFilter,
   AssetResponse,
-  IAssetStatisticsResponse,
+  AssetStatusStatistic,
   IUpdateAsset,
   PaginatedResponse,
 } from "@/types";
@@ -14,33 +14,32 @@ import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CircleCheck, CircleDollarSign, XCircle } from "lucide-react";
+import { AlertTriangle, CircleCheck, CircleDollarSign, HelpCircle, Wrench, XCircle } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useAsset = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { id } = useParams();
   const {
     page = "1",
     size = "15",
     nameAsset = "",
     assetBeLongTo = "",
     assetStatus = "",
-  } = queryFilter(searchParams, "page", "size", "nameAsset", "assetBeLongTo", "assetStatus");
+    assetType = "",
+  } = queryFilter(searchParams, "page", "size", "nameAsset", "assetType", "assetBeLongTo", "assetStatus");
 
   const [rowSelection, setRowSelection] = useState({});
   const idRef = useRef<string>("");
   const [value, setValue] = useState<IUpdateAsset>({
     assetBeLongTo: "",
     assetType: "",
-    buildingID: "",
     descriptionAsset: "",
-    floorID: "",
     nameAsset: "",
     price: undefined,
-    roomID: "",
-    tenantId: "",
+    quantity: undefined,
     assetStatus: "",
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,10 +55,12 @@ export const useAsset = () => {
     nameAsset,
     assetBeLongTo,
     assetStatus,
+    assetType,
   });
 
   const handleClear = () => {
     setFilterValues({
+      assetType: "",
       assetBeLongTo: "",
       assetStatus: "",
       nameAsset: "",
@@ -72,14 +73,21 @@ export const useAsset = () => {
     if (filterValues.nameAsset) params.set("nameAsset", filterValues.nameAsset);
     if (filterValues.assetBeLongTo) params.set("assetBeLongTo", filterValues.assetBeLongTo);
     if (filterValues.assetStatus) params.set("assetStatus", filterValues.assetStatus);
+    if (filterValues.assetType) params.set("assetType", filterValues.assetType);
     params.set("page", "1");
     if (filterValues.nameAsset || filterValues.assetStatus || filterValues.assetBeLongTo) {
       setSearchParams(params);
     }
-  }, [filterValues.assetBeLongTo, filterValues.assetStatus, filterValues.nameAsset, setSearchParams]);
+  }, [
+    filterValues.assetBeLongTo,
+    filterValues.assetStatus,
+    filterValues.assetType,
+    filterValues.nameAsset,
+    setSearchParams,
+  ]);
 
   const { data, isLoading, isError } = useQuery<ApiResponse<PaginatedResponse<AssetResponse[]>>>({
-    queryKey: ["assets", page, size, nameAsset, assetBeLongTo, assetStatus],
+    queryKey: ["assets", page, size, nameAsset, assetBeLongTo, assetStatus, assetType, id],
     queryFn: async () => {
       const params: Record<string, string> = {
         page: page.toString(),
@@ -89,6 +97,8 @@ export const useAsset = () => {
       if (nameAsset) params["nameAsset"] = nameAsset;
       if (assetStatus) params["assetStatus"] = assetStatus;
       if (assetBeLongTo) params["assetBeLongTo"] = assetBeLongTo;
+      if (assetType) params["assetType"] = assetType;
+      if (id) params["buildingId"] = id;
 
       const res = await httpRequest.get("/assets", {
         params,
@@ -96,6 +106,8 @@ export const useAsset = () => {
 
       return res.data;
     },
+    enabled: !!id,
+    retry: 1,
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -107,12 +119,17 @@ export const useAsset = () => {
     }));
   };
 
-  const { data: statistics, isError: isStatisticsError } = useQuery<ApiResponse<IAssetStatisticsResponse>>({
+  const { data: statistics, isError: isStatisticsError } = useQuery<ApiResponse<AssetStatusStatistic>>({
     queryKey: ["asset-statistics"],
     queryFn: async () => {
-      const res = await httpRequest.get("/assets/statistics");
+      const res = await httpRequest.get("/assets/statistics", {
+        params: {
+          buildingId: id,
+        },
+      });
       return res.data;
     },
+    enabled: !!id,
     retry: 1,
   });
 
@@ -126,6 +143,21 @@ export const useAsset = () => {
       icon: CircleCheck,
       label: "Hoạt động",
       value: statistics?.data.totalActiveAssets ?? 0,
+    },
+    {
+      icon: Wrench,
+      label: "Bảo trì",
+      value: statistics?.data.totalMaintenanceAssets ?? 0,
+    },
+    {
+      icon: AlertTriangle,
+      label: "Bị hỏng",
+      value: statistics?.data.totalBrokenAssets ?? 0,
+    },
+    {
+      icon: HelpCircle,
+      label: "Bị mất",
+      value: statistics?.data.totalLostAssets ?? 0,
     },
     {
       icon: XCircle,
@@ -144,7 +176,7 @@ export const useAsset = () => {
 
   const removeAssetMutation = useMutation({
     mutationKey: ["remove-assets"],
-    mutationFn: async (id: string) => await httpRequest.delete(`/assets/soft-delete/${id}`),
+    mutationFn: async (id: string) => await httpRequest.put(`/assets/soft-delete/${id}`),
   });
 
   const toggleStatusBuildingMutation = useMutation({
@@ -196,46 +228,29 @@ export const useAsset = () => {
 
   const handleUpdateFloor = useCallback(async () => {
     try {
-      const {
-        assetBeLongTo,
-        assetType,
-        buildingID,
-        descriptionAsset,
-        floorID,
-        nameAsset,
-        price,
-        roomID,
-        tenantId,
-        assetStatus,
-      } = value;
+      const { assetBeLongTo, assetType, descriptionAsset, nameAsset, price, quantity, assetStatus } = value;
 
       const data: IUpdateAsset = {
         assetBeLongTo,
         assetType: assetType ?? "",
-        buildingID: buildingID ?? "",
         descriptionAsset: descriptionAsset.trim(),
-        floorID: floorID ?? "",
         nameAsset: nameAsset.trim(),
-        price,
-        roomID: roomID ?? "",
-        tenantId: tenantId ?? "",
+        price: price || 0,
+        quantity: quantity || 0,
         assetStatus,
       };
 
-      await createOrUpdateAssetSchema.parseAsync(data);
+      await updateAssetSchema.parseAsync(data);
 
       updateAssetMutation.mutate(data, {
         onSuccess: () => {
           setValue({
             assetBeLongTo: "",
             assetType: "",
-            buildingID: "",
             descriptionAsset: "",
-            floorID: "",
             nameAsset: "",
             price: undefined,
-            roomID: "",
-            tenantId: "",
+            quantity: undefined,
             assetStatus: "",
           });
           queryClient.invalidateQueries({
@@ -260,13 +275,10 @@ export const useAsset = () => {
         setValue({
           assetBeLongTo: asset.assetBeLongTo,
           assetType: asset.assetType,
-          buildingID: asset.buildingID,
           descriptionAsset: asset.descriptionAsset,
-          floorID: asset.floorID,
           nameAsset: asset.nameAsset,
           price: asset.price,
-          roomID: asset.roomID,
-          tenantId: asset.tenantId,
+          quantity: asset.quantity,
           assetStatus: asset.assetStatus,
         });
         setIsModalOpen(true);

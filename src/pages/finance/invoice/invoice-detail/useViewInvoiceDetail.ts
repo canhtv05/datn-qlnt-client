@@ -88,7 +88,7 @@ export default function useViewInvoiceDetail() {
     onError: handleMutationError,
   });
 
-  const handleContinue = useCallback(async () => {
+  const handleContinue = useCallback(async (): Promise<boolean> => {
     switch (selectPaymentMethod) {
       case PaymentMethod.CHUYEN_KHOAN: {
         if (paymentReceipt?.data?.paymentMethod !== PaymentMethod.CHUYEN_KHOAN) {
@@ -98,7 +98,7 @@ export default function useViewInvoiceDetail() {
           }
         } else navigate(`/invoices/payment/${data?.data?.invoiceId}?method=${selectPaymentMethod}`);
         setSelectPaymentMethod(PaymentMethod.CHUYEN_KHOAN);
-        break;
+        return true;
       }
       case PaymentMethod.TIEN_MAT: {
         if (paymentReceipt?.data?.paymentMethod !== PaymentMethod.TIEN_MAT) {
@@ -109,10 +109,10 @@ export default function useViewInvoiceDetail() {
           );
         }
         setSelectPaymentMethod(PaymentMethod.TIEN_MAT);
-        break;
+        return true;
       }
       case PaymentMethod.VNPAY: {
-        if (!paymentReceipt) return;
+        if (!paymentReceipt) return false;
         const data: PaymentCreationURL = {
           amount: paymentReceipt?.data?.amount,
           transactionReferenceCode: paymentReceipt?.data?.id,
@@ -124,9 +124,11 @@ export default function useViewInvoiceDetail() {
             }
           },
         });
+        return true;
       }
+      default:
+        return false;
     }
-    return true;
   }, [
     createPaymentUrlMutation,
     data?.data?.invoiceId,

@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 const RoomAssetDetail = () => {
   const { roomId } = useParams();
   return (
-    <div>
+    <div className="shadow-lg">
       <RoomAssetTable roomId={roomId ?? ""} />
     </div>
   );

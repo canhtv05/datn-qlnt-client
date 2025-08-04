@@ -108,30 +108,32 @@ const Building = () => {
   return (
     <div className="flex flex-col">
       <StatisticCard data={dataBuildings} />
-      <BuildingButton ids={rowSelection} />
-      <BuildingFilter props={props} />
-      <DataTable<BuildingResponse>
-        data={data?.data ?? []}
-        columns={buildColumnsFromConfig(columnConfigs)}
-        page={Number(page)}
-        size={Number(size)}
-        totalElements={data?.meta?.pagination?.total || 0}
-        totalPages={data?.meta?.pagination?.totalPages || 0}
-        loading={isLoading}
-        rowSelection={rowSelection}
-        setRowSelection={setRowSelection}
-      />
-      <Modal
-        title="Tòa nhà"
-        trigger={null}
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        onConfirm={handleUpdateBuilding}
-        desc={Notice.UPDATE}
-      >
-        <AddOrUpdateBuilding handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
-      </Modal>
-      <ConfirmDialog />
+      <div className="shadow-lg">
+        <BuildingButton ids={rowSelection} />
+        <BuildingFilter props={props} />
+        <DataTable<BuildingResponse>
+          data={data?.data ?? []}
+          columns={buildColumnsFromConfig(columnConfigs)}
+          page={Number(page)}
+          size={Number(size)}
+          totalElements={data?.meta?.pagination?.total || 0}
+          totalPages={data?.meta?.pagination?.totalPages || 0}
+          loading={isLoading}
+          rowSelection={rowSelection}
+          setRowSelection={setRowSelection}
+        />
+        <Modal
+          title="Tòa nhà"
+          trigger={null}
+          open={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          onConfirm={handleUpdateBuilding}
+          desc={Notice.UPDATE}
+        >
+          <AddOrUpdateBuilding handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
+        </Modal>
+        <ConfirmDialog />
+      </div>
     </div>
   );
 };

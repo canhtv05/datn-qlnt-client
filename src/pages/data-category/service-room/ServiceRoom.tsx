@@ -81,24 +81,26 @@ const ServiceRoom = () => {
   return (
     <div className="flex flex-col">
       <StatisticCard data={dataServices} />
-      <ServiceRoomButton
-        ids={rowSelection}
-        roomOptions={roomOptions}
-        serviceOptions={serviceOptions}
-        buildingOptions={buildingOptions}
-      />
-      <ServiceRoomFilter props={props} />
-      <DataTable<ServiceRoomView>
-        data={data?.data ?? []}
-        columns={buildColumnsFromConfig(columnConfigs)}
-        page={Number(page)}
-        size={Number(size)}
-        totalElements={data?.meta?.pagination?.total || 0}
-        totalPages={data?.meta?.pagination?.totalPages || 0}
-        loading={isLoading}
-        rowSelection={rowSelection}
-        setRowSelection={setRowSelection}
-      />
+      <div className="shadow-lg">
+        <ServiceRoomButton
+          ids={rowSelection}
+          roomOptions={roomOptions}
+          serviceOptions={serviceOptions}
+          buildingOptions={buildingOptions}
+        />
+        <ServiceRoomFilter props={props} />
+        <DataTable<ServiceRoomView>
+          data={data?.data ?? []}
+          columns={buildColumnsFromConfig(columnConfigs)}
+          page={Number(page)}
+          size={Number(size)}
+          totalElements={data?.meta?.pagination?.total || 0}
+          totalPages={data?.meta?.pagination?.totalPages || 0}
+          loading={isLoading}
+          rowSelection={rowSelection}
+          setRowSelection={setRowSelection}
+        />
+      </div>
     </div>
   );
 };

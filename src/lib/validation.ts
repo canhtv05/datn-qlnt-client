@@ -15,6 +15,8 @@ import {
   ServiceCategory,
   ServiceCalculation,
   InvoiceItemType,
+  AssetType,
+  AssetStatus,
 } from "@/enums";
 import { isNumber } from "lodash";
 import { z } from "zod/v4";
@@ -325,17 +327,39 @@ export const createOrUpdateRoomSchema = z
   );
 
 /* ASSET */
-export const createOrUpdateAssetSchema = z.object({
+export const baseAssetSchema = z.object({
   nameAsset: z.string().min(1, "Tên tài sản không được để trống"),
-  assetType: z.string().min(1, "Vui lòng chọn loại tài sản"),
+  assetType: z.enum(
+    [AssetType.AN_NINH, AssetType.DIEN, AssetType.GIA_DUNG, AssetType.KHAC, AssetType.NOI_THAT, AssetType.VE_SINH],
+    {
+      message: "Loại tài sản không hợp lệ",
+    }
+  ),
   assetBeLongTo: z.enum([AssetBeLongTo.CA_NHAN, AssetBeLongTo.CHUNG, AssetBeLongTo.PHONG], {
     message: "Tài sản thuộc về không hợp lệ",
   }),
-  roomID: z.string().optional(),
-  buildingID: z.string().optional(),
-  tenantId: z.string().optional(),
-  descriptionAsset: z.string(),
-  price: zSafeNumber("Giá", { min: 1 }),
+  descriptionAsset: z.string().optional(),
+  price: zSafeNumber("Giá", { min: 0 }),
+  quantity: zSafeNumber("Số lượng", { min: 1 }),
+});
+
+export const creationAssetSchema = baseAssetSchema.extend({
+  buildingId: z.string().optional(),
+});
+
+export const updateAssetSchema = baseAssetSchema.extend({
+  assetStatus: z.enum(
+    [
+      AssetStatus.CAN_BAO_TRI,
+      AssetStatus.DA_THANH_LY,
+      AssetStatus.HOAT_DONG,
+      AssetStatus.HUY,
+      AssetStatus.HU_HONG,
+      AssetStatus.KHONG_SU_DUNG,
+      AssetStatus.THAT_LAC,
+    ],
+    { message: "Trạng thái tài sản không hợp lệ" }
+  ),
 });
 
 /* TENANT */

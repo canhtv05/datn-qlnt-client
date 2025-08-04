@@ -133,36 +133,38 @@ const AssetType = () => {
   return (
     <div className="flex flex-col">
       <StatisticCard data={dataServices} />
-      <ServiceButton ids={rowSelection} />
-      <ServiceFilter props={props} />
-      <DataTable<ServiceResponse>
-        data={data?.data ?? []}
-        columns={buildColumnsFromConfig(columnConfigs)}
-        page={Number(page)}
-        size={Number(size)}
-        totalElements={data?.meta?.pagination?.total || 0}
-        totalPages={data?.meta?.pagination?.totalPages || 0}
-        loading={isLoading}
-        rowSelection={rowSelection}
-        setRowSelection={setRowSelection}
-      />
-      <Modal
-        title="Dịch vụ"
-        trigger={null}
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        onConfirm={handleUpdateFloor}
-        desc={Notice.UPDATE}
-      >
-        <AddOrUpdateService
-          handleChange={handleChange}
-          value={value}
-          setValue={setValue}
-          errors={errors}
-          type="update"
+      <div className="shadow-lg">
+        <ServiceButton ids={rowSelection} />
+        <ServiceFilter props={props} />
+        <DataTable<ServiceResponse>
+          data={data?.data ?? []}
+          columns={buildColumnsFromConfig(columnConfigs)}
+          page={Number(page)}
+          size={Number(size)}
+          totalElements={data?.meta?.pagination?.total || 0}
+          totalPages={data?.meta?.pagination?.totalPages || 0}
+          loading={isLoading}
+          rowSelection={rowSelection}
+          setRowSelection={setRowSelection}
         />
-      </Modal>
-      <ConfirmDialog />
+        <Modal
+          title="Dịch vụ"
+          trigger={null}
+          open={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          onConfirm={handleUpdateFloor}
+          desc={Notice.UPDATE}
+        >
+          <AddOrUpdateService
+            handleChange={handleChange}
+            value={value}
+            setValue={setValue}
+            errors={errors}
+            type="update"
+          />
+        </Modal>
+        <ConfirmDialog />
+      </div>
     </div>
   );
 };

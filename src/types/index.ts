@@ -24,6 +24,7 @@ import {
   ServiceCategory,
   PaymentStatus,
   PaymentMethod,
+  AssetType,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -357,12 +358,9 @@ export interface ICreateAsset {
   nameAsset: string;
   assetType: string;
   assetBeLongTo: AssetBeLongTo | string;
-  roomID: string;
-  buildingID: string;
-  floorID: string;
-  tenantId: string;
+  buildingId: string;
   price: number | undefined;
-  assetStatus: AssetStatus | string;
+  quantity: number | undefined;
   descriptionAsset: string;
 }
 
@@ -372,7 +370,16 @@ export interface IAssetStatisticsResponse {
   totalDisabledAssets: number;
 }
 
-export type IUpdateAsset = ICreateAsset;
+export interface AssetStatusStatistic {
+  totalAssets: number;
+  totalActiveAssets: number;
+  totalBrokenAssets: number;
+  totalMaintenanceAssets: number;
+  totalLostAssets: number;
+  totalDisabledAssets: number;
+}
+
+export type IUpdateAsset = Omit<ICreateAsset, "buildingId"> & { assetStatus: AssetStatus | string };
 
 // export interface ICreateAsset {
 //   nameAsset: string;
@@ -385,22 +392,13 @@ export type IUpdateAsset = ICreateAsset;
 // export type IUpdateAsset = ICreateAsset;
 
 export interface AssetResponse extends AbstractResponse {
-  description: string;
-  assetName: string;
-  nameAsset: string;
-  assetType: string;
-  nameAssetType: string;
-  assetBeLongTo: AssetBeLongTo | string;
-  roomID: string;
-  roomCode: string;
-  buildingID: string;
   buildingName: string;
-  floorID: string;
-  nameFloor: string;
-  tenantId: string;
-  fullName: string;
+  nameAsset: string;
+  assetType: string | AssetType;
+  assetBeLongTo: string | AssetBeLongTo;
+  assetStatus: string | AssetStatus;
   price: number;
-  assetStatus: AssetStatus | string;
+  quantity: number;
   descriptionAsset: string;
 }
 
@@ -408,10 +406,11 @@ export interface AssetFilter {
   nameAsset: string;
   assetBeLongTo: AssetBeLongTo | string;
   assetStatus: AssetStatus | string;
+  assetType: AssetType | string;
 }
 
 /* Room Asset */
-export type AssetBeLongTo = "PHONG" | "CHUNG";
+export type AssetBeLongTo = "PHONG" | "CHUNG" | "CA_NHAN";
 
 export interface AssetRoomFilter {
   query: string;
@@ -955,6 +954,14 @@ export interface InvoiceBuildingCreationRequest {
   buildingId: string;
   paymentDueDate: string;
   note: string;
+}
+
+export interface InvoiceStatistics {
+  total: number;
+  totalPaid: number;
+  totalNotYetPaid: number;
+  totalOverdue: number;
+  totalCancelled: number;
 }
 
 export interface InvoiceFloorCreationRequest {

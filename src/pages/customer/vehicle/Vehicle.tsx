@@ -140,37 +140,39 @@ const Vehicle = () => {
   return (
     <div className="flex flex-col">
       <StatisticCard data={dataVehicles} />
-      <VehicleButton ids={rowSelection} tenants={tenants} />
-      <VehicleFilter props={props} />
-      <DataTable<VehicleResponse>
-        data={data?.data ?? []}
-        columns={buildColumnsFromConfig(columnConfigs)}
-        page={Number(page)}
-        size={Number(size)}
-        totalElements={data?.meta?.pagination?.total || 0}
-        totalPages={data?.meta?.pagination?.totalPages || 0}
-        loading={isLoading}
-        rowSelection={rowSelection}
-        setRowSelection={setRowSelection}
-      />
-      <Modal
-        title="Phương tiện"
-        trigger={null}
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        onConfirm={handleUpdateFloor}
-        desc={Notice.UPDATE}
-      >
-        <AddOrUpdateVehicle
-          tenants={tenants}
-          handleChange={handleChange}
-          value={value}
-          setValue={setValue}
-          errors={errors}
-          type="update"
+      <div className="shadow-lg">
+        <VehicleButton ids={rowSelection} tenants={tenants} />
+        <VehicleFilter props={props} />
+        <DataTable<VehicleResponse>
+          data={data?.data ?? []}
+          columns={buildColumnsFromConfig(columnConfigs)}
+          page={Number(page)}
+          size={Number(size)}
+          totalElements={data?.meta?.pagination?.total || 0}
+          totalPages={data?.meta?.pagination?.totalPages || 0}
+          loading={isLoading}
+          rowSelection={rowSelection}
+          setRowSelection={setRowSelection}
         />
-      </Modal>
-      <ConfirmDialog />
+        <Modal
+          title="Phương tiện"
+          trigger={null}
+          open={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          onConfirm={handleUpdateFloor}
+          desc={Notice.UPDATE}
+        >
+          <AddOrUpdateVehicle
+            tenants={tenants}
+            handleChange={handleChange}
+            value={value}
+            setValue={setValue}
+            errors={errors}
+            type="update"
+          />
+        </Modal>
+        <ConfirmDialog />
+      </div>
     </div>
   );
 };

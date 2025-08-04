@@ -158,36 +158,38 @@ const MeterReading = () => {
   return (
     <div className="flex flex-col">
       <MeterReadingButton ids={rowSelection} meterInitResponse={meterFindAll} />
-      <MeterReadingFilter props={props} />
-      <DataTable<MeterReadingResponse>
-        data={data?.data ?? []}
-        columns={buildColumnsFromConfig(columnConfigs)}
-        page={Number(page)}
-        size={Number(size)}
-        totalElements={data?.meta?.pagination?.total || 0}
-        totalPages={data?.meta?.pagination?.totalPages || 0}
-        loading={isLoading}
-        rowSelection={rowSelection}
-        setRowSelection={setRowSelection}
-      />
-      <Modal
-        title="Ghi chỉ số"
-        trigger={null}
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        onConfirm={handleUpdateFloor}
-        desc={Notice.UPDATE}
-      >
-        <AddOrUpdateMeterReading
-          type="update"
-          meterInitReading={meterFindAll}
-          handleChange={handleChange}
-          value={value}
-          setValue={setValue}
-          errors={errors}
+      <div className="shadow-lg">
+        <MeterReadingFilter props={props} />
+        <DataTable<MeterReadingResponse>
+          data={data?.data ?? []}
+          columns={buildColumnsFromConfig(columnConfigs)}
+          page={Number(page)}
+          size={Number(size)}
+          totalElements={data?.meta?.pagination?.total || 0}
+          totalPages={data?.meta?.pagination?.totalPages || 0}
+          loading={isLoading}
+          rowSelection={rowSelection}
+          setRowSelection={setRowSelection}
         />
-      </Modal>
-      <ConfirmDialog />
+        <Modal
+          title="Ghi chỉ số"
+          trigger={null}
+          open={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          onConfirm={handleUpdateFloor}
+          desc={Notice.UPDATE}
+        >
+          <AddOrUpdateMeterReading
+            type="update"
+            meterInitReading={meterFindAll}
+            handleChange={handleChange}
+            value={value}
+            setValue={setValue}
+            errors={errors}
+          />
+        </Modal>
+        <ConfirmDialog />
+      </div>
     </div>
   );
 };

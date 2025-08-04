@@ -11,27 +11,26 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
-import { createOrUpdateAssetSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { ApiResponse, IBtnType, ICreateAsset, IdAndName, IUpdateAsset } from "@/types";
+import { ApiResponse, IBtnType, ICreateAsset, IdAndName } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateAsset from "./AddOrUpdateAsset";
 import RoomAssetButton from "../room-assets/RoomAssetButton";
+import { useParams } from "react-router-dom";
+import { creationAssetSchema } from "@/lib/validation";
 
 const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
+  const { id } = useParams();
   const [value, setValue] = useState<ICreateAsset>({
     nameAsset: "",
     assetType: "",
     assetBeLongTo: "",
     price: 0,
     descriptionAsset: "",
-    buildingID: "",
-    floorID: "",
-    roomID: "",
-    tenantId: "",
-    assetStatus: "",
+    buildingId: "",
+    quantity: undefined,
   });
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAsset>();
@@ -58,11 +57,8 @@ const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
         assetBeLongTo: "",
         price: 0,
         descriptionAsset: "",
-        buildingID: "",
-        floorID: "",
-        roomID: "",
-        tenantId: "",
-        assetStatus: "",
+        buildingId: "",
+        quantity: undefined,
       });
       queryClient.invalidateQueries({
         predicate: (prev) => {
@@ -74,34 +70,24 @@ const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
 
   const handleAddAssetType = useCallback(async () => {
     try {
-      const {
-        assetBeLongTo,
-        assetType,
-        buildingID,
-        descriptionAsset,
-        floorID,
-        nameAsset,
-        price,
-        roomID,
-        tenantId,
-        assetStatus,
-      } = value;
+      const { assetBeLongTo, assetType, descriptionAsset, nameAsset, price, quantity } = value;
 
-      const data: IUpdateAsset = {
+      const data: ICreateAsset = {
         nameAsset: nameAsset.trim(),
-        // assetType: assetType ?? "",
         assetType: assetType ?? "",
         assetBeLongTo: assetBeLongTo ?? "",
         price: price ?? 0,
         descriptionAsset: descriptionAsset.trim() ?? "",
-        buildingID: buildingID ?? "",
-        floorID: floorID ?? "",
-        roomID: roomID ?? "",
-        tenantId: tenantId ?? "",
-        assetStatus: assetStatus ?? "",
+        buildingId: id ?? "",
+        quantity,
       };
 
-      await createOrUpdateAssetSchema.parseAsync(data);
+      if (!id) {
+        toast.error("Không có mã tòa nhà");
+        return false;
+      }
+
+      await creationAssetSchema.parseAsync(data);
       await addAssetMutation.mutateAsync(data);
       clearErrors();
       return true;
@@ -109,7 +95,7 @@ const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
       handleZodErrors(error);
       return false;
     }
-  }, [addAssetMutation, clearErrors, handleZodErrors, value]);
+  }, [addAssetMutation, clearErrors, handleZodErrors, id, value]);
 
   const handleRemoveAssetTypeByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
@@ -152,7 +138,7 @@ const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
 
   const removeAssetTypeMutation = useMutation({
     mutationKey: ["remove-assets"],
-    mutationFn: async (id: string) => await httpRequest.delete(`/assets/${id}`),
+    mutationFn: async (id: string) => await httpRequest.put(`/assets/soft-delete/${id}`),
   });
 
   const { data: buildingInitToAdd, isError: errorBuildingInitToAdd } = useQuery<ApiResponse<IdAndName[]>>({

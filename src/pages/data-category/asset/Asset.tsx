@@ -111,30 +111,38 @@ const Asset = () => {
   return (
     <div className="flex flex-col">
       <StatisticCard data={dataAssets} />
-      <AssetButton ids={rowSelection} />
-      <AssetFilter props={props} />
-      <DataTable<AssetResponse>
-        data={data?.data?.data ?? []}
-        columns={buildColumnsFromConfig(columnConfigs)}
-        page={Number(page)}
-        size={Number(size)}
-        totalElements={data?.data?.meta?.pagination?.total || 0}
-        totalPages={data?.data?.meta?.pagination?.totalPages || 0}
-        loading={isLoading}
-        rowSelection={rowSelection}
-        setRowSelection={setRowSelection}
-      />
-      <Modal
-        title="Tài sản"
-        trigger={null}
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        onConfirm={handleUpdateFloor}
-        desc={Notice.UPDATE}
-      >
-        <AddOrUpdateAsset handleChange={handleChange} value={value} setValue={setValue} errors={errors} type="update" />
-      </Modal>
-      <ConfirmDialog />
+      <div className="shadow-lg">
+        <AssetButton ids={rowSelection} />
+        <AssetFilter props={props} />
+        <DataTable<AssetResponse>
+          data={data?.data?.data ?? []}
+          columns={buildColumnsFromConfig(columnConfigs)}
+          page={Number(page)}
+          size={Number(size)}
+          totalElements={data?.data?.meta?.pagination?.total || 0}
+          totalPages={data?.data?.meta?.pagination?.totalPages || 0}
+          loading={isLoading}
+          rowSelection={rowSelection}
+          setRowSelection={setRowSelection}
+        />
+        <Modal
+          title="Tài sản"
+          trigger={null}
+          open={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          onConfirm={handleUpdateFloor}
+          desc={Notice.UPDATE}
+        >
+          <AddOrUpdateAsset
+            handleChange={handleChange}
+            value={value}
+            setValue={setValue}
+            errors={errors}
+            type="update"
+          />
+        </Modal>
+        <ConfirmDialog />
+      </div>
     </div>
   );
 };

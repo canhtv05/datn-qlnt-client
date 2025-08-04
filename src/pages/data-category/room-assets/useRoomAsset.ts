@@ -1,4 +1,3 @@
-import { StatisticCardType } from "@/components/StatisticCard";
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
 import {
@@ -6,7 +5,6 @@ import {
   AssetResponse,
   AssetRoomDetailResponse,
   AssetRoomFilter,
-  IAssetStatisticsResponse,
   IUpdateAsset,
   IUpdateRoomAsset,
 } from "@/types";
@@ -14,7 +12,6 @@ import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CircleCheck, CircleDollarSign, XCircle } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -97,6 +94,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
 
       return res.data;
     },
+    retry: 1,
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -108,32 +106,33 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
     }));
   };
 
-  const { data: statistics, isError: isStatisticsError } = useQuery<ApiResponse<IAssetStatisticsResponse>>({
-    queryKey: ["asset-statistics"],
-    queryFn: async () => {
-      const res = await httpRequest.get("/assets/statistics");
-      return res.data;
-    },
-    retry: 1,
-  });
+  // const { data: statistics, isError: isStatisticsError } = useQuery<ApiResponse<IAssetStatisticsResponse>>({
+  //   queryKey: ["asset-statistics"],
+  //   queryFn: async () => {
+  //     const res = await httpRequest.get("/assets/statistics", { params: buildingId });
+  //     return res.data;
+  //   },
+  //   retry: 1,
+  //   enabled: !!buildingId,
+  // });
 
-  const dataAssets: StatisticCardType[] = [
-    {
-      icon: CircleDollarSign,
-      label: "Tài sản",
-      value: statistics?.data.totalAssets ?? 0,
-    },
-    {
-      icon: CircleCheck,
-      label: "Hoạt động",
-      value: statistics?.data.totalActiveAssets ?? 0,
-    },
-    {
-      icon: XCircle,
-      label: "Không hoạt động",
-      value: statistics?.data.totalDisabledAssets ?? 0,
-    },
-  ];
+  // const dataAssets: StatisticCardType[] = [
+  //   {
+  //     icon: CircleDollarSign,
+  //     label: "Tài sản",
+  //     value: statistics?.data.totalAssets ?? 0,
+  //   },
+  //   {
+  //     icon: CircleCheck,
+  //     label: "Hoạt động",
+  //     value: statistics?.data.totalActiveAssets ?? 0,
+  //   },
+  //   {
+  //     icon: XCircle,
+  //     label: "Không hoạt động",
+  //     value: statistics?.data.totalDisabledAssets ?? 0,
+  //   },
+  // ];
 
   const updateRoomAssetMutation = useMutation({
     mutationKey: ["update-room-assets"],
@@ -179,8 +178,6 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
   };
 
   const handleRemoveRoomAssetById = async (id: string): Promise<boolean> => {
-    console.log(id);
-    return false;
     try {
       await removeRoomAssetMutation.mutateAsync(id, {
         onSuccess: () => {
@@ -222,10 +219,10 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
       idRef.current = assetRooms.id;
       if (action === "update") {
         const data = {
-          assetName: assetRooms.assetName,
+          assetName: assetRooms.nameAsset,
           price: assetRooms.price,
           assetStatus: assetRooms.assetStatus,
-          description: assetRooms.description,
+          description: assetRooms.descriptionAsset,
         };
         setValue(data);
         setIsModalOpen(true);
@@ -262,10 +259,10 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
       toast.error("Có lỗi xảy ra khi tải loại tài sản");
     }
 
-    if (isStatisticsError) {
-      toast.error("Có lỗi xảy ra khi tải thống kê");
-    }
-  }, [isError, isStatisticsError]);
+    // if (isStatisticsError) {
+    //   toast.error("Có lỗi xảy ra khi tải thống kê");
+    // }
+  }, [isError]);
 
   return {
     query: {
@@ -276,7 +273,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
     setSearchParams,
     props,
     data,
-    dataAssets,
+    // dataAssets,
     isLoading,
     handleActionClick,
     rowSelection,

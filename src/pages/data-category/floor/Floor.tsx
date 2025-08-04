@@ -106,30 +106,32 @@ const Floor = () => {
   return (
     <div className="flex flex-col">
       <StatisticCard data={datFloors} />
-      <FloorButton ids={rowSelection} />
-      <FloorFilter props={props} />
-      <DataTable<FloorResponse>
-        data={data?.data ?? []}
-        columns={buildColumnsFromConfig(columnConfigs)}
-        page={Number(page)}
-        size={Number(size)}
-        totalElements={data?.meta?.pagination?.total || 0}
-        totalPages={data?.meta?.pagination?.totalPages || 0}
-        loading={isLoading}
-        rowSelection={rowSelection}
-        setRowSelection={setRowSelection}
-      />
-      <Modal
-        title="Tầng"
-        trigger={null}
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        onConfirm={handleUpdateFloor}
-        desc={Notice.UPDATE}
-      >
-        <AddOrUpdateFloor handleChange={handleChange} value={value} setValue={setValue} errors={errors} type="add" />
-      </Modal>
-      <ConfirmDialog />
+      <div className="shadow-lg">
+        <FloorButton ids={rowSelection} />
+        <FloorFilter props={props} />
+        <DataTable<FloorResponse>
+          data={data?.data ?? []}
+          columns={buildColumnsFromConfig(columnConfigs)}
+          page={Number(page)}
+          size={Number(size)}
+          totalElements={data?.meta?.pagination?.total || 0}
+          totalPages={data?.meta?.pagination?.totalPages || 0}
+          loading={isLoading}
+          rowSelection={rowSelection}
+          setRowSelection={setRowSelection}
+        />
+        <Modal
+          title="Tầng"
+          trigger={null}
+          open={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          onConfirm={handleUpdateFloor}
+          desc={Notice.UPDATE}
+        >
+          <AddOrUpdateFloor handleChange={handleChange} value={value} setValue={setValue} errors={errors} type="add" />
+        </Modal>
+        <ConfirmDialog />
+      </div>
     </div>
   );
 };
