@@ -24,11 +24,15 @@ export enum Status {
   LOGOUT_SUCCESS = "Đăng xuất thành công",
   REGISTER_SUCCESS = "Đăng ký thành công, vui lòng đăng nhập",
   ERROR_STATISTICS = "Có lỗi xảy ra khi lấy dữ liệu thống kê",
+  RESTORE_SUCCESS = "Khôi phục thành công",
+  RESTORE_FAILED = "Khôi phục thất bại",
 }
 
 export enum Notice {
   REMOVE = "Hành động này sẽ xóa vĩnh viễn dữ liệu đã chọn khỏi hệ thống. Bạn có chắc chắn muốn tiếp tục?",
   TOGGLE_STATUS = "Bạn có chắc chắn muốn thay đổi trạng thái của mục này?",
+  RESTORE = "Bạn có chắc chắn muốn khôi phục mục này?",
+  RESTORES = "Bạn có chắc chắn muốn khôi phục các mục này?",
   UPDATE = "Hành động này sẽ cập nhật thông tin hiện tại. Bạn có chắc chắn muốn tiếp tục?",
   ADD = "Hành động này sẽ thêm mới một mục vào hệ thống. Bạn có chắc chắn muốn thực hiện?",
 }

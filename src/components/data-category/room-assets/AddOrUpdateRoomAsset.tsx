@@ -13,6 +13,7 @@ import {
 } from "@/types";
 import FieldsMultiSelectLabel from "@/components/ui/FieldsMultiSelectLabel";
 import { toast } from "sonner";
+import RenderIf from "@/components/RenderIf";
 
 interface Props {
   value: RoomAssetFormValue;
@@ -269,50 +270,52 @@ const AddOrUpdateRoomAsset = ({
           required
         />
       )}
-      <FieldsSelectLabel
-        data={[
-          {
-            label: "Hoạt động",
-            value: AssetStatus.HOAT_DONG,
-          },
-          {
-            label: "Cần bảo trì",
-            value: AssetStatus.CAN_BAO_TRI,
-          },
-          {
-            label: "Đã thanh lý",
-            value: AssetStatus.DA_THANH_LY,
-          },
-          {
-            label: "Hư hỏng",
-            value: AssetStatus.HU_HONG,
-          },
-          {
-            label: "Thất lạc",
-            value: AssetStatus.THAT_LAC,
-          },
-          {
-            label: "Không sử dụng",
-            value: AssetStatus.KHONG_SU_DUNG,
-          },
-          {
-            label: "Hủy",
-            value: AssetStatus.HUY,
-          },
-        ]}
-        placeholder="-- Chọn trạng thái tài sản --"
-        label="Trạng thái tài sản:"
-        id="assetStatus"
-        name="assetStatus"
-        value={value.assetStatus ?? ""}
-        onChange={(val) => {
-          setValue((prev) => ({ ...prev, assetStatus: val as AssetStatus }));
-        }}
-        labelSelect="Trạng thái tài sản"
-        showClear
-        errorText={errors.assetStatus}
-        required
-      />
+      <RenderIf value={type !== "bulkAdd"}>
+        <FieldsSelectLabel
+          data={[
+            {
+              label: "Hoạt động",
+              value: AssetStatus.HOAT_DONG,
+            },
+            {
+              label: "Cần bảo trì",
+              value: AssetStatus.CAN_BAO_TRI,
+            },
+            {
+              label: "Đã thanh lý",
+              value: AssetStatus.DA_THANH_LY,
+            },
+            {
+              label: "Hư hỏng",
+              value: AssetStatus.HU_HONG,
+            },
+            {
+              label: "Thất lạc",
+              value: AssetStatus.THAT_LAC,
+            },
+            {
+              label: "Không sử dụng",
+              value: AssetStatus.KHONG_SU_DUNG,
+            },
+            {
+              label: "Hủy",
+              value: AssetStatus.HUY,
+            },
+          ]}
+          placeholder="-- Chọn trạng thái tài sản --"
+          label="Trạng thái tài sản:"
+          id="assetStatus"
+          name="assetStatus"
+          value={value.assetStatus ?? ""}
+          onChange={(val) => {
+            setValue((prev) => ({ ...prev, assetStatus: val as AssetStatus }));
+          }}
+          labelSelect="Trạng thái tài sản"
+          showClear
+          errorText={errors.assetStatus}
+          required
+        />
+      </RenderIf>
       {type === "addToAllRoom" && (
         <FieldsSelectLabel
           data={assetOptions}
@@ -329,15 +332,17 @@ const AddOrUpdateRoomAsset = ({
         />
       )}
 
-      <TextareaLabel
-        id="description"
-        name="description"
-        placeholder="Nhập mô tả chi tiết"
-        label="Mô tả:"
-        value={value.description ?? ""}
-        onChange={(e) => setValue((prev) => ({ ...prev, description: e.target.value }))}
-        disabled={value.assetBeLongTo === "PHONG"} // <-- add this
-      />
+      <RenderIf value={type !== "bulkAdd"}>
+        <TextareaLabel
+          id="description"
+          name="description"
+          placeholder="Nhập mô tả chi tiết"
+          label="Mô tả:"
+          value={value.description ?? ""}
+          onChange={(e) => setValue((prev) => ({ ...prev, description: e.target.value }))}
+          disabled={value.assetBeLongTo === "PHONG"} // <-- add this
+        />
+      </RenderIf>
     </div>
   );
 };

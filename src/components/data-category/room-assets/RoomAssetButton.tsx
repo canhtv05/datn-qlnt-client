@@ -26,6 +26,7 @@ import { addToAllRoomAssetSchema, roomAssetBulkSchema, roomAssetFormSchema } fro
 import { handleMutationError } from "@/utils/handleMutationError";
 import { Building, Layers } from "lucide-react";
 import { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
+import { useParams, useSearchParams } from "react-router-dom";
 
 const RoomAssetButton = ({
   ids,
@@ -38,6 +39,8 @@ const RoomAssetButton = ({
   type: "default" | "detail" | "asset";
   buildingOptions: FieldsSelectLabelType[] | undefined;
 }) => {
+  const { id } = useParams();
+  const [searchParams] = useSearchParams();
   const [value, setValue] = useState<RoomAssetFormValue>({
     assetBeLongTo: "PHONG",
     roomId: "",
@@ -62,7 +65,7 @@ const RoomAssetButton = ({
 
   if (type === "default") {
     LOCAL_ACTION_BUTTONS.push({
-      tooltipContent: "Thêm nhiều",
+      tooltipContent: "Thêm nhiều tài sản vào nhiều phòng",
       icon: Layers,
       arrowColor: "var(--color-emerald-500)",
       type: "bulkAdd",
@@ -100,10 +103,12 @@ const RoomAssetButton = ({
   });
 
   const { data: assetsListData } = useQuery<ApiResponse<AssetResponse[]>>({
-    queryKey: ["assets"],
+    queryKey: ["assets-find-all"],
     queryFn: async () => {
-      const res = await httpRequest.get("/assets");
-      return res.data.data;
+      const res = await httpRequest.get("/assets/find-all", {
+        params: { buildingId: id || searchParams.get("buildingId") },
+      });
+      return res.data;
     },
   });
 
@@ -128,8 +133,15 @@ const RoomAssetButton = ({
         price: 0,
         description: "",
       });
-      queryClient.invalidateQueries({ queryKey: ["asset-rooms"] });
-      queryClient.invalidateQueries({ queryKey: ["room-asset-statistics"] });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
+      });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+      });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
+      });
     },
   });
 
@@ -158,8 +170,15 @@ const RoomAssetButton = ({
         roomId: "",
         assetId: "",
       });
-      queryClient.invalidateQueries({ queryKey: ["asset-rooms"] });
-      queryClient.invalidateQueries({ queryKey: ["room-asset-statistics"] });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
+      });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+      });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
+      });
     },
   });
 
@@ -200,9 +219,15 @@ const RoomAssetButton = ({
         assetId: "",
         buildingId: "",
       });
-      queryClient.invalidateQueries({ queryKey: ["asset-rooms"] });
-      queryClient.invalidateQueries({ queryKey: ["room-asset-statistics"] });
-      queryClient.invalidateQueries({ queryKey: ["room-asset-all"] });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
+      });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+      });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
+      });
     },
   });
 
@@ -256,8 +281,12 @@ const RoomAssetButton = ({
       queryClient.invalidateQueries({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
       });
-      queryClient.invalidateQueries({ queryKey: ["room-asset-statistics"] });
-      queryClient.invalidateQueries({ queryKey: ["room-asset-all"] });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+      });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
+      });
       toast.success(Status.REMOVE_SUCCESS);
 
       return true;

@@ -85,8 +85,8 @@ export const useContract = () => {
   });
 
   const { data: assetsData } = useQuery<ApiResponse<AssetResponse[]>>({
-    queryKey: ["assets-all"],
-    queryFn: async () => (await httpRequest.get("/assets/find-all")).data,
+    queryKey: ["assets-find-all-no-buildingId"],
+    queryFn: async () => (await httpRequest.get("/assets/find-all-no-buildingId")).data,
   });
 
   const { data: servicesDaTa } = useQuery<ApiResponse<ServiceResponse[]>>({

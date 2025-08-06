@@ -31,6 +31,7 @@ const DashBoard = lazy(() => import("@/pages/dashboard"));
 
 /* DATA CATEGORIES*/
 const Building = lazy(() => import("@/pages/data-category/building"));
+const HistoryBuilding = lazy(() => import("@/pages/data-category/building/HistoryBuilding"));
 const SelectBuilding = lazy(() => import("@/components/data-category/building/SelectBuilding"));
 const Floor = lazy(() => import("@/pages/data-category/floor"));
 const AssetType = lazy(() => import("@/pages/data-category/asset-type"));
@@ -99,6 +100,11 @@ const privateRoutes: RouteType[] = [
   {
     path: configs.routes.facilities.buildings,
     component: Building,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.facilities.buildingsHistory,
+    component: HistoryBuilding,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {

@@ -20,6 +20,7 @@ import { toast } from "sonner";
 
 export const useMeter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { id } = useParams();
   const {
     page = "1",
     size = "15",
@@ -80,14 +81,14 @@ export const useMeter = () => {
   }, [filterValues.buildingId, filterValues.meterType, filterValues.query, filterValues.roomId, setSearchParams]);
 
   const { data, isLoading, isError } = useQuery<ApiResponse<PaginatedResponse<MeterResponse[]>>>({
-    queryKey: ["meters", page, size, buildingId, query, roomId, meterType],
+    queryKey: ["meters", page, size, buildingId, query, id, roomId, meterType],
     queryFn: async () => {
       const params: Record<string, string> = {
         page: page.toString(),
         size: size.toString(),
       };
 
-      if (buildingId) params["buildingId"] = buildingId;
+      if (id) params["buildingId"] = id;
       if (query) params["query"] = query;
       if (roomId) params["roomId"] = roomId;
       if (meterType) params["meterType"] = meterType;
@@ -231,8 +232,6 @@ export const useMeter = () => {
     },
     retry: 1,
   });
-
-  const { id } = useParams();
 
   const { data: filterMeterInit, isError: errorFilterMeterInit } = useQuery<ApiResponse<MeterInitFilterResponse>>({
     queryKey: ["meters-filter-init"],

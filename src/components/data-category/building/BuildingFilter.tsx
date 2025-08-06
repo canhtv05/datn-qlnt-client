@@ -1,6 +1,7 @@
 import ButtonFilter from "@/components/ButtonFilter";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
+import RenderIf from "@/components/RenderIf";
 import { BuildingStatus, BuildingType } from "@/enums";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 
@@ -17,7 +18,16 @@ export interface BuildingFilterProps {
   onFilter: () => void;
 }
 
-const BuildingFilter = ({ props }: { props: BuildingFilterProps }) => {
+const switchGrid = (type: "default" | "restore"): string => {
+  switch (type) {
+    case "default":
+      return "grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end";
+    default:
+      return "grid md:grid-cols-2 grid-cols-1 gap-5 w-full items-end";
+  }
+};
+
+const BuildingFilter = ({ props, type }: { props: BuildingFilterProps; type: "default" | "restore" }) => {
   const { query, status, buildingType } = props.filterValues;
   const setFilterValues = props.setFilterValues;
 
@@ -32,18 +42,20 @@ const BuildingFilter = ({ props }: { props: BuildingFilterProps }) => {
 
   return (
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
-      <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end">
-        <FieldsSelectLabel
-          placeholder="-- Trạng thái hoạt động --"
-          labelSelect="Trạng thái"
-          data={[
-            { label: "Hoạt động", value: BuildingStatus.HOAT_DONG },
-            { label: "Tạm khóa", value: BuildingStatus.TAM_KHOA },
-          ]}
-          value={status}
-          onChange={(value) => handleChange("status", String(value))}
-          name="status"
-        />
+      <div className={switchGrid(type)}>
+        <RenderIf value={type === "default"}>
+          <FieldsSelectLabel
+            placeholder="-- Trạng thái hoạt động --"
+            labelSelect="Trạng thái"
+            data={[
+              { label: "Hoạt động", value: BuildingStatus.HOAT_DONG },
+              { label: "Tạm khóa", value: BuildingStatus.TAM_KHOA },
+            ]}
+            value={status}
+            onChange={(value) => handleChange("status", String(value))}
+            name="status"
+          />
+        </RenderIf>
         <FieldsSelectLabel
           placeholder="-- Loại nhà --"
           labelSelect="Loại nhà"

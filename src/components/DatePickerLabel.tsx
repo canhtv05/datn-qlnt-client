@@ -7,6 +7,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import RenderIf from "./RenderIf";
 import { useState } from "react";
+import { vi } from "date-fns/locale";
 
 interface DateValue {
   date: Date | undefined;
@@ -52,6 +53,7 @@ const DatePickerLabel = ({ date, setDate, label, errorText, required, fromYear, 
             captionLayout="dropdown"
             fromYear={fromYear}
             toYear={toYear}
+            locale={vi}
           />
         </PopoverContent>
       </Popover>

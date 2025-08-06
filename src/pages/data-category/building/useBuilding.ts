@@ -289,13 +289,15 @@ export const useBuilding = () => {
     onFilter: handleFilter,
   };
 
-  if (isError) {
-    toast.error("Có lỗi xảy ra khi tải tòa nhà");
-  }
+  useEffect(() => {
+    if (isError) {
+      toast.error("Có lỗi xảy ra khi tải tòa nhà");
+    }
 
-  if (isStatisticsError) {
-    toast.error("Có lỗi xảy ra khi tải thống kê");
-  }
+    if (isStatisticsError) {
+      toast.error("Có lỗi xảy ra khi tải thống kê");
+    }
+  }, [isError, isStatisticsError]);
 
   return {
     query: {

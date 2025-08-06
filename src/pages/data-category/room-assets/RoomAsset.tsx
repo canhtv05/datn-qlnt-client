@@ -15,6 +15,8 @@ const RoomAsset = () => {
   const { data, isLoading, statistics, ConfirmDialog, query, rowSelection, setRowSelection, props } = useRoomAssetAll();
   const navigate = useNavigate();
 
+  const { id } = useParams();
+
   const { page, size } = query;
   const columnConfigs: ColumnConfig[] = [
     {
@@ -38,7 +40,7 @@ const RoomAsset = () => {
                     variant={btn.type}
                     className="cursor-pointer"
                     onClick={() => {
-                      navigate(`/asset-management/room-assets/detail/${row.id}`, {
+                      navigate(`/asset-management/room-assets/detail/${row.id}?buildingId=${id}`, {
                         replace: true,
                       });
                     }}

@@ -120,7 +120,7 @@ export const useRoom = () => {
       minAcreage: "",
       maximumPeople: "",
       nameFloor: "",
-      buildingId: "",
+      buildingId: buildingIdParam || "",
       floorId: "",
     });
     setSearchParams({});

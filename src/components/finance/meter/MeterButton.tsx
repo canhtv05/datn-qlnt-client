@@ -141,7 +141,7 @@ const MeterButton = ({
         openDialog(ids);
       }
       if (btn.type === "view" && id) {
-        navigate(`/finance/meters/statistics/${id}`, { replace: true });
+        navigate(`/finance/meters/statistics/${id}`);
       }
     },
     [ids, navigate, openDialog, id]

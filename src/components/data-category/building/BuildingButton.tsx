@@ -17,9 +17,10 @@ import { createOrUpdateBuildingSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
 // import { useFullAddress } from "@/hooks/useFullAddress";
 import { IBtnType, ICreateBuildingValue } from "@/types";
-import { ACTION_BUTTONS } from "@/constant";
+import { ACTION_BUTTONS_HISTORY } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
+import { useNavigate } from "react-router-dom";
 
 type AddData = ICreateBuildingValue & { userId: string | undefined };
 
@@ -33,6 +34,7 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
     description: "",
     numberOfFloorsForRent: undefined,
   });
+  const navigate = useNavigate();
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateBuildingValue>();
   // const { fullAddress, Address, clearValue } = useFullAddress();
@@ -134,9 +136,11 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
     (btn: IBtnType) => {
       if (btn.type === "delete") {
         openDialog(ids);
+      } else if (btn.type === "history") {
+        navigate(`/facilities/buildings/history`);
       }
     },
-    [ids, openDialog]
+    [ids, navigate, openDialog]
   );
 
   const removeBuildingMutation = useMutation({
@@ -149,7 +153,7 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
       <div className="flex px-4 py-3 justify-between items-center">
         <h3 className="font-semibold">Tòa nhà</h3>
         <div className="flex gap-2">
-          {ACTION_BUTTONS.map((btn, index) => (
+          {ACTION_BUTTONS_HISTORY.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>

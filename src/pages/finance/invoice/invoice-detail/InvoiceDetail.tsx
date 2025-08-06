@@ -252,7 +252,7 @@ const InvoiceDetail = () => {
           disablePagination
         />
 
-        <div className="px-5 py-2 mt-5 w-full flex gap-2 lg:flex-row flex-col h-full items-stretch">
+        <div className="px-5 py-2 mt-5 w-full flex gap-5 lg:flex-row flex-col h-full items-stretch">
           {/* Thông tin khách thuê */}
           <div className="w-full flex flex-col flex-1">
             <h3 className="font-semibold rounded-sm p-2 bg-primary/50 text-sm text-white mb-2 pl-5 border-b-2">
@@ -307,7 +307,7 @@ const InvoiceDetail = () => {
             </div>
           </div>
         </div>
-        <div className="mx-5 mt-2 flex lg:items-start items-center gap-2 rounded-md bg-cyan-200 px-4 py-2 shadow-sm">
+        <div className="mx-5 mt-3 flex lg:items-start items-center gap-2 rounded-md bg-cyan-200 px-4 py-2 shadow-sm">
           <Info className="text-cyan-800 mt-0.5 h-4 w-4" />
           <p className="text-cyan-900 text-sm font-medium">{data?.data?.note}</p>
         </div>

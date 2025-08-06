@@ -92,7 +92,7 @@ const FloorFilter = ({ props }: { props: FloorFilterProps }) => {
           type="text"
           id="nameFloor"
           name="nameFloor"
-          placeholder="Tên tòa nhà"
+          placeholder="Tên tầng"
           value={nameFloor}
           onChange={(e) => handleChange("nameFloor", e.target.value)}
         />

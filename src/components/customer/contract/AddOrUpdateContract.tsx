@@ -92,6 +92,7 @@ const AddOrUpdateContract = ({
             setDate={(d) => handleChange("endDate", d)}
             errorText={errors.endDate}
             toYear={2030}
+            required
           />
         </div>
 

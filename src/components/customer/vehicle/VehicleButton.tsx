@@ -23,7 +23,7 @@ const VehicleButton = ({ ids, tenants }: { ids: Record<string, boolean>; tenants
   const [value, setValue] = useState<ICreateVehicle>({
     describe: "",
     licensePlate: "",
-    registrationDate: "",
+    registrationDate: new Date().toLocaleDateString("vi-VN"),
     vehicleStatus: VehicleStatus.SU_DUNG,
     vehicleType: "",
     tenantId: "",

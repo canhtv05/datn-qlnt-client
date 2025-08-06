@@ -20,6 +20,7 @@ const routes = {
   dashboard: "/dashboard",
   facilities: {
     buildings: "/facilities/buildings",
+    buildingsHistory: "/facilities/buildings/history",
     floors: "/facilities/floors",
     floorId: "/facilities/floors/:id",
     rooms: "/facilities/rooms",
@@ -30,7 +31,7 @@ const routes = {
     asset: "/asset-management/assets",
     assetId: "/asset-management/assets/:id",
     roomAsset: "/asset-management/room-assets",
-    roomId: "/asset-management/room-assets/:buildingId",
+    roomId: "/asset-management/room-assets/:id",
     roomAssetDetail: "/asset-management/room-assets/detail/:roomId",
   },
   serviceMng: {

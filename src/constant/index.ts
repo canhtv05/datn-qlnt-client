@@ -45,6 +45,8 @@ import {
   ToggleLeft,
   Banknote,
   Gavel,
+  History,
+  Undo,
 } from "lucide-react";
 
 export interface SideBarType {
@@ -977,6 +979,61 @@ export const ACTION_BUTTONS: IBtnType[] = [
   },
 ];
 
+export const ACTION_BUTTONS_HISTORY: IBtnType[] = [
+  {
+    tooltipContent: "Xem lịch sử",
+    icon: History,
+    arrowColor: "#5a5e78",
+    type: "history",
+    hasConfirm: false,
+  },
+  {
+    tooltipContent: "Thêm mới",
+    icon: Plus,
+    arrowColor: "var(--color-primary)",
+    type: "default",
+    hasConfirm: true,
+  },
+  {
+    tooltipContent: "Tải lên Excel",
+    icon: Upload,
+    arrowColor: "var(--color-amber-500)",
+    type: "upload",
+    hasConfirm: false,
+  },
+  {
+    tooltipContent: "Tải xuống Excel",
+    icon: Download,
+    arrowColor: "var(--color-emerald-500)",
+    type: "download",
+    hasConfirm: false,
+  },
+  {
+    tooltipContent: "Xóa",
+    icon: Trash2,
+    arrowColor: "var(--color-red-400)",
+    type: "delete",
+    hasConfirm: true,
+  },
+];
+
+export const BUTTON_HISTORY: IBtnType[] = [
+  {
+    tooltipContent: "Khôi phục",
+    icon: Undo,
+    arrowColor: "var(--color-violet-500)",
+    type: "undo",
+    hasConfirm: true,
+  },
+  {
+    tooltipContent: "Xóa",
+    icon: Trash2,
+    arrowColor: "var(--color-red-400)",
+    type: "delete",
+    hasConfirm: true,
+  },
+];
+
 export const ACTION_BUTTONS_SERVICE_ROOM: IBtnType[] = [
   {
     tooltipContent: "Thêm 1 dịch vụ cho 1 phòng",
@@ -1025,6 +1082,13 @@ export const GET_BTNS = (...type: IBtnType["type"][]): IBtnType[] => {
 };
 
 export const BTNS: IBtnType[] = [
+  {
+    tooltipContent: "Khôi phục",
+    icon: Undo,
+    arrowColor: "var(--color-violet-500)",
+    type: "undo",
+    hasConfirm: true,
+  },
   {
     tooltipContent: "Chỉnh sửa",
     icon: SquarePen,

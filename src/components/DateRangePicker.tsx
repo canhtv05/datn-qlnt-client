@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
+import { vi } from "date-fns/locale";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -58,6 +59,7 @@ export function DateRangePicker({ className, value, onChange, fromYear, toYear }
             numberOfMonths={2}
             fromYear={fromYear}
             toYear={toYear}
+            locale={vi}
           />
         </PopoverContent>
       </Popover>

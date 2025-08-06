@@ -253,14 +253,15 @@ export const roomAssetFormSchema = z
     }
   });
 
+//kkk
 export const roomAssetBulkSchema = z.object({
   roomId: z.union([z.string(), z.array(z.string())]).refine(
     (val) => {
-      if (typeof val === "string") return val.trim() !== "";
-      return Array.isArray(val) && val.length > 0 && val.every((v) => v.trim() !== "");
+      if (typeof val === "string") return false;
+      return Array.isArray(val) && val.length >= 2 && val.every((v) => v.trim() !== "");
     },
     {
-      message: "Vui lòng chọn ít nhất một phòng.",
+      message: "Vui lòng chọn ít nhất 2 phòng.",
     }
   ),
   assetId: z.union([z.string(), z.array(z.string())]).refine(

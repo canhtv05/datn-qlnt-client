@@ -167,6 +167,12 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
           });
+          queryClient.invalidateQueries({
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+          });
+          queryClient.invalidateQueries({
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
+          });
           toast.success(Status.UPDATE_SUCCESS);
         },
       });
@@ -184,6 +190,12 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
           });
+          queryClient.invalidateQueries({
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+          });
+          queryClient.invalidateQueries({
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
+          });
           toast.success(Status.REMOVE_SUCCESS);
         },
       });
@@ -200,6 +212,12 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
         onSuccess: () => {
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
+          });
+          queryClient.invalidateQueries({
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+          });
+          queryClient.invalidateQueries({
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
           });
           toast.success(Status.UPDATE_SUCCESS);
         },

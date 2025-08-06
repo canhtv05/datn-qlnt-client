@@ -50,7 +50,9 @@ export interface IBtnType {
     | "floor"
     | "building"
     | "finalize"
-    | "cash";
+    | "cash"
+    | "history"
+    | "undo";
   hasConfirm: boolean;
 }
 
@@ -521,7 +523,7 @@ export interface ICreateVehicle {
   vehicleType: VehicleType | string;
   licensePlate: string;
   vehicleStatus: VehicleStatus | string;
-  registrationDate: string;
+  registrationDate: string | Date;
   describe: string;
 }
 

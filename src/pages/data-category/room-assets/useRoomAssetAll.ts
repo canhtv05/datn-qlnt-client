@@ -25,7 +25,7 @@ const mapStatistics = (data?: RoomAssetStatisticsResponse) => ({
 export const useRoomAssetAll = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const { buildingId: buildingId } = useParams();
+  const { id: buildingId } = useParams();
 
   const { page = "1", size = "15" } = queryFilter(searchParams, "page", "size");
 
