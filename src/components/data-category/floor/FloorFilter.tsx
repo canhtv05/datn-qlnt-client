@@ -1,6 +1,7 @@
 import ButtonFilter from "@/components/ButtonFilter";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
+import RenderIf from "@/components/RenderIf";
 import { FloorStatus, FloorType } from "@/enums";
 import { FloorFilterValues } from "@/types";
 // import { httpRequest } from "@/utils/httpRequest";
@@ -16,7 +17,16 @@ export interface FloorFilterProps {
   onFilter: () => void;
 }
 
-const FloorFilter = ({ props }: { props: FloorFilterProps }) => {
+const switchGrid = (type: "default" | "restore"): string => {
+  switch (type) {
+    case "default":
+      return "grid md:grid-cols-4 grid-cols-1 gap-5 w-full items-end";
+    default:
+      return "grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end";
+  }
+};
+
+const FloorFilter = ({ props, type }: { props: FloorFilterProps; type: "default" | "restore" }) => {
   const { status, maxRoom, nameFloor, floorType } = props.filterValues;
   const setFilterValues = props.setFilterValues;
   // const { id } = useParams();
@@ -51,19 +61,21 @@ const FloorFilter = ({ props }: { props: FloorFilterProps }) => {
 
   return (
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
-      <div className="grid md:grid-cols-4 grid-cols-1 gap-5 w-full items-end">
-        <FieldsSelectLabel
-          placeholder="-- Trạng thái hoạt động --"
-          labelSelect="Trạng thái"
-          data={[
-            { label: "Hoạt động", value: FloorStatus.HOAT_DONG },
-            { label: "Tạm khóa", value: FloorStatus.TAM_KHOA },
-          ]}
-          value={status}
-          onChange={(value) => handleChange("status", String(value))}
-          name="status"
-          showClear
-        />
+      <div className={switchGrid(type)}>
+        <RenderIf value={type === "default"}>
+          <FieldsSelectLabel
+            placeholder="-- Trạng thái hoạt động --"
+            labelSelect="Trạng thái"
+            data={[
+              { label: "Hoạt động", value: FloorStatus.HOAT_DONG },
+              { label: "Tạm khóa", value: FloorStatus.TAM_KHOA },
+            ]}
+            value={status}
+            onChange={(value) => handleChange("status", String(value))}
+            name="status"
+            showClear
+          />
+        </RenderIf>
         <FieldsSelectLabel
           placeholder="-- Loại tầng --"
           labelSelect="Loại tầng"

@@ -108,7 +108,7 @@ const Floor = () => {
       <StatisticCard data={datFloors} />
       <div className="shadow-lg">
         <FloorButton ids={rowSelection} />
-        <FloorFilter props={props} />
+        <FloorFilter props={props} type="default" />
         <DataTable<FloorResponse>
           data={data?.data ?? []}
           columns={buildColumnsFromConfig(columnConfigs)}

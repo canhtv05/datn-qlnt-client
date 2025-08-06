@@ -34,6 +34,7 @@ const Building = lazy(() => import("@/pages/data-category/building"));
 const HistoryBuilding = lazy(() => import("@/pages/data-category/building/HistoryBuilding"));
 const SelectBuilding = lazy(() => import("@/components/data-category/building/SelectBuilding"));
 const Floor = lazy(() => import("@/pages/data-category/floor"));
+const HistoryFloor = lazy(() => import("@/pages/data-category/floor/HistoryFloor"));
 const AssetType = lazy(() => import("@/pages/data-category/asset-type"));
 const RoomAsset = lazy(() => import("@/pages/data-category/room-assets"));
 const Asset = lazy(() => import("@/pages/data-category/asset"));
@@ -109,6 +110,16 @@ const privateRoutes: RouteType[] = [
   },
   {
     path: configs.routes.facilities.floors,
+    component: SelectBuilding,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.facilities.floorsHistoryId,
+    component: HistoryFloor,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.facilities.floorsHistory,
     component: SelectBuilding,
     allowedRoles: ["ADMIN", "MANAGER"],
   },

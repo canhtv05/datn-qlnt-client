@@ -22,6 +22,8 @@ const routes = {
     buildings: "/facilities/buildings",
     buildingsHistory: "/facilities/buildings/history",
     floors: "/facilities/floors",
+    floorsHistory: "/facilities/floors/history",
+    floorsHistoryId: "/facilities/floors/history/:id",
     floorId: "/facilities/floors/:id",
     rooms: "/facilities/rooms",
     roomId: "/facilities/rooms/:id",

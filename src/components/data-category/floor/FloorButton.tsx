@@ -14,13 +14,14 @@ import { Notice, Status } from "@/enums";
 import { createFloorSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
 import { IBtnType, ICreateFloorValue } from "@/types";
-import { ACTION_BUTTONS } from "@/constant";
+import { ACTION_BUTTONS_HISTORY } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateFloor from "./AddOrUpdateFloor";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const FloorButton = ({ ids }: { ids: Record<string, boolean> }) => {
+  const navigate = useNavigate();
   const [value, setValue] = useState<ICreateFloorValue>({
     descriptionFloor: "",
     floorType: undefined,
@@ -128,9 +129,11 @@ const FloorButton = ({ ids }: { ids: Record<string, boolean> }) => {
     (btn: IBtnType) => {
       if (btn.type === "delete") {
         openDialog(ids);
+      } else if (btn.type === "history") {
+        navigate(`/facilities/floors/history`);
       }
     },
-    [ids, openDialog]
+    [ids, navigate, openDialog]
   );
 
   const removeFloorMutation = useMutation({
@@ -143,7 +146,7 @@ const FloorButton = ({ ids }: { ids: Record<string, boolean> }) => {
       <div className="flex px-4 py-3 justify-between items-center">
         <h3 className="font-semibold">Tầng</h3>
         <div className="flex gap-2">
-          {ACTION_BUTTONS.map((btn, index) => (
+          {ACTION_BUTTONS_HISTORY.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>

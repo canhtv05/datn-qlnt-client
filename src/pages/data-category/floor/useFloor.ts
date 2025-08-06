@@ -8,7 +8,7 @@ import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Building as BuildingIcon, CircleCheck as CircleCheckIcon, XCircle as XCircleIcon } from "lucide-react";
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -44,10 +44,6 @@ export const useFloor = () => {
   const parsedSize = Math.max(Number(size) || 15, 1);
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<UpdateFloorValue>();
-
-  useEffect(() => {
-    setFilterValues({ floorType, maxRoom, nameFloor, status, buildingId });
-  }, [buildingId, floorType, maxRoom, nameFloor, status]);
 
   const [filterValues, setFilterValues] = useState<FloorFilterValues>({
     buildingId,
