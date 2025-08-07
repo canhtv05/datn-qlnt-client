@@ -3,6 +3,7 @@ import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import RenderIf from "@/components/RenderIf";
 import { BuildingStatus, BuildingType } from "@/enums";
+import { switchGrid3 } from "@/lib/utils";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 
 export interface FilterValues {
@@ -17,15 +18,6 @@ export interface BuildingFilterProps {
   onClear: () => void;
   onFilter: () => void;
 }
-
-const switchGrid = (type: "default" | "restore"): string => {
-  switch (type) {
-    case "default":
-      return "grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end";
-    default:
-      return "grid md:grid-cols-2 grid-cols-1 gap-5 w-full items-end";
-  }
-};
 
 const BuildingFilter = ({ props, type }: { props: BuildingFilterProps; type: "default" | "restore" }) => {
   const { query, status, buildingType } = props.filterValues;
@@ -42,7 +34,7 @@ const BuildingFilter = ({ props, type }: { props: BuildingFilterProps; type: "de
 
   return (
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
-      <div className={switchGrid(type)}>
+      <div className={switchGrid3(type)}>
         <RenderIf value={type === "default"}>
           <FieldsSelectLabel
             placeholder="-- Trạng thái hoạt động --"

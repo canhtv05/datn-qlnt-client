@@ -14,12 +14,14 @@ import { Notice, Status, VehicleStatus } from "@/enums";
 import { createVehicleSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
 import TenantResponse, { ApiResponse, IBtnType, ICreateVehicle } from "@/types";
-import { ACTION_BUTTONS } from "@/constant";
+import { ACTION_BUTTONS_HISTORY } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateVehicle from "./AddOrUpdateVehicle";
+import { useNavigate } from "react-router-dom";
 
 const VehicleButton = ({ ids, tenants }: { ids: Record<string, boolean>; tenants?: ApiResponse<TenantResponse[]> }) => {
+  const navigate = useNavigate();
   const [value, setValue] = useState<ICreateVehicle>({
     describe: "",
     licensePlate: "",
@@ -125,9 +127,11 @@ const VehicleButton = ({ ids, tenants }: { ids: Record<string, boolean>; tenants
     (btn: IBtnType) => {
       if (btn.type === "delete") {
         openDialog(ids);
+      } else if (btn.type === "history") {
+        navigate(`/customers/vehicles/history`);
       }
     },
-    [ids, openDialog]
+    [ids, navigate, openDialog]
   );
 
   const removeVehicleMutation = useMutation({
@@ -140,7 +144,7 @@ const VehicleButton = ({ ids, tenants }: { ids: Record<string, boolean>; tenants
       <div className="flex px-4 py-3 justify-between items-center">
         <h3 className="font-semibold">Phương tiện</h3>
         <div className="flex gap-2">
-          {ACTION_BUTTONS.map((btn, index) => (
+          {ACTION_BUTTONS_HISTORY.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>

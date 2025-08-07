@@ -3,13 +3,13 @@ import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { BuildingResponse, ColumnConfig } from "@/types";
-import { useHistoryBuilding } from "./useHistoryBuilding";
+import { ColumnConfig, InvoiceResponse } from "@/types";
+import { useHistoryInvoice } from "./useHistoryInvoice";
 import { BUTTON_HISTORY, GET_BTNS } from "@/constant";
 import { Notice } from "@/enums";
-import BuildingFilter from "@/components/data-category/building/BuildingFilter";
+import InvoiceFilter from "@/components/finance/invoice/InvoiceFilter";
 
-const HistoryBuilding = () => {
+const HistoryInvoice = () => {
   const {
     ConfirmDialog,
     data,
@@ -21,21 +21,26 @@ const HistoryBuilding = () => {
     setRowSelection,
     ConfirmDialogRemoveAll,
     openDialogAll,
-  } = useHistoryBuilding();
+  } = useHistoryInvoice();
   const { page, size } = query;
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Mã tòa nhà", accessorKey: "buildingCode", isSort: true, hasHighlight: true },
+    {
+      label: "Mã hóa đơn",
+      accessorKey: "invoiceCode",
+      isSort: true,
+      hasHighlight: true,
+    },
     {
       label: "Thao tác",
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
-      render: (row: BuildingResponse) => {
-        const building: BuildingResponse = row;
+      render: (row: InvoiceResponse) => {
+        const invoice: InvoiceResponse = row;
         return (
           <div className="flex gap-2">
-            {GET_BTNS("delete", "undo").map((btn, index) => (
+            {GET_BTNS("delete", "undo", "view").map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -44,7 +49,7 @@ const HistoryBuilding = () => {
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => {
-                        handleActionClick(building, btn.type);
+                        handleActionClick(invoice, btn.type);
                       }}
                     >
                       <btn.icon className="text-white" />
@@ -73,22 +78,64 @@ const HistoryBuilding = () => {
         );
       },
     },
-    { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true },
-    { label: "Địa chỉ", accessorKey: "address", isSort: true },
-    { label: "Loại tòa nhà", accessorKey: "buildingType", isSort: true, hasBadge: true, isCenter: true },
-    { label: "Số tầng thực tế", accessorKey: "actualNumberOfFloors", isSort: true, isCenter: true },
-    { label: "Số tầng cho thuê", accessorKey: "numberOfFloorsForRent", isSort: true, isCenter: true },
-    { label: "Mô tả", accessorKey: "description" },
-    { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
     {
-      label: "Ngày tạo",
-      accessorKey: "createdAt",
+      label: "Tòa nhà",
+      accessorKey: "buildingName",
+      isSort: true,
+    },
+    {
+      label: "Phòng",
+      accessorKey: "roomCode",
+      isSort: true,
+    },
+    {
+      label: "Khách thuê",
+      accessorKey: "tenantName",
+      isSort: true,
+    },
+    {
+      label: "Tháng",
+      accessorKey: "month",
+      isSort: true,
+    },
+    {
+      label: "Năm",
+      accessorKey: "year",
+      isSort: true,
+    },
+    {
+      label: "Tổng tiền",
+      accessorKey: "totalAmount",
+      isSort: true,
+    },
+    {
+      label: "Hạn thanh toán",
+      accessorKey: "paymentDueDate",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ngày cập nhật",
-      accessorKey: "updatedAt",
+      label: "Loại hóa đơn",
+      accessorKey: "invoiceType",
+      isSort: true,
+      hasBadge: true,
+      isCenter: true,
+    },
+    {
+      label: "Trạng thái",
+      accessorKey: "invoiceStatus",
+      isSort: true,
+      hasBadge: true,
+      isCenter: true,
+    },
+    {
+      label: "Ghi chú",
+      accessorKey: "note",
+      isSort: false,
+    },
+    {
+      label: "Ngày tạo",
+      accessorKey: "createdAt",
       isSort: true,
       hasDate: true,
     },
@@ -99,7 +146,7 @@ const HistoryBuilding = () => {
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
         <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-5 py-3 justify-between items-center">
-            <h3 className="font-semibold">Lịch sử xóa tòa nhà</h3>
+            <h3 className="font-semibold">Lịch sử xóa hóa đơn</h3>
             <div className="flex gap-2">
               {BUTTON_HISTORY.map((btn, idx) => (
                 <TooltipProvider key={idx}>
@@ -114,7 +161,7 @@ const HistoryBuilding = () => {
                             openDialogAll(
                               { ids: rowSelection, type: "remove" },
                               {
-                                desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tòa nhà đã chọn và không thể hoàn tác lại. Bạn có chắc chắn muốn tiếp tục?",
+                                desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tầng đã chọn và không thể hoàn tác lại. Bạn có chắc chắn muốn tiếp tục?",
                                 type: "warn",
                               }
                             );
@@ -155,8 +202,8 @@ const HistoryBuilding = () => {
             </div>
           </div>
         </div>
-        <BuildingFilter props={props} type="restore" />
-        <DataTable<BuildingResponse>
+        <InvoiceFilter props={props} type="restore" />
+        <DataTable<InvoiceResponse>
           data={data?.data ?? []}
           columns={buildColumnsFromConfig(columnConfigs)}
           page={page}
@@ -174,4 +221,4 @@ const HistoryBuilding = () => {
   );
 };
 
-export default HistoryBuilding;
+export default HistoryInvoice;

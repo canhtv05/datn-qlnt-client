@@ -137,14 +137,17 @@ export enum TenantStatus {
   DA_TRA_PHONG = "DA_TRA_PHONG",
   TIEM_NANG = "TIEM_NANG",
   KHOA = "KHOA",
+  HUY_BO = "HUY_BO",
 }
 /*CONTRACT */
 export enum ContractStatus {
   HIEU_LUC = "HIEU_LUC",
   SAP_HET_HAN = "SAP_HET_HAN",
-  HET_HAN = "HET_HAN",
-  DA_THANH_LY = "DA_THANH_LY",
   DA_HUY = "DA_HUY",
+  KET_THUC_DUNG_HAN = "KET_THUC_DUNG_HAN",
+  KET_THUC_CO_BAO_TRUOC = "KET_THUC_CO_BAO_TRUOC",
+  TU_Y_HUY_BO = "TU_Y_HUY_BO",
+  CHO_KICH_HOAT = "CHO_KICH_HOAT",
 }
 
 /* DEFAULT SERVICE */
@@ -219,6 +222,7 @@ export enum InvoiceStatus {
   CHO_THANH_TOAN = "CHO_THANH_TOAN",
   QUA_HAN = "QUA_HAN",
   HUY = "HUY",
+  KHOI_PHUC = "KHOI_PHUC",
 }
 
 export enum InvoiceType {

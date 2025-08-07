@@ -1,6 +1,6 @@
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog } from "@/hooks";
-import { ApiResponse, BuildingResponse, FloorFilterValues, FloorResponse, IBtnType } from "@/types";
+import { ApiResponse, FloorFilterValues, FloorResponse, IBtnType } from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
@@ -108,6 +108,7 @@ export const useHistoryFloor = () => {
       return res.data;
     },
     retry: 1,
+    enabled: !!id,
   });
 
   const removeFloorMutation = useMutation({
@@ -178,14 +179,14 @@ export const useHistoryFloor = () => {
     onConfirm: async ({ ids, type }) => {
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       if (type === "remove") {
-        return await handleRemoveBuildingByIds(ids);
+        return await handleRemoveFloorByIds(ids);
       } else {
-        return await handleRestoreBuildingByIds(ids);
+        return await handleRestoreFloorByIds(ids);
       }
     },
   });
 
-  const handleRemoveBuildingByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
+  const handleRemoveFloorByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
       const selectedIds = Object.entries(ids)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -211,7 +212,7 @@ export const useHistoryFloor = () => {
     }
   };
 
-  const handleRestoreBuildingByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
+  const handleRestoreFloorByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
       const selectedIds = Object.entries(ids)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -238,11 +239,11 @@ export const useHistoryFloor = () => {
   };
 
   const handleActionClick = useCallback(
-    (building: BuildingResponse, type: IBtnType["type"]) => {
-      idRef.current = building.id;
+    (floor: FloorResponse, type: IBtnType["type"]) => {
+      idRef.current = floor.id;
       if (type === "delete") {
         openDialog(
-          { id: building.id, type: "remove" },
+          { id: floor.id, type: "remove" },
           {
             type: "warn",
             desc: Notice.REMOVE,
@@ -250,7 +251,7 @@ export const useHistoryFloor = () => {
         );
       } else {
         openDialog(
-          { id: building.id, type: "restore" },
+          { id: floor.id, type: "restore" },
           {
             type: "default",
             desc: Notice.RESTORE,
@@ -270,7 +271,7 @@ export const useHistoryFloor = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải tòa nhà");
+      toast.error("Có lỗi xảy ra khi tải tầng");
     }
   }, [isError]);
 

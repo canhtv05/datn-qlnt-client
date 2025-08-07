@@ -3,7 +3,7 @@ import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { BuildingResponse, ColumnConfig, FloorResponse } from "@/types";
+import { ColumnConfig, FloorResponse } from "@/types";
 import { useHistoryFloor } from "./useHistoryFloor";
 import { BUTTON_HISTORY, GET_BTNS } from "@/constant";
 import { Notice } from "@/enums";
@@ -31,8 +31,8 @@ const HistoryFloor = () => {
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
-      render: (row: BuildingResponse) => {
-        const building: BuildingResponse = row;
+      render: (row: FloorResponse) => {
+        const floor: FloorResponse = row;
         return (
           <div className="flex gap-2">
             {GET_BTNS("delete", "undo").map((btn, index) => (
@@ -44,7 +44,7 @@ const HistoryFloor = () => {
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => {
-                        handleActionClick(building, btn.type);
+                        handleActionClick(floor, btn.type);
                       }}
                     >
                       <btn.icon className="text-white" />
@@ -97,7 +97,7 @@ const HistoryFloor = () => {
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
         <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-5 py-3 justify-between items-center">
-            <h3 className="font-semibold">Lịch sửa xóa tầng</h3>
+            <h3 className="font-semibold">Lịch sử xóa tầng</h3>
             <div className="flex gap-2">
               {BUTTON_HISTORY.map((btn, idx) => (
                 <TooltipProvider key={idx}>

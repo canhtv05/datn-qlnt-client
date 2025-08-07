@@ -1,40 +1,29 @@
-import StatisticCard from "@/components/StatisticCard";
 import DataTable from "@/components/DataTable";
 import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import TenantResponse, { ColumnConfig } from "@/types";
-import Modal from "@/components/Modal";
+import { useHistoryTenant } from "./useHistoryTenant";
+import { BUTTON_HISTORY, GET_BTNS } from "@/constant";
 import { Notice } from "@/enums";
-import { useTenant } from "./useTenant";
-import TenantButton from "@/components/customer/tenant/TenantButton";
-import TenantFilter from "@/components/customer/tenant/TenantFilter";
-import AddOrUpdateTenant from "@/components/customer/tenant/AddOrUpdateTenant";
-import { GET_BTNS } from "@/constant";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import TenantFilter from "@/components/customer/tenant/TenantFilter";
 
-const Tenant = () => {
+const HistoryTenant = () => {
   const {
-    props,
+    ConfirmDialog,
     data,
-    isLoading,
-    query,
     handleActionClick,
-    dataStatisticsTenants,
+    isLoading,
+    props,
+    query,
     rowSelection,
     setRowSelection,
-    isModalOpen,
-    setIsModalOpen,
-    handleChange,
-    handleUpdateFloor,
-    value,
-    setValue,
-    errors,
-    handleBlur,
-    ConfirmDialog,
-  } = useTenant();
+    ConfirmDialogRemoveAll,
+    openDialogAll,
+  } = useHistoryTenant();
   const { page, size } = query;
 
   const columnConfigs: ColumnConfig[] = [
@@ -48,7 +37,7 @@ const Tenant = () => {
         const tenant: TenantResponse = row;
         return (
           <div className="flex gap-2">
-            {GET_BTNS("update", "delete", "status", "view").map((btn, index) => (
+            {GET_BTNS("delete", "undo").map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -57,14 +46,19 @@ const Tenant = () => {
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => {
-                        const type = btn.type as "update" | "delete" | "view";
-                        handleActionClick(tenant, type);
+                        handleActionClick(tenant, btn.type);
                       }}
                     >
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                  <TooltipContent
+                    className="text-white"
+                    style={{
+                      background: btn.arrowColor,
+                    }}
+                    arrow={false}
+                  >
                     <p>{btn.tooltipContent}</p>
                     <TooltipPrimitive.Arrow
                       style={{
@@ -124,42 +118,83 @@ const Tenant = () => {
   ];
 
   return (
-    <div className="flex flex-col">
-      <StatisticCard data={dataStatisticsTenants} />
-      <div className="shadow-lg">
-        <TenantButton ids={rowSelection} />
-        <TenantFilter props={props} type="default" />
+    <div className="flex flex-col shadow-lg rounded-md">
+      <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
+        <div className="h-full bg-background rounded-t-sm">
+          <div className="flex px-5 py-3 justify-between items-center">
+            <h3 className="font-semibold">Lịch sử xóa khách hàng</h3>
+            <div className="flex gap-2">
+              {BUTTON_HISTORY.map((btn, idx) => (
+                <TooltipProvider key={idx}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        size={"icon"}
+                        variant={btn.type}
+                        className="cursor-pointer"
+                        onClick={() => {
+                          if (btn.type === "delete") {
+                            openDialogAll(
+                              { ids: rowSelection, type: "remove" },
+                              {
+                                desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tòa nhà đã chọn và không thể hoàn tác lại. Bạn có chắc chắn muốn tiếp tục?",
+                                type: "warn",
+                              }
+                            );
+                          } else if (btn.type === "undo") {
+                            openDialogAll(
+                              { ids: rowSelection, type: "undo" },
+                              {
+                                desc: Notice.RESTORES,
+                                type: "default",
+                              }
+                            );
+                          }
+                        }}
+                        disabled={!Object.values(rowSelection).some(Boolean)}
+                      >
+                        <btn.icon className="text-white" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      className="text-white"
+                      style={{
+                        background: btn.arrowColor,
+                      }}
+                      arrow={false}
+                    >
+                      <p>{btn.tooltipContent}</p>
+                      <TooltipPrimitive.Arrow
+                        style={{
+                          fill: btn.arrowColor,
+                          background: btn.arrowColor,
+                        }}
+                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                      />
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ))}
+            </div>
+          </div>
+        </div>
+        <TenantFilter props={props} type="restore" />
         <DataTable<TenantResponse>
           data={data?.data ?? []}
           columns={buildColumnsFromConfig(columnConfigs)}
-          page={Number(page)}
-          size={Number(size)}
+          page={page}
+          size={size}
           totalElements={data?.meta?.pagination?.total || 0}
           totalPages={data?.meta?.pagination?.totalPages || 0}
           loading={isLoading}
           rowSelection={rowSelection}
           setRowSelection={setRowSelection}
         />
-        <Modal
-          title="Khách thuê"
-          trigger={null}
-          open={isModalOpen}
-          onOpenChange={setIsModalOpen}
-          onConfirm={handleUpdateFloor}
-          desc={Notice.UPDATE}
-        >
-          <AddOrUpdateTenant
-            onBlur={handleBlur}
-            handleChange={handleChange}
-            value={value}
-            setValue={setValue}
-            errors={errors}
-          />
-        </Modal>
-        <ConfirmDialog />
       </div>
+      <ConfirmDialog />
+      <ConfirmDialogRemoveAll />
     </div>
   );
 };
 
-export default Tenant;
+export default HistoryTenant;

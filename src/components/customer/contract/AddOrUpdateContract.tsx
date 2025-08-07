@@ -9,9 +9,10 @@ import { ContractStatus } from "@/enums";
 const contractStatuses: FieldsSelectLabelType[] = [
   { value: ContractStatus.HIEU_LUC, label: "Hiệu lực" },
   { value: ContractStatus.SAP_HET_HAN, label: "Sắp hết hạn" },
-  { value: ContractStatus.HET_HAN, label: "Hết hạn" },
-  { value: ContractStatus.DA_THANH_LY, label: "Đã thanh lý" },
-  { value: ContractStatus.DA_HUY, label: "Đã huỷ" },
+  { value: ContractStatus.CHO_KICH_HOAT, label: "Chờ kích hoạt" },
+  { value: ContractStatus.TU_Y_HUY_BO, label: "Tự ý hủy bỏ" },
+  { value: ContractStatus.KET_THUC_CO_BAO_TRUOC, label: "Kết thúc có báo trước" },
+  { value: ContractStatus.KET_THUC_DUNG_HAN, label: "Kết thúc đúng hạn" },
 ];
 
 interface Props {

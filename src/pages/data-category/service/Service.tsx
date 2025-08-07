@@ -135,7 +135,7 @@ const AssetType = () => {
       <StatisticCard data={dataServices} />
       <div className="shadow-lg">
         <ServiceButton ids={rowSelection} />
-        <ServiceFilter props={props} />
+        <ServiceFilter props={props} type="default" />
         <DataTable<ServiceResponse>
           data={data?.data ?? []}
           columns={buildColumnsFromConfig(columnConfigs)}

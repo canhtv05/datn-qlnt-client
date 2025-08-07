@@ -18,3 +18,30 @@ export const formattedVND = (price: number): string => {
     currency: "VND",
   }).format(price);
 };
+
+export const switchGrid3 = (type: "default" | "restore"): string => {
+  switch (type) {
+    case "default":
+      return "grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end";
+    default:
+      return "grid md:grid-cols-2 grid-cols-1 gap-5 w-full items-end";
+  }
+};
+
+export const switchGrid4 = (type: "default" | "restore"): string => {
+  switch (type) {
+    case "default":
+      return "grid md:grid-cols-4 grid-cols-1 gap-5 w-full items-end";
+    default:
+      return "grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end";
+  }
+};
+
+export const switchGrid2 = (type: "default" | "restore"): string => {
+  switch (type) {
+    case "default":
+      return "grid md:grid-cols-2 grid-cols-1 gap-5 w-full items-end";
+    default:
+      return "grid md:grid-cols-1 grid-cols-1 gap-5 w-full items-end";
+  }
+};

@@ -14,12 +14,14 @@ import { Notice, Status } from "@/enums";
 import { createOrUpdateTenantSchema, formatFullName } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
 import { IBtnType, ICreateAndUpdateTenant } from "@/types";
-import { ACTION_BUTTONS } from "@/constant";
+import { ACTION_BUTTONS_HISTORY } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateTenant from "./AddOrUpdateTenant";
+import { useNavigate } from "react-router-dom";
 
 const TenantButton = ({ ids }: { ids: Record<string, boolean> }) => {
+  const navigate = useNavigate();
   const [value, setValue] = useState<ICreateAndUpdateTenant>({
     address: "",
     dob: "",
@@ -134,9 +136,11 @@ const TenantButton = ({ ids }: { ids: Record<string, boolean> }) => {
     (btn: IBtnType) => {
       if (btn.type === "delete") {
         openDialog(ids);
+      } else if (btn.type === "history") {
+        navigate(`/customers/tenants/history`);
       }
     },
-    [ids, openDialog]
+    [ids, navigate, openDialog]
   );
 
   const removeTenantsMutation = useMutation({
@@ -149,7 +153,7 @@ const TenantButton = ({ ids }: { ids: Record<string, boolean> }) => {
       <div className="flex px-4 py-3 justify-between items-center">
         <h3 className="font-semibold">Khách thuê</h3>
         <div className="flex gap-2">
-          {ACTION_BUTTONS.map((btn, index) => (
+          {ACTION_BUTTONS_HISTORY.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>

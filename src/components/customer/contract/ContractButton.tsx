@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { ContractStatus, Notice, Status } from "@/enums";
 import { createOrUpdateContractSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { ACTION_BUTTONS } from "@/constant";
+import { ACTION_BUTTONS_HISTORY } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateContract from "./AddOrUpdateContract";
@@ -27,8 +27,10 @@ import {
   VehicleResponse,
 } from "@/types";
 import { switchVehicleType } from "@/pages/customer/contract/useContract";
+import { useNavigate } from "react-router-dom";
 
 const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
+  const navigate = useNavigate();
   const [value, setValue] = useState<ICreateAndUpdateContract>({
     roomId: "",
     numberOfPeople: 1,
@@ -128,9 +130,11 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
     (btn: IBtnType) => {
       if (btn.type === "delete") {
         openDialog(ids);
+      } else if (btn.type === "history") {
+        navigate(`/customers/contracts/history`);
       }
     },
-    [ids, openDialog]
+    [ids, navigate, openDialog]
   );
 
   // ======== Room + Tenant Options =========
@@ -186,7 +190,7 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
       <div className="flex px-4 py-3 justify-between items-center">
         <h3 className="font-semibold">Hợp đồng</h3>
         <div className="flex gap-2">
-          {ACTION_BUTTONS.map((btn, index) => (
+          {ACTION_BUTTONS_HISTORY.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>

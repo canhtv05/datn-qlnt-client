@@ -168,7 +168,7 @@ const Room = () => {
       <StatisticCard data={statistics} />
       <div className="shadow-lg">
         <RoomButton ids={rowSelection} />
-        <RoomFilter props={props} />
+        <RoomFilter props={props} type="default" />
         <DataTable<RoomResponse>
           data={data?.data ?? []}
           columns={buildColumnsFromConfig(columnConfigs)}

@@ -3,13 +3,13 @@ import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { BuildingResponse, ColumnConfig } from "@/types";
-import { useHistoryBuilding } from "./useHistoryBuilding";
+import { ServiceResponse, ColumnConfig, FloorResponse } from "@/types";
+import { useHistoryService } from "./useHistoryService";
 import { BUTTON_HISTORY, GET_BTNS } from "@/constant";
 import { Notice } from "@/enums";
-import BuildingFilter from "@/components/data-category/building/BuildingFilter";
+import ServiceFilter from "@/components/data-category/service/ServiceFilter";
 
-const HistoryBuilding = () => {
+const HistoryService = () => {
   const {
     ConfirmDialog,
     data,
@@ -21,18 +21,22 @@ const HistoryBuilding = () => {
     setRowSelection,
     ConfirmDialogRemoveAll,
     openDialogAll,
-  } = useHistoryBuilding();
+  } = useHistoryService();
   const { page, size } = query;
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Mã tòa nhà", accessorKey: "buildingCode", isSort: true, hasHighlight: true },
+    {
+      label: "Tên dịch vụ",
+      accessorKey: "name",
+      isSort: true,
+    },
     {
       label: "Thao tác",
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
-      render: (row: BuildingResponse) => {
-        const building: BuildingResponse = row;
+      render: (row: ServiceResponse) => {
+        const service: ServiceResponse = row;
         return (
           <div className="flex gap-2">
             {GET_BTNS("delete", "undo").map((btn, index) => (
@@ -44,7 +48,7 @@ const HistoryBuilding = () => {
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => {
-                        handleActionClick(building, btn.type);
+                        handleActionClick(service, btn.type);
                       }}
                     >
                       <btn.icon className="text-white" />
@@ -73,13 +77,43 @@ const HistoryBuilding = () => {
         );
       },
     },
-    { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true },
-    { label: "Địa chỉ", accessorKey: "address", isSort: true },
-    { label: "Loại tòa nhà", accessorKey: "buildingType", isSort: true, hasBadge: true, isCenter: true },
-    { label: "Số tầng thực tế", accessorKey: "actualNumberOfFloors", isSort: true, isCenter: true },
-    { label: "Số tầng cho thuê", accessorKey: "numberOfFloorsForRent", isSort: true, isCenter: true },
-    { label: "Mô tả", accessorKey: "description" },
-    { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
+    {
+      label: "Loại dịch vụ",
+      accessorKey: "serviceCategory",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: "Đơn vị",
+      accessorKey: "unit",
+      isSort: false,
+      isCenter: true,
+    },
+    {
+      label: "Giá",
+      accessorKey: "price",
+      isSort: true,
+    },
+    {
+      label: "Áp dụng theo",
+      accessorKey: "serviceCalculation",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: "Trạng thái",
+      accessorKey: "status",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: "Mô tả",
+      accessorKey: "description",
+      isSort: false,
+    },
     {
       label: "Ngày tạo",
       accessorKey: "createdAt",
@@ -99,7 +133,7 @@ const HistoryBuilding = () => {
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
         <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-5 py-3 justify-between items-center">
-            <h3 className="font-semibold">Lịch sử xóa tòa nhà</h3>
+            <h3 className="font-semibold">Lịch sử xóa dịch vụ</h3>
             <div className="flex gap-2">
               {BUTTON_HISTORY.map((btn, idx) => (
                 <TooltipProvider key={idx}>
@@ -114,7 +148,7 @@ const HistoryBuilding = () => {
                             openDialogAll(
                               { ids: rowSelection, type: "remove" },
                               {
-                                desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tòa nhà đã chọn và không thể hoàn tác lại. Bạn có chắc chắn muốn tiếp tục?",
+                                desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tầng đã chọn và không thể hoàn tác lại. Bạn có chắc chắn muốn tiếp tục?",
                                 type: "warn",
                               }
                             );
@@ -155,8 +189,8 @@ const HistoryBuilding = () => {
             </div>
           </div>
         </div>
-        <BuildingFilter props={props} type="restore" />
-        <DataTable<BuildingResponse>
+        <ServiceFilter props={props} type="restore" />
+        <DataTable<FloorResponse>
           data={data?.data ?? []}
           columns={buildColumnsFromConfig(columnConfigs)}
           page={page}
@@ -174,4 +208,4 @@ const HistoryBuilding = () => {
   );
 };
 
-export default HistoryBuilding;
+export default HistoryService;

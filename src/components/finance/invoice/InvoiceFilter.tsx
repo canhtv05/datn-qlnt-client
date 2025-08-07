@@ -1,7 +1,9 @@
 import ButtonFilter from "@/components/ButtonFilter";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
+import RenderIf from "@/components/RenderIf";
 import { InvoiceStatus, InvoiceType } from "@/enums";
+import { switchGrid4 } from "@/lib/utils";
 import { ApiResponse, BuildingSelectResponse, InvoiceFilter as Filter } from "@/types";
 import { Dispatch, FormEvent, SetStateAction, useMemo } from "react";
 
@@ -13,7 +15,7 @@ export interface InvoiceFilterProps {
   buildingFilter: ApiResponse<BuildingSelectResponse[]> | undefined;
 }
 
-const InvoiceFilter = ({ props }: { props: InvoiceFilterProps }) => {
+const InvoiceFilter = ({ props, type }: { props: InvoiceFilterProps; type: "default" | "restore" }) => {
   const { building, floor, invoiceStatus, invoiceType, maxTotalAmount, minTotalAmount, month, query, year } =
     props.filterValues;
   const buildingFilter = props.buildingFilter;
@@ -49,7 +51,7 @@ const InvoiceFilter = ({ props }: { props: InvoiceFilterProps }) => {
 
   return (
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
-      <div className="grid md:grid-cols-4 grid-cols-1 gap-5 w-full items-end">
+      <div className={switchGrid4(type)}>
         <FieldsSelectLabel
           placeholder="-- Tòa nhà --"
           labelSelect="Tòa nhà"
@@ -70,19 +72,22 @@ const InvoiceFilter = ({ props }: { props: InvoiceFilterProps }) => {
           showClear
         />
 
-        <FieldsSelectLabel
-          placeholder="-- Trạng thái hóa đơn --"
-          labelSelect="Trạng thái hóa đơn"
-          data={[
-            { label: "Chưa thanh toán", value: InvoiceStatus.CHUA_THANH_TOAN },
-            { label: "Đã thanh toán", value: InvoiceStatus.DA_THANH_TOAN },
-            { label: "Quá hạn", value: InvoiceStatus.QUA_HAN },
-          ]}
-          value={invoiceStatus ?? ""}
-          onChange={(value) => handleChange("invoiceStatus", String(value))}
-          name="invoiceStatus"
-          showClear
-        />
+        <RenderIf value={type === "default"}>
+          <FieldsSelectLabel
+            placeholder="-- Trạng thái hóa đơn --"
+            labelSelect="Trạng thái hóa đơn"
+            data={[
+              { label: "Chưa thanh toán", value: InvoiceStatus.CHUA_THANH_TOAN },
+              { label: "Đã thanh toán", value: InvoiceStatus.DA_THANH_TOAN },
+              { label: "Khôi phục", value: InvoiceStatus.KHOI_PHUC },
+              { label: "Quá hạn", value: InvoiceStatus.QUA_HAN },
+            ]}
+            value={invoiceStatus ?? ""}
+            onChange={(value) => handleChange("invoiceStatus", String(value))}
+            name="invoiceStatus"
+            showClear
+          />
+        </RenderIf>
 
         <FieldsSelectLabel
           placeholder="-- Loại hóa đơn --"

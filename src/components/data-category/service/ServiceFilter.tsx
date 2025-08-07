@@ -1,7 +1,9 @@
 import ButtonFilter from "@/components/ButtonFilter";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
+import RenderIf from "@/components/RenderIf";
 import { ServiceCalculation, ServiceCategory, ServiceStatus } from "@/enums";
+import { switchGrid3 } from "@/lib/utils";
 import { ServiceFilter as Filter } from "@/types";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 
@@ -12,7 +14,7 @@ export interface ServiceFilterProps {
   onFilter: () => void;
 }
 
-const ServiceFilter = ({ props }: { props: ServiceFilterProps }) => {
+const ServiceFilter = ({ props, type }: { props: ServiceFilterProps; type: "default" | "restore" }) => {
   const { maxPrice, minPrice, query, serviceStatus, serviceCalculation, serviceCategory } = props.filterValues;
   const setFilterValues = props.setFilterValues;
 
@@ -27,7 +29,7 @@ const ServiceFilter = ({ props }: { props: ServiceFilterProps }) => {
 
   return (
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
-      <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end">
+      <div className={switchGrid3(type)}>
         <FieldsSelectLabel
           placeholder="-- Loại dịch vụ --"
           labelSelect="Loại dịch vụ"
@@ -63,18 +65,20 @@ const ServiceFilter = ({ props }: { props: ServiceFilterProps }) => {
           name="serviceCalculation"
           showClear
         />
-        <FieldsSelectLabel
-          placeholder="-- Trạng thái --"
-          labelSelect="Trạng thái"
-          data={[
-            { label: "Hoạt động", value: ServiceStatus.HOAT_DONG },
-            { label: "Tạm khóa", value: ServiceStatus.TAM_KHOA },
-          ]}
-          value={serviceStatus ?? ""}
-          onChange={(value) => handleChange("serviceStatus", String(value))}
-          name="serviceStatus"
-          showClear
-        />
+        <RenderIf value={type === "default"}>
+          <FieldsSelectLabel
+            placeholder="-- Trạng thái --"
+            labelSelect="Trạng thái"
+            data={[
+              { label: "Hoạt động", value: ServiceStatus.HOAT_DONG },
+              { label: "Tạm khóa", value: ServiceStatus.TAM_KHOA },
+            ]}
+            value={serviceStatus ?? ""}
+            onChange={(value) => handleChange("serviceStatus", String(value))}
+            name="serviceStatus"
+            showClear
+          />
+        </RenderIf>
       </div>
       <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end">
         <InputLabel

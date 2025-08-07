@@ -3,6 +3,7 @@ import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import RenderIf from "@/components/RenderIf";
 import { FloorStatus, FloorType } from "@/enums";
+import { switchGrid4 } from "@/lib/utils";
 import { FloorFilterValues } from "@/types";
 // import { httpRequest } from "@/utils/httpRequest";
 // import { useQuery } from "@tanstack/react-query";
@@ -16,15 +17,6 @@ export interface FloorFilterProps {
   onClear: () => void;
   onFilter: () => void;
 }
-
-const switchGrid = (type: "default" | "restore"): string => {
-  switch (type) {
-    case "default":
-      return "grid md:grid-cols-4 grid-cols-1 gap-5 w-full items-end";
-    default:
-      return "grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end";
-  }
-};
 
 const FloorFilter = ({ props, type }: { props: FloorFilterProps; type: "default" | "restore" }) => {
   const { status, maxRoom, nameFloor, floorType } = props.filterValues;
@@ -61,7 +53,7 @@ const FloorFilter = ({ props, type }: { props: FloorFilterProps; type: "default"
 
   return (
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
-      <div className={switchGrid(type)}>
+      <div className={switchGrid4(type)}>
         <RenderIf value={type === "default"}>
           <FieldsSelectLabel
             placeholder="-- Trạng thái hoạt động --"

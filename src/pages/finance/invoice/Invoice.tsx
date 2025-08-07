@@ -158,7 +158,7 @@ const Invoice = () => {
           buildingInitToAdd={buildingInitToAdd}
           floorInitToAdd={floorInitToAdd}
         />
-        <InvoiceFilter props={props} />
+        <InvoiceFilter props={props} type="default" />
         <DataTable<InvoiceResponse>
           data={data?.data ?? []}
           columns={buildColumnsFromConfig(columnConfigs)}

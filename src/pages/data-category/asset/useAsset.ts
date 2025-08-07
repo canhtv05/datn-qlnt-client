@@ -120,7 +120,7 @@ export const useAsset = () => {
   };
 
   const { data: statistics, isError: isStatisticsError } = useQuery<ApiResponse<AssetStatusStatistic>>({
-    queryKey: ["asset-statistics"],
+    queryKey: ["asset-statistics", id],
     queryFn: async () => {
       const res = await httpRequest.get("/assets/statistics", {
         params: {
@@ -199,6 +199,9 @@ export const useAsset = () => {
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
           });
+          queryClient.invalidateQueries({
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
+          });
           toast.success(Status.UPDATE_SUCCESS);
         },
       });
@@ -215,6 +218,9 @@ export const useAsset = () => {
         onSuccess: () => {
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
+          });
+          queryClient.invalidateQueries({
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
           });
           toast.success(Status.REMOVE_SUCCESS);
         },
@@ -255,6 +261,9 @@ export const useAsset = () => {
           });
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
+          });
+          queryClient.invalidateQueries({
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
           });
           toast.success(Status.UPDATE_SUCCESS);
           setIsModalOpen(false);

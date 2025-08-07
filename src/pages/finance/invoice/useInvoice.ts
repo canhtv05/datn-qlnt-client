@@ -379,7 +379,7 @@ export const useInvoice = () => {
     }
 
     if (errorBuildingFilter) {
-      toast.error("Có lỗi xảy ra khi tải tòa nhà");
+      toast.error("Có lỗi xảy ra khi tải lọc tòa nhà");
     }
 
     if (errorInvoiceStatistics) {

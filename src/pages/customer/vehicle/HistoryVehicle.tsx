@@ -3,13 +3,14 @@ import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { BuildingResponse, ColumnConfig } from "@/types";
-import { useHistoryBuilding } from "./useHistoryBuilding";
+import { ColumnConfig, VehicleResponse } from "@/types";
+import { useHistoryVehicle } from "./useHistoryVehicle";
 import { BUTTON_HISTORY, GET_BTNS } from "@/constant";
 import { Notice } from "@/enums";
-import BuildingFilter from "@/components/data-category/building/BuildingFilter";
+import StatusBadge from "@/components/ui/StatusBadge";
+import VehicleFilter from "@/components/customer/vehicle/VehicleFilter";
 
-const HistoryBuilding = () => {
+const HistoryVehicle = () => {
   const {
     ConfirmDialog,
     data,
@@ -21,18 +22,18 @@ const HistoryBuilding = () => {
     setRowSelection,
     ConfirmDialogRemoveAll,
     openDialogAll,
-  } = useHistoryBuilding();
+  } = useHistoryVehicle();
   const { page, size } = query;
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Mã tòa nhà", accessorKey: "buildingCode", isSort: true, hasHighlight: true },
+    { label: "Chủ sở hữu", accessorKey: "fullName", isSort: true },
     {
       label: "Thao tác",
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
-      render: (row: BuildingResponse) => {
-        const building: BuildingResponse = row;
+      render: (row: VehicleResponse) => {
+        const vehicle: VehicleResponse = row;
         return (
           <div className="flex gap-2">
             {GET_BTNS("delete", "undo").map((btn, index) => (
@@ -44,7 +45,7 @@ const HistoryBuilding = () => {
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => {
-                        handleActionClick(building, btn.type);
+                        handleActionClick(vehicle, btn.type);
                       }}
                     >
                       <btn.icon className="text-white" />
@@ -73,13 +74,43 @@ const HistoryBuilding = () => {
         );
       },
     },
-    { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true },
-    { label: "Địa chỉ", accessorKey: "address", isSort: true },
-    { label: "Loại tòa nhà", accessorKey: "buildingType", isSort: true, hasBadge: true, isCenter: true },
-    { label: "Số tầng thực tế", accessorKey: "actualNumberOfFloors", isSort: true, isCenter: true },
-    { label: "Số tầng cho thuê", accessorKey: "numberOfFloorsForRent", isSort: true, isCenter: true },
-    { label: "Mô tả", accessorKey: "description" },
-    { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
+    {
+      label: "Loại phương tiện",
+      accessorKey: "vehicleType",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: "Biển số",
+      accessorKey: "licensePlate",
+      isSort: true,
+    },
+    {
+      label: "Trạng thái",
+      accessorKey: "vehicleStatus",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: "Ngày đăng ký",
+      accessorKey: "registrationDate",
+      isSort: true,
+      hasDate: true,
+      render: (row: VehicleResponse) =>
+        row.registrationDate ? (
+          new Date(row.registrationDate).toLocaleDateString("vi-VN")
+        ) : (
+          <StatusBadge status={"__EMPTY__"} />
+        ),
+      isCenter: true,
+    },
+    {
+      label: "Mô tả",
+      accessorKey: "describe",
+      isSort: false,
+    },
     {
       label: "Ngày tạo",
       accessorKey: "createdAt",
@@ -99,7 +130,7 @@ const HistoryBuilding = () => {
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
         <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-5 py-3 justify-between items-center">
-            <h3 className="font-semibold">Lịch sử xóa tòa nhà</h3>
+            <h3 className="font-semibold">Lịch sử xóa khách hàng</h3>
             <div className="flex gap-2">
               {BUTTON_HISTORY.map((btn, idx) => (
                 <TooltipProvider key={idx}>
@@ -155,8 +186,8 @@ const HistoryBuilding = () => {
             </div>
           </div>
         </div>
-        <BuildingFilter props={props} type="restore" />
-        <DataTable<BuildingResponse>
+        <VehicleFilter props={props} />
+        <DataTable<VehicleResponse>
           data={data?.data ?? []}
           columns={buildColumnsFromConfig(columnConfigs)}
           page={page}
@@ -174,4 +205,4 @@ const HistoryBuilding = () => {
   );
 };
 
-export default HistoryBuilding;
+export default HistoryVehicle;

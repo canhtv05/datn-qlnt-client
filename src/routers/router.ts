@@ -38,16 +38,22 @@ const HistoryFloor = lazy(() => import("@/pages/data-category/floor/HistoryFloor
 const AssetType = lazy(() => import("@/pages/data-category/asset-type"));
 const RoomAsset = lazy(() => import("@/pages/data-category/room-assets"));
 const Asset = lazy(() => import("@/pages/data-category/asset"));
+const HistoryAsset = lazy(() => import("@/pages/data-category/asset/HistoryAsset"));
 const Room = lazy(() => import("@/pages/data-category/room"));
+const HistoryRoom = lazy(() => import("@/pages/data-category/room/HistoryRoom"));
 const Service = lazy(() => import("@/pages/data-category/service"));
+const HistoryService = lazy(() => import("@/pages/data-category/service/HistoryService"));
 const ServiceRoom = lazy(() => import("@/pages/data-category/service-room"));
 const ServiceRoomDetail = lazy(() => import("@/pages/data-category/service-room-detail"));
 const RoomAssetDetail = lazy(() => import("@/components/data-category/room-assets/RoomAssetDetail"));
 
 /* CUSTOMER */
 const Vehicle = lazy(() => import("@/pages/customer/vehicle"));
+const HistoryVehicle = lazy(() => import("@/pages/customer/vehicle/HistoryVehicle"));
 const Tenant = lazy(() => import("@/pages/customer/tenant"));
+const HistoryTenant = lazy(() => import("@/pages/customer/tenant/HistoryTenant"));
 const Contract = lazy(() => import("@/pages/customer/contract"));
+const HistoryContract = lazy(() => import("@/pages/customer/contract/HistoryContract"));
 const ContractDetail = lazy(() => import("@/pages/customer/contract/ContractDetailPage"));
 
 /* FINANCE */
@@ -55,6 +61,7 @@ const Meter = lazy(() => import("@/pages/finance/meter"));
 const MeterStatistics = lazy(() => import("@/pages/finance/meter/MeterStatistics"));
 const MeterReading = lazy(() => import("@/pages/finance/meter-reading"));
 const Invoice = lazy(() => import("@/pages/finance/invoice"));
+const HistoryInvoice = lazy(() => import("@/pages/finance/invoice/HistoryInvoice"));
 const InvoiceDetail = lazy(() => import("@/pages/finance/invoice/invoice-detail/InvoiceDetail"));
 const ViewInvoiceDetail = lazy(() => import("@/pages/finance/invoice/invoice-detail/ViewInvoiceDetail"));
 const PaymentReceipt = lazy(() => import("@/pages/finance/payment-receipt"));
@@ -134,6 +141,16 @@ const privateRoutes: RouteType[] = [
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
+    path: configs.routes.facilities.roomsHistory,
+    component: SelectBuilding,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.facilities.roomsHistoryId,
+    component: HistoryRoom,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
     path: configs.routes.facilities.roomId,
     component: Room,
     allowedRoles: ["ADMIN", "MANAGER"],
@@ -153,6 +170,16 @@ const privateRoutes: RouteType[] = [
   {
     path: configs.routes.assetMng.asset,
     component: SelectBuilding,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.assetMng.assetHistory,
+    component: SelectBuilding,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.assetMng.assetHistoryId,
+    component: HistoryAsset,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
@@ -178,6 +205,11 @@ const privateRoutes: RouteType[] = [
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
+    path: configs.routes.serviceMng.serviceHistory,
+    component: HistoryService,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
     path: configs.routes.serviceMng.roomService,
     component: SelectBuilding,
     allowedRoles: ["ADMIN", "MANAGER"],
@@ -200,13 +232,28 @@ const privateRoutes: RouteType[] = [
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
+    path: configs.routes.customer.vehiclesHistory,
+    component: HistoryVehicle,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
     path: configs.routes.customer.tenants,
     component: Tenant,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
+    path: configs.routes.customer.tenantsHistory,
+    component: HistoryTenant,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
     path: configs.routes.customer.contract,
     component: Contract,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.customer.contractHistory,
+    component: HistoryContract,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
@@ -244,6 +291,11 @@ const privateRoutes: RouteType[] = [
   {
     path: configs.routes.finance.invoice,
     component: Invoice,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.finance.invoiceHistory,
+    component: HistoryInvoice,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {

@@ -214,7 +214,7 @@ export const useRoom = () => {
 
   const deleteRoomMutation = useMutation({
     mutationKey: ["delete-room"],
-    mutationFn: (id: string) => httpRequest.delete(`/rooms/delete/${id}`),
+    mutationFn: (id: string) => httpRequest.put(`/rooms/soft-delete/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
       queryClient.invalidateQueries({ queryKey: ["room-statistics"] });

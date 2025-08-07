@@ -150,7 +150,7 @@ const Contract = () => {
       <StatisticCard data={dataStatisticsContracts} />
       <div className="shadow-lg">
         <ContractButton ids={rowSelection} />
-        <ContractFilter props={props} />
+        <ContractFilter props={props} type="default" />
         <DataTable<ContractResponse>
           data={data?.data ?? []}
           columns={buildColumnsFromConfig(columnConfigs)}

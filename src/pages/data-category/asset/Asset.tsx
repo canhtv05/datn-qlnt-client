@@ -113,7 +113,7 @@ const Asset = () => {
       <StatisticCard data={dataAssets} />
       <div className="shadow-lg">
         <AssetButton ids={rowSelection} />
-        <AssetFilter props={props} />
+        <AssetFilter props={props} type="default" />
         <DataTable<AssetResponse>
           data={data?.data?.data ?? []}
           columns={buildColumnsFromConfig(columnConfigs)}

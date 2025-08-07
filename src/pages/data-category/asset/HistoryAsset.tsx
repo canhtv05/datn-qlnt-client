@@ -3,11 +3,11 @@ import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { BuildingResponse, ColumnConfig } from "@/types";
-import { useHistoryBuilding } from "./useHistoryBuilding";
+import { AssetResponse, ColumnConfig } from "@/types";
+import { useHistoryAsset } from "./useHistoryAsset";
 import { BUTTON_HISTORY, GET_BTNS } from "@/constant";
 import { Notice } from "@/enums";
-import BuildingFilter from "@/components/data-category/building/BuildingFilter";
+import AssetFilter from "@/components/data-category/asset/AssetFilter";
 
 const HistoryBuilding = () => {
   const {
@@ -21,18 +21,18 @@ const HistoryBuilding = () => {
     setRowSelection,
     ConfirmDialogRemoveAll,
     openDialogAll,
-  } = useHistoryBuilding();
+  } = useHistoryAsset();
   const { page, size } = query;
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Mã tòa nhà", accessorKey: "buildingCode", isSort: true, hasHighlight: true },
+    { label: "Tên tài sản", accessorKey: "nameAsset", isSort: true },
     {
       label: "Thao tác",
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
-      render: (row: BuildingResponse) => {
-        const building: BuildingResponse = row;
+      render: (row: AssetResponse) => {
+        const asset: AssetResponse = row;
         return (
           <div className="flex gap-2">
             {GET_BTNS("delete", "undo").map((btn, index) => (
@@ -44,7 +44,7 @@ const HistoryBuilding = () => {
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => {
-                        handleActionClick(building, btn.type);
+                        handleActionClick(asset, btn.type);
                       }}
                     >
                       <btn.icon className="text-white" />
@@ -73,13 +73,11 @@ const HistoryBuilding = () => {
         );
       },
     },
-    { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true },
-    { label: "Địa chỉ", accessorKey: "address", isSort: true },
-    { label: "Loại tòa nhà", accessorKey: "buildingType", isSort: true, hasBadge: true, isCenter: true },
-    { label: "Số tầng thực tế", accessorKey: "actualNumberOfFloors", isSort: true, isCenter: true },
-    { label: "Số tầng cho thuê", accessorKey: "numberOfFloorsForRent", isSort: true, isCenter: true },
-    { label: "Mô tả", accessorKey: "description" },
-    { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
+    { label: "Loại tài sản", accessorKey: "assetType", isSort: true, isCenter: true, hasBadge: true },
+    { label: "Tài sản thuộc về", accessorKey: "assetBeLongTo", isSort: true, isCenter: true, hasBadge: true },
+    { label: "Trạng thái", accessorKey: "assetStatus", isSort: true, hasBadge: true, isCenter: true },
+    { label: "Giá", accessorKey: "price", isSort: true },
+    { label: "Mô tả", accessorKey: "descriptionAsset", isSort: false },
     {
       label: "Ngày tạo",
       accessorKey: "createdAt",
@@ -92,14 +90,20 @@ const HistoryBuilding = () => {
       isSort: true,
       hasDate: true,
     },
+    { label: "Mã phòng", accessorKey: "roomID", isHidden: true },
+    { label: "Mã tầng", accessorKey: "floorID", isHidden: true },
+    { label: "Mã tòa nhà", accessorKey: "buildingID", isHidden: true },
+    { label: "Mã khách thuê", accessorKey: "tenantId", isHidden: true },
   ];
+
+  console.log(data);
 
   return (
     <div className="flex flex-col shadow-lg rounded-md">
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
         <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-5 py-3 justify-between items-center">
-            <h3 className="font-semibold">Lịch sử xóa tòa nhà</h3>
+            <h3 className="font-semibold">Lịch sử xóa tài sản</h3>
             <div className="flex gap-2">
               {BUTTON_HISTORY.map((btn, idx) => (
                 <TooltipProvider key={idx}>
@@ -155,14 +159,14 @@ const HistoryBuilding = () => {
             </div>
           </div>
         </div>
-        <BuildingFilter props={props} type="restore" />
-        <DataTable<BuildingResponse>
-          data={data?.data ?? []}
+        <AssetFilter props={props} type="restore" />
+        <DataTable<AssetResponse>
+          data={data?.data?.data ?? []}
           columns={buildColumnsFromConfig(columnConfigs)}
           page={page}
           size={size}
-          totalElements={data?.meta?.pagination?.total || 0}
-          totalPages={data?.meta?.pagination?.totalPages || 0}
+          totalElements={data?.data?.meta?.pagination?.total || 0}
+          totalPages={data?.data?.meta?.pagination?.totalPages || 0}
           loading={isLoading}
           rowSelection={rowSelection}
           setRowSelection={setRowSelection}

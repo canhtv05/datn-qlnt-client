@@ -13,15 +13,16 @@ import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
 import { useFormErrors } from "@/hooks/useFormErrors";
 import { ApiResponse, IBtnType, ICreateAsset, IdAndName } from "@/types";
-import { ACTION_BUTTONS } from "@/constant";
+import { ACTION_BUTTONS_HISTORY } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateAsset from "./AddOrUpdateAsset";
 import RoomAssetButton from "../room-assets/RoomAssetButton";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { creationAssetSchema } from "@/lib/validation";
 
 const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [value, setValue] = useState<ICreateAsset>({
     nameAsset: "",
@@ -64,6 +65,9 @@ const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
         predicate: (prev) => {
           return Array.isArray(prev.queryKey) && prev.queryKey[0] === "assets";
         },
+      });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
       });
     },
   });
@@ -109,6 +113,9 @@ const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
       queryClient.invalidateQueries({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
       });
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
+      });
 
       toast.success(Status.REMOVE_SUCCESS);
       return true;
@@ -131,9 +138,11 @@ const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
     (btn: IBtnType) => {
       if (btn.type === "delete") {
         openDialog(ids);
+      } else if (btn.type === "history") {
+        navigate(`/asset-management/assets/history`);
       }
     },
-    [ids, openDialog]
+    [ids, navigate, openDialog]
   );
 
   const removeAssetTypeMutation = useMutation({
@@ -170,7 +179,7 @@ const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
       <div className="flex px-4 py-3 justify-between items-center">
         <h3 className="font-semibold">Tài sản</h3>
         <div className="flex gap-2">
-          {ACTION_BUTTONS.map((btn, index) => (
+          {ACTION_BUTTONS_HISTORY.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>

@@ -3,13 +3,14 @@ import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { BuildingResponse, ColumnConfig } from "@/types";
-import { useHistoryBuilding } from "./useHistoryBuilding";
+import { ColumnConfig, ContractResponse } from "@/types";
+import { useHistoryContract } from "./useHistoryContract";
 import { BUTTON_HISTORY, GET_BTNS } from "@/constant";
 import { Notice } from "@/enums";
-import BuildingFilter from "@/components/data-category/building/BuildingFilter";
+import StatusBadge from "@/components/ui/StatusBadge";
+import ContractFilter from "@/components/customer/contract/ContractFilter";
 
-const HistoryBuilding = () => {
+const HistoryContract = () => {
   const {
     ConfirmDialog,
     data,
@@ -21,18 +22,23 @@ const HistoryBuilding = () => {
     setRowSelection,
     ConfirmDialogRemoveAll,
     openDialogAll,
-  } = useHistoryBuilding();
+  } = useHistoryContract();
   const { page, size } = query;
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Mã tòa nhà", accessorKey: "buildingCode", isSort: true, hasHighlight: true },
+    {
+      label: "Mã hợp đồng",
+      accessorKey: "contractCode",
+      isSort: true,
+      hasHighlight: true,
+    },
     {
       label: "Thao tác",
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
-      render: (row: BuildingResponse) => {
-        const building: BuildingResponse = row;
+      render: (row: ContractResponse) => {
+        const service: ContractResponse = row;
         return (
           <div className="flex gap-2">
             {GET_BTNS("delete", "undo").map((btn, index) => (
@@ -44,7 +50,7 @@ const HistoryBuilding = () => {
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => {
-                        handleActionClick(building, btn.type);
+                        handleActionClick(service, btn.type);
                       }}
                     >
                       <btn.icon className="text-white" />
@@ -73,24 +79,67 @@ const HistoryBuilding = () => {
         );
       },
     },
-    { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true },
-    { label: "Địa chỉ", accessorKey: "address", isSort: true },
-    { label: "Loại tòa nhà", accessorKey: "buildingType", isSort: true, hasBadge: true, isCenter: true },
-    { label: "Số tầng thực tế", accessorKey: "actualNumberOfFloors", isSort: true, isCenter: true },
-    { label: "Số tầng cho thuê", accessorKey: "numberOfFloorsForRent", isSort: true, isCenter: true },
-    { label: "Mô tả", accessorKey: "description" },
-    { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
     {
-      label: "Ngày tạo",
-      accessorKey: "createdAt",
+      label: "Phòng",
+      accessorKey: "roomCode",
       isSort: true,
-      hasDate: true,
+      isCenter: true,
     },
     {
-      label: "Ngày cập nhật",
-      accessorKey: "updatedAt",
+      label: "Khách thuê",
+      accessorKey: "tenants",
+      render: (row: ContractResponse) => row.tenants?.map((t) => t.fullName).join(", ") || "—",
+    },
+    {
+      label: "Số người",
+      accessorKey: "numberOfPeople",
       isSort: true,
-      hasDate: true,
+      isCenter: true,
+      render: (row: ContractResponse) => `${row.numberOfPeople} người/phòng`,
+    },
+    {
+      label: "Ngày bắt đầu",
+      accessorKey: "startDate",
+      isSort: true,
+      render: (row: ContractResponse) =>
+        new Date(row.startDate).toLocaleDateString("vi-VN", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        }),
+    },
+    {
+      label: "Ngày kết thúc",
+      accessorKey: "endDate",
+      isSort: true,
+      render: (row: ContractResponse) =>
+        new Date(row.endDate).toLocaleDateString("vi-VN", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        }),
+    },
+    {
+      label: "Tiền cọc",
+      accessorKey: "deposit",
+      isSort: true,
+      isCenter: true,
+      render: (row: ContractResponse) => `${row.deposit?.toLocaleString("vi-VN")} VNĐ`,
+    },
+    {
+      label: "Tiền phòng",
+      accessorKey: "roomPrice",
+      isSort: true,
+      isCenter: true,
+      render: (row: ContractResponse) => `${row.roomPrice?.toLocaleString("vi-VN")} VNĐ`,
+    },
+    {
+      label: "Trạng thái",
+      accessorKey: "status",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+      render: (row: ContractResponse) => <StatusBadge status={row.status} />,
     },
   ];
 
@@ -99,7 +148,7 @@ const HistoryBuilding = () => {
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
         <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-5 py-3 justify-between items-center">
-            <h3 className="font-semibold">Lịch sử xóa tòa nhà</h3>
+            <h3 className="font-semibold">Lịch sử xóa hợp đồng</h3>
             <div className="flex gap-2">
               {BUTTON_HISTORY.map((btn, idx) => (
                 <TooltipProvider key={idx}>
@@ -114,7 +163,7 @@ const HistoryBuilding = () => {
                             openDialogAll(
                               { ids: rowSelection, type: "remove" },
                               {
-                                desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tòa nhà đã chọn và không thể hoàn tác lại. Bạn có chắc chắn muốn tiếp tục?",
+                                desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tầng đã chọn và không thể hoàn tác lại. Bạn có chắc chắn muốn tiếp tục?",
                                 type: "warn",
                               }
                             );
@@ -155,8 +204,8 @@ const HistoryBuilding = () => {
             </div>
           </div>
         </div>
-        <BuildingFilter props={props} type="restore" />
-        <DataTable<BuildingResponse>
+        <ContractFilter props={props} type="restore" />
+        <DataTable<ContractResponse>
           data={data?.data ?? []}
           columns={buildColumnsFromConfig(columnConfigs)}
           page={page}
@@ -174,4 +223,4 @@ const HistoryBuilding = () => {
   );
 };
 
-export default HistoryBuilding;
+export default HistoryContract;

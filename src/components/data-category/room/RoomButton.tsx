@@ -8,16 +8,17 @@ import Modal from "@/components/Modal";
 import AddOrUpdateRoom from "./AddOrUpdateRoom";
 import { useFormErrors } from "@/hooks/useFormErrors";
 import { useConfirmDialog } from "@/hooks";
-import { ACTION_BUTTONS } from "@/constant";
+import { ACTION_BUTTONS_HISTORY } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { IBtnType, RoomFormValue, ApiResponse, FloorBasicResponse } from "@/types";
 import { Notice, RoomStatus, Status } from "@/enums";
 import { httpRequest } from "@/utils/httpRequest";
 import { createOrUpdateRoomSchema } from "@/lib/validation";
 import { handleMutationError } from "@/utils/handleMutationError";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
+  const navigate = useNavigate();
   const [value, setValue] = useState<RoomFormValue>({
     floorId: "",
     acreage: null,
@@ -122,9 +123,11 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
     (btn: IBtnType) => {
       if (btn.type === "delete") {
         openDialog(ids);
+      } else if (btn.type === "history") {
+        navigate(`/facilities/rooms/history`);
       }
     },
-    [ids, openDialog]
+    [ids, navigate, openDialog]
   );
 
   return (
@@ -132,7 +135,7 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
       <div className="flex px-4 py-3 justify-between items-center">
         <h3 className="font-semibold">Phòng</h3>
         <div className="flex gap-2">
-          {ACTION_BUTTONS.map((btn, index) => (
+          {ACTION_BUTTONS_HISTORY.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
@@ -140,7 +143,7 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
                     title="Thêm phòng"
                     trigger={
                       <TooltipTrigger asChild>
-                        <Button size="icon" variant={btn.type}>
+                        <Button size="icon" variant={btn.type} className="cursor-pointer">
                           <btn.icon className="text-white" />
                         </Button>
                       </TooltipTrigger>
@@ -161,6 +164,7 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
                 <RenderIf value={btn.type !== "default"}>
                   <TooltipTrigger asChild>
                     <Button
+                      className="cursor-pointer"
                       size="icon"
                       variant={btn.type}
                       onClick={() => handleButton(btn)}

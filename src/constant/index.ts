@@ -513,7 +513,7 @@ export const STATUS_BADGE = [
   },
   {
     value: AssetStatus.HUY,
-    label: "Đang sử dụng",
+    label: "Bị hủy",
     className: COLOR_CLASS.red,
   },
   {
@@ -617,14 +617,24 @@ export const STATUS_BADGE = [
     className: COLOR_CLASS.yellow,
   },
   {
-    value: ContractStatus.HET_HAN,
-    label: "Hết hạn",
+    value: ContractStatus.CHO_KICH_HOAT,
+    label: "Chờ kích hoạt",
     className: COLOR_CLASS.orange,
   },
   {
-    value: ContractStatus.DA_THANH_LY,
-    label: "Đã thanh lý",
+    value: ContractStatus.KET_THUC_CO_BAO_TRUOC,
+    label: "Kết thúc có báo trước",
     className: COLOR_CLASS.blue,
+  },
+  {
+    value: ContractStatus.KET_THUC_DUNG_HAN,
+    label: "Kết thúc đúng hạn",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: ContractStatus.TU_Y_HUY_BO,
+    label: "Tự ý hủy bỏ",
+    className: COLOR_CLASS.red,
   },
   {
     value: ContractStatus.DA_HUY,
@@ -731,6 +741,11 @@ export const STATUS_BADGE = [
     value: InvoiceStatus.CHUA_THANH_TOAN,
     label: "Chưa thanh toán",
     className: COLOR_CLASS.red,
+  },
+  {
+    value: InvoiceStatus.KHOI_PHUC,
+    label: "Khôi phục",
+    className: COLOR_CLASS.yellow,
   },
   {
     value: InvoiceStatus.DA_THANH_TOAN,

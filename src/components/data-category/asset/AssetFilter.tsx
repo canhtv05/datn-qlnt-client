@@ -1,7 +1,9 @@
 import ButtonFilter from "@/components/ButtonFilter";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
+import RenderIf from "@/components/RenderIf";
 import { AssetBeLongTo, AssetStatus } from "@/enums";
+import { switchGrid3 } from "@/lib/utils";
 import { AssetFilter as Filter } from "@/types";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 
@@ -12,7 +14,7 @@ export interface AssetFilterProps {
   onFilter: () => void;
 }
 
-const AssetFilter = ({ props }: { props: AssetFilterProps }) => {
+const AssetFilter = ({ props, type }: { props: AssetFilterProps; type: "default" | "restore" }) => {
   const { nameAsset, assetBeLongTo, assetStatus } = props.filterValues;
   const setFilterValues = props.setFilterValues;
 
@@ -27,7 +29,7 @@ const AssetFilter = ({ props }: { props: AssetFilterProps }) => {
 
   return (
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
-      <div className="grid grid-cols-3 gap-5 w-full items-end">
+      <div className={switchGrid3(type)}>
         <FieldsSelectLabel
           placeholder="-- Tài sản thuộc về --"
           labelSelect="Tài sản thuộc về"
@@ -40,21 +42,23 @@ const AssetFilter = ({ props }: { props: AssetFilterProps }) => {
           name="assetBeLongTo"
           showClear
         />
-        <FieldsSelectLabel
-          placeholder="-- Trạng thái --"
-          labelSelect="Trạng thái"
-          data={[
-            { label: "Cần bảo trì", value: AssetStatus.CAN_BAO_TRI },
-            { label: "Đã thanh lý", value: AssetStatus.DA_THANH_LY },
-            { label: "Bị hư hỏng", value: AssetStatus.HU_HONG },
-            { label: "Bị thất lạc", value: AssetStatus.THAT_LAC },
-            { label: "Không sử dụng", value: AssetStatus.KHONG_SU_DUNG },
-          ]}
-          value={assetStatus}
-          onChange={(value) => handleChange("assetStatus", String(value))}
-          name="assetStatus"
-          showClear
-        />
+        <RenderIf value={type === "default"}>
+          <FieldsSelectLabel
+            placeholder="-- Trạng thái --"
+            labelSelect="Trạng thái"
+            data={[
+              { label: "Cần bảo trì", value: AssetStatus.CAN_BAO_TRI },
+              { label: "Đã thanh lý", value: AssetStatus.DA_THANH_LY },
+              { label: "Bị hư hỏng", value: AssetStatus.HU_HONG },
+              { label: "Bị thất lạc", value: AssetStatus.THAT_LAC },
+              { label: "Không sử dụng", value: AssetStatus.KHONG_SU_DUNG },
+            ]}
+            value={assetStatus}
+            onChange={(value) => handleChange("assetStatus", String(value))}
+            name="assetStatus"
+            showClear
+          />
+        </RenderIf>
         <InputLabel
           type="text"
           id="nameAsset"

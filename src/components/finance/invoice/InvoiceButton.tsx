@@ -31,7 +31,8 @@ import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddInvoice from "./AddInvoice";
 import { format } from "date-fns";
-import { Building, Building2, FileText, Plus } from "lucide-react";
+import { Building, Building2, FileText, History, Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const InvoiceButton = ({
   ids,
@@ -44,6 +45,7 @@ const InvoiceButton = ({
   buildingInitToAdd: ApiResponse<IdAndName[]> | undefined;
   floorInitToAdd: ApiResponse<IdAndName[]> | undefined;
 }) => {
+  const navigate = useNavigate();
   const [valueContract, setValueContract] = useState<InvoiceCreationRequest>({
     contractId: "",
     note: "",
@@ -148,9 +150,11 @@ const InvoiceButton = ({
     (btn: IBtnType) => {
       if (btn.type === "delete") {
         openDialog(ids);
+      } else if (btn.type === "history") {
+        navigate(`/finance/invoice/history`);
       }
     },
-    [ids, openDialog]
+    [ids, navigate, openDialog]
   );
 
   const removeInvoiceMutation = useMutation({
@@ -238,6 +242,13 @@ const InvoiceButton = ({
   }, [addInvoiceFloorMutation, clearErrors, handleZodErrors, valueFloor]);
 
   const ADD_BUTTON: IBtnType[] = [
+    {
+      tooltipContent: "Xem lịch sử",
+      icon: History,
+      arrowColor: "#5a5e78",
+      type: "history",
+      hasConfirm: false,
+    },
     {
       icon: Building2,
       arrowColor: "var(--color-sky-500)",
