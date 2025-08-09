@@ -58,7 +58,7 @@ const ContractDetail = lazy(() => import("@/pages/customer/contract/ContractDeta
 
 /* FINANCE */
 const Meter = lazy(() => import("@/pages/finance/meter"));
-const MeterStatistics = lazy(() => import("@/pages/finance/meter/MeterStatistics"));
+// const MeterStatistics = lazy(() => import("@/pages/finance/meter/MeterStatistics"));
 const MeterReading = lazy(() => import("@/pages/finance/meter-reading"));
 const Invoice = lazy(() => import("@/pages/finance/invoice"));
 const HistoryInvoice = lazy(() => import("@/pages/finance/invoice/HistoryInvoice"));
@@ -273,11 +273,11 @@ const privateRoutes: RouteType[] = [
     component: Meter,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
-  {
-    path: configs.routes.finance.meterStatisticId,
-    component: MeterStatistics,
-    allowedRoles: ["ADMIN", "MANAGER"],
-  },
+  // {
+  //   path: configs.routes.finance.meterStatisticId,
+  //   component: MeterStatistics,
+  //   allowedRoles: ["ADMIN", "MANAGER"],
+  // },
   {
     path: configs.routes.finance.meterReading,
     component: SelectBuilding,
