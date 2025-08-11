@@ -4,7 +4,7 @@ import { refreshTokenRequest } from "@/services/auth";
 
 export const httpRequest = axios.create({
   // baseURL: import.meta.env.VITE_BASE_URL,
-  baseURL: "http://dant-qlnt.duckdns.org/api",
+  baseURL: "https://qlnt.htphuong.com/api",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
