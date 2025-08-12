@@ -30,6 +30,8 @@ const Authenticate = () => {
     staleTime: Infinity,
   });
 
+  console.log(data);
+
   useEffect(() => {
     if (!authCode) {
       toast.error(Status.ERROR);
@@ -52,6 +54,8 @@ const Authenticate = () => {
           navigate("/dashboard");
         }
       }, 1000);
+
+      console.log(data);
 
       return () => clearTimeout(timer);
     } else if (error) {
@@ -97,8 +101,8 @@ const Authenticate = () => {
               {authStatus === "error"
                 ? "Vui lòng thử lại hoặc liên hệ với hỗ trợ nếu vấn đề vẫn còn."
                 : authStatus === "success" && showSuccessScreen
-                  ? "Chuyển hướng trong giây lát..."
-                  : "Vui lòng đợi trong khi chúng tôi thiết lập tài khoản của bạn."}
+                ? "Chuyển hướng trong giây lát..."
+                : "Vui lòng đợi trong khi chúng tôi thiết lập tài khoản của bạn."}
             </p>
           </div>
         </div>

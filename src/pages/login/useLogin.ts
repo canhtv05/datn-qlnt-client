@@ -96,8 +96,7 @@ export const useLogin = () => {
 
     const callbackUrl = configs.oauth2.redirectUri ?? "https://datn-qlnt-client.vercel.app/authenticate";
     const authUrl = configs.oauth2.authUri ?? "https://accounts.google.com/o/oauth2/v2/auth";
-    const googleClientId =
-      configs.oauth2.clientId ?? "800832903969-dd0gq1nn45sqsgir4nt5rvs6p0c5j7gg.apps.googleusercontent.com";
+    const googleClientId = configs.oauth2.clientId;
 
     const targetUrl = `${authUrl}?redirect_uri=${encodeURIComponent(
       callbackUrl
