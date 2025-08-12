@@ -89,6 +89,7 @@ const Asset = () => {
     { label: "Tài sản thuộc về", accessorKey: "assetBeLongTo", isSort: true, isCenter: true, hasBadge: true },
     { label: "Trạng thái", accessorKey: "assetStatus", isSort: true, hasBadge: true, isCenter: true },
     { label: "Giá", accessorKey: "price", isSort: true },
+    { label: "Số lượng", accessorKey: "quantity", isSort: true, isCenter: true },
     { label: "Mô tả", accessorKey: "descriptionAsset", isSort: false },
     {
       label: "Ngày tạo",
