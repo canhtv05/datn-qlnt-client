@@ -12,6 +12,7 @@ import { handleMutationError } from "@/utils/handleMutationError";
 import { ApiResponse, UserResponse } from "@/types";
 import { RoleType } from "@/hooks/useHighestRole";
 import { getHighestRole } from "@/lib/utils";
+import cookieUtil from "@/utils/cookieUtil";
 
 const Authenticate = () => {
   const navigate = useNavigate();
@@ -41,6 +42,10 @@ const Authenticate = () => {
 
   useEffect(() => {
     if (data) {
+      cookieUtil.setStorage({
+        accessToken: data.data.meta?.tokenInfo?.accessToken,
+        refreshToken: data.data.meta?.tokenInfo?.refreshToken,
+      });
       setShowSuccessScreen(true);
       const timer = setTimeout(() => {
         setUser(data.data.data, true);
