@@ -29,7 +29,10 @@ const getIconByBuildingType = (type: BuildingType, status: BuildingStatus): JSX.
   }
 };
 
-const styleGridItemWithSidebar = (open: boolean) => {
+const styleGridItemWithSidebar = (open: boolean, length: number | undefined) => {
+  if (!length) {
+    return "grid-cols-1";
+  }
   if (open) {
     return "grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1";
   } else {
@@ -56,7 +59,7 @@ const SelectBuilding = () => {
       className={cn(
         "gap-4 mb-4 bg-background p-4 shadow-lg rounded-md transition-all",
         !data?.data.length && !isLoading && "md:grid-cols-1 lg:grid-cols-1",
-        styleGridItemWithSidebar(open)
+        styleGridItemWithSidebar(open, data?.data.length)
       )}
       style={{
         height: isLoading ? "100%" : "auto",

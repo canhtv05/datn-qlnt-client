@@ -96,8 +96,6 @@ const HistoryBuilding = () => {
     { label: "Mã khách thuê", accessorKey: "tenantId", isHidden: true },
   ];
 
-  console.log(data);
-
   return (
     <div className="flex flex-col shadow-lg rounded-md">
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">

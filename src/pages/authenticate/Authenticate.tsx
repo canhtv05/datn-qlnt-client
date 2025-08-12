@@ -31,8 +31,6 @@ const Authenticate = () => {
     staleTime: Infinity,
   });
 
-  console.log(data);
-
   useEffect(() => {
     if (!authCode) {
       toast.error(Status.ERROR);
@@ -59,8 +57,6 @@ const Authenticate = () => {
           navigate("/dashboard");
         }
       }, 1000);
-
-      console.log(data);
 
       return () => clearTimeout(timer);
     } else if (error) {
