@@ -2,6 +2,7 @@ import { useState } from "react";
 import Select from "react-select";
 import { Label } from "./label";
 import RenderIf from "../RenderIf";
+import useTheme from "@/hooks/useTheme";
 
 export interface FieldsSelectLabelType {
   label: string;
@@ -36,6 +37,7 @@ const FieldsMultiSelectLabel = ({
   isDisabled = false,
 }: FieldsMultiSelectLabelProps) => {
   const [touched, setTouched] = useState(false);
+  const { theme } = useTheme();
 
   const isInvalid = required && touched && value.length === 0;
 
@@ -49,6 +51,7 @@ const FieldsMultiSelectLabel = ({
       </RenderIf>
 
       <Select
+        noOptionsMessage={() => "Không có dữ liệu"}
         inputId={id}
         name={name}
         placeholder={placeholder}
@@ -78,14 +81,46 @@ const FieldsMultiSelectLabel = ({
               borderColor: state.isFocused ? "var(--color-primary)" : base.borderColor,
             },
             borderRadius: "8px",
+            background: "transparent",
           }),
           multiValueLabel: (base) => ({
             ...base,
-            fontSize: "13px",
+            fontSize: "12px",
+            color: "var(--color-background)",
+          }),
+          multiValue: (base) => ({
+            ...base,
+            background: "var(--color-foreground)",
+            color: "var(--color-background)",
           }),
           menuPortal: (base) => ({
             ...base,
             zIndex: 9999,
+          }),
+          singleValue: (base) => ({
+            ...base,
+          }),
+          option: (base) => ({
+            ...base,
+            fontSize: 14,
+            backgroundColor: "var(--color-primary)",
+            opacity: 0.7,
+            color: "white",
+          }),
+          noOptionsMessage: (base) => ({
+            ...base,
+            background: theme === "dark" ? "#44475a" : "#ebebec",
+            fontSize: 14,
+            color: "var(--color-foreground)",
+          }),
+          menuList: (base) => ({
+            ...base,
+            padding: 0,
+            borderRadius: 6,
+          }),
+          menu: (base) => ({
+            ...base,
+            borderRadius: 6,
           }),
         }}
       />
