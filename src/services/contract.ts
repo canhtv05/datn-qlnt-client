@@ -1,4 +1,11 @@
-import { ApiResponse, ContractDetailResponse, ICreateAndUpdateContract } from "@/types";
+import {
+  ApiResponse,
+  AssetBasicResponse,
+  ContractDetailResponse,
+  ICreateAndUpdateContract,
+  ServiceBasicResponse,
+  VehiclesBasicResponse,
+} from "@/types";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { RoomResponse, TenantBasicResponse, AssetResponse, ServiceResponse, VehicleResponse } from "@/types";
@@ -7,7 +14,14 @@ import { handlerRequest, httpRequest } from "@/utils/httpRequest";
 import { switchVehicleType } from "@/pages/customer/contract/useContract";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { toast } from "sonner";
-import { Status } from "@/enums";
+import { ContractStatus, Status } from "@/enums";
+import {
+  assetStatusEnumToString,
+  assetTypeEnumToString,
+  contractStatusEnumToString,
+  serviceCategoryEnumToString,
+  vehicleTypeEnumToString,
+} from "@/lib/utils";
 
 export const useRoomOptions = (): Option[] => {
   const { data } = useQuery({
@@ -89,10 +103,19 @@ const checkValue = (regex: RegExp, result: string) => {
 // thay thế các kí tự có trong nội dung hợp đồng
 export const replacePlaceholders = (text: string, values: ContractDetailResponse | undefined) => {
   if (!values) {
-    console.log(JSON.stringify(values));
     return;
   }
   let result = text;
+
+  const createListHtml = (items: string[]) => {
+    const ul = document.createElement("ul");
+    items.forEach((html) => {
+      const li = document.createElement("li");
+      li.innerHTML = html;
+      ul.appendChild(li);
+    });
+    return ul.outerHTML;
+  };
 
   Object.entries(values).forEach(([key, value]) => {
     const regex = new RegExp(`{{${key}}}`, "g");
@@ -101,72 +124,67 @@ export const replacePlaceholders = (text: string, values: ContractDetailResponse
       if (key === "tenants") {
         if (!value) result = checkValue(regex, result);
         else {
-          const listHtml = `<ul>${value
-            .map(
-              (t) =>
-                `<li><p><span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Họ và tên: ${
-                  t.fullName || "Không có"
-                } - Email: ${t.email || "Không có"} - SDT: ${t.phoneNumber || "Không có"}${
-                  t.isRepresentative ? " - Đại diện" : ""
-                }</span></p></li>`
-            )
-            .join("")}</ul>`;
-          result = result.replace(regex, listHtml);
+          const items = (value as TenantBasicResponse[]).map(
+            (t) =>
+              `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Họ và tên: ${
+                t.fullName || NA
+              } - Email: ${t.email || NA} - SDT: ${t.phoneNumber || NA}${
+                t.isRepresentative ? " - Đại diện" : ""
+              }</span>`
+          );
+          result = result.replace(regex, createListHtml(items));
         }
       } else if (key === "assets") {
         if (!value) result = checkValue(regex, result);
         else {
-          const listHtml = `<ul>${value
-            .map(
-              (a) =>
-                `<li><p><span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Tên tài sản: ${
-                  a.nameAsset || "Không có"
-                } - Loại tài sản: ${a.assetType || "Không có"} - Trạng thái: ${a.assetStatus || "Không có"} - Mô tả: ${
-                  a.description || "Không có"
-                }</span></p></li>`
-            )
-            .join("")}</ul>`;
-          result = result.replace(regex, listHtml);
+          const items = (value as AssetBasicResponse[]).map(
+            (a) =>
+              `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Tên tài sản: ${
+                a.nameAsset || NA
+              } - Loại tài sản: ${assetTypeEnumToString(a.assetType) || NA} - Trạng thái: ${
+                assetStatusEnumToString(a.assetStatus) || NA
+              } - Mô tả: ${a.description || NA}</span>`
+          );
+          result = result.replace(regex, createListHtml(items));
         }
       } else if (key === "services") {
         if (!value) result = checkValue(regex, result);
         else {
-          const listHtml = `<ul>${value
-            .map(
-              (s) =>
-                `<li><p><span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Tên dịch vụ: ${
-                  s.name || "Không có"
-                } - Loại dịch vụ: ${s.category || "Không có"} - Đơn vị: ${s.unit || "Không có"} - Mô tả: ${
-                  s.description || "Không có"
-                }</span></p></li>`
-            )
-            .join("")}</ul>`;
-          result = result.replace(regex, listHtml);
+          const items = (value as ServiceBasicResponse[]).map(
+            (s) =>
+              `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Tên dịch vụ: ${
+                s.name || NA
+              } - Loại dịch vụ: ${serviceCategoryEnumToString(s.category) || NA} - Đơn vị: ${s.unit || NA} - Mô tả: ${
+                s.description || NA
+              }</span>`
+          );
+          result = result.replace(regex, createListHtml(items));
         }
       } else if (key === "vehicles") {
         if (!value) result = checkValue(regex, result);
         else {
-          const listHtml = `<ul>${value
-            .map(
-              (s) =>
-                `<li><p><span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Loại phương tiện: ${
-                  s.vehicleType || "Không có"
-                } - Biển số: ${s.licensePlate || "Không có"} - Mô tả: ${s.description || "Không có"}</span></p></li>`
-            )
-            .join("")}</ul>`;
-          result = result.replace(regex, listHtml);
+          const items = (value as VehiclesBasicResponse[]).map(
+            (v) =>
+              `<li><p><span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Loại phương tiện: ${
+                vehicleTypeEnumToString(v.vehicleType) || NA
+              } - Biển số: ${v.licensePlate || NA} - Mô tả: ${v.description || NA}</span></p></li>`
+          );
+          result = result.replace(regex, createListHtml(items));
         }
       } else {
         if (!value) result = checkValue(regex, result);
         else result = result.replace(regex, value.join(", "));
       }
     } else {
+      if (!value) result = checkValue(regex, result);
       if (["createdAt", "updatedAt", "startDate", "endDate"].includes(key)) {
         if (!value) result = checkValue(regex, result);
         else result = result.replace(regex, new Date(value).toLocaleDateString("vi-VN"));
-      }
-      if (!value) result = checkValue(regex, result);
-      else result = result.replace(regex, String(value ?? ""));
+      } else if (key === "status") {
+        if (!value) result = checkValue(regex, result);
+        const contractStatus = value as ContractStatus;
+        result = result.replace(regex, contractStatusEnumToString(contractStatus));
+      } else result = result.replace(regex, String(value ?? ""));
     }
   });
 

@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, ReactNode } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
+
 import {
   ClassicEditor,
   Alignment,
@@ -65,14 +66,14 @@ const headingOptions = [
 interface EditorProps {
   content: string;
   onChange: (data: string) => void;
+  children?: ReactNode;
 }
 
-const Editor = ({ content, onChange }: EditorProps) => {
+const Editor = ({ content, onChange, children }: EditorProps) => {
   const editorContainerRef = useRef(null);
   const editorRef = useRef(null);
   const [isLayoutReady, setIsLayoutReady] = useState(false);
-  const LICENSE_KEY =
-    "eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NTYzMzkxOTksImp0aSI6IjM2MDRmYWZmLWI1NmUtNGQ5MC1iZTY0LWZkNWI3OGNhMzc2NyIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6IjcwNjY4MWVjIn0.jLe84SU1nwUZ5XUgI9zl6zzaH9f0h8_SohbzkKtz2ch78rLRdViK0fl0p-1dLeLebC5Cv9iE_q0MsketnUforQ";
+  const LICENSE_KEY = "GPL";
 
   useEffect(() => {
     setIsLayoutReady(true);
@@ -89,6 +90,7 @@ const Editor = ({ content, onChange }: EditorProps) => {
       editorConfig: {
         toolbar: {
           items: [
+            "exportPdf",
             "heading",
             "|",
             "undo",
@@ -191,7 +193,7 @@ const Editor = ({ content, onChange }: EditorProps) => {
             ),
         },
         heading: { allowAttributes: ["alignment"], options: headingOptions },
-        initialData: content || "",
+        initialData: "",
         language: "vi",
         licenseKey: LICENSE_KEY,
         list: {
@@ -201,16 +203,6 @@ const Editor = ({ content, onChange }: EditorProps) => {
             reversed: true,
           },
         },
-        mention: {
-          feeds: [
-            {
-              marker: "@",
-              feed: [
-                /* See: https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html */
-              ],
-            },
-          ],
-        },
         placeholder: "Viết nội dung hợp đồng vào đây!",
         table: {
           contentToolbar: ["tableColumn", "tableRow", "mergeTableCells", "tableProperties", "tableCellProperties"],
@@ -219,9 +211,19 @@ const Editor = ({ content, onChange }: EditorProps) => {
           allowAttributes: ["alignment"],
         },
         tableCell: { allowAttributes: ["alignment"] },
+        mention: {
+          feeds: [
+            {
+              marker: "@",
+              feed: [
+                // /* See: https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html */
+              ],
+            },
+          ],
+        },
       },
     };
-  }, [content, isLayoutReady]);
+  }, [isLayoutReady]);
 
   return (
     <div
@@ -242,6 +244,7 @@ const Editor = ({ content, onChange }: EditorProps) => {
           )}
         </div>
       </div>
+      {children}
     </div>
   );
 };

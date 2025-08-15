@@ -366,6 +366,14 @@ export interface ICreateAsset {
   descriptionAsset: string;
 }
 
+export interface AssetBasicResponse {
+  id: string;
+  nameAsset: string;
+  assetType: AssetType;
+  assetStatus: AssetStatus;
+  description: string;
+}
+
 export interface IAssetStatisticsResponse {
   totalActiveAssets: number;
   totalAssets: number;
@@ -517,6 +525,13 @@ export interface VehicleResponse extends AbstractResponse {
   describe: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface VehiclesBasicResponse {
+  id: string;
+  vehicleType: VehicleType;
+  licensePlate: string;
+  description: string;
 }
 
 export interface ICreateVehicle {
@@ -749,6 +764,14 @@ export interface ServiceResponse extends AbstractResponse {
   serviceCategory: ServiceCategory;
   serviceCalculation: ServiceCalculation;
   status: ServiceStatus;
+  description: string;
+}
+
+export interface ServiceBasicResponse {
+  id: string;
+  name: string;
+  category: ServiceCategory;
+  unit: string;
   description: string;
 }
 

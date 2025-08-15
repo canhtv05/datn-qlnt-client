@@ -169,7 +169,6 @@ export const useContract = () => {
         if (v) params[k] = v;
       });
       const res = await httpRequest.get(endpoint, { params });
-      console.log(res.data);
       return res.data;
     },
     retry: 1,

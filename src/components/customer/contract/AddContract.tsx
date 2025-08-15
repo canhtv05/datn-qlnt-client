@@ -211,8 +211,8 @@ const AddContract = () => {
             Nội dung hợp đồng
             <span className="text-[10px] text-red-500">(*)</span>
           </span>
-          <Button onClick={() => handleAddContract()}>ok</Button>
-          <div className="flex gap-10 lg:flex-row flex-col">
+          <div className="flex gap-10 flex-col">
+            <DescriptionValueForContract />
             <Editor
               content={value.content}
               onChange={(e) =>
@@ -221,8 +221,11 @@ const AddContract = () => {
                   content: e,
                 }))
               }
-            />
-            <DescriptionValueForContract />
+            >
+              <Button className="mt-5 w-full" onClick={() => handleAddContract()}>
+                Tạo hợp đồng
+              </Button>
+            </Editor>
           </div>
         </div>
       </div>
