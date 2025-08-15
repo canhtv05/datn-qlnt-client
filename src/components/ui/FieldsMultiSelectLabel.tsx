@@ -106,6 +106,7 @@ const FieldsMultiSelectLabel = ({
             backgroundColor: "var(--color-primary)",
             opacity: 0.7,
             color: "white",
+            borderBlockEnd: "1px solid white",
           }),
           noOptionsMessage: (base) => ({
             ...base,

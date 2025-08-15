@@ -133,6 +133,7 @@
 
 :root {
   --font-roboto: "Roboto", sans-serif;
+  --ck-content-font-family: "Roboto", sans-serif;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: #6e6b7b;
@@ -250,4 +251,32 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px theme("colors.background") inset !important;
   -webkit-text-fill-color: theme("colors.foreground") !important;
   transition: background-color 9999s ease-in-out 0s;
+}
+
+.main-container {
+  font-family: var(--ck-content-font-family);
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.editor-container_classic-editor .editor-container__editor {
+  min-width: 795px;
+  max-width: 795px;
+}
+
+.ck-content {
+  padding: 20px !important;
+}
+
+.ck-content ul,
+.ck-content ol {
+  margin-left: 12px !important;
+  padding-left: 12px !important;
+  list-style-position: inside;
+}
+
+.ck-content li p {
+  display: inline;
+  margin: 0;
 }

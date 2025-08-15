@@ -444,6 +444,7 @@ export type RoomAssetFormValue = {
   description: string;
   assetStatus?: AssetStatus | string;
   buildingId?: string;
+  quantity?: number;
 };
 
 export type AllRoomAssetFormValue = {
@@ -628,6 +629,7 @@ export interface ContractResponse extends AbstractResponse {
   tenants: TenantBasicResponse[];
   services: ServiceResponse[];
   vehicles: VehicleResponse[];
+  content: string;
 }
 
 export interface ICreateAndUpdateContract {
@@ -642,6 +644,7 @@ export interface ICreateAndUpdateContract {
   vehicles: string[];
   status: ContractStatus | undefined;
   roomPrice?: number;
+  content: string;
 }
 export interface ContractDetailResponse {
   id: string;
@@ -669,6 +672,7 @@ export interface ContractDetailResponse {
   updatedAt: string;
 
   tenants: TenantBasicResponse[];
+  content: string;
 }
 export interface IContractStatisticsResponse {
   totalContracts: number;
@@ -1115,6 +1119,7 @@ export interface AssetLittleResponse {
   assetName: string;
   assetBeLongTo: AssetBeLongTo;
   price: number;
+  quantity: number;
   assetStatus: AssetStatus;
   description: string;
 }

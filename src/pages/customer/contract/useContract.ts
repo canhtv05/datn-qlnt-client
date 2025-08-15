@@ -72,6 +72,7 @@ export const useContract = () => {
     services: [],
     vehicles: [],
     status: undefined,
+    content: "",
   });
 
   const { data: roomsData } = useQuery<ApiResponse<RoomResponse[]>>({
@@ -168,6 +169,7 @@ export const useContract = () => {
         if (v) params[k] = v;
       });
       const res = await httpRequest.get(endpoint, { params });
+      console.log(res.data);
       return res.data;
     },
     retry: 1,
@@ -281,6 +283,7 @@ export const useContract = () => {
       services: [],
       vehicles: [],
       status: undefined,
+      content: "",
     });
     idRef.current = "";
     clearErrors();
@@ -331,6 +334,7 @@ export const useContract = () => {
           services: [],
           vehicles: [],
           status: contract.status,
+          content: contract.content,
         });
 
         setIsModalOpen(true);

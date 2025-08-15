@@ -53,6 +53,7 @@ const routes = {
     tenants: "/customers/tenants",
     tenantsHistory: "/customers/tenants/history",
     contract: "/customers/contracts",
+    contractAdd: "/customers/contracts/add",
     contractHistory: "/customers/contracts/history",
     contractDetail: "/customers/contracts/:contractId",
   },

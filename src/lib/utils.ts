@@ -1,4 +1,6 @@
 import { RoleType } from "@/hooks/useHighestRole";
+import { useEditorStore } from "@/zustand/editorStore";
+import { FindResultType } from "ckeditor5";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -45,3 +47,12 @@ export const switchGrid2 = (type: "default" | "restore"): string => {
       return "grid md:grid-cols-1 grid-cols-1 gap-5 w-full items-end";
   }
 };
+
+export const replaceText = (replacementText: string, findResult: FindResultType) => {
+  const editor = useEditorStore.getState().getEditor();
+  if (!editor) return;
+
+  editor.execute("replace", replacementText, findResult);
+};
+
+export const;

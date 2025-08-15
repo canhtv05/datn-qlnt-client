@@ -11,11 +11,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
-import {
-  createInvoiceForBuildingSchema,
-  createInvoiceForContractSchema,
-  createInvoiceForFloorSchema,
-} from "@/lib/validation";
+import { createInvoiceForBuildingSchema, createInvoiceForContractSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
 import {
   ApiResponse,
@@ -24,26 +20,25 @@ import {
   IdAndName,
   InvoiceBuildingCreationRequest,
   InvoiceCreationRequest,
-  InvoiceFloorCreationRequest,
 } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddInvoice from "./AddInvoice";
 import { format } from "date-fns";
-import { Building, Building2, FileText, History, Plus } from "lucide-react";
+import { Building, FileText, History } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const InvoiceButton = ({
   ids,
   contractInitToAdd,
   buildingInitToAdd,
-  floorInitToAdd,
-}: {
+}: // floorInitToAdd,
+{
   ids: Record<string, boolean>;
   contractInitToAdd: ApiResponse<ContractResponse[]> | undefined;
   buildingInitToAdd: ApiResponse<IdAndName[]> | undefined;
-  floorInitToAdd: ApiResponse<IdAndName[]> | undefined;
+  // floorInitToAdd: ApiResponse<IdAndName[]> | undefined;
 }) => {
   const navigate = useNavigate();
   const [valueContract, setValueContract] = useState<InvoiceCreationRequest>({
@@ -58,11 +53,11 @@ const InvoiceButton = ({
     paymentDueDate: "",
   });
 
-  const [valueFloor, setValueFloor] = useState<InvoiceFloorCreationRequest>({
-    floorId: "",
-    note: "",
-    paymentDueDate: "",
-  });
+  // const [valueFloor, setValueFloor] = useState<InvoiceFloorCreationRequest>({
+  //   floorId: "",
+  //   note: "",
+  //   paymentDueDate: "",
+  // });
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<InvoiceCreationRequest>();
 
@@ -202,44 +197,44 @@ const InvoiceButton = ({
     }
   }, [addInvoiceBuildingMutation, clearErrors, handleZodErrors, valueBuilding]);
 
-  const addInvoiceFloorMutation = useMutation({
-    mutationKey: ["add-invoice-floor"],
-    mutationFn: async (payload: InvoiceFloorCreationRequest) => await httpRequest.post("/invoices/by-floor", payload),
-    onError: handleMutationError,
-    onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
-      setValueFloor({
-        floorId: "",
-        note: "",
-        paymentDueDate: "",
-      });
-      queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "invoices",
-      });
-      queryClient.invalidateQueries({ queryKey: ["invoice-statistics"] });
-    },
-  });
+  // const addInvoiceFloorMutation = useMutation({
+  //   mutationKey: ["add-invoice-floor"],
+  //   mutationFn: async (payload: InvoiceFloorCreationRequest) => await httpRequest.post("/invoices/by-floor", payload),
+  //   onError: handleMutationError,
+  //   onSuccess: () => {
+  //     toast.success(Status.ADD_SUCCESS);
+  //     setValueFloor({
+  //       floorId: "",
+  //       note: "",
+  //       paymentDueDate: "",
+  //     });
+  //     queryClient.invalidateQueries({
+  //       predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "invoices",
+  //     });
+  //     queryClient.invalidateQueries({ queryKey: ["invoice-statistics"] });
+  //   },
+  // });
 
-  const handleAddInvoiceForFloor = useCallback(async () => {
-    try {
-      const { floorId, note, paymentDueDate } = valueFloor;
+  // const handleAddInvoiceForFloor = useCallback(async () => {
+  //   try {
+  //     const { floorId, note, paymentDueDate } = valueFloor;
 
-      await createInvoiceForFloorSchema.parseAsync(valueFloor);
+  //     await createInvoiceForFloorSchema.parseAsync(valueFloor);
 
-      const data: InvoiceFloorCreationRequest = {
-        floorId: floorId.trim(),
-        note: note.trim(),
-        paymentDueDate: format(paymentDueDate, "yyyy-MM-dd"),
-      };
+  //     const data: InvoiceFloorCreationRequest = {
+  //       floorId: floorId.trim(),
+  //       note: note.trim(),
+  //       paymentDueDate: format(paymentDueDate, "yyyy-MM-dd"),
+  //     };
 
-      await addInvoiceFloorMutation.mutateAsync(data);
-      clearErrors();
-      return true;
-    } catch (error) {
-      handleZodErrors(error);
-      return false;
-    }
-  }, [addInvoiceFloorMutation, clearErrors, handleZodErrors, valueFloor]);
+  //     await addInvoiceFloorMutation.mutateAsync(data);
+  //     clearErrors();
+  //     return true;
+  //   } catch (error) {
+  //     handleZodErrors(error);
+  //     return false;
+  //   }
+  // }, [addInvoiceFloorMutation, clearErrors, handleZodErrors, valueFloor]);
 
   const ADD_BUTTON: IBtnType[] = [
     {
@@ -250,19 +245,19 @@ const InvoiceButton = ({
       hasConfirm: false,
     },
     {
-      icon: Building2,
+      icon: Building,
       arrowColor: "var(--color-sky-500)",
       hasConfirm: true,
       tooltipContent: "Tạo hóa đơn tòa nhà",
       type: "building",
     },
-    {
-      icon: Building,
-      arrowColor: "var(--color-teal-400)",
-      hasConfirm: true,
-      tooltipContent: "Tạo hóa đơn tầng nhà",
-      type: "floor",
-    },
+    // {
+    //   icon: Building,
+    //   arrowColor: "var(--color-teal-400)",
+    //   hasConfirm: true,
+    //   tooltipContent: "Tạo hóa đơn tầng nhà",
+    //   type: "floor",
+    // },
     {
       icon: FileText,
       arrowColor: "var(--color-indigo-500)",
@@ -270,13 +265,13 @@ const InvoiceButton = ({
       tooltipContent: "Tạo hóa đơn hợp đồng",
       type: "contract",
     },
-    {
-      icon: Plus,
-      arrowColor: "var(--color-primary)",
-      hasConfirm: true,
-      tooltipContent: "Tạo hóa đơn cuối cùng",
-      type: "finalize",
-    },
+    // {
+    //   icon: Plus,
+    //   arrowColor: "var(--color-primary)",
+    //   hasConfirm: true,
+    //   tooltipContent: "Tạo hóa đơn cuối cùng",
+    //   type: "finalize",
+    // },
   ];
   const ACTIONS_BUTTON_CUSTOM = [...ADD_BUTTON, ...ACTION_BUTTONS];
 
@@ -334,7 +329,7 @@ const InvoiceButton = ({
                     />
                   </Modal>
                 </RenderIf>
-                <RenderIf value={btn.type === "floor"}>
+                {/* <RenderIf value={btn.type === "floor"}>
                   <Modal
                     title="Tạo hóa đơn tầng nhà"
                     trigger={
@@ -356,8 +351,8 @@ const InvoiceButton = ({
                       type="floor"
                     />
                   </Modal>
-                </RenderIf>
-                <RenderIf value={btn.type === "finalize"}>
+                </RenderIf> */}
+                {/* <RenderIf value={btn.type === "finalize"}>
                   <Modal
                     title="Tạo hóa đơn cuối cùng"
                     trigger={
@@ -379,7 +374,7 @@ const InvoiceButton = ({
                       type="finalize"
                     />
                   </Modal>
-                </RenderIf>
+                </RenderIf> */}
                 <RenderIf
                   value={
                     btn.type !== "contract" &&

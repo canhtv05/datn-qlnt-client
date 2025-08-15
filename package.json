@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^41.4.2",
+    "@ckeditor/ckeditor5-react": "^11.0.0",
     "@oorts/read-vn-number": "^0.3.0",
     "@radix-ui/react-alert-dialog": "^1.1.14",
     "@radix-ui/react-avatar": "^1.1.10",
@@ -24,6 +26,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tabs": "^1.1.12",
     "@radix-ui/react-tooltip": "^1.2.7",
+    "@react-pdf/renderer": "^4.3.0",
     "@shikijs/rehype": "^3.4.2",
     "@tailwindcss/typography": "^0.0.0-insiders.0339c42",
     "@tailwindcss/vite": "^4.1.6",
@@ -32,6 +35,7 @@
     "@tanstack/react-table": "^8.21.3",
     "aos": "^2.3.4",
     "axios": "^1.9.0",
+    "ckeditor5": "^46.0.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
