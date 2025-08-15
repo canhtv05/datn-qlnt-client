@@ -52,6 +52,7 @@ import {
 } from "ckeditor5";
 
 import "ckeditor5/ckeditor5.css";
+import RenderIf from "./RenderIf";
 
 const headingOptions = [
   { model: "paragraph", title: "Tiêu đề", class: "ck-heading_paragraph" },
@@ -67,9 +68,12 @@ interface EditorProps {
   content: string;
   onChange: (data: string) => void;
   children?: ReactNode;
+  errorText?: string;
+  isEmpty?: boolean;
+  validate?: boolean;
 }
 
-const Editor = ({ content, onChange, children }: EditorProps) => {
+const Editor = ({ content, onChange, children, errorText, isEmpty, validate }: EditorProps) => {
   const editorContainerRef = useRef(null);
   const editorRef = useRef(null);
   const [isLayoutReady, setIsLayoutReady] = useState(false);
@@ -244,6 +248,10 @@ const Editor = ({ content, onChange, children }: EditorProps) => {
           )}
         </div>
       </div>
+      <RenderIf value={!!isEmpty && !!validate}>
+        <span className="text-[12px] text-red-500 font-light text-left block mt-2">Thông tin bắt buộc</span>
+      </RenderIf>
+      <span className="text-[12px] text-red-500 font-light text-left">{errorText}</span>
       {children}
     </div>
   );

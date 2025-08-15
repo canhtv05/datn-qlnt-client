@@ -207,25 +207,30 @@ const AddContract = () => {
             />
           </div>
 
-          <span className="mb-1 text-label text-sm flex gap-1">
-            Nội dung hợp đồng
-            <span className="text-[10px] text-red-500">(*)</span>
-          </span>
           <div className="flex gap-10 flex-col">
             <DescriptionValueForContract />
-            <Editor
-              content={value.content}
-              onChange={(e) =>
-                setValue((prev) => ({
-                  ...prev,
-                  content: e,
-                }))
-              }
-            >
-              <Button className="mt-5 w-full" onClick={() => handleAddContract()}>
-                Tạo hợp đồng
-              </Button>
-            </Editor>
+            <div>
+              <span className="mb-1 text-label text-sm flex gap-1">
+                Nội dung hợp đồng
+                <span className="text-[10px] text-red-500">(*)</span>
+              </span>
+              <Editor
+                errorText={errors.content}
+                isEmpty={!value.content}
+                validate
+                content={value.content}
+                onChange={(e) =>
+                  setValue((prev) => ({
+                    ...prev,
+                    content: e,
+                  }))
+                }
+              >
+                <Button className="mt-5 w-full text-white" onClick={() => handleAddContract()}>
+                  Tạo hợp đồng
+                </Button>
+              </Editor>
+            </div>
           </div>
         </div>
       </div>

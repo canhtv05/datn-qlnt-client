@@ -82,6 +82,7 @@ const FieldsMultiSelectLabel = ({
             },
             borderRadius: "8px",
             background: "transparent",
+            cursor: "pointer",
           }),
           multiValueLabel: (base) => ({
             ...base,
@@ -103,25 +104,41 @@ const FieldsMultiSelectLabel = ({
           option: (base) => ({
             ...base,
             fontSize: 14,
-            backgroundColor: "var(--color-primary)",
+            // backgroundColor: "var(--color-primary)",
+            background: theme === "dark" ? "#44475a" : "#ebebec",
             opacity: 0.7,
-            color: "white",
-            borderBlockEnd: "1px solid white",
+            // color: "black",
+            color: theme === "dark" ? "#ebebec" : "#44475a",
+            // borderBlockEnd: "1px solid white",
+            ":hover": {
+              cursor: "pointer",
+              background: "var(--color-primary)",
+              color: "white",
+            },
           }),
           noOptionsMessage: (base) => ({
             ...base,
             background: theme === "dark" ? "#44475a" : "#ebebec",
             fontSize: 14,
-            color: "var(--color-foreground)",
+            color: theme === "dark" ? "#ebebec" : "#44475a",
+            ":hover": {
+              cursor: "default",
+            },
           }),
           menuList: (base) => ({
             ...base,
             padding: 0,
             borderRadius: 6,
+            ":hover": {
+              cursor: "pointer",
+            },
           }),
           menu: (base) => ({
             ...base,
             borderRadius: 6,
+            ":hover": {
+              cursor: "pointer",
+            },
           }),
         }}
       />
