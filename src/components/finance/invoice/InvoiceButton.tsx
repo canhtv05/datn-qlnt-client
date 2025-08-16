@@ -31,7 +31,7 @@ import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddInvoice from "./AddInvoice";
 import { format } from "date-fns";
-import { Building, Building2, FileText, History, Plus } from "lucide-react";
+import {  Building2, FileText, History, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const InvoiceButton = ({
@@ -256,13 +256,13 @@ const InvoiceButton = ({
       tooltipContent: "Tạo hóa đơn tòa nhà",
       type: "building",
     },
-    {
-      icon: Building,
-      arrowColor: "var(--color-teal-400)",
-      hasConfirm: true,
-      tooltipContent: "Tạo hóa đơn tầng nhà",
-      type: "floor",
-    },
+    // {
+    //   icon: Building,
+    //   arrowColor: "var(--color-teal-400)",
+    //   hasConfirm: true,
+    //   tooltipContent: "Tạo hóa đơn tầng nhà",
+    //   type: "floor",
+    // },
     {
       icon: FileText,
       arrowColor: "var(--color-indigo-500)",

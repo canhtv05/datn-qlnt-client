@@ -163,7 +163,7 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
   });
   const assetOptions: Option[] =
     assetsData?.data?.map((asset) => ({
-      label: asset.nameAsset,
+      label: `${asset.nameAsset} - (${asset.buildingName})`,
       value: asset.id,
     })) || [];
   const { data: servicesDaTa } = useQuery<ApiResponse<ServiceResponse[]>>({
