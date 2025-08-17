@@ -292,6 +292,7 @@ export interface FilterRoomValues {
 export interface IdAndName {
   id: string;
   name: string;
+  buildingId: string;
 }
 
 export type IdNameAndType = IdAndName & { type: string };
