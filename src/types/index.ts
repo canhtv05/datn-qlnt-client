@@ -1146,3 +1146,17 @@ export interface AssetLittleResponse {
   assetStatus: AssetStatus;
   description: string;
 }
+
+/* SYSTEM NOTIFICATION */
+export interface SystemNotificationResponse {
+  systemNotificationId: string;
+  userId: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  isRead: boolean;
+}
+
+export interface UnreadNotificationCountResponse {
+  totalUnreadNotifications: number;
+}

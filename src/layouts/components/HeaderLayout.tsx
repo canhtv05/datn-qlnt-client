@@ -1,4 +1,4 @@
-import { CircleUserRound, LogOut, Moon, Settings, Sun } from "lucide-react";
+import { CircleUserRound, LogOut, Moon, Sun } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
@@ -17,7 +17,7 @@ import Image from "@/components/Image";
 import { useLogout } from "./useLogout";
 import { useConfirmDialog } from "@/hooks/useConfirmDialog";
 import useHighestRole from "@/hooks/useHighestRole";
-import Notification from "@/components/Notification";
+import Notification from "@/components/system/Notification";
 
 const HeaderLayout = () => {
   const navigate = useNavigate();
@@ -82,11 +82,11 @@ const HeaderLayout = () => {
               <CircleUserRound className="text-light" />
               Hồ sơ cá nhân
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            {/* <DropdownMenuItem>
               <Settings className="text-light" />
               Cài đặt
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
+            </DropdownMenuItem> */}
+            {/* <DropdownMenuSeparator /> */}
             <DropdownMenuItem onClick={() => openDialog()}>
               <LogOut className="text-light" />
               Đăng xuất
