@@ -96,12 +96,14 @@ const RoomAssetButton = ({
   const queryClient = useQueryClient();
 
   const { data: roomListData } = useQuery<ApiResponse<RoomResponse[]>>({
-    queryKey: ["room-list"],
-    queryFn: async () => {
-      const res = await httpRequest.get("/rooms/all");
-      return res.data;
-    },
-  });
+  queryKey: ["room-list", id || searchParams.get("buildingId")],
+  queryFn: async () => {
+    const res = await httpRequest.get("/rooms/find-all", {
+      params: { buildingId: id || searchParams.get("buildingId") },
+    });
+    return res.data;
+  },
+});
 
   const { data: assetsListData } = useQuery<ApiResponse<AssetResponse[]>>({
     queryKey: ["assets-find-all"],

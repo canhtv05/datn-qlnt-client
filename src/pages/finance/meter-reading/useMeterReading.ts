@@ -4,10 +4,10 @@ import { updateMeterReadingSchema } from "@/lib/validation";
 import {
   ApiResponse,
   MeterReadingUpdateRequest,
-  MeterInitFilterResponse,
   MeterReadingFilter,
   MeterReadingResponse,
   MeterFindAllResponse,
+  MeterInitFilterResponse,
 } from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
@@ -20,6 +20,8 @@ import { toast } from "sonner";
 
 export const useMeterReading = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { id } = useParams();
+
   const {
     page = "1",
     size = "15",
@@ -29,6 +31,7 @@ export const useMeterReading = () => {
     month = "",
   } = queryFilter(searchParams, "page", "size", "buildingId", "roomId", "meterType", "month");
 
+  const activeBuildingId = id || buildingId;
   const [rowSelection, setRowSelection] = useState({});
   const idRef = useRef<string>("");
   const [value, setValue] = useState<MeterReadingUpdateRequest>({
@@ -38,7 +41,6 @@ export const useMeterReading = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const queryClient = useQueryClient();
-
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
 
@@ -74,22 +76,18 @@ export const useMeterReading = () => {
   }, [filterValues.buildingId, filterValues.meterType, filterValues.month, filterValues.roomId, setSearchParams]);
 
   const { data, isLoading, isError } = useQuery<ApiResponse<MeterReadingResponse[]>>({
-    queryKey: ["meter-readings", page, size, buildingId, month, roomId, meterType],
+    queryKey: ["meter-readings", parsedPage, parsedSize, activeBuildingId, month, roomId, meterType],
     queryFn: async () => {
       const params: Record<string, string> = {
-        page: page.toString(),
-        size: size.toString(),
+        page: parsedPage.toString(),
+        size: parsedSize.toString(),
       };
-
-      if (buildingId) params["buildingId"] = buildingId;
-      if (month) params["month"] = month;
+      if (activeBuildingId) params["buildingId"] = activeBuildingId;
+      if (month) params["month"] = String(month);
       if (roomId) params["roomId"] = roomId;
       if (meterType) params["meterType"] = meterType;
 
-      const res = await httpRequest.get("/meter-readings", {
-        params,
-      });
-
+      const res = await httpRequest.get("/meter-readings", { params });
       return res.data;
     },
     retry: 1,
@@ -155,10 +153,7 @@ export const useMeterReading = () => {
 
       updateMeterReadingMutation.mutate(data, {
         onSuccess: () => {
-          setValue({
-            descriptionMeterReading: "",
-            newIndex: undefined,
-          });
+          setValue({ descriptionMeterReading: "", newIndex: undefined });
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "meter-readings",
           });
@@ -166,6 +161,7 @@ export const useMeterReading = () => {
           setIsModalOpen(false);
         },
       });
+
       clearErrors();
       return true;
     } catch (error) {
@@ -186,10 +182,7 @@ export const useMeterReading = () => {
       } else {
         openDialog(
           { id: meterReading.id, type: action },
-          {
-            type: "warn",
-            desc: Notice.REMOVE,
-          }
+          { type: "warn", desc: Notice.REMOVE }
         );
       }
     },
@@ -204,8 +197,6 @@ export const useMeterReading = () => {
     },
     retry: 1,
   });
-
-  const { id } = useParams();
 
   const { data: filterMeterInit, isError: errorFilterMeterInit } = useQuery<ApiResponse<MeterInitFilterResponse>>({
     queryKey: ["meters-filter-init"],
@@ -226,24 +217,16 @@ export const useMeterReading = () => {
   };
 
   useEffect(() => {
-    if (isError) {
-      toast.error("Có lỗi xảy ra khi tải ghi chỉ số");
-    }
-
-    if (errorMeterFindAll) {
-      toast.error("Có lỗi xảy ra khi tải công tơ");
-    }
-
-    if (errorFilterMeterInit) {
-      toast.error("Có lỗi xảy ra khi tải lọc ghi chỉ số");
-    }
+    if (isError) toast.error("Có lỗi xảy ra khi tải ghi chỉ số");
+    if (errorMeterFindAll) toast.error("Có lỗi xảy ra khi tải công tơ");
+    if (errorFilterMeterInit) toast.error("Có lỗi xảy ra khi tải lọc ghi chỉ số");
   }, [errorFilterMeterInit, errorMeterFindAll, isError]);
 
   return {
     query: {
       page: parsedPage,
       size: parsedSize,
-      buildingId,
+      buildingId: activeBuildingId,
       month,
       meterType,
       roomId,
