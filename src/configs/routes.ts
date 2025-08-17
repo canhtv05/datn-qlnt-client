@@ -1,4 +1,5 @@
 const routes = {
+  updateProfile: "/update-profile",
   home: {
     home: "/",
     features: "/features",

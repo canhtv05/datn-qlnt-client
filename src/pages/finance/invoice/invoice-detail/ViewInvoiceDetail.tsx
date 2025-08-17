@@ -79,7 +79,7 @@ const ViewInvoiceDetail = () => {
             <span className="text-end">
               Hạn TT/Due date:{" "}
               <strong>
-                {data?.data?.paymentDueDate && new Date(data?.data?.createdAt).toLocaleDateString("vi-VN")}
+                {data?.data?.paymentDueDate && new Date(data?.data?.paymentDueDate).toLocaleDateString("vi-VN")}
               </strong>
             </span>
             <span className="flex gap-2 items-center justify-end">

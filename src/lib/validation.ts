@@ -254,27 +254,39 @@ export const roomAssetFormSchema = z
     }
   });
 
-//kkk
-export const roomAssetBulkSchema = z.object({
-  roomId: z.union([z.string(), z.array(z.string())]).refine(
-    (val) => {
-      if (typeof val === "string") return false;
-      return Array.isArray(val) && val.length >= 2 && val.every((v) => v.trim() !== "");
+export const roomAssetBulkSchema = z
+  .object({
+    roomId: z.union([z.string(), z.array(z.string())]).refine(
+      (val) => {
+        if (typeof val === "string") return val.trim() !== "";
+        return Array.isArray(val) && val.length > 0 && val.every((v) => v.trim() !== "");
+      },
+      {
+        message: "Vui lòng chọn ít nhất một phòng.",
+      }
+    ),
+    assetId: z.union([z.string(), z.array(z.string())]).refine(
+      (val) => {
+        if (typeof val === "string") return val.trim() !== "";
+        return Array.isArray(val) && val.length > 0 && val.every((v) => v.trim() !== "");
+      },
+      {
+        message: "Vui lòng chọn ít nhất một tài sản.",
+      }
+    ),
+  })
+  .refine(
+    (data) => {
+      const assetCount = Array.isArray(data.assetId) ? data.assetId.length : data.assetId ? 1 : 0;
+      const roomCount = Array.isArray(data.roomId) ? data.roomId.length : data.roomId ? 1 : 0;
+
+      return (assetCount >= 2 && roomCount === 1) || (roomCount >= 2 && assetCount === 1);
     },
     {
-      message: "Vui lòng chọn ít nhất 2 phòng.",
+      message: "Chỉ cho phép chọn (nhiều phòng + 1 tài sản) hoặc (1 phòng + nhiều tài sản).",
+      path: ["assetId"],
     }
-  ),
-  assetId: z.union([z.string(), z.array(z.string())]).refine(
-    (val) => {
-      if (typeof val === "string") return val.trim() !== "";
-      return Array.isArray(val) && val.length > 0 && val.every((v) => v.trim() !== "");
-    },
-    {
-      message: "Vui lòng chọn ít nhất một tài sản.",
-    }
-  ),
-});
+  );
 
 export const addToAllRoomAssetSchema = z.object({
   assetId: z.string().min(1, "Tài sản không được để trống"),

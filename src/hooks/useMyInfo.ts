@@ -1,13 +1,15 @@
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import { useAuthStore } from "@/zustand/authStore";
 import cookieUtil from "@/utils/cookieUtil";
 import { httpRequest } from "@/utils/httpRequest";
+import { checkUser } from "@/lib/utils";
 
 export const useMyInfo = () => {
+  const navigate = useNavigate();
   const setUser = useAuthStore((state) => state.setUser);
   const clearUser = useAuthStore((state) => state.clearUser);
   const setIsLoading = useAuthStore((state) => state.setIsLoading);
@@ -47,5 +49,9 @@ export const useMyInfo = () => {
       clearUser();
       cookieUtil.deleteStorage();
     }
-  }, [clearUser, isError, location.pathname, token]);
+
+    if (checkUser(user, isLoading) === false && location.pathname !== "/profile") {
+      navigate("/update-profile", { replace: true });
+    }
+  }, [clearUser, isError, isLoading, location.pathname, navigate, token, user]);
 };

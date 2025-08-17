@@ -173,6 +173,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
           });
+          queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
           toast.success(Status.UPDATE_SUCCESS);
         },
       });
@@ -196,6 +197,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
           });
+          queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
           toast.success(Status.REMOVE_SUCCESS);
         },
       });
@@ -219,6 +221,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
           });
+          queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
           toast.success(Status.UPDATE_SUCCESS);
         },
       });
@@ -237,10 +240,10 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
       idRef.current = assetRooms.id;
       if (action === "update") {
         const data = {
-          assetName: assetRooms.nameAsset,
+          assetName: assetRooms.assetName,
           price: assetRooms.price,
           assetStatus: assetRooms.assetStatus,
-          description: assetRooms.descriptionAsset,
+          description: assetRooms.description,
         };
         setValue(data);
         setIsModalOpen(true);
@@ -274,7 +277,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải loại tài sản");
+      toast.error("Có lỗi xảy ra khi tải tài sản phòng");
     }
 
     // if (isStatisticsError) {

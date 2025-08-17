@@ -9,6 +9,9 @@ import { ApiResponse, UserResponse } from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { useAuthStore } from "@/zustand/authStore";
+import { useLocation, useNavigate } from "react-router-dom";
+import { checkUser, getHighestRole } from "@/lib/utils";
+import { RoleType } from "@/hooks/useHighestRole";
 
 interface UserProfileValue {
   fullName: string | undefined;
@@ -23,6 +26,8 @@ export const useProfile = () => {
   const queryClient = useQueryClient();
   const user = useAuthStore((state) => state.user);
   const setUser = useAuthStore((state) => state.setUser);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const [value, setValue] = useState<UserProfileValue>({
     dob: user?.dob ?? "",
@@ -46,7 +51,6 @@ export const useProfile = () => {
         },
       }),
     onSuccess: (data) => {
-      toast.success(Status.UPDATE_SUCCESS);
       queryClient.invalidateQueries({ queryKey: ["current-user, authenticate"] });
       setUser(data.data.data, true);
       setFile(undefined);
@@ -60,6 +64,16 @@ export const useProfile = () => {
       });
 
       setTmpImg(data.data.data.profilePicture ?? "");
+
+      if (checkUser(data.data.data, false) && location.state.background.pathname === "/update-profile") {
+        const roles: RoleType[] = data.data.data?.roles.map((r) => r.name as RoleType) ?? [];
+
+        const highestRole = getHighestRole(roles);
+
+        const target = highestRole === "MANAGER" || highestRole === "ADMIN" ? "/dashboard" : "/room";
+        navigate(target, { replace: true, state: null });
+      }
+      toast.success(Status.UPDATE_SUCCESS);
     },
     onError: (error) => {
       handleMutationError(error);

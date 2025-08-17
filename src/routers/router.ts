@@ -5,6 +5,8 @@ import { RouteType } from "@/provider/useAppProvider";
 
 type ModalRoute = Omit<RouteType, "children" | "layout">;
 
+const UpdateProfile = lazy(() => import("@/components/UpdateProfile"));
+
 /* HOME */
 const Home = lazy(() => import("@/pages/home"));
 const FeaturesPage = lazy(() => import("@/components/home/Features"));
@@ -99,6 +101,11 @@ const publicRoutes: RouteType[] = [
 ];
 
 const privateRoutes: RouteType[] = [
+  {
+    path: configs.routes.updateProfile,
+    component: UpdateProfile,
+    allowedRoles: ["ADMIN", "MANAGER", "STAFF", "USER"],
+  },
   /* DASHBOARD */
   {
     path: configs.routes.dashboard,

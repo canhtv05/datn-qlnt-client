@@ -82,7 +82,9 @@ const AddOrUpdateRoomAsset = ({
   }));
 
   const assetOptions: AssetOption[] = assetsList.map((asset) => ({
-    label: `${asset.nameAsset} - ${Number(asset.price).toLocaleString("vi-VN")} VND`,
+    label: `Tên: ${asset.nameAsset} - Còn: ${asset.remainingQuantity || 0} - Giá: ${Number(asset.price).toLocaleString(
+      "vi-VN"
+    )}đ `,
     value: asset.id,
     price: asset.price,
     description: asset.descriptionAsset,
@@ -100,7 +102,7 @@ const AddOrUpdateRoomAsset = ({
   return (
     <div className="flex flex-col gap-3">
       {type === "default" && (
-        <div className="grid grid-cols-2 gap-4">
+        <>
           <FieldsSelectLabel
             data={assetBeLongTo}
             placeholder="-- Chọn tài sản thuộc về --"
@@ -171,10 +173,10 @@ const AddOrUpdateRoomAsset = ({
             errorText={errors.price}
             disabled={value.assetBeLongTo === "PHONG"}
           />
-        </div>
+        </>
       )}
       {type === "bulkAdd" && (
-        <div className="grid grid-cols-2 gap-4">
+        <>
           <FieldsMultiSelectLabel
             data={toSelectType(assetOptions)}
             placeholder="-- Chọn tài sản --"
@@ -222,10 +224,10 @@ const AddOrUpdateRoomAsset = ({
             required
             errorText={errors.roomId}
           />
-        </div>
+        </>
       )}
       {type === "update" && (
-        <div className="grid grid-cols-2 gap-4">
+        <>
           <InputLabel
             id="assetName"
             name="assetName"
@@ -249,9 +251,9 @@ const AddOrUpdateRoomAsset = ({
             onChange={handleNumberChange}
             errorText={errors.price}
           />
-        </div>
+        </>
       )}
-      {type === "addToAllRoom" && (
+      {type === "addToAllRoom" && type !== "addToAllRoom" && (
         <FieldsSelectLabel
           data={buildingOptions ?? []}
           placeholder="-- Chọn tòa nhà --"
@@ -268,7 +270,7 @@ const AddOrUpdateRoomAsset = ({
           required
         />
       )}
-      <RenderIf value={type !== "bulkAdd"}>
+      <RenderIf value={type === "update"}>
         <FieldsSelectLabel
           data={[
             {
@@ -343,7 +345,7 @@ const AddOrUpdateRoomAsset = ({
           disabled={value.assetBeLongTo === "PHONG"}
         />
       </RenderIf>
-      <RenderIf value={type !== "bulkAdd"}>
+      <RenderIf value={type !== "bulkAdd" && type !== "addToAllRoom"}>
         <TextareaLabel
           id="description"
           name="description"
@@ -353,6 +355,16 @@ const AddOrUpdateRoomAsset = ({
           onChange={(e) => setValue((prev) => ({ ...prev, description: e.target.value }))}
           disabled={value.assetBeLongTo === "PHONG"} // <-- add this
         />
+      </RenderIf>
+      <RenderIf value={type === "bulkAdd"}>
+        <span className="mt-2 text-[12px]">
+          <span className="text-red-500 font-medium">(*) </span>
+          Có 2 lựa chọn:
+          <ol className="list-decimal list-inside ml-2">
+            <li>Chọn nhiều phòng và 1 tài sản</li>
+            <li>Chọn nhiều tài sản và 1 phòng</li>
+          </ol>
+        </span>
       </RenderIf>
     </div>
   );

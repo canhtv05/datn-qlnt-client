@@ -66,7 +66,7 @@ const RoomAssetButton = ({
 
   if (type === "default") {
     LOCAL_ACTION_BUTTONS.push({
-      tooltipContent: "Thêm nhiều tài sản vào nhiều phòng",
+      tooltipContent: "Thêm nhiều",
       icon: Layers,
       arrowColor: "var(--color-emerald-500)",
       type: "bulkAdd",
@@ -96,14 +96,14 @@ const RoomAssetButton = ({
   const queryClient = useQueryClient();
 
   const { data: roomListData } = useQuery<ApiResponse<RoomResponse[]>>({
-  queryKey: ["room-list", id || searchParams.get("buildingId")],
-  queryFn: async () => {
-    const res = await httpRequest.get("/rooms/find-all", {
-      params: { buildingId: id || searchParams.get("buildingId") },
-    });
-    return res.data;
-  },
-});
+    queryKey: ["room-list", id || searchParams.get("buildingId")],
+    queryFn: async () => {
+      const res = await httpRequest.get("/rooms/find-all", {
+        params: { buildingId: id || searchParams.get("buildingId") },
+      });
+      return res.data;
+    },
+  });
 
   const { data: assetsListData } = useQuery<ApiResponse<AssetResponse[]>>({
     queryKey: ["assets-find-all"],
@@ -146,6 +146,7 @@ const RoomAssetButton = ({
       queryClient.invalidateQueries({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
       });
+      queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
     },
   });
 
@@ -183,6 +184,7 @@ const RoomAssetButton = ({
       queryClient.invalidateQueries({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
       });
+      queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
     },
   });
 
@@ -232,13 +234,15 @@ const RoomAssetButton = ({
       queryClient.invalidateQueries({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
       });
+      queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
     },
   });
 
   const handleAddToAllRoom = useCallback(async () => {
     try {
-      const fullValue = {
+      const fullValue: AllRoomAssetFormValue = {
         ...allRoomValue,
+        buildingId: id || "",
       };
 
       await addToAllRoomAssetSchema.parseAsync(fullValue);
@@ -250,7 +254,7 @@ const RoomAssetButton = ({
       handleZodErrors(error);
       return false;
     }
-  }, [allRoomValue, addToAllRoomAssetMutation, clearErrors, handleZodErrors]);
+  }, [allRoomValue, id, addToAllRoomAssetMutation, clearErrors, handleZodErrors]);
   const handleAddRoomAsset = useCallback(async () => {
     try {
       const fullValue = {
@@ -291,6 +295,7 @@ const RoomAssetButton = ({
       queryClient.invalidateQueries({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
       });
+      queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
       toast.success(Status.REMOVE_SUCCESS);
 
       return true;

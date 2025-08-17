@@ -11,7 +11,7 @@ import { useFormErrors } from "@/hooks/useFormErrors";
 import { handleMutationError } from "@/utils/handleMutationError";
 import configs from "@/configs";
 import { RoleType } from "@/hooks/useHighestRole";
-import { getHighestRole } from "@/lib/utils";
+import { checkUser, getHighestRole } from "@/lib/utils";
 import axios from "axios";
 
 interface LoginValue {
@@ -63,6 +63,10 @@ export const useLogin = () => {
 
       const highestRole = getHighestRole(roles);
 
+      if (checkUser(data.data, false) === false) {
+        navigate("/update-profile", { replace: true });
+      }
+
       if (highestRole === "USER") {
         navigate("/room");
       } else {
@@ -81,7 +85,7 @@ export const useLogin = () => {
         setIsLoading(true);
         await emailSchema.parseAsync({ email: value.email });
         clearErrors();
-        loginMutation.mutate();
+        loginMutation.mutateAsync();
       } catch (error) {
         handleZodErrors(error);
       } finally {

@@ -93,6 +93,8 @@ const RoomAssetTable: React.FC<RoomAssetTableProps> = ({ roomId }) => {
     { label: "Mô tả", accessorKey: "description", isSort: false },
   ];
 
+  console.log(data?.data);
+
   return (
     <div className="flex flex-col pb-4 bg-background rounded-sm">
       <RoomAssetButton ids={rowSelection} roomId={roomId} type="detail" buildingOptions={[]} />
@@ -124,7 +126,11 @@ const RoomAssetTable: React.FC<RoomAssetTableProps> = ({ roomId }) => {
               - Trạng thái: <span>{data?.data?.status && <StatusBadge status={data?.data?.status} />}</span>
             </strong>
             <strong className="pb-2">
-              - Mô tả: <p className="inline-block">{data?.data?.description || "..."}</p>
+              - Mô tả:{" "}
+              <p className="inline-block">
+                {data?.data?.description ||
+                  (data?.data?.description && <StatusBadge status={data?.data?.description} />)}
+              </p>
             </strong>
           </div>
         </div>

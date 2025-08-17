@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { useLogin } from "./useLogin";
@@ -8,13 +8,11 @@ import { FormEvent } from "react";
 
 const Login = () => {
   const { handleSubmitForm, value, setValue, errors, handleLoginWithGoogle } = useLogin();
-  const navigate = useNavigate();
 
   const handleSubmitFormTest = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleSubmitForm(e);
-    navigate("/dashboard");
-  }
+  };
 
   return (
     <>

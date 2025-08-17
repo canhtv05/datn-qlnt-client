@@ -45,7 +45,7 @@ const Notification = () => {
               <Button size="icon" className="shadow-none cursor-pointer">
                 <BellIcon className="size-5 stroke-white" />
               </Button>
-              <RenderIf value={count?.data.totalUnreadNotifications !== 0}>
+              <RenderIf value={!!count && count?.data.totalUnreadNotifications !== 0}>
                 <span className="absolute top-2 right-0 px-1 min-w-4 translate-x-1/2 -translate-y-1/2 origin-center flex items-center justify-center rounded-full text-xs bg-destructive text-white">
                   {count?.data.totalUnreadNotifications || 0}
                 </span>

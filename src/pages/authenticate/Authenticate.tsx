@@ -11,7 +11,7 @@ import { Status } from "@/enums";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { ApiResponse, UserResponse } from "@/types";
 import { RoleType } from "@/hooks/useHighestRole";
-import { getHighestRole } from "@/lib/utils";
+import { checkUser, getHighestRole } from "@/lib/utils";
 import cookieUtil from "@/utils/cookieUtil";
 
 const Authenticate = () => {
@@ -22,7 +22,7 @@ const Authenticate = () => {
   const clearUser = useAuthStore((state) => state.clearUser);
   const setUser = useAuthStore((state) => state.setUser);
 
-  const { data, error } = useQuery({
+  const { data, error, isLoading } = useQuery({
     queryKey: ["authenticate", authCode],
     queryFn: () =>
       httpRequest.post<ApiResponse<UserResponse>>(`/auth/login/oauth2/google/authentication?code=${authCode}`),
@@ -51,6 +51,10 @@ const Authenticate = () => {
 
         const highestRole = getHighestRole(roles);
 
+        if (checkUser(data.data.data, isLoading) === false) {
+          navigate("/update-profile", { replace: true });
+        }
+
         if (highestRole === "USER") {
           navigate("/room");
         } else {
@@ -64,7 +68,7 @@ const Authenticate = () => {
       navigate("/login");
       handleMutationError(error);
     }
-  }, [clearUser, data, error, navigate, setUser]);
+  }, [clearUser, data, error, isLoading, navigate, setUser]);
 
   let authStatus: "authenticating" | "success" | "error" = "authenticating";
   if (error) authStatus = "error";

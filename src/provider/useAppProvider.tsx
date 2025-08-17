@@ -4,6 +4,9 @@ import { Route, useLocation } from "react-router-dom";
 import DefaultLayout from "@/layouts/DefaultLayout";
 import { useAuthStore } from "@/zustand/authStore";
 import useHighestRole, { RoleType } from "@/hooks/useHighestRole";
+import { checkUser } from "@/lib/utils";
+import UpdateProfile from "@/components/UpdateProfile";
+import { publicRoutes } from "@/routers/router";
 
 type LayoutComponent = ComponentType<{ children: ReactNode }>;
 
@@ -23,9 +26,7 @@ export interface RouteType {
 export const useAppProvider = () => {
   const location = useLocation();
   const background = location.state && location.state.background;
-  const isLoading = useAuthStore((s) => s.isLoading);
-
-  const user = useAuthStore((s) => s.user);
+  const { user, isLoading } = useAuthStore((s) => s);
   const highestRole = useHighestRole();
 
   const loadRoute = (route: RouteType, index: number) => {
@@ -33,7 +34,9 @@ export const useAppProvider = () => {
       if (!route.allowedRoles.includes(highestRole)) return null;
     }
 
-    const Page = route.component;
+    let Page = route.component;
+    if (checkUser(user, isLoading) === false && publicRoutes.every((p) => p.path !== location.pathname))
+      Page = UpdateProfile;
     let Layout: LayoutComponent = DefaultLayout;
 
     if (route.layout === null) Layout = Fragment;

@@ -119,7 +119,10 @@ const Invoice = () => {
       label: "Hạn thanh toán",
       accessorKey: "paymentDueDate",
       isSort: true,
-      hasDate: true,
+      isCenter: true,
+      render(row: InvoiceResponse) {
+        return <span>{new Date(row.paymentDueDate).toLocaleDateString("vi-VN")}</span>;
+      },
     },
     {
       label: "Loại hóa đơn",

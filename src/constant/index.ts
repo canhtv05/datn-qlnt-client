@@ -286,6 +286,11 @@ export const STATUS_BADGE = [
     className: COLOR_CLASS.gray,
   },
   {
+    value: "",
+    label: "Trống",
+    className: COLOR_CLASS.gray,
+  },
+  {
     value: null,
     label: "Trống",
     className: COLOR_CLASS.gray,

@@ -1,5 +1,6 @@
-import { AssetStatus, AssetType, ContractStatus, ServiceCategory, VehicleType } from "@/enums";
+import { AssetStatus, AssetType, ContractStatus, Gender, ServiceCategory, VehicleType } from "@/enums";
 import { RoleType } from "@/hooks/useHighestRole";
+import { UserResponse } from "@/types";
 import { useEditorStore } from "@/zustand/editorStore";
 import { FindResultType } from "ckeditor5";
 import { clsx, type ClassValue } from "clsx";
@@ -125,4 +126,14 @@ export const contractStatusEnumToString = (status: ContractStatus) => {
   };
 
   return map[status] || "Không xác định";
+};
+
+export const checkUser = (user: UserResponse | null, isLoading: boolean): boolean => {
+  if (
+    (!user?.dob || (user?.gender !== Gender.FEMALE && user?.gender !== Gender.MALE) || !user?.phoneNumber) &&
+    !isLoading
+  ) {
+    return false;
+  }
+  return true;
 };

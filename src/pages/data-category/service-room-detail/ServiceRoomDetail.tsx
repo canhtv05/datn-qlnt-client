@@ -146,7 +146,12 @@ const ServiceRoomDetail = () => {
                 - Trạng thái: <span>{data?.data?.status && <StatusBadge status={data?.data?.status} />}</span>
               </strong>
               <strong className="pb-2">
-                - Mô tả: <p className="inline-block">{data?.data?.description || "..."}</p>
+                - Mô tả:{" "}
+                <p className="inline-block">
+                  {!data?.data?.description
+                    ? data?.data?.description && <StatusBadge status={data?.data?.description} />
+                    : data?.data?.description}
+                </p>
               </strong>
             </div>
           </div>
