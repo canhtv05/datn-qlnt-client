@@ -238,7 +238,8 @@ export const roomAssetFormSchema = z
   .object({
     assetBeLongTo: z.string().min(1, { message: "Trường 'Thuộc về' không được để trống" }),
     roomId: z.string().min(1, { message: "Phòng không được để trống" }),
-    assetId: z.string(), // Không dùng .min(1) ở đây nữa
+    assetId: z.string(),
+    quantity: zSafeNumber("Số lượng", { min: 1 }),
     assetName: z.string().min(1, { message: "Tên tài sản không được để trống" }),
     price: zSafeNumber("Giá", { min: 1 }),
     description: z.string().nullable(),
@@ -428,12 +429,14 @@ export const updateVehicleSchema = z.object({
 /*CONTRACT*/
 export const createOrUpdateContractSchema = z
   .object({
-    roomId: z.string().min(1, "Vui lòng chọn phòng của bạn"),
+    roomId: z.string().min(1, "Vui lòng chọn phòng"),
     numberOfPeople: z.number({ message: "Số người phải là số" }).min(1, "Phải có ít nhất 1 người"),
     startDate: z.date({ message: "Ngày bắt đầu không hợp lệ" }),
     endDate: z.date({ message: "Ngày kết thúc không hợp lệ" }),
     deposit: z.number({ message: "Tiền cọc phải là số" }).min(1, "Tiền cọc phải lớn hơn 0"),
     tenants: z.array(z.string()).min(1, "Phải có ít nhất một khách thuê"),
+    assets: z.array(z.string()).min(1, "Phải có ít nhất một tài sản"),
+    content: z.string().min(1, "Không được để trống hợp đồng"),
   })
   .refine(
     (data) => {

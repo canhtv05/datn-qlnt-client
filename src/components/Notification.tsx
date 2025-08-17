@@ -1,0 +1,127 @@
+import { Button } from "./ui/button";
+import { BellIcon, EllipsisVertical, Eye, Mail, Trash2 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { Badge } from "./ui/badge";
+import { useConfirmDialog } from "@/hooks";
+
+const Notification = () => {
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string | number; type: "remove" | "read" }>({
+    onConfirm: async ({ id, type }) => {
+      console.log(id, type);
+      return false;
+    },
+  });
+
+  const handleClick = (id: string | number, type: "remove" | "read") => {
+    openDialog({ id, type }, { type: "warn", desc: type === "remove" ? "remove" : "read" });
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <div className="cursor-pointer">
+          <div className="flex items-center gap-2 mr-4">
+            <div className="relative">
+              <Button size="icon" className="shadow-none cursor-pointer">
+                <BellIcon className="size-5 stroke-white" />
+              </Button>
+              <span className="absolute top-2 right-0 px-1 min-w-4 translate-x-1/2 -translate-y-1/2 origin-center flex items-center justify-center rounded-full text-xs bg-destructive text-white">
+                2
+              </span>
+            </div>
+          </div>
+        </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        className="w-(--radix-dropdown-menu-trigger-width) min-w-85 rounded-lg px-2"
+        side={"bottom"}
+        align="end"
+        sideOffset={4}
+      >
+        <DropdownMenuLabel className="p-0 font-normal cursor-default">
+          <div className="flex items-center justify-between gap-2 px-1 py-1.5 text-left text-sm">
+            <strong>Thông báo</strong>
+            <div className="flex gap-2 items-center justify-between">
+              <Badge variant="default" className="text-white">
+                1 Mới
+              </Badge>
+              <Mail className="stroke-[1.5px] size-5" />
+            </div>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <div className="max-h-[300px] overflow-y-auto overflow-hidden">
+          {Array.from({ length: 10 }).map((_, idx) => (
+            <DropdownMenuItem
+              key={idx}
+              className="hover:!bg-secondary focus:!bg-secondary focus:!shadow-none data-[highlighted]:!bg-secondary data-[highlighted]:!shadow-none data-[highlighted]:!text-black dark:data-[highlighted]:!text-white"
+            >
+              <div className="flex items-center">
+                <div className="flex flex-col [&_*]:text-foreground space-y-0.5 max-w-[60%]">
+                  <span className="text-sm dark:!text-white !text-black">Hủy đơn hàng</span>
+                  <p className="text-sm max-w-[100%] truncate text-[12px]">
+                    Bạn đã hủy đơn hàng euwhrfiuwghfuiweguiuirhgiu
+                  </p>
+                  <span className="text-[12px]">11/11/2025</span>
+                </div>
+                <div className="flex items-center [&_*]:text-foreground flex-shrink-0 gap-1 ml-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 mr-1" />
+                  <span className="text-xs">Đã đọc</span>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <div className="ml-3 cursor-pointer">
+                        <EllipsisVertical />
+                      </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      className="w-(--radix-dropdown-menu-trigger-width) px-2"
+                      side={"bottom"}
+                      align="end"
+                      sideOffset={4}
+                    >
+                      <DropdownMenuItem className="hover:!bg-secondary h-7 focus:!bg-secondary focus:!shadow-none data-[highlighted]:!bg-secondary data-[highlighted]:!shadow-none data-[highlighted]:!text-black dark:data-[highlighted]:!text-white">
+                        <Button
+                          className="h-7 flex !p-0 justify-start w-full bg-transparent shadow-none hover:!bg-transparent"
+                          onClick={() => handleClick(idx, "read")}
+                        >
+                          <Eye />
+                          <span className="text-[14px] dark:!text-white !text-foreground">Đã đọc</span>
+                        </Button>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem className="hover:!bg-secondary h-7 focus:!bg-secondary focus:!shadow-none data-[highlighted]:!bg-secondary data-[highlighted]:!shadow-none data-[highlighted]:!text-black dark:data-[highlighted]:!text-white">
+                        <Button
+                          className="h-7 flex !p-0 justify-start w-full bg-transparent shadow-none hover:!bg-transparent"
+                          onClick={() => handleClick(idx, "remove")}
+                        >
+                          <Trash2 />
+                          <span className="text-[14px] dark:!text-white !text-foreground">Xóa</span>
+                        </Button>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
+            </DropdownMenuItem>
+          ))}
+        </div>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className="hover:!bg-transparent hover:!shadow-none">
+          <Button className="h-7 w-full">
+            <span className="text-[14px] text-white">Đánh dấu đọc hết thông báo</span>
+          </Button>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+      <ConfirmDialog />
+    </DropdownMenu>
+  );
+};
+
+export default Notification;

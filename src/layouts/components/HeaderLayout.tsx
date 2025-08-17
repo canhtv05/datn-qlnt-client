@@ -1,4 +1,4 @@
-import { BellIcon, CircleUserRound, LogOut, Moon, Settings, Sun } from "lucide-react";
+import { CircleUserRound, LogOut, Moon, Settings, Sun } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
@@ -17,6 +17,7 @@ import Image from "@/components/Image";
 import { useLogout } from "./useLogout";
 import { useConfirmDialog } from "@/hooks/useConfirmDialog";
 import useHighestRole from "@/hooks/useHighestRole";
+import Notification from "@/components/Notification";
 
 const HeaderLayout = () => {
   const navigate = useNavigate();
@@ -43,16 +44,7 @@ const HeaderLayout = () => {
           <Sun className="size-5 stroke-white" />
         </RenderIf>
       </Button>
-      <div className="flex items-center gap-2 mr-4">
-        <div className="relative">
-          <Button size="icon" className="shadow-none cursor-pointer">
-            <BellIcon className="size-5 stroke-white" />
-          </Button>
-          <span className="absolute top-2 right-0 px-1 min-w-4 translate-x-1/2 -translate-y-1/2 origin-center flex items-center justify-center rounded-full text-xs bg-destructive text-white">
-            2
-          </span>
-        </div>
-      </div>
+      <Notification />
       <div className="flex gap-2 items-center">
         <div className="flex flex-col md:max-w-[200px] sm:max-w-[200px] max-w-[100px]">
           <h2 className="font-semibold text-[14px] truncate text-white">

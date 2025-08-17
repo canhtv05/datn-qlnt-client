@@ -32,7 +32,7 @@ const Invoice = () => {
     contractInitToAdd,
     buildingInitToAdd,
     dataInvoiceStatistics,
-    floorInitToAdd,
+    // floorInitToAdd,
     ConfirmDialog,
   } = useInvoice();
   const { page, size } = query;
@@ -156,7 +156,7 @@ const Invoice = () => {
           ids={rowSelection}
           contractInitToAdd={contractInitToAdd}
           buildingInitToAdd={buildingInitToAdd}
-          floorInitToAdd={floorInitToAdd}
+          // floorInitToAdd={floorInitToAdd}
         />
         <InvoiceFilter props={props} type="default" />
         <DataTable<InvoiceResponse>

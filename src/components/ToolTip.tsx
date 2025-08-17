@@ -7,7 +7,7 @@ const Tooltip = ({ content, children }: { content: string; children: ReactNode }
     <TooltipProvider>
       <ToolTipHover>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent>{content}</TooltipContent>
+        <TooltipContent className="text-white">{content}</TooltipContent>
       </ToolTipHover>
     </TooltipProvider>
   );

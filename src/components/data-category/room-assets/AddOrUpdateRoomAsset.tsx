@@ -173,7 +173,6 @@ const AddOrUpdateRoomAsset = ({
           />
         </div>
       )}
-
       {type === "bulkAdd" && (
         <div className="grid grid-cols-2 gap-4">
           <FieldsMultiSelectLabel
@@ -225,7 +224,6 @@ const AddOrUpdateRoomAsset = ({
           />
         </div>
       )}
-
       {type === "update" && (
         <div className="grid grid-cols-2 gap-4">
           <InputLabel
@@ -331,7 +329,20 @@ const AddOrUpdateRoomAsset = ({
           required
         />
       )}
-
+      <RenderIf value={type === "default"}>
+        <InputLabel
+          id="quantity"
+          name="quantity"
+          type="number"
+          placeholder="1"
+          label="Số lượng:"
+          required
+          value={value.quantity ?? ""}
+          onChange={handleNumberChange}
+          errorText={errors.quantity}
+          disabled={value.assetBeLongTo === "PHONG"}
+        />
+      </RenderIf>
       <RenderIf value={type !== "bulkAdd"}>
         <TextareaLabel
           id="description"

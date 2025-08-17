@@ -46,7 +46,7 @@ const ViewInvoiceDetail = () => {
   return (
     <div className="p-10 bg-background rounded-md shadow-lg">
       <div className="flex justify-end gap-2">
-        <Button variant={"status"} className="text-white" onClick={reactToPrintFn}>
+        <Button variant={"status"} className="text-white cursor-pointer" onClick={reactToPrintFn}>
           Tải hóa đơn
         </Button>
       </div>

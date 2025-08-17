@@ -49,6 +49,7 @@ const RoomAssetButton = ({
     price: 0,
     description: "",
     buildingId: "",
+    quantity: 1,
   });
 
   const [bulkValue, setBulkValue] = useState<RoomAssetBulkFormValue>({
@@ -134,6 +135,7 @@ const RoomAssetButton = ({
         assetName: "",
         price: 0,
         description: "",
+        quantity: 1,
       });
       queryClient.invalidateQueries({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",

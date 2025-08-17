@@ -367,6 +367,14 @@ export interface ICreateAsset {
   descriptionAsset: string;
 }
 
+export interface AssetBasicResponse {
+  id: string;
+  nameAsset: string;
+  assetType: AssetType;
+  assetStatus: AssetStatus;
+  description: string;
+}
+
 export interface IAssetStatisticsResponse {
   totalActiveAssets: number;
   totalAssets: number;
@@ -445,6 +453,7 @@ export type RoomAssetFormValue = {
   description: string;
   assetStatus?: AssetStatus | string;
   buildingId?: string;
+  quantity?: number;
 };
 
 export type AllRoomAssetFormValue = {
@@ -517,6 +526,13 @@ export interface VehicleResponse extends AbstractResponse {
   describe: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface VehiclesBasicResponse {
+  id: string;
+  vehicleType: VehicleType;
+  licensePlate: string;
+  description: string;
 }
 
 export interface ICreateVehicle {
@@ -629,6 +645,7 @@ export interface ContractResponse extends AbstractResponse {
   tenants: TenantBasicResponse[];
   services: ServiceResponse[];
   vehicles: VehicleResponse[];
+  content: string;
 }
 
 export interface ICreateAndUpdateContract {
@@ -643,6 +660,7 @@ export interface ICreateAndUpdateContract {
   vehicles: string[];
   status: ContractStatus | undefined;
   roomPrice?: number;
+  content: string;
 }
 export interface ContractDetailResponse {
   id: string;
@@ -670,6 +688,7 @@ export interface ContractDetailResponse {
   updatedAt: string;
 
   tenants: TenantBasicResponse[];
+  content: string;
 }
 export interface IContractStatisticsResponse {
   totalContracts: number;
@@ -746,6 +765,14 @@ export interface ServiceResponse extends AbstractResponse {
   serviceCategory: ServiceCategory;
   serviceCalculation: ServiceCalculation;
   status: ServiceStatus;
+  description: string;
+}
+
+export interface ServiceBasicResponse {
+  id: string;
+  name: string;
+  category: ServiceCategory;
+  unit: string;
   description: string;
 }
 
@@ -1116,6 +1143,7 @@ export interface AssetLittleResponse {
   assetName: string;
   assetBeLongTo: AssetBeLongTo;
   price: number;
+  quantity: number;
   assetStatus: AssetStatus;
   description: string;
 }
