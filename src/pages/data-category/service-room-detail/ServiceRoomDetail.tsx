@@ -148,9 +148,11 @@ const ServiceRoomDetail = () => {
               <strong className="pb-2">
                 - Mô tả:{" "}
                 <p className="inline-block">
-                  {!data?.data?.description
-                    ? data?.data?.description && <StatusBadge status={data?.data?.description} />
-                    : data?.data?.description}
+                  {data?.data?.description !== "" ? (
+                    data?.data?.description
+                  ) : (
+                    <StatusBadge status={data?.data?.description} />
+                  )}
                 </p>
               </strong>
             </div>

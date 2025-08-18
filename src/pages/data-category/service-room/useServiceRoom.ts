@@ -102,12 +102,13 @@ export const useServiceRoom = () => {
   });
 
   const { data: serviceRoomInit, isError: isErrorServiceRoom } = useQuery<ApiResponse<CreateRoomServiceInitResponse>>({
-    queryKey: ["room-services-init"],
+    queryKey: ["room-services-init", id],
     queryFn: async () => {
-      const res = await httpRequest.get("/service-rooms/init");
+      const res = await httpRequest.get("/service-rooms/init", { params: { buildingId: id } });
       return res.data;
     },
     retry: 1,
+    enabled: !!id,
   });
 
   const { data: statistics, isError: isStatisticsError } = useQuery<ApiResponse<ServiceRoomStatistics>>({

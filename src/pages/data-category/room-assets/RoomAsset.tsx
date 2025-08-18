@@ -24,6 +24,7 @@ const RoomAsset = () => {
       accessorKey: "roomCode",
       isSort: true,
       hasHighlight: true,
+      isCenter: true,
     },
     {
       label: "Thao tác",
@@ -97,7 +98,7 @@ const RoomAsset = () => {
         <RoomAssetFilter props={props} />
         <DataTable<RoomAssetAllResponse>
           data={data?.data ?? []}
-          columns={buildColumnsFromConfig(columnConfigs)}
+          columns={buildColumnsFromConfig(columnConfigs, false)}
           page={Number(page)}
           size={Number(size)}
           totalElements={data?.meta?.pagination?.total || 0}
@@ -105,6 +106,7 @@ const RoomAsset = () => {
           loading={isLoading}
           rowSelection={rowSelection}
           setRowSelection={setRowSelection}
+          disableSelect
         />
         <ConfirmDialog />
       </div>

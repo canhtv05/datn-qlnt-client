@@ -81,14 +81,16 @@ const AddOrUpdateRoomAsset = ({
     value: room.id,
   }));
 
-  const assetOptions: AssetOption[] = assetsList.map((asset) => ({
-    label: `Tên: ${asset.nameAsset} - Còn: ${asset.remainingQuantity || 0} - Giá: ${Number(asset.price).toLocaleString(
-      "vi-VN"
-    )}đ `,
-    value: asset.id,
-    price: asset.price,
-    description: asset.descriptionAsset,
-  }));
+  const assetOptions: AssetOption[] = assetsList
+    .filter((asset) => asset.remainingQuantity > 0)
+    .map((asset) => ({
+      label: `Tên: ${asset.nameAsset} - Còn: ${asset.remainingQuantity || 0} - Giá: ${Number(
+        asset.price
+      ).toLocaleString("vi-VN")}đ `,
+      value: asset.id,
+      price: asset.price,
+      description: asset.descriptionAsset,
+    }));
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value: inputVal } = e.target;

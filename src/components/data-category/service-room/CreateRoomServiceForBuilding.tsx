@@ -15,13 +15,13 @@ const CreateRoomServiceForBuilding = ({
   value,
   setValue,
   errors,
-  buildingOptions,
+  // buildingOptions,
   serviceOptions,
 }: CreateRoomServiceForBuildingProps) => {
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full mb-2">
-        <FieldsSelectLabel
+      <div className="grid md:grid-cols-1 grid-cols-1 gap-5 w-full mb-2">
+        {/* <FieldsSelectLabel
           placeholder="-- Tòa nhà --"
           labelSelect="Tòa nhà"
           data={buildingOptions ?? []}
@@ -34,7 +34,7 @@ const CreateRoomServiceForBuilding = ({
           errorText={errors?.buildingId}
           label="Tòa nhà:"
           required
-        />
+        /> */}
         <FieldsSelectLabel
           placeholder="-- Dịch vụ --"
           labelSelect="Dịch vụ"

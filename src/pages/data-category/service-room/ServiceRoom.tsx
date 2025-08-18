@@ -91,7 +91,7 @@ const ServiceRoom = () => {
         <ServiceRoomFilter props={props} />
         <DataTable<ServiceRoomView>
           data={data?.data ?? []}
-          columns={buildColumnsFromConfig(columnConfigs)}
+          columns={buildColumnsFromConfig(columnConfigs, false)}
           page={Number(page)}
           size={Number(size)}
           totalElements={data?.meta?.pagination?.total || 0}
@@ -99,6 +99,7 @@ const ServiceRoom = () => {
           loading={isLoading}
           rowSelection={rowSelection}
           setRowSelection={setRowSelection}
+          disableSelect
         />
       </div>
     </div>

@@ -976,13 +976,13 @@ export const ACTION_BUTTONS: IBtnType[] = [
     type: "default",
     hasConfirm: true,
   },
-  {
-    tooltipContent: "Tải lên Excel",
-    icon: Upload,
-    arrowColor: "var(--color-amber-500)",
-    type: "upload",
-    hasConfirm: false,
-  },
+  // {
+  //   tooltipContent: "Tải lên Excel",
+  //   icon: Upload,
+  //   arrowColor: "var(--color-amber-500)",
+  //   type: "upload",
+  //   hasConfirm: false,
+  // },
   {
     tooltipContent: "Tải xuống Excel",
     icon: Download,
@@ -1014,13 +1014,13 @@ export const ACTION_BUTTONS_HISTORY: IBtnType[] = [
     type: "default",
     hasConfirm: true,
   },
-  {
-    tooltipContent: "Tải lên Excel",
-    icon: Upload,
-    arrowColor: "var(--color-amber-500)",
-    type: "upload",
-    hasConfirm: false,
-  },
+  // {
+  //   tooltipContent: "Tải lên Excel",
+  //   icon: Upload,
+  //   arrowColor: "var(--color-amber-500)",
+  //   type: "upload",
+  //   hasConfirm: false,
+  // },
   {
     tooltipContent: "Tải xuống Excel",
     icon: Download,

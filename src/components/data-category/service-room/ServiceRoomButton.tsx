@@ -34,6 +34,7 @@ import { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import CreateRoomServiceForBuilding from "./CreateRoomServiceForBuilding";
 import CreateRoomServiceForService from "./CreateRoomServiceForService";
 import CreateRoomServiceForRoom from "./CreateRoomServiceForRoom";
+import { useParams } from "react-router-dom";
 
 const ServiceRoomButton = ({
   ids,
@@ -46,6 +47,7 @@ const ServiceRoomButton = ({
   roomOptions: FieldsSelectLabelType[] | Option[] | undefined;
   buildingOptions: FieldsSelectLabelType[] | Option[] | undefined;
 }) => {
+  const { id } = useParams();
   const [value, setValue] = useState<ServiceRoomCreationRequest>({
     roomId: "",
     serviceId: "",
@@ -197,10 +199,10 @@ const ServiceRoomButton = ({
 
   const handleAddServiceRoomForBuilding = useCallback(async () => {
     try {
-      const { buildingId, serviceId } = valueForBuilding;
+      const { serviceId } = valueForBuilding;
 
       const data: ServiceRoomCreationForBuildingRequest = {
-        buildingId: buildingId ?? "",
+        buildingId: id ?? "",
         serviceId: serviceId ?? "",
       };
 
@@ -212,7 +214,7 @@ const ServiceRoomButton = ({
       handleZodErrors(error);
       return false;
     }
-  }, [addServiceRoomForBuildingMutation, clearErrors, handleZodErrors, valueForBuilding]);
+  }, [addServiceRoomForBuildingMutation, clearErrors, handleZodErrors, id, valueForBuilding]);
 
   const addServiceRoomForServiceMutation = useMutation({
     mutationKey: ["add-service-room-for-service"],

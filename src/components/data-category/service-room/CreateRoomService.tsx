@@ -14,7 +14,7 @@ interface CreateRoomServiceProps {
 const CreateRoomService = ({ value, setValue, errors, roomOptions, serviceOptions }: CreateRoomServiceProps) => {
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full mb-2">
+      <div className="grid md:grid-cols-1 grid-cols-1 gap-5 w-full mb-2">
         <FieldsSelectLabel
           placeholder="-- Phòng --"
           labelSelect="Phòng"
