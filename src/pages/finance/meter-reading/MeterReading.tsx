@@ -11,6 +11,7 @@ import { useMeterReading } from "./useMeterReading";
 import MeterReadingButton from "@/components/finance/meter-reading/MeterReadingButton";
 import MeterReadingFilter from "@/components/finance/meter-reading/MeterReadingFilter";
 import AddOrUpdateMeterReading from "@/components/finance/meter-reading/AddOrUpdateMeterReading";
+import { formatDate } from "@/lib/utils";
 
 const MeterReading = () => {
   const {
@@ -123,8 +124,11 @@ const MeterReading = () => {
     {
       label: "Ngày ghi chỉ số",
       accessorKey: "readingDate",
-      hasDate: true,
       isSort: true,
+      render: (row: MeterReadingResponse) => {
+        return <span>{formatDate(row.readingDate)}</span>;
+      },
+      isCenter: true,
     },
     {
       label: "Mô tả",
@@ -157,7 +161,7 @@ const MeterReading = () => {
 
   return (
     <div className="flex flex-col">
-      <MeterReadingButton ids={rowSelection} meterInitResponse={meterFindAll} />
+      <MeterReadingButton ids={rowSelection} meterInitResponse={meterFindAll} data={data?.data ?? []} />
       <div className="shadow-lg">
         <MeterReadingFilter props={props} />
         <DataTable<MeterReadingResponse>

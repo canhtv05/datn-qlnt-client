@@ -518,9 +518,9 @@ export type RoomAssetResponse = {
 /* VEHICLE */
 export interface VehicleResponse extends AbstractResponse {
   fullName: string;
-  vehicleType: VehicleType | string;
+  vehicleType: VehicleType;
   licensePlate: string;
-  vehicleStatus: VehicleStatus | string;
+  vehicleStatus: VehicleStatus;
   registrationDate: string;
   describe: string;
   createdAt: string;
@@ -891,7 +891,7 @@ export interface MeterResponse extends AbstractResponse {
   roomCode: string;
   serviceId: string;
   serviceName: string;
-  meterType: MeterType | string;
+  meterType: MeterType;
   meterName: string;
   meterCode: string;
   manufactureDate: string;
@@ -942,7 +942,7 @@ export interface MeterReadingResponse extends AbstractResponse {
   meterId: string;
   meterCode: string;
   meterName: string;
-  meterType: string;
+  meterType: MeterType;
   oldIndex: number;
   newIndex: number;
   quantity: number;

@@ -20,6 +20,7 @@ import {
   IdAndName,
   InvoiceBuildingCreationRequest,
   InvoiceCreationRequest,
+  InvoiceResponse,
 } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
@@ -28,13 +29,22 @@ import AddInvoice from "./AddInvoice";
 import { format } from "date-fns";
 import { Building, FileText, History } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import {
+  formatDate,
+  formattedCurrency,
+  handleExportExcel,
+  invoiceStatusEnumToString,
+  invoiceTypeEnumToString,
+} from "@/lib/utils";
 
 const InvoiceButton = ({
   ids,
   contractInitToAdd,
   buildingInitToAdd,
+  data,
 }: // floorInitToAdd,
 {
+  data?: InvoiceResponse[];
   ids: Record<string, boolean>;
   contractInitToAdd: ApiResponse<ContractResponse[]> | undefined;
   buildingInitToAdd: ApiResponse<IdAndName[]> | undefined;
@@ -147,9 +157,26 @@ const InvoiceButton = ({
         openDialog(ids);
       } else if (btn.type === "history") {
         navigate(`/finance/invoice/history`);
+      } else if (btn.type === "download") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
+          "Mã hóa đơn": d.invoiceCode,
+          "Tên tòa nhà": d.buildingName,
+          Phòng: d.roomCode,
+          "Khách thuê": d.tenantName,
+          Tháng: d.month,
+          Năm: d.year,
+          "Tổng tiền": formattedCurrency(d.totalAmount),
+          "Hạn thanh toán": formatDate(d.paymentDueDate),
+          "Loại hóa đơn": invoiceTypeEnumToString(d.invoiceType),
+          "Trạng thái": invoiceStatusEnumToString(d.invoiceStatus),
+          "Ghi chú": d.note,
+          "Ngày tạo": formatDate(d.createdAt),
+        }));
+        handleExportExcel(`Hóa đơn`, exportData, data);
       }
     },
-    [ids, navigate, openDialog]
+    [data, ids, navigate, openDialog]
   );
 
   const removeInvoiceMutation = useMutation({

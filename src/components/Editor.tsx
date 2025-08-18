@@ -94,7 +94,6 @@ const Editor = ({ content, onChange, children, errorText, isEmpty, validate }: E
       editorConfig: {
         toolbar: {
           items: [
-            "exportPdf",
             "heading",
             "|",
             "undo",

@@ -223,7 +223,7 @@ export enum InvoiceStatus {
   CHO_THANH_TOAN = "CHO_THANH_TOAN",
   QUA_HAN = "QUA_HAN",
   HUY = "HUY",
-  KHOI_PHUC = "KHOI_PHUC",
+  KHOI_PHUC = "KHOI_PHUC", // ko dung
 }
 
 export enum InvoiceType {

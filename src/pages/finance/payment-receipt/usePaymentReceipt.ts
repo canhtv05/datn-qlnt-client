@@ -172,6 +172,12 @@ export const usePaymentReceipt = () => {
           return Array.isArray(prev.queryKey) && prev.queryKey[0] === "payment-receipts";
         },
       });
+      queryClient.invalidateQueries({
+        predicate: (prev) => {
+          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "system-notifications";
+        },
+      });
+      queryClient.invalidateQueries({ queryKey: ["unread-all"] });
     },
   });
 

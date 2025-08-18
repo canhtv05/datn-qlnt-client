@@ -16,7 +16,7 @@ const PaymentReceipt = () => {
 
   const columnConfigs: ColumnConfig[] = [
     {
-      label: "Mã biên nhận",
+      label: "Mã phiếu",
       accessorKey: "receiptCode",
       isSort: true,
       hasHighlight: true,
@@ -131,7 +131,7 @@ const PaymentReceipt = () => {
   return (
     <div className="flex flex-col">
       <div className="shadow-lg">
-        <PaymentReceiptButton ids={rowSelection} />
+        <PaymentReceiptButton ids={rowSelection} data={data?.data?.data ?? []} />
         <PaymentReceiptFilter props={props} />
         <DataTable<PaymentReceiptResponse>
           data={data?.data?.data ?? []}

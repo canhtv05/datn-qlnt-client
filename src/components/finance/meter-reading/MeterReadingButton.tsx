@@ -13,16 +13,25 @@ import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
 import { createMeterReadingSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { ApiResponse, IBtnType, MeterFindAllResponse, MeterReadingCreationRequest } from "@/types";
+import {
+  ApiResponse,
+  IBtnType,
+  MeterFindAllResponse,
+  MeterReadingCreationRequest,
+  MeterReadingResponse,
+} from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateMeterReading from "./AddOrUpdateMeterReading";
+import { formatDate, formatNumber, handleExportExcel, meterTypeEnumToString } from "@/lib/utils";
 
 const MeterReadingButton = ({
   ids,
   meterInitResponse,
+  data,
 }: {
+  data?: MeterReadingResponse[];
   ids: Record<string, boolean>;
   meterInitResponse: ApiResponse<MeterFindAllResponse> | undefined;
 }) => {
@@ -123,9 +132,26 @@ const MeterReadingButton = ({
     (btn: IBtnType) => {
       if (btn.type === "delete") {
         openDialog(ids);
+      } else if (btn.type === "download") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
+          "Mã công tơ": d.meterCode,
+          "Tên công tơ": d.meterName,
+          "Loại công tơ": meterTypeEnumToString(d.meterType),
+          "Chỉ số cũ": formatNumber(d.oldIndex),
+          "Chỉ số mới": formatNumber(d.newIndex),
+          "Số lượng": formatNumber(d.quantity),
+          Tháng: d.month,
+          Năm: d.year,
+          "Ngày ghi chỉ số": formatDate(d.readingDate),
+          "Mô tả": d.descriptionMeterReading,
+          "Ngày tạo": formatDate(d.createdAt),
+          "Ngày cập nhật": formatDate(d.updatedAt),
+        }));
+        handleExportExcel(`Ghi chỉ số`, exportData, data);
       }
     },
-    [ids, openDialog]
+    [data, ids, openDialog]
   );
 
   const removeMeterReadingMutation = useMutation({

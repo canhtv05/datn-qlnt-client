@@ -40,7 +40,9 @@ const DatePickerLabel = ({ date, setDate, label, errorText, required, fromYear, 
             onBlur={() => setTouched(true)}
           >
             <CalendarIcon className="text-foreground" />
-            <span className="text-foreground">{date ? format(date, "dd/MM/yyyy") : "Chọn ngày"}</span>
+            <span className="text-foreground">
+              {date && !isNaN(date.getTime()) ? format(date, "dd/MM/yyyy") : "Chọn ngày"}
+            </span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">

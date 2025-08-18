@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -20,6 +20,8 @@ const PaymentCallbackVnPay = () => {
   const transactionReferenceCode = searchParams.get("vnp_TxnRef")?.split("_")[0];
 
   const shouldConfirmPayment = responseCode === "00" && !!transactionReferenceCode;
+
+  const queryClient = useQueryClient();
 
   const { data, error } = useQuery({
     queryKey: ["payment-callback", responseCode, transactionReferenceCode],
@@ -48,6 +50,12 @@ const PaymentCallbackVnPay = () => {
     if (data) {
       setShowSuccessScreen(true);
       setPaymentStatus("success");
+      queryClient.invalidateQueries({
+        predicate: (prev) => {
+          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "system-notifications";
+        },
+      });
+      queryClient.invalidateQueries({ queryKey: ["unread-all"] });
 
       const timer = setTimeout(() => {
         navigate("/payment-receipts");
@@ -60,7 +68,7 @@ const PaymentCallbackVnPay = () => {
       navigate("/payment-receipts");
       handleMutationError(error);
     }
-  }, [data, error, navigate]);
+  }, [data, error, navigate, queryClient]);
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50">

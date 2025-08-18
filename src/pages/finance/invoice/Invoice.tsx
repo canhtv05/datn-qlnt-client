@@ -159,6 +159,7 @@ const Invoice = () => {
           ids={rowSelection}
           contractInitToAdd={contractInitToAdd}
           buildingInitToAdd={buildingInitToAdd}
+          data={data?.data ?? []}
           // floorInitToAdd={floorInitToAdd}
         />
         <InvoiceFilter props={props} type="default" />

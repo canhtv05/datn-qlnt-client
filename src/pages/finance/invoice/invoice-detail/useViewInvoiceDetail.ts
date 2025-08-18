@@ -161,6 +161,12 @@ export default function useViewInvoiceDetail() {
       queryClient.invalidateQueries({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "payment-receipt-detail",
       });
+      queryClient.invalidateQueries({
+        predicate: (prev) => {
+          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "system-notifications";
+        },
+      });
+      queryClient.invalidateQueries({ queryKey: ["unread-all"] });
 
       toast.success("Từ chối toán thành công");
     },

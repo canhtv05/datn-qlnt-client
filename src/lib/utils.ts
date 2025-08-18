@@ -9,12 +9,18 @@ import {
   FloorStatus,
   FloorType,
   Gender,
+  InvoiceStatus,
+  InvoiceType,
+  MeterType,
+  PaymentMethod,
+  PaymentStatus,
   RoomStatus,
   RoomType,
   ServiceCalculation,
   ServiceCategory,
   ServiceStatus,
   TenantStatus,
+  VehicleStatus,
   VehicleType,
 } from "@/enums";
 import { RoleType } from "@/hooks/useHighestRole";
@@ -53,6 +59,8 @@ export const formattedCurrency = (price: number): string => {
 };
 
 export const formatDate = (date: Date | string): string => {
+  if (!date) return "";
+
   const d = new Date(date);
 
   return new Intl.DateTimeFormat(lang, {
@@ -178,6 +186,16 @@ export const vehicleTypeEnumToString = (vehicleType: VehicleType) => {
   return map[vehicleType] || "Không xác định";
 };
 
+export const vehicleStatusEnumToString = (status: VehicleStatus) => {
+  const map: Record<VehicleStatus, string> = {
+    KHONG_SU_DUNG: "Không sử dụng",
+    SU_DUNG: "Sử dụng",
+    TAM_KHOA: "Tạm khóa",
+  };
+
+  return map[status] || "Không xác định";
+};
+
 export const contractStatusEnumToString = (status: ContractStatus) => {
   const map: Record<ContractStatus, string> = {
     HIEU_LUC: "Hiệu lực",
@@ -288,6 +306,62 @@ export const tenantStatusEnumToString = (status: TenantStatus) => {
     HUY_BO: "Hủy bỏ",
     KHOA: "Khóa",
     TIEM_NANG: "Tiềm năng",
+  };
+
+  return map[status] || "Không xác định";
+};
+
+export const meterTypeEnumToString = (type: MeterType) => {
+  const map: Record<MeterType, string> = {
+    DIEN: "Công tơ điện",
+    NUOC: "Công tơ nước",
+  };
+
+  return map[type] || "Không xác định";
+};
+
+export const invoiceTypeEnumToString = (type: InvoiceType) => {
+  const map: Record<InvoiceType, string> = {
+    CUOI_CUNG: "Cuối cùng",
+    HANG_THANG: "Hàng tháng",
+  };
+
+  return map[type] || "Không xác định";
+};
+
+export const invoiceStatusEnumToString = (status: InvoiceStatus) => {
+  const map: Record<InvoiceStatus, string> = {
+    CHO_THANH_TOAN: "Chờ thanh toán",
+    CHUA_THANH_TOAN: "Chưa thanh toán",
+    DA_THANH_TOAN: "Đã thanh toán",
+    HUY: "Bị hủy",
+    KHOI_PHUC: "Khôi phục",
+    QUA_HAN: "Quá hạn",
+  };
+
+  return map[status] || "Không xác định";
+};
+
+export const receiptMethodEnumToString = (method: PaymentMethod) => {
+  const map: Record<PaymentMethod, string> = {
+    CHON_PHUONG_THUC: "Chọn phương thức",
+    CHUYEN_KHOAN: "Chuyển khoản",
+    MOMO: "Ví điện thử MoMo",
+    TIEN_MAT: "Tiền mặt",
+    VNPAY: "Ví điện thử VNPay",
+    ZALOPAY: "Ví điện thử ZaloPay",
+  };
+
+  return map[method] || "Không xác định";
+};
+
+export const receiptStatusEnumToString = (status: PaymentStatus) => {
+  const map: Record<PaymentStatus, string> = {
+    CHO_THANH_TOAN: "Chờ thanh toán",
+    CHO_XAC_NHAN: "Chờ xác nhận",
+    DA_THANH_TOAN: "Đã thanh toán",
+    HUY: "Bị hủy",
+    TU_CHOI: "Bị từ chối",
   };
 
   return map[status] || "Không xác định";

@@ -13,15 +13,23 @@ import { toast } from "sonner";
 import { Notice, Status, VehicleStatus } from "@/enums";
 import { createVehicleSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import TenantResponse, { ApiResponse, IBtnType, ICreateVehicle } from "@/types";
+import TenantResponse, { ApiResponse, IBtnType, ICreateVehicle, VehicleResponse } from "@/types";
 import { ACTION_BUTTONS_HISTORY } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateVehicle from "./AddOrUpdateVehicle";
 import { useNavigate } from "react-router-dom";
-import { formatDate } from "@/lib/utils";
+import { formatDate, handleExportExcel, vehicleStatusEnumToString, vehicleTypeEnumToString } from "@/lib/utils";
 
-const VehicleButton = ({ ids, tenants }: { ids: Record<string, boolean>; tenants?: ApiResponse<TenantResponse[]> }) => {
+const VehicleButton = ({
+  ids,
+  tenants,
+  data,
+}: {
+  ids: Record<string, boolean>;
+  tenants?: ApiResponse<TenantResponse[]>;
+  data?: VehicleResponse[];
+}) => {
   const navigate = useNavigate();
   const [value, setValue] = useState<ICreateVehicle>({
     describe: "",
@@ -130,9 +138,22 @@ const VehicleButton = ({ ids, tenants }: { ids: Record<string, boolean>; tenants
         openDialog(ids);
       } else if (btn.type === "history") {
         navigate(`/customers/vehicles/history`);
+      } else if (btn.type === "download") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
+          "Chủ sở hữu": d.fullName,
+          "Loại phương tiện": vehicleTypeEnumToString(d.vehicleType),
+          "Biển số": d.licensePlate,
+          "Trạng thái": vehicleStatusEnumToString(d.vehicleStatus),
+          "Ngày đăng ký": formatDate(d.registrationDate),
+          "Mô tả": d.describe,
+          "Ngày tạo": formatDate(d.createdAt),
+          "Ngày cập nhật": formatDate(d.updatedAt),
+        }));
+        handleExportExcel(`Phương tiện`, exportData, data);
       }
     },
-    [ids, navigate, openDialog]
+    [data, ids, navigate, openDialog]
   );
 
   const removeVehicleMutation = useMutation({

@@ -148,7 +148,7 @@ const Meter = () => {
   return (
     <div className="flex flex-col">
       {/* <StatisticCard data={dataDefaultServices} /> */}
-      <MeterButton ids={rowSelection} meterInit={meterInit} />
+      <MeterButton ids={rowSelection} meterInit={meterInit} data={data?.data} />
       <div className="shadow-lg">
         <MeterFilter props={props} />
         <DataTable<MeterResponse>

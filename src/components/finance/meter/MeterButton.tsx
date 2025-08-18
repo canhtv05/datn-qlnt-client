@@ -13,17 +13,27 @@ import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
 import { createOrUpdateMeterSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { ApiResponse, CreateMeterInitResponse, IBtnType, MeterCreationAndUpdatedRequest } from "@/types";
+import {
+  ApiResponse,
+  CreateMeterInitResponse,
+  IBtnType,
+  MeterCreationAndUpdatedRequest,
+  MeterResponse,
+  PaginatedResponse,
+} from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateMeter from "./AddOrUpdateMeter";
 import { useNavigate, useParams } from "react-router-dom";
+import { formatDate, formatNumber, handleExportExcel, meterTypeEnumToString } from "@/lib/utils";
 
 const MeterButton = ({
   ids,
   meterInit,
+  data,
 }: {
+  data?: PaginatedResponse<MeterResponse[]>;
   ids: Record<string, boolean>;
   meterInit: ApiResponse<CreateMeterInitResponse> | undefined;
 }) => {
@@ -142,9 +152,24 @@ const MeterButton = ({
       }
       if (btn.type === "view" && id) {
         navigate(`/finance/meters/statistics/${id}`);
+      } else if (btn.type === "download") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const exportData: Record<string, any>[] | undefined = data?.data?.map((d) => ({
+          "Mã công tơ": d.meterCode,
+          "Tên công tơ": d.meterName,
+          "Tên dịch vụ": d.serviceName,
+          "Loại công tơ": meterTypeEnumToString(d.meterType),
+          "Chỉ số gần nhất": formatNumber(d.closestIndex),
+          Phòng: d.roomCode,
+          "Mô tả": d.descriptionMeter,
+          "Ngày sản xuất": formatDate(d.manufactureDate),
+          "Ngày tạo": formatDate(d.createdAt),
+          "Ngày cập nhật": formatDate(d.updatedAt),
+        }));
+        handleExportExcel(`Công tơ`, exportData, data?.data);
       }
     },
-    [ids, navigate, openDialog, id]
+    [id, openDialog, ids, navigate, data]
   );
 
   const removeMeterMutation = useMutation({

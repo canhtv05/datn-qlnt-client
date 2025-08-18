@@ -9,12 +9,19 @@ import { httpRequest } from "@/utils/httpRequest";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Status } from "@/enums";
-import { IBtnType } from "@/types";
+import { IBtnType, PaymentReceiptResponse } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
+import {
+  formatDate,
+  formattedCurrency,
+  handleExportExcel,
+  receiptMethodEnumToString,
+  receiptStatusEnumToString,
+} from "@/lib/utils";
 
-const PaymentReceiptButton = ({ ids }: { ids: Record<string, boolean> }) => {
+const PaymentReceiptButton = ({ ids, data }: { data?: PaymentReceiptResponse[]; ids: Record<string, boolean> }) => {
   const queryClient = useQueryClient();
 
   const sendPaymentNoticeMutation = useMutation({
@@ -52,9 +59,24 @@ const PaymentReceiptButton = ({ ids }: { ids: Record<string, boolean> }) => {
     (btn: IBtnType) => {
       if (btn.type === "delete" || btn.type === "default") {
         openDialog(ids);
+      } else if (btn.type === "download") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
+          "Mã phiếu": d.receiptCode,
+          "Mã hóa đơn": d.invoiceCode,
+          "Số tiền": formattedCurrency(d.amount),
+          "Phương thức thanh toán": receiptMethodEnumToString(d.paymentMethod),
+          "Trạng thái thanh toán": receiptStatusEnumToString(d.paymentStatus),
+          "Người thu": d.collectedBy,
+          "Ngày thanh toán": formatDate(d.paymentDate) !== "" ? formatDate(d.paymentDate) : "Chưa thanh toán",
+          "Ghi chú": d.note,
+          "Ngày tạo": formatDate(d.createdAt),
+          "Ngày cập nhật": formatDate(d.updatedAt),
+        }));
+        handleExportExcel(`Phiếu thanh toán`, exportData, data);
       }
     },
-    [ids, openDialog]
+    [data, ids, openDialog]
   );
 
   const handleSendPaymentNotice = useCallback(async () => {
@@ -112,7 +134,7 @@ const PaymentReceiptButton = ({ ids }: { ids: Record<string, boolean> }) => {
                     </Button>
                   </TooltipTrigger>
                 </RenderIf>
-                <RenderIf value={btn.type === "delete"}>
+                <RenderIf value={btn.type === "delete" || btn.type === "download"}>
                   <TooltipTrigger asChild>
                     <Button
                       size={"icon"}

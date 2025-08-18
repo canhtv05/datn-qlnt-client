@@ -141,7 +141,7 @@ const Vehicle = () => {
     <div className="flex flex-col">
       <StatisticCard data={dataVehicles} />
       <div className="shadow-lg">
-        <VehicleButton ids={rowSelection} tenants={tenants} />
+        <VehicleButton ids={rowSelection} tenants={tenants} data={data?.data ?? []} />
         <VehicleFilter props={props} />
         <DataTable<VehicleResponse>
           data={data?.data ?? []}
