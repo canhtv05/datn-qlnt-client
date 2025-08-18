@@ -11,11 +11,13 @@ const Navbar = () => {
   return (
     <header className="bg-[#28a745] shadow-md fixed top-0 left-0 w-full z-20">
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-        <div
-          className="cursor-pointer hover:scale-105 transition-transform duration-300"
-          onClick={() => navigate("/")}
-        >
-          <Logo />
+        <div className="cursor-pointer hover:scale-105 transition-transform duration-300" onClick={() => navigate("/")}>
+          <Logo
+            tro="text-white text-[24px]"
+            hub="text-black text-[24px]"
+            dot="text-[24px] text-black"
+            vn="text-[24px]"
+          />
         </div>
         <div className="flex items-center space-x-6">
           <nav className="space-x-6 hidden md:flex text-white text-sm font-medium">
@@ -37,21 +39,18 @@ const Navbar = () => {
           <div className="hidden md:flex space-x-2 items-center">
             <button
               onClick={() => navigate("/login")}
-              className="text-white border border-white px-4 py-1.5 rounded-md hover:bg-white hover:text-[#28a745] transition-all duration-300 text-sm shadow-sm hover:shadow-lg"
+              className="text-white border cursor-pointer border-white px-4 py-1.5 rounded-md hover:bg-white hover:text-[#28a745] transition-all duration-300 text-sm shadow-sm hover:shadow-lg"
             >
               Đăng nhập
             </button>
             <button
               onClick={() => navigate("/register")}
-              className="bg-white text-[#28a745] px-4 py-1.5 rounded-md hover:bg-gray-100 transition-all duration-300 text-sm font-semibold shadow-sm hover:shadow-lg"
+              className="bg-white text-[#28a745] cursor-pointer px-4 py-1.5 rounded-md hover:bg-gray-100 transition-all duration-300 text-sm font-semibold shadow-sm hover:shadow-lg"
             >
               Đăng ký
             </button>
           </div>
-          <button
-            className="md:hidden text-white"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
+          <button className="md:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>

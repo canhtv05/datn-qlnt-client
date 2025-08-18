@@ -6,7 +6,7 @@ import { useAuthStore } from "@/zustand/authStore";
 import useHighestRole, { RoleType } from "@/hooks/useHighestRole";
 import { checkUser } from "@/lib/utils";
 import UpdateProfile from "@/components/UpdateProfile";
-import { publicRoutes } from "@/routers/router";
+import { publicRoutes, unprotectedRoutes } from "@/routers/router";
 
 type LayoutComponent = ComponentType<{ children: ReactNode }>;
 
@@ -35,7 +35,11 @@ export const useAppProvider = () => {
     }
 
     let Page = route.component;
-    if (checkUser(user, isLoading) === false && publicRoutes.every((p) => p.path !== location.pathname))
+    if (
+      checkUser(user, isLoading) === false &&
+      publicRoutes.every((p) => p.path !== location.pathname) &&
+      unprotectedRoutes.every((p) => p.path !== location.pathname)
+    )
       Page = UpdateProfile;
     let Layout: LayoutComponent = DefaultLayout;
 
