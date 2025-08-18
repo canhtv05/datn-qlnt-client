@@ -284,7 +284,7 @@ export const useAsset = () => {
         setValue({
           assetBeLongTo: asset.assetBeLongTo,
           assetType: asset.assetType,
-          descriptionAsset: asset.descriptionAsset,
+          descriptionAsset: asset.description,
           nameAsset: asset.nameAsset,
           price: asset.price,
           quantity: asset.quantity,

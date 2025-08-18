@@ -240,7 +240,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
       idRef.current = assetRooms.id;
       if (action === "update") {
         const data = {
-          assetName: assetRooms.assetName,
+          assetName: assetRooms.nameAsset,
           price: assetRooms.price,
           assetStatus: assetRooms.assetStatus,
           description: assetRooms.description,
