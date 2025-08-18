@@ -25,6 +25,7 @@ import {
   ServiceRoomCreationForRoomRequest,
   ServiceRoomCreationForServiceRequest,
   ServiceRoomCreationRequest,
+  ServiceRoomView,
 } from "@/types";
 import { ACTION_BUTTONS_SERVICE_ROOM } from "@/constant";
 import RenderIf from "@/components/RenderIf";
@@ -35,17 +36,20 @@ import CreateRoomServiceForBuilding from "./CreateRoomServiceForBuilding";
 import CreateRoomServiceForService from "./CreateRoomServiceForService";
 import CreateRoomServiceForRoom from "./CreateRoomServiceForRoom";
 import { useParams } from "react-router-dom";
+import { handleExportExcel, roomStatusEnumToString, roomTypeEnumToString } from "@/lib/utils";
 
 const ServiceRoomButton = ({
   ids,
   roomOptions,
   serviceOptions,
   buildingOptions,
+  data,
 }: {
   ids: Record<string, boolean>;
   serviceOptions: FieldsSelectLabelType[] | Option[] | undefined;
   roomOptions: FieldsSelectLabelType[] | Option[] | undefined;
   buildingOptions: FieldsSelectLabelType[] | Option[] | undefined;
+  data?: ServiceRoomView[];
 }) => {
   const { id } = useParams();
   const [value, setValue] = useState<ServiceRoomCreationRequest>({
@@ -169,9 +173,19 @@ const ServiceRoomButton = ({
     (btn: IBtnType) => {
       if (btn.type === "delete") {
         openDialog(ids);
+      } else if (btn.type === "download") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
+          "Mã phòng": d.roomCode,
+          "Tổng dịch vụ": d.totalServices,
+          "Loại phòng": roomTypeEnumToString(d.roomType),
+          "Trạng thái": roomStatusEnumToString(d.status),
+          "Mô tả": d.description,
+        }));
+        handleExportExcel(`Dịch vụ phòng`, exportData, data);
       }
     },
-    [ids, openDialog]
+    [data, ids, openDialog]
   );
 
   const removeServiceRoomMutation = useMutation({
@@ -367,7 +381,7 @@ const ServiceRoomButton = ({
                     />
                   </Modal>
                 </RenderIf>
-                <RenderIf value={btn.type === "download"}>
+                <RenderIf value={btn.type === "undo"}>
                   <Modal
                     title="Thêm các dịch vụ vào phòng cho 1 phòng"
                     trigger={
@@ -390,14 +404,14 @@ const ServiceRoomButton = ({
                     />
                   </Modal>
                 </RenderIf>
-                <RenderIf value={btn.type === "delete"}>
+                <RenderIf value={btn.type === "download"}>
                   <TooltipTrigger asChild>
                     <Button
                       size={"icon"}
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => handleButton(btn)}
-                      disabled={btn.type === "delete" && !Object.values(ids).some(Boolean)}
+                      // disabled={btn.type === "delete" && !Object.values(ids).some(Boolean)}
                     >
                       <btn.icon className="text-white" />
                     </Button>

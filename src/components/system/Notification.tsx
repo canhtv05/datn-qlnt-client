@@ -12,6 +12,7 @@ import { Badge } from "../ui/badge";
 import useNotification from "./useNotification";
 import NoData from "../NoData";
 import RenderIf from "../RenderIf";
+import { formatDate } from "@/lib/utils";
 
 const Notification = () => {
   const {
@@ -88,7 +89,7 @@ const Notification = () => {
                 <div className="flex-1 min-w-0 flex flex-col [&_*]:text-foreground space-y-0.5 max-w-[65%]">
                   <span className="text-sm dark:!text-white !text-black">{notification.title}</span>
                   <p className="text-sm max-w-[100%] truncate text-[12px]">{notification.content}</p>
-                  <span className="text-[12px]">{new Date(notification.createdAt).toLocaleDateString("vi-VN")}</span>
+                  <span className="text-[12px]">{formatDate(new Date(notification.createdAt))}</span>
                 </div>
                 <div className="flex items-center [&_*]:text-foreground flex-shrink-0 gap-1 ml-2">
                   <div

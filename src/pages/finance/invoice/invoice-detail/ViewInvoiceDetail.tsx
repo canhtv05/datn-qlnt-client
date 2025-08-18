@@ -3,7 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import StatusBadge from "@/components/ui/StatusBadge";
 import "@/assets/css/print.css";
 import { Button } from "@/components/ui/button";
-import { formattedVND } from "@/lib/utils";
+import { formattedCurrency } from "@/lib/utils";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -121,8 +121,8 @@ const ViewInvoiceDetail = () => {
                   <TableCell className="text-right">{item.oldIndex ?? NA}</TableCell>
                   <TableCell className="text-right">{item.newIndex ?? NA}</TableCell>
                   <TableCell className="text-right">{item.quantity}</TableCell>
-                  <TableCell className="text-right">{formattedVND(item?.unitPrice)}</TableCell>
-                  <TableCell className="text-right">{formattedVND(item?.amount)}</TableCell>
+                  <TableCell className="text-right">{formattedCurrency(item?.unitPrice)}</TableCell>
+                  <TableCell className="text-right">{formattedCurrency(item?.amount)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -148,7 +148,7 @@ const ViewInvoiceDetail = () => {
               <div>
                 Thành tiền / Total amount:{" "}
                 <strong className="text-red-500 text-base">
-                  {data?.data?.totalAmount ? formattedVND(data?.data?.totalAmount) : formattedVND(0)}
+                  {data?.data?.totalAmount ? formattedCurrency(data?.data?.totalAmount) : formattedCurrency(0)}
                 </strong>
               </div>
               <div className="italic text-xs mt-1 text-foreground">

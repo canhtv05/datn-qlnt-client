@@ -10,14 +10,15 @@ import { useFormErrors } from "@/hooks/useFormErrors";
 import { useConfirmDialog } from "@/hooks";
 import { ACTION_BUTTONS_HISTORY } from "@/constant";
 import RenderIf from "@/components/RenderIf";
-import { IBtnType, RoomFormValue, ApiResponse, FloorBasicResponse } from "@/types";
+import { IBtnType, RoomFormValue, ApiResponse, FloorBasicResponse, RoomResponse } from "@/types";
 import { Notice, RoomStatus, Status } from "@/enums";
 import { httpRequest } from "@/utils/httpRequest";
 import { createOrUpdateRoomSchema } from "@/lib/validation";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { useNavigate, useParams } from "react-router-dom";
+import { formatDate, handleExportExcel, roomStatusEnumToString, roomTypeEnumToString } from "@/lib/utils";
 
-const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
+const RoomButton = ({ ids, data }: { ids: Record<string, boolean>; data: RoomResponse[] | undefined }) => {
   const navigate = useNavigate();
   const [value, setValue] = useState<RoomFormValue>({
     floorId: "",
@@ -125,9 +126,22 @@ const RoomButton = ({ ids }: { ids: Record<string, boolean> }) => {
         openDialog(ids);
       } else if (btn.type === "history") {
         navigate(`/facilities/rooms/history`);
+      } else if (btn.type === "download") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
+          "Mã phòng": d.roomCode,
+          "Diện tích": `${d.acreage}m²`,
+          "Số người tối đa": d.maximumPeople,
+          "Loại phòng": roomTypeEnumToString(d.roomType),
+          "Mô tả": d.description,
+          "Trạng thái": roomStatusEnumToString(d.status),
+          "Ngày tạo": formatDate(new Date(d.createdAt)),
+          "Ngày cập nhật": formatDate(new Date(d.updatedAt)),
+        }));
+        handleExportExcel(`Phòng_${data?.[0]?.floor?.buildingName}`, exportData, data);
       }
     },
-    [ids, navigate, openDialog]
+    [data, ids, navigate, openDialog]
   );
 
   return (

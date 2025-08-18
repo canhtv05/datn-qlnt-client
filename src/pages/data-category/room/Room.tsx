@@ -61,6 +61,16 @@ const Room = () => {
       hasHighlight: true,
     },
     {
+      label: "Tên tầng",
+      accessorKey: "floor.nameFloor",
+      isSort: true,
+      render: (row: RoomResponse) => {
+        return <span>{row.floor.nameFloor}</span>;
+      },
+      isCenter: true,
+      hasHighlight: true,
+    },
+    {
       label: "Thao tác",
       accessorKey: "actions",
       isCenter: true,
@@ -167,7 +177,7 @@ const Room = () => {
     <div className="flex flex-col">
       <StatisticCard data={statistics} />
       <div className="shadow-lg">
-        <RoomButton ids={rowSelection} />
+        <RoomButton ids={rowSelection} data={data?.data ?? []} />
         <RoomFilter props={props} type="default" />
         <DataTable<RoomResponse>
           data={data?.data ?? []}

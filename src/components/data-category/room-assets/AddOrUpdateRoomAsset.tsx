@@ -14,6 +14,7 @@ import {
 import FieldsMultiSelectLabel from "@/components/ui/FieldsMultiSelectLabel";
 import { toast } from "sonner";
 import RenderIf from "@/components/RenderIf";
+import { formattedCurrency } from "@/lib/utils";
 
 interface Props {
   value: RoomAssetFormValue;
@@ -84,12 +85,10 @@ const AddOrUpdateRoomAsset = ({
   const assetOptions: AssetOption[] = assetsList
     .filter((asset) => asset.remainingQuantity > 0)
     .map((asset) => ({
-      label: `Tên: ${asset.nameAsset} - Còn: ${asset.remainingQuantity || 0} - Giá: ${Number(
-        asset.price
-      ).toLocaleString("vi-VN")}đ `,
+      label: `Tên: ${asset.nameAsset} - Còn: ${asset.remainingQuantity || 0} - Giá: ${formattedCurrency(asset.price)}`,
       value: asset.id,
       price: asset.price,
-      description: asset.descriptionAsset,
+      description: asset.description,
     }));
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {

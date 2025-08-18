@@ -13,14 +13,15 @@ import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
 import { createOrUpdateTenantSchema, formatFullName } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { IBtnType, ICreateAndUpdateTenant } from "@/types";
+import TenantResponse, { IBtnType, ICreateAndUpdateTenant } from "@/types";
 import { ACTION_BUTTONS_HISTORY } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateTenant from "./AddOrUpdateTenant";
 import { useNavigate } from "react-router-dom";
+import { formatDate, genderEnumToString, handleExportExcel, tenantStatusEnumToString } from "@/lib/utils";
 
-const TenantButton = ({ ids }: { ids: Record<string, boolean> }) => {
+const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: TenantResponse[] }) => {
   const navigate = useNavigate();
   const [value, setValue] = useState<ICreateAndUpdateTenant>({
     address: "",
@@ -138,9 +139,24 @@ const TenantButton = ({ ids }: { ids: Record<string, boolean> }) => {
         openDialog(ids);
       } else if (btn.type === "history") {
         navigate(`/customers/tenants/history`);
+      } else if (btn.type === "download") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
+          "Mã khách": d.customerCode,
+          "Họ tên": d.fullName,
+          "Hình ảnh": d.pictureUrl,
+          "Giới tính": genderEnumToString(d.gender),
+          "Ngày sinh": formatDate(d.dob),
+          Email: d.email,
+          "Số điện thoại": d.phoneNumber,
+          "Địa chỉ": d.address,
+          "Là đại diện": d.isRepresentative ? "Có" : "Không",
+          "Trạng thái": tenantStatusEnumToString(d.tenantStatus),
+        }));
+        handleExportExcel(`Khách thuê`, exportData, data);
       }
     },
-    [ids, navigate, openDialog]
+    [data, ids, navigate, openDialog]
   );
 
   const removeTenantsMutation = useMutation({

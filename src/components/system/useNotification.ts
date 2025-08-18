@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { ApiResponse, PaginatedResponse, SystemNotificationResponse, UnreadNotificationCountResponse } from "@/types";
 import { httpRequest } from "@/utils/httpRequest";
 import { handleMutationError } from "@/utils/handleMutationError";
+import { useEffect } from "react";
 
 export default function useNotification() {
   const queryClient = useQueryClient();
@@ -34,14 +35,6 @@ export default function useNotification() {
     initialPageParam: 1,
     retry: 1,
   });
-
-  if (query.isError) {
-    toast.error("Có lỗi xảy ra khi tải thông báo hệ thống");
-  }
-
-  if (isError) {
-    toast.error("Có lỗi xảy ra khi tải số thông báo chưa đọc");
-  }
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
@@ -91,6 +84,16 @@ export default function useNotification() {
   const handleRemoveReadNotification = (id: string) => {
     removeNotification.mutateAsync(id);
   };
+
+  useEffect(() => {
+    if (query.isError) {
+      toast.error("Có lỗi xảy ra khi tải thông báo hệ thống");
+    }
+
+    if (isError) {
+      toast.error("Có lỗi xảy ra khi tải số thông báo chưa đọc");
+    }
+  }, [isError, query.isError]);
 
   return { query, handleScroll, handleReadNotification, handleReadAllNotification, handleRemoveReadNotification, data };
 }

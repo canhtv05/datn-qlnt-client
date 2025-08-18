@@ -12,14 +12,22 @@ import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
 import { createOrUpdateService } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { IBtnType, ServiceCreationRequest } from "@/types";
+import { IBtnType, ServiceCreationRequest, ServiceResponse } from "@/types";
 import { ACTION_BUTTONS_HISTORY } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateService from "./AddOrUpdateService";
 import { useNavigate } from "react-router-dom";
+import {
+  formatDate,
+  formattedCurrency,
+  handleExportExcel,
+  serviceCalculationEnumToString,
+  serviceCategoryEnumToString,
+  serviceStatusEnumToString,
+} from "@/lib/utils";
 
-const ServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
+const ServiceButton = ({ ids, data }: { ids: Record<string, boolean>; data?: ServiceResponse[] }) => {
   const navigate = useNavigate();
   const [value, setValue] = useState<ServiceCreationRequest>({
     description: "",
@@ -122,9 +130,23 @@ const ServiceButton = ({ ids }: { ids: Record<string, boolean> }) => {
         openDialog(ids);
       } else if (btn.type === "history") {
         navigate(`/service-management/services/history`);
+      } else if (btn.type === "download") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
+          "Tên dịch vụ": d.name,
+          "Loại dịch vụ": serviceCategoryEnumToString(d.serviceCategory),
+          "Đơn vị": d.unit,
+          Giá: formattedCurrency(d.price || 0),
+          "Áp dụng theo": serviceCalculationEnumToString(d.serviceCalculation),
+          "Trạng thái": serviceStatusEnumToString(d.status),
+          "Mô tả": d.description,
+          "Ngày tạo": formatDate(new Date(d.createdAt)),
+          "Ngày cập nhật": formatDate(new Date(d.updatedAt)),
+        }));
+        handleExportExcel(`Dịch vụ`, exportData, data);
       }
     },
-    [ids, navigate, openDialog]
+    [data, ids, navigate, openDialog]
   );
 
   const removeServiceMutation = useMutation({

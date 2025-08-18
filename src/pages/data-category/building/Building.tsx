@@ -109,7 +109,7 @@ const Building = () => {
     <div className="flex flex-col">
       <StatisticCard data={dataBuildings} />
       <div className="shadow-lg">
-        <BuildingButton ids={rowSelection} />
+        <BuildingButton ids={rowSelection} data={data?.data ?? []} />
         <BuildingFilter props={props} type="default" />
         <DataTable<BuildingResponse>
           data={data?.data ?? []}

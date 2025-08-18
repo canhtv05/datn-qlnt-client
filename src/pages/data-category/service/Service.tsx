@@ -134,7 +134,7 @@ const AssetType = () => {
     <div className="flex flex-col">
       <StatisticCard data={dataServices} />
       <div className="shadow-lg">
-        <ServiceButton ids={rowSelection} />
+        <ServiceButton ids={rowSelection} data={data?.data ?? []} />
         <ServiceFilter props={props} type="default" />
         <DataTable<ServiceResponse>
           data={data?.data ?? []}

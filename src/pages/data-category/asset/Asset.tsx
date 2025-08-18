@@ -114,7 +114,7 @@ const Asset = () => {
     <div className="flex flex-col">
       <StatisticCard data={dataAssets} />
       <div className="shadow-lg">
-        <AssetButton ids={rowSelection} />
+        <AssetButton ids={rowSelection} data={data?.data.data ?? []} />
         <AssetFilter props={props} type="default" />
         <DataTable<AssetResponse>
           data={data?.data?.data ?? []}

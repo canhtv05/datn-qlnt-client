@@ -1,4 +1,5 @@
 import { PaymentMethod } from "@/enums";
+import { formattedCurrency } from "@/lib/utils";
 import useViewInvoiceDetail from "@/pages/finance/invoice/invoice-detail/useViewInvoiceDetail";
 import { CircleAlert } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
@@ -18,7 +19,7 @@ const InvoicePayment = () => {
       <div className="flex flex-col">
         <span className="border-b block w-full p-2 font-bold">Thanh toán bằng chuyển khoản</span>
         <span className="border-b block w-full p-2 font-bold">
-          Tổng tiền: {Number(data?.data?.totalAmount).toLocaleString("vi-VN")}đ
+          Tổng tiền: {formattedCurrency(data?.data.totalAmount || 0)}
         </span>
         <div className="flex lg:flex-row flex-col lg:items-start items-center">
           <img
@@ -47,8 +48,8 @@ const InvoicePayment = () => {
                 Bước 3:{" "}
                 <span className="font-normal text-sm">
                   Nhập số tiền cần chuyển là{" "}
-                  <span className="text-primary">{Number(data?.data?.totalAmount).toLocaleString("vi-VN")}đ</span> và
-                  nội dụng chuyển tiền{" "}
+                  <span className="text-primary">{formattedCurrency(data?.data.totalAmount || 0)}</span> và nội dụng
+                  chuyển tiền{" "}
                   <span className="text-primary">
                     {METHOD} - {data?.data?.note}
                   </span>

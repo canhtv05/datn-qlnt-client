@@ -1,10 +1,30 @@
-import { AssetStatus, AssetType, ContractStatus, Gender, ServiceCategory, VehicleType } from "@/enums";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  AssetBeLongTo,
+  AssetStatus,
+  AssetType,
+  BuildingStatus,
+  BuildingType,
+  ContractStatus,
+  FloorStatus,
+  FloorType,
+  Gender,
+  RoomStatus,
+  RoomType,
+  ServiceCalculation,
+  ServiceCategory,
+  ServiceStatus,
+  TenantStatus,
+  VehicleType,
+} from "@/enums";
 import { RoleType } from "@/hooks/useHighestRole";
 import { UserResponse } from "@/types";
 import { useEditorStore } from "@/zustand/editorStore";
 import { FindResultType } from "ckeditor5";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -16,11 +36,34 @@ export const getHighestRole = (roles: RoleType[]): RoleType => {
   return roles.sort((a, b) => ROLE_PRIORITY.indexOf(b) - ROLE_PRIORITY.indexOf(a))[0];
 };
 
-export const formattedVND = (price: number): string => {
-  return new Intl.NumberFormat("vi-VN", {
+export const setLang = (newLang: "vi-VN" | "en-US") => {
+  lang = newLang;
+};
+
+export let lang: "vi-VN" | "en-US" = "vi-VN";
+
+export const formattedCurrency = (price: number): string => {
+  const currency = lang === "en-US" ? "USD" : "VND";
+
+  return new Intl.NumberFormat(lang, {
     style: "currency",
-    currency: "VND",
+    currency,
+    currencyDisplay: "symbol",
   }).format(price);
+};
+
+export const formatDate = (date: Date | string): string => {
+  const d = new Date(date);
+
+  return new Intl.DateTimeFormat(lang, {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(d);
+};
+
+export const formatNumber = (number: number | string): string | number => {
+  return number.toLocaleString(lang);
 };
 
 export const switchGrid3 = (type: "default" | "restore"): string => {
@@ -103,6 +146,27 @@ export const serviceCategoryEnumToString = (serviceCategory: ServiceCategory) =>
   return map[serviceCategory] || "Không xác định";
 };
 
+export const serviceCalculationEnumToString = (serviceApply: ServiceCalculation) => {
+  const map: Record<ServiceCalculation, string> = {
+    TINH_THEO_NGUOI: "Tính theo người",
+    TINH_THEO_PHONG: "Tính theo phòng",
+    TINH_THEO_PHUONG_TIEN: "Tính theo phương tiện",
+    TINH_THEO_SO: "Tính theo số",
+  };
+
+  return map[serviceApply] || "Không xác định";
+};
+
+export const serviceStatusEnumToString = (status: ServiceStatus) => {
+  const map: Record<ServiceStatus, string> = {
+    HOAT_DONG: "Hoạt động",
+    KHONG_SU_DUNG: "Không sử dụng",
+    TAM_KHOA: "Tạm khóa",
+  };
+
+  return map[status] || "Không xác định";
+};
+
 export const vehicleTypeEnumToString = (vehicleType: VehicleType) => {
   const map: Record<VehicleType, string> = {
     XE_MAY: "Xe máy",
@@ -128,6 +192,107 @@ export const contractStatusEnumToString = (status: ContractStatus) => {
   return map[status] || "Không xác định";
 };
 
+export const buildingTypeEnumToString = (type: BuildingType) => {
+  const map: Record<BuildingType, string> = {
+    CAN_HO_DICH_VU: "Căn hộ dịch vụ",
+    CHUNG_CU_MINI: "Chung cư mini",
+    KHAC: "Khác",
+    NHA_TRO: "Nhà trọ",
+  };
+
+  return map[type] || "Không xác định";
+};
+
+export const buildingStatusEnumToString = (status: BuildingStatus) => {
+  const map: Record<BuildingStatus, string> = {
+    HOAT_DONG: "Hoạt động",
+    HUY_HOAT_DONG: "Hủy hoạt động",
+    TAM_KHOA: "Tạm khóa",
+  };
+
+  return map[status] || "Không xác định";
+};
+
+export const floorTypeEnumToString = (type: FloorType) => {
+  const map: Record<FloorType, string> = {
+    CHO_THUE: "Cho thuê",
+    DE_O: "Để ở",
+    KHAC: "Khác",
+    KHO: "Kho",
+    KHONG_CHO_THUE: "Không cho thuê",
+  };
+
+  return map[type] || "Không xác định";
+};
+
+export const floorStatusEnumToString = (status: FloorStatus) => {
+  const map: Record<FloorStatus, string> = {
+    HOAT_DONG: "Hoạt động",
+    KHONG_SU_DUNG: "Không sử dụng",
+    TAM_KHOA: "Tạm khóa",
+  };
+
+  return map[status] || "Không xác định";
+};
+
+export const roomTypeEnumToString = (type: RoomType) => {
+  const map: Record<RoomType, string> = {
+    KHAC: "Khác",
+    CAO_CAP: "Cao cấp",
+    DON: "Đơn",
+    GHEP: "Ghép",
+  };
+
+  return map[type] || "Không xác định";
+};
+
+export const roomStatusEnumToString = (status: RoomStatus) => {
+  const map: Record<RoomStatus, string> = {
+    TAM_KHOA: "Tạm khóa",
+    CHUA_HOAN_THIEN: "Chưa hoàn thiện",
+    DA_DAT_COC: "Đã đặt cọc",
+    DANG_BAO_TRI: "Đang bảo trì",
+    DANG_THUE: "Đang thuê",
+    HUY_HOAT_DONG: "Hủy hoạt động",
+    TRONG: "Trống",
+  };
+
+  return map[status] || "Không xác định";
+};
+
+export const assetBelongToEnumToString = (belongTo: AssetBeLongTo) => {
+  const map: Record<AssetBeLongTo, string> = {
+    CA_NHAN: "Cá nhân",
+    CHUNG: "Chung",
+    PHONG: "Phòng",
+  };
+
+  return map[belongTo] || "Không xác định";
+};
+
+export const genderEnumToString = (gender: Gender) => {
+  const map: Record<Gender, string> = {
+    FEMALE: "Nữ",
+    MALE: "Nam",
+    OTHER: "Khác",
+    UNKNOWN: "Không xác định",
+  };
+
+  return map[gender] || "Không xác định";
+};
+
+export const tenantStatusEnumToString = (status: TenantStatus) => {
+  const map: Record<TenantStatus, string> = {
+    DA_TRA_PHONG: "Đã trả phòng",
+    DANG_THUE: "Đang thuê",
+    HUY_BO: "Hủy bỏ",
+    KHOA: "Khóa",
+    TIEM_NANG: "Tiềm năng",
+  };
+
+  return map[status] || "Không xác định";
+};
+
 export const checkUser = (user: UserResponse | null, isLoading: boolean): boolean => {
   if (
     (!user?.dob || (user?.gender !== Gender.FEMALE && user?.gender !== Gender.MALE) || !user?.phoneNumber) &&
@@ -136,4 +301,43 @@ export const checkUser = (user: UserResponse | null, isLoading: boolean): boolea
     return false;
   }
   return true;
+};
+
+export const handleExportExcel = (name: string, exportData?: Record<string, any>[], data?: Record<string, any>[]) => {
+  if (!data?.length) return;
+
+  // Lấy keys từ object đầu tiên (tất cả cột có trong dữ liệu)
+  // const keys = Object.keys(data[0]);
+
+  // Tạo exportData bằng cách duyệt qua từng row
+  // const exportData = data.map((row) => {
+  //   const obj: Record<string, any> = {};
+  //   keys.forEach((key) => {
+  //     obj[key] = row[key as keyof typeof row];
+  //   });
+  //   return obj;
+  // });
+
+  const finalExportData = exportData && exportData.length > 0 ? exportData : data.map((row) => ({ ...row }));
+  if (!finalExportData.length) return;
+
+  const worksheet = XLSX.utils.json_to_sheet(finalExportData);
+
+  // Tính độ dài tối đa cho từng cột (theo content)
+  const cols = Object.keys(finalExportData[0]).map((key) => {
+    const maxLength = finalExportData.reduce((len, row) => {
+      const cellValue = row[key] ? String(row[key]) : "";
+      return Math.max(len, cellValue.length);
+    }, key.length); // so với cả độ dài header
+    return { wch: maxLength + 2 }; // thêm padding 2
+  });
+
+  worksheet["!cols"] = cols;
+
+  // Xuất excel
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Danh sách");
+  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+  const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+  saveAs(blob, `${name}.xlsx`);
 };

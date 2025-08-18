@@ -19,13 +19,14 @@ import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateVehicle from "./AddOrUpdateVehicle";
 import { useNavigate } from "react-router-dom";
+import { formatDate } from "@/lib/utils";
 
 const VehicleButton = ({ ids, tenants }: { ids: Record<string, boolean>; tenants?: ApiResponse<TenantResponse[]> }) => {
   const navigate = useNavigate();
   const [value, setValue] = useState<ICreateVehicle>({
     describe: "",
     licensePlate: "",
-    registrationDate: new Date().toLocaleDateString("vi-VN"),
+    registrationDate: formatDate(new Date()),
     vehicleStatus: VehicleStatus.SU_DUNG,
     vehicleType: "",
     tenantId: "",

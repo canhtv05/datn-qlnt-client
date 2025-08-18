@@ -14,6 +14,7 @@ import useInvoiceDetail from "./useInvoiceDetail";
 import { ColumnConfig, InvoiceItemResponse } from "@/types";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { Info } from "lucide-react";
+import { formattedCurrency } from "@/lib/utils";
 
 const InvoiceDetail = () => {
   const {
@@ -290,7 +291,7 @@ const InvoiceDetail = () => {
                 - Hóa đơn: <span>{`${data?.data?.month}/${data?.data?.year}`}</span>
               </strong>
               <strong>
-                - Tổng tiền: <span>{`${Number(data?.data?.totalAmount || 0).toLocaleString("vi-VN")} VND`}</span>
+                - Tổng tiền: <span>{formattedCurrency(data?.data.totalAmount || 0)}</span>
               </strong>
               <strong>
                 - Hạn thanh toán:{" "}

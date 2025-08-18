@@ -12,7 +12,7 @@ import { ChangeEvent } from "react";
 import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { ApiResponse, IBtnType, ICreateAsset, IdAndName } from "@/types";
+import { ApiResponse, AssetResponse, IBtnType, ICreateAsset, IdAndName } from "@/types";
 import { ACTION_BUTTONS_HISTORY } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
@@ -20,8 +20,15 @@ import AddOrUpdateAsset from "./AddOrUpdateAsset";
 import RoomAssetButton from "../room-assets/RoomAssetButton";
 import { useNavigate, useParams } from "react-router-dom";
 import { creationAssetSchema } from "@/lib/validation";
+import {
+  assetBelongToEnumToString,
+  assetTypeEnumToString,
+  formatDate,
+  formattedCurrency,
+  handleExportExcel,
+} from "@/lib/utils";
 
-const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
+const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: AssetResponse[] }) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [value, setValue] = useState<ICreateAsset>({
@@ -140,9 +147,23 @@ const AssetButton = ({ ids }: { ids: Record<string, boolean> }) => {
         openDialog(ids);
       } else if (btn.type === "history") {
         navigate(`/asset-management/assets/history`);
+      } else if (btn.type === "download") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
+          "Tên tài sản": d.nameAsset,
+          "Loại tài sản": assetTypeEnumToString(d.assetType),
+          "Tài sản thuộc về": assetBelongToEnumToString(d.assetBeLongTo),
+          Giá: formattedCurrency(d.price),
+          "Số lượng": d.quantity,
+          "Còn lại": d.remainingQuantity,
+          "Mô tả": d.description,
+          "Ngày tạo": formatDate(new Date(d.createdAt)),
+          "Ngày cập nhật": formatDate(new Date(d.updatedAt)),
+        }));
+        handleExportExcel(`Tài sản_${data?.[0].buildingName}`, exportData, data);
       }
     },
-    [ids, navigate, openDialog]
+    [data, ids, navigate, openDialog]
   );
 
   const removeAssetTypeMutation = useMutation({

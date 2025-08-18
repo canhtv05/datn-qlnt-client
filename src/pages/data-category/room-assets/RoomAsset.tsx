@@ -94,7 +94,13 @@ const RoomAsset = () => {
     <div className="flex flex-col">
       <StatisticCard data={statistics} />
       <div className="shadow-lg">
-        <RoomAssetButton ids={rowSelection} roomId={roomId ?? ""} type="default" buildingOptions={[]} />
+        <RoomAssetButton
+          ids={rowSelection}
+          roomId={roomId ?? ""}
+          type="default"
+          buildingOptions={[]}
+          data={data?.data}
+        />
         <RoomAssetFilter props={props} />
         <DataTable<RoomAssetAllResponse>
           data={data?.data ?? []}

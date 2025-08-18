@@ -30,6 +30,7 @@ import {
   PaymentStatus,
   PaymentMethod,
 } from "@/enums";
+import { formatNumber, formattedCurrency } from "@/lib/utils";
 import { IBtnType } from "@/types";
 import {
   Download,
@@ -1079,15 +1080,22 @@ export const ACTION_BUTTONS_SERVICE_ROOM: IBtnType[] = [
   {
     tooltipContent: "Thêm các dịch vụ vào phòng cho 1 phòng",
     icon: Gavel,
+    arrowColor: "var(--color-violet-500)",
+    type: "undo",
+    hasConfirm: true,
+  },
+  {
+    tooltipContent: "Tải xuống Excel",
+    icon: Download,
     arrowColor: "var(--color-emerald-500)",
     type: "download",
-    hasConfirm: true,
+    hasConfirm: false,
   },
 ];
 
 export const formatNumberField = {
-  price: (val: number) => `${val.toLocaleString("vi-VN")} VNĐ`,
-  acreage: (val: number) => `${val.toLocaleString("vi-VN")} m²`,
+  price: (val: number) => `${formattedCurrency(val)}`,
+  acreage: (val: number) => `${formatNumber(val)} m²`,
   maximumPeople: (val: number) => `${val} người/phòng`,
   asset: (val: number) => `${val} tài sản`,
 };

@@ -87,6 +87,7 @@ const ServiceRoom = () => {
           roomOptions={roomOptions}
           serviceOptions={serviceOptions}
           buildingOptions={buildingOptions}
+          data={data?.data ?? []}
         />
         <ServiceRoomFilter props={props} />
         <DataTable<ServiceRoomView>

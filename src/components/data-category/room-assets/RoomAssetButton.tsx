@@ -19,6 +19,7 @@ import {
   ICreateAndUpdateBulkRoomAsset,
   RoomAssetBulkFormValue,
   AllRoomAssetFormValue,
+  RoomAssetAllResponse,
 } from "@/types";
 import { Notice, Status } from "@/enums";
 import { httpRequest } from "@/utils/httpRequest";
@@ -27,13 +28,16 @@ import { handleMutationError } from "@/utils/handleMutationError";
 import { Building, Layers } from "lucide-react";
 import { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import { useParams, useSearchParams } from "react-router-dom";
+import { handleExportExcel, roomStatusEnumToString, roomTypeEnumToString } from "@/lib/utils";
 
 const RoomAssetButton = ({
   ids,
   roomId,
   type = "detail",
   buildingOptions,
+  data,
 }: {
+  data?: RoomAssetAllResponse[];
   ids: Record<string, boolean>;
   roomId: string;
   type: "default" | "detail" | "asset";
@@ -318,9 +322,19 @@ const RoomAssetButton = ({
     (btn: IBtnType) => {
       if (btn.type === "delete") {
         openDialog(ids);
+      } else if (btn.type === "download") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
+          "Mã phòng": d.roomCode,
+          "Số tài sản": d.totalAssets || 0,
+          "Loại phòng": roomTypeEnumToString(d.roomType),
+          "Trạng thái": roomStatusEnumToString(d.status),
+          "Mô tả": d.description,
+        }));
+        handleExportExcel(`Tài sản phòng`, exportData, data);
       }
     },
-    [ids, openDialog]
+    [data, ids, openDialog]
   );
 
   return (
@@ -371,12 +385,26 @@ const RoomAssetButton = ({
                     btn.type !== "default" &&
                     btn.type !== "bulkAdd" &&
                     btn.type !== "addToAllRoom" &&
-                    btn.type !== "download" &&
-                    btn.type !== "upload"
+                    btn.type !== "upload" &&
+                    btn.type !== "download"
                   }
                 >
                   <TooltipTrigger asChild>
                     <Button
+                      className="cursor-pointer"
+                      size="icon"
+                      variant={btn.type}
+                      onClick={() => handleButton(btn)}
+                      disabled={btn.type === "delete" && !Object.values(ids).some(Boolean)}
+                    >
+                      <btn.icon className="text-white" />
+                    </Button>
+                  </TooltipTrigger>
+                </RenderIf>
+                <RenderIf value={btn.type === "download" && type !== "detail"}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      className="cursor-pointer"
                       size="icon"
                       variant={btn.type}
                       onClick={() => handleButton(btn)}

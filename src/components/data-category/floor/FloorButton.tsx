@@ -13,14 +13,15 @@ import { toast } from "sonner";
 import { Notice, Status } from "@/enums";
 import { createFloorSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { IBtnType, ICreateFloorValue } from "@/types";
+import { FloorResponse, IBtnType, ICreateFloorValue } from "@/types";
 import { ACTION_BUTTONS_HISTORY } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateFloor from "./AddOrUpdateFloor";
 import { useNavigate, useParams } from "react-router-dom";
+import { floorStatusEnumToString, floorTypeEnumToString, formatDate, handleExportExcel } from "@/lib/utils";
 
-const FloorButton = ({ ids }: { ids: Record<string, boolean> }) => {
+const FloorButton = ({ ids, data }: { ids: Record<string, boolean>; data: FloorResponse[] }) => {
   const navigate = useNavigate();
   const [value, setValue] = useState<ICreateFloorValue>({
     descriptionFloor: "",
@@ -131,9 +132,22 @@ const FloorButton = ({ ids }: { ids: Record<string, boolean> }) => {
         openDialog(ids);
       } else if (btn.type === "history") {
         navigate(`/facilities/floors/history`);
+      } else if (btn.type === "download") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
+          "Tên tầng": d.nameFloor,
+          "Tên tòa nhà": d.buildingName,
+          "Số phòng tối đa": d.maximumRoom,
+          "Loại tầng": floorTypeEnumToString(d.floorType),
+          "Mô tả": d.descriptionFloor,
+          "Trạng thái": floorStatusEnumToString(d.status),
+          "Ngày tạo": formatDate(new Date(d.createdAt)),
+          "Ngày cập nhật": formatDate(new Date(d.updatedAt)),
+        }));
+        handleExportExcel(`Tầng nhà_${data[0].buildingName}`, exportData, data);
       }
     },
-    [ids, navigate, openDialog]
+    [data, ids, navigate, openDialog]
   );
 
   const removeFloorMutation = useMutation({

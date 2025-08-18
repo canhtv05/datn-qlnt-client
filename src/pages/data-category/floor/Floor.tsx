@@ -107,7 +107,7 @@ const Floor = () => {
     <div className="flex flex-col">
       <StatisticCard data={datFloors} />
       <div className="shadow-lg">
-        <FloorButton ids={rowSelection} />
+        <FloorButton ids={rowSelection} data={data?.data ?? []} />
         <FloorFilter props={props} type="default" />
         <DataTable<FloorResponse>
           data={data?.data ?? []}

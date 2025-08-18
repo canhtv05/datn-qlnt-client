@@ -16,15 +16,16 @@ import { useAuthStore } from "@/zustand/authStore";
 import { createOrUpdateBuildingSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
 // import { useFullAddress } from "@/hooks/useFullAddress";
-import { IBtnType, ICreateBuildingValue } from "@/types";
+import { BuildingResponse, IBtnType, ICreateBuildingValue } from "@/types";
 import { ACTION_BUTTONS_HISTORY } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import { useNavigate } from "react-router-dom";
+import { buildingStatusEnumToString, buildingTypeEnumToString, formatDate, handleExportExcel } from "@/lib/utils";
 
 type AddData = ICreateBuildingValue & { userId: string | undefined };
 
-const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
+const BuildingButton = ({ ids, data }: { ids: Record<string, boolean>; data: BuildingResponse[] | undefined }) => {
   const user = useAuthStore((s) => s.user);
   const [value, setValue] = useState<ICreateBuildingValue>({
     actualNumberOfFloors: undefined,
@@ -138,9 +139,24 @@ const BuildingButton = ({ ids }: { ids: Record<string, boolean> }) => {
         openDialog(ids);
       } else if (btn.type === "history") {
         navigate(`/facilities/buildings/history`);
+      } else if (btn.type === "download") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
+          "Mã tòa nhà": d.buildingCode,
+          "Tên tòa nhà": d.buildingName,
+          "Địa chỉ": d.address,
+          "Loại tòa nhà": buildingTypeEnumToString(d.buildingType),
+          "Số tầng thực tế": d.actualNumberOfFloors || 0,
+          "Số tầng cho thuê": d.numberOfFloorsForRent || 0,
+          "Mô tả": d.description,
+          "Trạng thái": buildingStatusEnumToString(d.status),
+          "Ngày tạo": formatDate(new Date(d.createdAt)),
+          "Ngày cập nhật": formatDate(new Date(d.updatedAt)),
+        }));
+        handleExportExcel("Tòa nhà", exportData, data);
       }
     },
-    [ids, navigate, openDialog]
+    [data, ids, navigate, openDialog]
   );
 
   const removeBuildingMutation = useMutation({

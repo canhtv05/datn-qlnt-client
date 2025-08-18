@@ -14,6 +14,7 @@ import AddOrUpdateTenant from "@/components/customer/tenant/AddOrUpdateTenant";
 import { GET_BTNS } from "@/constant";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { formatDate } from "@/lib/utils";
 
 const Tenant = () => {
   const {
@@ -38,7 +39,7 @@ const Tenant = () => {
   const { page, size } = query;
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Mã khách hàng", accessorKey: "customerCode", isSort: true, hasHighlight: true },
+    { label: "Mã khách", accessorKey: "customerCode", isSort: true, hasHighlight: true },
     {
       label: "Thao tác",
       accessorKey: "actions",
@@ -96,13 +97,20 @@ const Tenant = () => {
       },
     },
     { label: "Giới tính", accessorKey: "gender", isSort: true, isCenter: true, hasBadge: true },
-    { label: "Ngày sinh", accessorKey: "dob", isSort: true },
+    {
+      label: "Ngày sinh",
+      accessorKey: "dob",
+      isSort: true,
+      render: (row: TenantResponse) => {
+        return <span>{formatDate(row.dob)}</span>;
+      },
+    },
     { label: "Email", accessorKey: "email", isSort: true },
     { label: "Số điện thoại", accessorKey: "phoneNumber", isSort: true },
     { label: "Địa chỉ", accessorKey: "address" },
     { label: "Số CMND/CCCD", accessorKey: "identificationNumber" },
     {
-      label: "Đại diện hộ",
+      label: "Là đại diện",
       accessorKey: "isRepresentative",
       isCenter: true,
       isSort: true,
@@ -127,7 +135,7 @@ const Tenant = () => {
     <div className="flex flex-col">
       <StatisticCard data={dataStatisticsTenants} />
       <div className="shadow-lg">
-        <TenantButton ids={rowSelection} />
+        <TenantButton ids={rowSelection} data={data?.data ?? []} />
         <TenantFilter props={props} type="default" />
         <DataTable<TenantResponse>
           data={data?.data ?? []}

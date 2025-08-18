@@ -25,6 +25,7 @@ import {
   PaymentStatus,
   PaymentMethod,
   AssetType,
+  AssetBeLongTo,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -404,16 +405,14 @@ export type IUpdateAsset = Omit<ICreateAsset, "buildingId"> & { assetStatus: Ass
 
 export interface AssetResponse extends AbstractResponse {
   description: string;
-  assetName: string;
   buildingName: string;
   nameAsset: string;
-  assetType: string | AssetType;
-  assetBeLongTo: string | AssetBeLongTo;
-  assetStatus: string | AssetStatus;
+  assetType: AssetType;
+  assetBeLongTo: AssetBeLongTo;
+  assetStatus: AssetStatus;
   price: number;
   quantity: number;
   remainingQuantity: number;
-  descriptionAsset: string;
 }
 
 export interface AssetFilter {
@@ -422,9 +421,6 @@ export interface AssetFilter {
   assetStatus: AssetStatus | string;
   assetType: AssetType | string;
 }
-
-/* Room Asset */
-export type AssetBeLongTo = "PHONG" | "CHUNG" | "CA_NHAN";
 
 export interface AssetRoomFilter {
   query: string;
@@ -482,8 +478,8 @@ export type RoomAssetAllResponse = {
   id: string;
   roomCode: string;
   totalAssets: number;
-  roomType: RoomType | string;
-  status: RoomStatus | string;
+  roomType: RoomType;
+  status: RoomStatus;
   description: string;
 };
 
@@ -588,12 +584,12 @@ export interface TenantDetailResponse extends AbstractResponse {
 export default interface TenantResponse extends AbstractResponse {
   customerCode: string;
   fullName: string;
-  gender: Gender | string;
+  gender: Gender;
   dob: string;
   email: string;
   pictureUrl: string;
   phoneNumber: string;
-  tenantStatus: TenantStatus | string;
+  tenantStatus: TenantStatus;
   isRepresentative: string;
   identityCardNumber: string;
   identificationNumber: string;
