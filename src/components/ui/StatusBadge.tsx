@@ -1,8 +1,10 @@
 import { STATUS_BADGE } from "@/constant";
 import { Badge } from "./badge";
+import { useTranslation } from "react-i18next";
 
 const StatusBadge = ({ status }: { status: string | number }) => {
-  const matched = STATUS_BADGE.find((s) => s.value === status);
+  const { t } = useTranslation();
+  const matched = STATUS_BADGE(t).find((s) => s.value === status);
 
   if (!matched) return null;
 

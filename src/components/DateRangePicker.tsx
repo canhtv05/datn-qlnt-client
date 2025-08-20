@@ -1,9 +1,10 @@
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
-import { vi } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
 
-import { cn } from "@/lib/utils";
+import { cn, localeMap } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -19,6 +20,8 @@ type DateRangePickerProps = {
 
 export function DateRangePicker({ className, value, onChange, fromYear, toYear }: DateRangePickerProps) {
   const { width } = useViewport();
+  const { i18n, t } = useTranslation();
+  const currentLocale = localeMap[i18n.language] ?? enUS;
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -32,13 +35,14 @@ export function DateRangePicker({ className, value, onChange, fromYear, toYear }
             {value?.from ? (
               value.to ? (
                 <>
-                  {format(value.from, "dd/MM/yyyy")} - {format(value.to, "dd/MM/yyyy")}
+                  {format(value.from, "dd/MM/yyyy", { locale: currentLocale })} -{" "}
+                  {format(value.to, "dd/MM/yyyy", { locale: currentLocale })}
                 </>
               ) : (
-                format(value.from, "dd/MM/yyyy")
+                format(value.from, "dd/MM/yyyy", { locale: currentLocale })
               )
             ) : (
-              <span>Chọn khoảng thời gian</span>
+              <span>{t("common.selectDateRange")}</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -58,7 +62,7 @@ export function DateRangePicker({ className, value, onChange, fromYear, toYear }
             numberOfMonths={2}
             fromYear={fromYear}
             toYear={toYear}
-            locale={vi}
+            locale={currentLocale}
           />
         </PopoverContent>
       </Popover>

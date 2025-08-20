@@ -7,7 +7,9 @@
       "save": "Lưu",
       "update": "Cập nhật",
       "reload": "Làm mới"
-    }
+    },
+    "noData": "Không có dữ liệu",
+    "selectDateRange": "Chọn khoảng thời gian"
   },
   "status": {
     "updateSuccess": "Cập nhật thành công",
@@ -111,6 +113,241 @@
       "members": "Xem thành viên trong phòng",
       "electric": "Xem điện",
       "water": "Xem nước"
+    }
+  },
+  "dashboard": {
+    "sentBy": "Gửi bởi {{name}} • {{date}}",
+    "noMoreNotification": "Không còn thông báo nào"
+  },
+  "notificationFilter": {
+    "typePlaceholder": "-- Loại thông báo --",
+    "typeLabel": "Loại thông báo",
+    "type": {
+      "general": "Chung",
+      "system": "Hệ thống",
+      "other": "Khác"
+    },
+    "search": "Tìm kiếm",
+    "hide": "Ẩn",
+    "show": "Hiện"
+  },
+  "statusBadge": {
+    "empty": "Trống",
+    "yes": "Có",
+    "no": "Không",
+
+    "buildingStatus": {
+      "active": "Hoạt động",
+      "locked": "Tạm khóa",
+      "inactive": "Hủy hoạt động"
+    },
+
+    "roomType": {
+      "vip": "Cao cấp",
+      "shared": "Phòng ghép",
+      "single": "Phòng đơn",
+      "other": "Khác"
+    },
+
+    "buildingType": {
+      "nhaTro": "Nhà trọ",
+      "chungCuMini": "Chung cư mini",
+      "canHoDichVu": "Căn hộ dịch vụ",
+      "other": "Khác"
+    },
+
+    "roomStatus": {
+      "empty": "Còn trống",
+      "deposit": "Đã đặt cọc",
+      "maintain": "Bảo trì",
+      "unfinished": "Chưa hoàn thiện",
+      "locked": "Tạm khóa",
+      "inactive": "Huỷ hoạt động"
+    },
+
+    "floorStatus": {
+      "active": "Đang hoạt động",
+      "inactive": "Không sử dụng",
+      "locked": "Tạm khóa"
+    },
+
+    "floorType": {
+      "forRent": "Cho thuê",
+      "notForRent": "Không cho thuê",
+      "residential": "Để ở",
+      "storage": "Kho",
+      "other": "Khác"
+    },
+
+    "assetGroup": {
+      "houseware": "Gia dụng",
+      "furniture": "Nội thất",
+      "electric": "Điện",
+      "personal": "Cá nhân",
+      "other": "Khác"
+    },
+
+    "assetBelongTo": {
+      "room": "Phòng",
+      "common": "Chung",
+      "personal": "Cá nhân"
+    },
+
+    "assetType": {
+      "houseware": "Gia dụng",
+      "cleaning": "Vệ sinh",
+      "furniture": "Nội thất",
+      "electric": "Điện",
+      "security": "An ninh",
+      "other": "Khác"
+    },
+
+    "assetStatus": {
+      "active": "Hoạt động",
+      "cancelled": "Bị hủy",
+      "broken": "Hư hỏng",
+      "maintenance": "Cần bảo trì",
+      "lost": "Thất lạc",
+      "liquidated": "Đã thanh lý"
+    },
+
+    "tenantStatus": {
+      "renting": "Đang thuê",
+      "returned": "Đã trả phòng",
+      "potential": "Tiềm năng",
+      "locked": "Bị khóa"
+    },
+
+    "gender": {
+      "male": "Nam",
+      "female": "Nữ"
+    },
+
+    "vehicleType": {
+      "motorbike": "Xe máy",
+      "car": "Ô tô",
+      "bicycle": "Xe đạp",
+      "other": "Khác"
+    },
+
+    "vehicleStatus": {
+      "active": "Đang sử dụng",
+      "inactive": "Ngừng sử dụng",
+      "locked": "Tạm khóa"
+    },
+
+    "contractStatus": {
+      "valid": "Hiệu lực",
+      "expiring": "Sắp hết hạn",
+      "pending": "Chờ kích hoạt",
+      "endedNotice": "Kết thúc có báo trước",
+      "endedOnTime": "Kết thúc đúng hạn",
+      "terminated": "Tự ý hủy bỏ",
+      "cancelled": "Đã hủy"
+    },
+
+    "serviceType": {
+      "fixed": "Cố định",
+      "metered": "Tính theo số"
+    },
+
+    "serviceAppliedBy": {
+      "room": "Phòng",
+      "floor": "Tầng",
+      "person": "Người"
+    },
+
+    "serviceStatus": {
+      "active": "Hoạt động",
+      "locked": "Tạm khóa",
+      "inactive": "Ngừng sử dụng"
+    },
+
+    "defaultServiceAppliesTo": {
+      "room": "Phòng",
+      "contract": "Hợp đồng"
+    },
+
+    "defaultServiceStatus": {
+      "active": "Hoạt động",
+      "paused": "Tạm dừng",
+      "cancelled": "Hủy bỏ"
+    },
+
+    "serviceRoomStatus": {
+      "active": "Đang sử dụng",
+      "paused": "Tạm dừng",
+      "cancelled": "Đã hủy"
+    },
+
+    "meterType": {
+      "electric": "Công tơ điện",
+      "water": "Công tơ nước"
+    },
+
+    "invoiceStatus": {
+      "unpaid": "Chưa thanh toán",
+      "restored": "Khôi phục",
+      "paid": "Đã thanh toán",
+      "overdue": "Quá hạn",
+      "cancelled": "Đã hủy"
+    },
+
+    "invoiceType": {
+      "monthly": "Hàng tháng",
+      "final": "Cuối cùng"
+    },
+
+    "serviceCategory": {
+      "electric": "Điện",
+      "water": "Nước",
+      "parking": "Gửi xe",
+      "internet": "Internet",
+      "cleaning": "Vệ sinh",
+      "elevator": "Thang máy",
+      "maintenance": "Bảo trì",
+      "security": "An ninh",
+      "laundry": "Giặt sấy",
+      "rent": "Tiền phòng",
+      "other": "Khác"
+    },
+
+    "serviceCalculation": {
+      "byMeter": "Tính theo số",
+      "byPerson": "Tính theo người",
+      "byRoom": "Tính theo phòng",
+      "byVehicle": "Tính theo phương tiện"
+    },
+
+    "invoiceItemType": {
+      "electric": "Điện",
+      "water": "Nước",
+      "service": "Dịch vụ",
+      "rent": "Tiền phòng",
+      "compensation": "Đền bù"
+    },
+
+    "paymentMethod": {
+      "choose": "Chọn phương thức",
+      "cash": "Tiền mặt",
+      "transfer": "Chuyển khoản",
+      "vnpay": "VNPay",
+      "zalopay": "ZaloPay",
+      "momo": "MoMo"
+    },
+
+    "paymentStatus": {
+      "pending": "Chờ thanh toán",
+      "confirming": "Chờ xác nhận",
+      "paid": "Đã thanh toán",
+      "rejected": "Từ chối",
+      "cancelled": "Hủy"
+    },
+
+    "notificationType": {
+      "common": "Chung",
+      "system": "Hệ thống",
+      "other": "Khác"
     }
   }
 }

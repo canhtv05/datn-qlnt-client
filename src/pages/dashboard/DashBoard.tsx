@@ -2,15 +2,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import useDashBoard from "./useDashboard";
 import { format } from "date-fns";
-import { vi } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import StatusBadge from "@/components/ui/StatusBadge";
 import NoData from "@/components/NoData";
 import RenderIf from "@/components/RenderIf";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "@/components/Image";
 import DashBoardFilter from "./DashBoardFilter";
+import { useTranslation } from "react-i18next";
+import { localeMap } from "@/lib/utils";
 
 const DashBoard = () => {
+  const { t, i18n } = useTranslation();
+  const currentLocale = localeMap[i18n.language] ?? enUS;
   const { result, handleScroll, props } = useDashBoard();
 
   return (
@@ -37,7 +41,12 @@ const DashBoard = () => {
                 <Image src={item.senderImage} alt={item.fullName} />
                 <div className="flex-1">
                   <p className="text-sm text-muted-foreground">
-                    Gửi bởi {item.fullName} • {format(new Date(item.sentAt), "dd/MM/yyyy HH:mm", { locale: vi })}
+                    {t("dashboard.sentBy", {
+                      name: item.fullName,
+                      date: format(new Date(item.sentAt), "dd/MM/yyyy HH:mm", {
+                        locale: currentLocale,
+                      }),
+                    })}
                   </p>
                   <StatusBadge status={item.notificationType} />
                 </div>
@@ -62,7 +71,7 @@ const DashBoard = () => {
           </div>
         )}
         {!result.isLoading && result.data?.pages.some((page) => page.data.length > 0) && !result.hasNextPage && (
-          <p className="text-center text-muted-foreground text-sm py-4">Không còn thông báo nào</p>
+          <p className="text-center text-muted-foreground text-sm py-4"> {t("dashboard.noMoreNotification")}</p>
         )}
       </div>
     </div>

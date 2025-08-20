@@ -11,6 +11,7 @@ import { parseISO } from "date-fns";
 import { Eye, EyeOff } from "lucide-react";
 import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import { DateRange } from "react-day-picker";
+import { useTranslation } from "react-i18next";
 
 export interface NotificationFilterProps {
   filterValues: NotificationFilter;
@@ -22,6 +23,8 @@ export interface NotificationFilterProps {
 const DashBoardFilter = ({ props }: { props: NotificationFilterProps }) => {
   const { fromDate, notificationType, query, toDate } = props.filterValues;
   const setFilterValues = props.setFilterValues;
+
+  const { t } = useTranslation();
 
   const [isVisible, setIsVisible] = useState<boolean>(true);
 
@@ -57,12 +60,12 @@ const DashBoardFilter = ({ props }: { props: NotificationFilterProps }) => {
     >
       <RenderIf value={isVisible}>
         <FieldsSelectLabel
-          placeholder="-- Loại thông báo --"
-          labelSelect="Loại thông báo"
+          placeholder={t("notificationFilter.typePlaceholder")}
+          labelSelect={t("notificationFilter.typeLabel")}
           data={[
-            { label: "Chung", value: NotificationType.CHUNG },
-            { label: "Hệ thống", value: NotificationType.HE_THONG },
-            { label: "Khác", value: NotificationType.KHAC },
+            { label: t("notificationFilter.type.general"), value: NotificationType.CHUNG },
+            { label: t("notificationFilter.type.system"), value: NotificationType.HE_THONG },
+            { label: t("notificationFilter.type.other"), value: NotificationType.KHAC },
           ]}
           value={notificationType ?? undefined}
           onChange={(value) => handleChange("notificationType", String(value))}
@@ -73,13 +76,13 @@ const DashBoardFilter = ({ props }: { props: NotificationFilterProps }) => {
         <InputLabel
           id="query"
           name="query"
-          placeholder="Tìm kiếm"
+          placeholder={t("notificationFilter.search")}
           value={query ?? undefined}
           onChange={(e) => handleChange("query", e.target.value)}
         />
       </RenderIf>
       <div className={`flex items-center w-full ${isVisible ? "justify-between" : "justify-center"}`}>
-        <Tooltip content={isVisible ? "Ẩn" : "Hiện"}>
+        <Tooltip content={isVisible ? t("notificationFilter.hide") : t("notificationFilter.show")}>
           <Button
             size={"icon"}
             variant={"ghost"}

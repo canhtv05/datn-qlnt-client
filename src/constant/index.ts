@@ -298,685 +298,687 @@ export const COLOR_CLASS = {
     "text-black dark:text-white bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-300 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white",
 };
 
-export const STATUS_BADGE = [
-  {
-    value: "__EMPTY__",
-    label: "Trống",
-    className: COLOR_CLASS.gray,
-  },
-  {
-    value: "",
-    label: "Trống",
-    className: COLOR_CLASS.gray,
-  },
-  {
-    value: null,
-    label: "Trống",
-    className: COLOR_CLASS.gray,
-  },
-  {
-    value: "isRepresentative=true",
-    label: "Có",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: "isRepresentative=false",
-    label: "Không",
-    className: COLOR_CLASS.stone,
-  },
-  // --- Trạng thái hoạt động của tòa nhà ---
-  {
-    value: BuildingStatus.HOAT_DONG,
-    label: "Hoạt động",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: BuildingStatus.TAM_KHOA,
-    label: "Tạm khóa",
-    className: COLOR_CLASS.yellow,
-  },
-  {
-    value: BuildingStatus.HUY_HOAT_DONG,
-    label: "Hủy hoạt động",
-    className: COLOR_CLASS.red,
-  },
-  // --- Loại phòng ---
-  {
-    value: RoomType.CAO_CAP,
-    label: "Cao cấp",
-    className: COLOR_CLASS.rose,
-  },
-  // --- Loại tòa nhà ---
-  {
-    value: BuildingType.NHA_TRO,
-    label: "Nhà trọ",
-    className: COLOR_CLASS.blue,
-  },
-  {
-    value: BuildingType.CHUNG_CU_MINI,
-    label: "Chung cư mini",
-    className: COLOR_CLASS.purple,
-  },
-  {
-    value: BuildingType.CAN_HO_DICH_VU,
-    label: "Căn hộ dịch vụ",
-    className: COLOR_CLASS.indigo,
-  },
-  {
-    value: BuildingType.KHAC,
-    label: "Khác",
-    className: COLOR_CLASS.neutral,
-  },
-  // --- Trạng thái phòng ---
-  {
-    value: RoomStatus.TRONG,
-    label: "Còn trống",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: RoomStatus.DA_DAT_COC,
-    label: "Đã đặt cọc",
-    className: COLOR_CLASS.yellow,
-  },
-  {
-    value: RoomStatus.DANG_BAO_TRI,
-    label: "Bảo trì",
-    className: COLOR_CLASS.gray,
-  },
-  {
-    value: RoomStatus.CHUA_HOAN_THIEN,
-    label: "Chưa hoàn thiện",
-    className: COLOR_CLASS.blue,
-  },
-  {
-    value: RoomStatus.TAM_KHOA,
-    label: "Tạm khóa",
-    className: COLOR_CLASS.purple,
-  },
-  {
-    value: RoomStatus.HUY_HOAT_DONG,
-    label: "Huỷ hoạt động",
-    className: COLOR_CLASS.black,
-  },
-  // --- Loại Phòng ---
-  {
-    value: RoomType.GHEP,
-    label: "Phòng ghép",
-    className: COLOR_CLASS.blue,
-  },
-  {
-    value: RoomType.DON,
-    label: "Phòng đơn",
-    className: COLOR_CLASS.purple,
-  },
-  {
-    value: RoomType.KHAC,
-    label: "Khác",
-    className: COLOR_CLASS.neutral,
-  },
-  // --- Trạng thái tầng ---
-  {
-    value: FloorStatus.HOAT_DONG,
-    label: "Đang sử dụng",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: FloorStatus.KHONG_SU_DUNG,
-    label: "Không sử dụng",
-    className: COLOR_CLASS.stone,
-  },
-  {
-    value: FloorStatus.TAM_KHOA,
-    label: "Tạm khóa",
-    className: COLOR_CLASS.yellow,
-  },
-  // --- Loại tầng ---
-  {
-    value: FloorType.CHO_THUE,
-    label: "Cho thuê",
-    className: COLOR_CLASS.sky,
-  },
-  {
-    value: FloorType.KHONG_CHO_THUE,
-    label: "Không cho thuê",
-    className: COLOR_CLASS.zinc,
-  },
-  {
-    value: FloorType.DE_O,
-    label: "Để ở",
-    className: COLOR_CLASS.cyan,
-  },
-  {
-    value: FloorType.KHO,
-    label: "Kho",
-    className: COLOR_CLASS.amber,
-  },
-  {
-    value: FloorType.KHAC,
-    label: "Khác",
-    className: COLOR_CLASS.neutral,
-  },
-  // --- Nhóm tài sản ---
-  {
-    value: AssetGroup.GIA_DUNG,
-    label: "Gia dụng",
-    className: COLOR_CLASS.rose,
-  },
-  {
-    value: AssetGroup.NOI_THAT,
-    label: "Nội thất",
-    className: COLOR_CLASS.lime,
-  },
-  {
-    value: AssetGroup.DIEN,
-    label: "Điện",
-    className: COLOR_CLASS.orange,
-  },
-  {
-    value: AssetGroup.CA_NHAN,
-    label: "Cá nhân",
-    className: COLOR_CLASS.pink,
-  },
-  {
-    value: AssetGroup.KHAC,
-    label: "Khác",
-    className: COLOR_CLASS.neutral,
-  },
-  // --- Thuộc về tài sản ---
-  {
-    value: AssetBeLongTo.PHONG,
-    label: "Phòng",
-    className: COLOR_CLASS.teal,
-  },
-  {
-    value: AssetBeLongTo.CHUNG,
-    label: "Chung",
-    className: COLOR_CLASS.indigo,
-  },
-  {
-    value: AssetBeLongTo.CA_NHAN,
-    label: "Cá nhân",
-    className: COLOR_CLASS.purple,
-  },
-  // --- Loại tài sản ---
-  {
-    value: AssetType.GIA_DUNG,
-    label: "Gia dụng",
-    className: COLOR_CLASS.rose,
-  },
-  {
-    value: AssetType.VE_SINH,
-    label: "Vệ sinh",
-    className: COLOR_CLASS.lime,
-  },
-  {
-    value: AssetType.NOI_THAT,
-    label: "Nội thất",
-    className: COLOR_CLASS.orange,
-  },
-  {
-    value: AssetType.DIEN,
-    label: "Điện",
-    className: COLOR_CLASS.pink,
-  },
-  {
-    value: AssetType.AN_NINH,
-    label: "An ninh",
-    className: COLOR_CLASS.sky,
-  },
-  {
-    value: AssetType.KHAC,
-    label: "Khác",
-    className: COLOR_CLASS.neutral,
-  },
-  // --- Trạng thái tài sản ---
-  {
-    value: AssetStatus.HOAT_DONG,
-    label: "Đang sử dụng",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: AssetStatus.HUY,
-    label: "Bị hủy",
-    className: COLOR_CLASS.red,
-  },
-  {
-    value: AssetStatus.HU_HONG,
-    label: "Hư hỏng",
-    className: COLOR_CLASS.red,
-  },
-  {
-    value: AssetStatus.CAN_BAO_TRI,
-    label: "Cần bảo trì",
-    className: COLOR_CLASS.yellow,
-  },
-  {
-    value: AssetStatus.THAT_LAC,
-    label: "Thất lạc",
-    className: COLOR_CLASS.orange,
-  },
-  {
-    value: AssetStatus.DA_THANH_LY,
-    label: "Đã thanh lý",
-    className: COLOR_CLASS.gray,
-  },
-  // --- TENANT ---
-  {
-    value: TenantStatus.DANG_THUE,
-    label: "Đang thuê",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: TenantStatus.DA_TRA_PHONG,
-    label: "Đã trả phòng",
-    className: COLOR_CLASS.gray,
-  },
-  {
-    value: TenantStatus.TIEM_NANG,
-    label: "Tiềm năng",
-    className: COLOR_CLASS.yellow,
-  },
-  {
-    value: TenantStatus.KHOA,
-    label: "Bị khóa",
-    className: COLOR_CLASS.red,
-  },
-  // --- GENDER ---
-  {
-    value: Gender.MALE,
-    label: "Nam",
-    className: COLOR_CLASS.blue,
-  },
-  {
-    value: Gender.FEMALE,
-    label: "Nữ",
-    className: COLOR_CLASS.pink,
-  },
-  // --- Vehicle Types ---
-  {
-    value: VehicleType.XE_MAY,
-    label: "Xe máy",
-    className: COLOR_CLASS.blue,
-  },
-  {
-    value: VehicleType.O_TO,
-    label: "Ô tô",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: VehicleType.XE_DAP,
-    label: "Xe đạp",
-    className: COLOR_CLASS.orange,
-  },
-  {
-    value: VehicleType.KHAC,
-    label: "Khác",
-    className: COLOR_CLASS.neutral,
-  },
-  // --- Vehicle Status ---
-  {
-    value: VehicleStatus.SU_DUNG,
-    label: "Đang sử dụng",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: VehicleStatus.KHONG_SU_DUNG,
-    label: "Ngừng sử dụng",
-    className: COLOR_CLASS.gray,
-  },
-  {
-    value: VehicleStatus.TAM_KHOA,
-    label: "Tạm khóa",
-    className: COLOR_CLASS.red,
-  },
-  // --- Contract status ---
-  {
-    value: ContractStatus.HIEU_LUC,
-    label: "Hiệu lực",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: ContractStatus.SAP_HET_HAN,
-    label: "Sắp hết hạn",
-    className: COLOR_CLASS.yellow,
-  },
-  {
-    value: ContractStatus.CHO_KICH_HOAT,
-    label: "Chờ kích hoạt",
-    className: COLOR_CLASS.orange,
-  },
-  {
-    value: ContractStatus.KET_THUC_CO_BAO_TRUOC,
-    label: "Kết thúc có báo trước",
-    className: COLOR_CLASS.blue,
-  },
-  {
-    value: ContractStatus.KET_THUC_DUNG_HAN,
-    label: "Kết thúc đúng hạn",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: ContractStatus.TU_Y_HUY_BO,
-    label: "Tự ý hủy bỏ",
-    className: COLOR_CLASS.red,
-  },
-  {
-    value: ContractStatus.DA_HUY,
-    label: "Đã hủy",
-    className: COLOR_CLASS.red,
-  },
-  // --- Loại dịch vụ ---
-  {
-    value: ServiceType.CO_DINH,
-    label: "Cố định",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: ServiceType.TINH_THEO_SO,
-    label: "Tính theo số",
-    className: COLOR_CLASS.blue,
-  },
-  // --- Áp dụng theo ---
-  {
-    value: ServiceAppliedBy.PHONG,
-    label: "Phòng",
-    className: COLOR_CLASS.orange,
-  },
-  {
-    value: ServiceAppliedBy.TANG,
-    label: "Tầng",
-    className: COLOR_CLASS.purple,
-  },
-  {
-    value: ServiceAppliedBy.NGUOI,
-    label: "Người",
-    className: COLOR_CLASS.pink,
-  },
-  // --- Trạng thái dịch vụ ---
-  {
-    value: ServiceStatus.HOAT_DONG,
-    label: "Hoạt động",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: ServiceStatus.TAM_KHOA,
-    label: "Tạm khóa",
-    className: COLOR_CLASS.yellow,
-  },
-  {
-    value: ServiceStatus.KHONG_SU_DUNG,
-    label: "Ngừng sử dụng",
-    className: COLOR_CLASS.gray,
-  },
-  // --- DEFAULT SERVICE ---
-  {
-    value: DefaultServiceAppliesTo.PHONG,
-    label: "Phòng",
-    className: COLOR_CLASS.orange,
-  },
-  {
-    value: DefaultServiceAppliesTo.HOP_DONG,
-    label: "Hợp đồng",
-    className: COLOR_CLASS.purple,
-  },
-  {
-    value: DefaultServiceStatus.HOAT_DONG,
-    label: "Hoạt động",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: DefaultServiceStatus.TAM_DUNG,
-    label: "Tạm dừng",
-    className: COLOR_CLASS.yellow,
-  },
-  {
-    value: DefaultServiceStatus.HUY_BO,
-    label: "Hủy bỏ",
-    className: COLOR_CLASS.red,
-  },
-  {
-    value: ServiceRoomStatus.DANG_SU_DUNG,
-    label: "Đang sử dụng",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: ServiceRoomStatus.TAM_DUNG,
-    label: "Tạm dừng",
-    className: COLOR_CLASS.yellow,
-  },
-  {
-    value: ServiceRoomStatus.DA_HUY,
-    label: "Đã hủy",
-    className: COLOR_CLASS.red,
-  },
-  // --- Meter Types ---
-  {
-    value: MeterType.DIEN,
-    label: "Công tơ điện",
-    className: COLOR_CLASS.yellow,
-  },
-  {
-    value: MeterType.NUOC,
-    label: "Công tơ nước",
-    className: COLOR_CLASS.blue,
-  },
-  // --- Invoice Status ---
-  {
-    value: InvoiceStatus.CHUA_THANH_TOAN,
-    label: "Chưa thanh toán",
-    className: COLOR_CLASS.red,
-  },
-  {
-    value: InvoiceStatus.KHOI_PHUC,
-    label: "Khôi phục",
-    className: COLOR_CLASS.yellow,
-  },
-  {
-    value: InvoiceStatus.DA_THANH_TOAN,
-    label: "Đã thanh toán",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: InvoiceStatus.QUA_HAN,
-    label: "Quá hạn",
-    className: COLOR_CLASS.orange,
-  },
-  {
-    value: InvoiceStatus.HUY,
-    label: "Đã hủy",
-    className: COLOR_CLASS.gray,
-  },
-  // --- Invoice Type ---
-  {
-    value: InvoiceType.HANG_THANG,
-    label: "Hàng tháng",
-    className: COLOR_CLASS.blue,
-  },
-  {
-    value: InvoiceType.CUOI_CUNG,
-    label: "Cuối cùng",
-    className: COLOR_CLASS.purple,
-  },
-  // --- Service Category ---
-  {
-    value: ServiceCategory.DIEN,
-    label: "Điện",
-    className: COLOR_CLASS.yellow,
-  },
-  {
-    value: ServiceCategory.NUOC,
-    label: "Nước",
-    className: COLOR_CLASS.blue,
-  },
-  {
-    value: ServiceCategory.GUI_XE,
-    label: "Gửi xe",
-    className: COLOR_CLASS.gray,
-  },
-  {
-    value: ServiceCategory.INTERNET,
-    label: "Internet",
-    className: COLOR_CLASS.indigo,
-  },
-  {
-    value: ServiceCategory.VE_SINH,
-    label: "Vệ sinh",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: ServiceCategory.THANG_MAY,
-    label: "Thang máy",
-    className: COLOR_CLASS.purple,
-  },
-  {
-    value: ServiceCategory.BAO_TRI,
-    label: "Bảo trì",
-    className: COLOR_CLASS.red,
-  },
-  {
-    value: ServiceCategory.AN_NINH,
-    label: "An ninh",
-    className: COLOR_CLASS.orange,
-  },
-  {
-    value: ServiceCategory.GIAT_SAY,
-    label: "Giặt sấy",
-    className: COLOR_CLASS.pink,
-  },
-  {
-    value: ServiceCategory.TIEN_PHONG,
-    label: "Tiền phòng",
-    className: COLOR_CLASS.teal,
-  },
-  {
-    value: ServiceCategory.KHAC,
-    label: "Khác",
-    className: COLOR_CLASS.neutral,
-  },
-  {
-    value: ServiceCalculation.TINH_THEO_SO,
-    label: "Tính theo số",
-    className: COLOR_CLASS.blue,
-  },
-  {
-    value: ServiceCalculation.TINH_THEO_NGUOI,
-    label: "Tính theo người",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: ServiceCalculation.TINH_THEO_PHONG,
-    label: "Tính theo phòng",
-    className: COLOR_CLASS.purple,
-  },
-  {
-    value: ServiceCalculation.TINH_THEO_PHUONG_TIEN,
-    label: "Tính theo phương tiện",
-    className: COLOR_CLASS.indigo,
-  },
-  // --- Invoice Item Type ---
-  {
-    value: InvoiceItemType.DIEN,
-    label: "Điện",
-    className: COLOR_CLASS.yellow,
-  },
-  {
-    value: ServiceCategory.DEN_BU,
-    label: "Trống",
-    className: COLOR_CLASS.gray,
-  },
-  {
-    value: InvoiceItemType.NUOC,
-    label: "Nước",
-    className: COLOR_CLASS.blue,
-  },
-  {
-    value: InvoiceItemType.DICH_VU,
-    label: "Dịch vụ",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: InvoiceItemType.TIEN_PHONG,
-    label: "Tiền phòng",
-    className: COLOR_CLASS.teal,
-  },
-  {
-    value: InvoiceItemType.DEN_BU,
-    label: "Đền bù",
-    className: COLOR_CLASS.red,
-  },
-  // --- Phương thức thanh toán ---
-  {
-    value: PaymentMethod.CHON_PHUONG_THUC,
-    label: "Chọn phương thức",
-    className: COLOR_CLASS.orange,
-  },
-  {
-    value: PaymentMethod.TIEN_MAT,
-    label: "Tiền mặt",
-    className: COLOR_CLASS.amber,
-  },
-  {
-    value: PaymentMethod.CHUYEN_KHOAN,
-    label: "Chuyển khoản",
-    className: COLOR_CLASS.blue,
-  },
-  {
-    value: PaymentMethod.VNPAY,
-    label: "VNPay",
-    className: COLOR_CLASS.purple,
-  },
-  {
-    value: PaymentMethod.ZALOPAY,
-    label: "ZaloPay",
-    className: COLOR_CLASS.pink,
-  },
-  {
-    value: PaymentMethod.MOMO,
-    label: "MoMo",
-    className: COLOR_CLASS.red,
-  },
-  // --- Trạng thái thanh toán ---
-  {
-    value: PaymentStatus.CHO_THANH_TOAN,
-    label: "Chờ thanh toán",
-    className: COLOR_CLASS.yellow,
-  },
-  {
-    value: PaymentStatus.CHO_XAC_NHAN,
-    label: "Chờ xác nhận",
-    className: COLOR_CLASS.blue,
-  },
-  {
-    value: PaymentStatus.DA_THANH_TOAN,
-    label: "Đã thanh toán",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: PaymentStatus.TU_CHOI,
-    label: "Từ chối",
-    className: COLOR_CLASS.red,
-  },
-  {
-    value: PaymentStatus.HUY,
-    label: "Hủy",
-    className: COLOR_CLASS.gray,
-  },
-  {
-    value: NotificationType.CHUNG,
-    label: "Chung",
-    className: COLOR_CLASS.blue,
-  },
-  {
-    value: NotificationType.HE_THONG,
-    label: "Hệ thống",
-    className: COLOR_CLASS.green,
-  },
-  {
-    value: NotificationType.KHAC,
-    label: "Khác",
-    className: COLOR_CLASS.red,
-  },
-];
+export const STATUS_BADGE = (t: TFunction<"translation", undefined>) => {
+  return [
+    {
+      value: "__EMPTY__",
+      label: t("statusBadge.empty"),
+      className: COLOR_CLASS.gray,
+    },
+    {
+      value: "",
+      label: t("statusBadge.empty"),
+      className: COLOR_CLASS.gray,
+    },
+    {
+      value: null,
+      label: t("statusBadge.empty"),
+      className: COLOR_CLASS.gray,
+    },
+    {
+      value: "isRepresentative=true",
+      label: t("statusBadge.yes"),
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: "isRepresentative=false",
+      label: t("statusBadge.no"),
+      className: COLOR_CLASS.stone,
+    },
+    // --- Trạng thái hoạt động của tòa nhà ---
+    {
+      value: BuildingStatus.HOAT_DONG,
+      label: t("statusBadge.buildingStatus.active"),
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: BuildingStatus.TAM_KHOA,
+      label: t("statusBadge.buildingStatus.locked"),
+      className: COLOR_CLASS.yellow,
+    },
+    {
+      value: BuildingStatus.HUY_HOAT_DONG,
+      label: t("statusBadge.buildingStatus.inactive"),
+      className: COLOR_CLASS.red,
+    },
+    // --- Loại phòng ---
+    {
+      value: RoomType.CAO_CAP,
+      label: t("statusBadge.roomType.vip"),
+      className: COLOR_CLASS.rose,
+    },
+    {
+      value: RoomType.GHEP,
+      label: t("statusBadge.roomType.shared"),
+      className: COLOR_CLASS.blue,
+    },
+    {
+      value: RoomType.DON,
+      label: t("statusBadge.roomType.single"),
+      className: COLOR_CLASS.purple,
+    },
+    {
+      value: RoomType.KHAC,
+      label: t("statusBadge.roomType.other"),
+      className: COLOR_CLASS.neutral,
+    },
+    // --- Loại tòa nhà ---
+    {
+      value: BuildingType.NHA_TRO,
+      label: t("statusBadge.buildingType.nhaTro"),
+      className: COLOR_CLASS.blue,
+    },
+    {
+      value: BuildingType.CHUNG_CU_MINI,
+      label: t("statusBadge.buildingType.chungCuMini"),
+      className: COLOR_CLASS.purple,
+    },
+    {
+      value: BuildingType.CAN_HO_DICH_VU,
+      label: t("statusBadge.buildingType.canHoDichVu"),
+      className: COLOR_CLASS.indigo,
+    },
+    {
+      value: BuildingType.KHAC,
+      label: t("statusBadge.buildingType.other"),
+      className: COLOR_CLASS.neutral,
+    },
+    // --- Trạng thái phòng ---
+    {
+      value: RoomStatus.TRONG,
+      label: t("statusBadge.roomStatus.empty"),
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: RoomStatus.DA_DAT_COC,
+      label: t("statusBadge.roomStatus.deposit"),
+      className: COLOR_CLASS.yellow,
+    },
+    {
+      value: RoomStatus.DANG_BAO_TRI,
+      label: t("statusBadge.roomStatus.maintain"),
+      className: COLOR_CLASS.gray,
+    },
+    {
+      value: RoomStatus.CHUA_HOAN_THIEN,
+      label: t("statusBadge.roomStatus.unfinished"),
+      className: COLOR_CLASS.blue,
+    },
+    {
+      value: RoomStatus.TAM_KHOA,
+      label: t("statusBadge.roomStatus.locked"),
+      className: COLOR_CLASS.purple,
+    },
+    {
+      value: RoomStatus.HUY_HOAT_DONG,
+      label: t("statusBadge.roomStatus.inactive"),
+      className: COLOR_CLASS.black,
+    },
+    // --- Trạng thái tầng ---
+    {
+      value: FloorStatus.HOAT_DONG,
+      label: t("statusBadge.floorStatus.active"),
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: FloorStatus.KHONG_SU_DUNG,
+      label: t("statusBadge.floorStatus.inactive"),
+      className: COLOR_CLASS.stone,
+    },
+    {
+      value: FloorStatus.TAM_KHOA,
+      label: t("statusBadge.floorStatus.locked"),
+      className: COLOR_CLASS.yellow,
+    },
+    // --- Loại tầng ---
+    {
+      value: FloorType.CHO_THUE,
+      label: t("statusBadge.floorType.forRent"),
+
+      className: COLOR_CLASS.sky,
+    },
+    {
+      value: FloorType.KHONG_CHO_THUE,
+      label: t("statusBadge.floorType.notForRent"),
+      className: COLOR_CLASS.zinc,
+    },
+    {
+      value: FloorType.DE_O,
+      label: t("statusBadge.floorType.residential"),
+      className: COLOR_CLASS.cyan,
+    },
+    {
+      value: FloorType.KHO,
+      label: t("statusBadge.floorType.storage"),
+      className: COLOR_CLASS.amber,
+    },
+    {
+      value: FloorType.KHAC,
+      label: t("statusBadge.floorType.other"),
+      className: COLOR_CLASS.neutral,
+    },
+    // --- Nhóm tài sản ---
+    {
+      value: AssetGroup.GIA_DUNG,
+      label: t("statusBadge.assetGroup.houseware"),
+      className: COLOR_CLASS.rose,
+    },
+    {
+      value: AssetGroup.NOI_THAT,
+      label: t("statusBadge.assetGroup.furniture"),
+      className: COLOR_CLASS.lime,
+    },
+    {
+      value: AssetGroup.DIEN,
+      label: t("statusBadge.assetGroup.electric"),
+      className: COLOR_CLASS.orange,
+    },
+    {
+      value: AssetGroup.CA_NHAN,
+      label: t("statusBadge.assetGroup.personal"),
+      className: COLOR_CLASS.pink,
+    },
+    {
+      value: AssetGroup.KHAC,
+      label: t("statusBadge.assetGroup.other"),
+      className: COLOR_CLASS.neutral,
+    },
+    // --- Thuộc về tài sản ---
+    {
+      value: AssetBeLongTo.PHONG,
+      label: t("statusBadge.assetBelongTo.room"),
+      className: COLOR_CLASS.teal,
+    },
+    {
+      value: AssetBeLongTo.CHUNG,
+      label: t("statusBadge.assetBelongTo.common"),
+      className: COLOR_CLASS.indigo,
+    },
+    {
+      value: AssetBeLongTo.CA_NHAN,
+      label: t("statusBadge.assetBelongTo.personal"),
+      className: COLOR_CLASS.purple,
+    },
+    // --- Loại tài sản ---
+    {
+      value: AssetType.GIA_DUNG,
+      label: t("statusBadge.assetType.houseware"),
+      className: COLOR_CLASS.rose,
+    },
+    {
+      value: AssetType.VE_SINH,
+      label: t("statusBadge.assetType.cleaning"),
+      className: COLOR_CLASS.lime,
+    },
+    {
+      value: AssetType.NOI_THAT,
+      label: t("statusBadge.assetType.furniture"),
+      className: COLOR_CLASS.orange,
+    },
+    {
+      value: AssetType.DIEN,
+      label: t("statusBadge.assetType.electric"),
+      className: COLOR_CLASS.pink,
+    },
+    {
+      value: AssetType.AN_NINH,
+      label: t("statusBadge.assetType.security"),
+      className: COLOR_CLASS.sky,
+    },
+    {
+      value: AssetType.KHAC,
+      label: t("statusBadge.assetType.other"),
+      className: COLOR_CLASS.neutral,
+    },
+    // --- Trạng thái tài sản ---
+    {
+      value: AssetStatus.HOAT_DONG,
+      label: t("statusBadge.assetStatus.active"),
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: AssetStatus.HUY,
+      label: t("statusBadge.assetStatus.cancelled"),
+      className: COLOR_CLASS.red,
+    },
+    {
+      value: AssetStatus.HU_HONG,
+      label: t("statusBadge.assetStatus.broken"),
+      className: COLOR_CLASS.red,
+    },
+    {
+      value: AssetStatus.CAN_BAO_TRI,
+      label: t("statusBadge.assetStatus.maintenance"),
+      className: COLOR_CLASS.yellow,
+    },
+    {
+      value: AssetStatus.THAT_LAC,
+      label: t("statusBadge.assetStatus.lost"),
+      className: COLOR_CLASS.orange,
+    },
+    {
+      value: AssetStatus.DA_THANH_LY,
+      label: t("statusBadge.assetStatus.liquidated"),
+      className: COLOR_CLASS.gray,
+    },
+    // --- TENANT ---
+    {
+      value: TenantStatus.DANG_THUE,
+      label: "Đang thuê",
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: TenantStatus.DA_TRA_PHONG,
+      label: "Đã trả phòng",
+      className: COLOR_CLASS.gray,
+    },
+    {
+      value: TenantStatus.TIEM_NANG,
+      label: "Tiềm năng",
+      className: COLOR_CLASS.yellow,
+    },
+    {
+      value: TenantStatus.KHOA,
+      label: "Bị khóa",
+      className: COLOR_CLASS.red,
+    },
+    // --- GENDER ---
+    {
+      value: Gender.MALE,
+      label: "Nam",
+      className: COLOR_CLASS.blue,
+    },
+    {
+      value: Gender.FEMALE,
+      label: "Nữ",
+      className: COLOR_CLASS.pink,
+    },
+    // --- Vehicle Types ---
+    {
+      value: VehicleType.XE_MAY,
+      label: "Xe máy",
+      className: COLOR_CLASS.blue,
+    },
+    {
+      value: VehicleType.O_TO,
+      label: "Ô tô",
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: VehicleType.XE_DAP,
+      label: "Xe đạp",
+      className: COLOR_CLASS.orange,
+    },
+    {
+      value: VehicleType.KHAC,
+      label: "Khác",
+      className: COLOR_CLASS.neutral,
+    },
+    // --- Vehicle Status ---
+    {
+      value: VehicleStatus.SU_DUNG,
+      label: "Đang sử dụng",
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: VehicleStatus.KHONG_SU_DUNG,
+      label: "Ngừng sử dụng",
+      className: COLOR_CLASS.gray,
+    },
+    {
+      value: VehicleStatus.TAM_KHOA,
+      label: "Tạm khóa",
+      className: COLOR_CLASS.red,
+    },
+    // --- Contract status ---
+    {
+      value: ContractStatus.HIEU_LUC,
+      label: "Hiệu lực",
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: ContractStatus.SAP_HET_HAN,
+      label: "Sắp hết hạn",
+      className: COLOR_CLASS.yellow,
+    },
+    {
+      value: ContractStatus.CHO_KICH_HOAT,
+      label: "Chờ kích hoạt",
+      className: COLOR_CLASS.orange,
+    },
+    {
+      value: ContractStatus.KET_THUC_CO_BAO_TRUOC,
+      label: "Kết thúc có báo trước",
+      className: COLOR_CLASS.blue,
+    },
+    {
+      value: ContractStatus.KET_THUC_DUNG_HAN,
+      label: "Kết thúc đúng hạn",
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: ContractStatus.TU_Y_HUY_BO,
+      label: "Tự ý hủy bỏ",
+      className: COLOR_CLASS.red,
+    },
+    {
+      value: ContractStatus.DA_HUY,
+      label: "Đã hủy",
+      className: COLOR_CLASS.red,
+    },
+    // --- Loại dịch vụ ---
+    {
+      value: ServiceType.CO_DINH,
+      label: "Cố định",
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: ServiceType.TINH_THEO_SO,
+      label: "Tính theo số",
+      className: COLOR_CLASS.blue,
+    },
+    // --- Áp dụng theo ---
+    {
+      value: ServiceAppliedBy.PHONG,
+      label: "Phòng",
+      className: COLOR_CLASS.orange,
+    },
+    {
+      value: ServiceAppliedBy.TANG,
+      label: "Tầng",
+      className: COLOR_CLASS.purple,
+    },
+    {
+      value: ServiceAppliedBy.NGUOI,
+      label: "Người",
+      className: COLOR_CLASS.pink,
+    },
+    // --- Trạng thái dịch vụ ---
+    {
+      value: ServiceStatus.HOAT_DONG,
+      label: "Hoạt động",
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: ServiceStatus.TAM_KHOA,
+      label: "Tạm khóa",
+      className: COLOR_CLASS.yellow,
+    },
+    {
+      value: ServiceStatus.KHONG_SU_DUNG,
+      label: "Ngừng sử dụng",
+      className: COLOR_CLASS.gray,
+    },
+    // --- DEFAULT SERVICE ---
+    {
+      value: DefaultServiceAppliesTo.PHONG,
+      label: "Phòng",
+      className: COLOR_CLASS.orange,
+    },
+    {
+      value: DefaultServiceAppliesTo.HOP_DONG,
+      label: "Hợp đồng",
+      className: COLOR_CLASS.purple,
+    },
+    {
+      value: DefaultServiceStatus.HOAT_DONG,
+      label: "Hoạt động",
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: DefaultServiceStatus.TAM_DUNG,
+      label: "Tạm dừng",
+      className: COLOR_CLASS.yellow,
+    },
+    {
+      value: DefaultServiceStatus.HUY_BO,
+      label: "Hủy bỏ",
+      className: COLOR_CLASS.red,
+    },
+    {
+      value: ServiceRoomStatus.DANG_SU_DUNG,
+      label: "Đang sử dụng",
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: ServiceRoomStatus.TAM_DUNG,
+      label: "Tạm dừng",
+      className: COLOR_CLASS.yellow,
+    },
+    {
+      value: ServiceRoomStatus.DA_HUY,
+      label: "Đã hủy",
+      className: COLOR_CLASS.red,
+    },
+    // --- Meter Types ---
+    {
+      value: MeterType.DIEN,
+      label: "Công tơ điện",
+      className: COLOR_CLASS.yellow,
+    },
+    {
+      value: MeterType.NUOC,
+      label: "Công tơ nước",
+      className: COLOR_CLASS.blue,
+    },
+    // --- Invoice Status ---
+    {
+      value: InvoiceStatus.CHUA_THANH_TOAN,
+      label: "Chưa thanh toán",
+      className: COLOR_CLASS.red,
+    },
+    {
+      value: InvoiceStatus.KHOI_PHUC,
+      label: "Khôi phục",
+      className: COLOR_CLASS.yellow,
+    },
+    {
+      value: InvoiceStatus.DA_THANH_TOAN,
+      label: "Đã thanh toán",
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: InvoiceStatus.QUA_HAN,
+      label: "Quá hạn",
+      className: COLOR_CLASS.orange,
+    },
+    {
+      value: InvoiceStatus.HUY,
+      label: "Đã hủy",
+      className: COLOR_CLASS.gray,
+    },
+    // --- Invoice Type ---
+    {
+      value: InvoiceType.HANG_THANG,
+      label: "Hàng tháng",
+      className: COLOR_CLASS.blue,
+    },
+    {
+      value: InvoiceType.CUOI_CUNG,
+      label: "Cuối cùng",
+      className: COLOR_CLASS.purple,
+    },
+    // --- Service Category ---
+    {
+      value: ServiceCategory.DIEN,
+      label: "Điện",
+      className: COLOR_CLASS.yellow,
+    },
+    {
+      value: ServiceCategory.NUOC,
+      label: "Nước",
+      className: COLOR_CLASS.blue,
+    },
+    {
+      value: ServiceCategory.GUI_XE,
+      label: "Gửi xe",
+      className: COLOR_CLASS.gray,
+    },
+    {
+      value: ServiceCategory.INTERNET,
+      label: "Internet",
+      className: COLOR_CLASS.indigo,
+    },
+    {
+      value: ServiceCategory.VE_SINH,
+      label: "Vệ sinh",
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: ServiceCategory.THANG_MAY,
+      label: "Thang máy",
+      className: COLOR_CLASS.purple,
+    },
+    {
+      value: ServiceCategory.BAO_TRI,
+      label: "Bảo trì",
+      className: COLOR_CLASS.red,
+    },
+    {
+      value: ServiceCategory.AN_NINH,
+      label: "An ninh",
+      className: COLOR_CLASS.orange,
+    },
+    {
+      value: ServiceCategory.GIAT_SAY,
+      label: "Giặt sấy",
+      className: COLOR_CLASS.pink,
+    },
+    {
+      value: ServiceCategory.TIEN_PHONG,
+      label: "Tiền phòng",
+      className: COLOR_CLASS.teal,
+    },
+    {
+      value: ServiceCategory.KHAC,
+      label: "Khác",
+      className: COLOR_CLASS.neutral,
+    },
+    {
+      value: ServiceCalculation.TINH_THEO_SO,
+      label: "Tính theo số",
+      className: COLOR_CLASS.blue,
+    },
+    {
+      value: ServiceCalculation.TINH_THEO_NGUOI,
+      label: "Tính theo người",
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: ServiceCalculation.TINH_THEO_PHONG,
+      label: "Tính theo phòng",
+      className: COLOR_CLASS.purple,
+    },
+    {
+      value: ServiceCalculation.TINH_THEO_PHUONG_TIEN,
+      label: "Tính theo phương tiện",
+      className: COLOR_CLASS.indigo,
+    },
+    // --- Invoice Item Type ---
+    {
+      value: InvoiceItemType.DIEN,
+      label: "Điện",
+      className: COLOR_CLASS.yellow,
+    },
+    {
+      value: ServiceCategory.DEN_BU,
+      label: "Trống",
+      className: COLOR_CLASS.gray,
+    },
+    {
+      value: InvoiceItemType.NUOC,
+      label: "Nước",
+      className: COLOR_CLASS.blue,
+    },
+    {
+      value: InvoiceItemType.DICH_VU,
+      label: "Dịch vụ",
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: InvoiceItemType.TIEN_PHONG,
+      label: "Tiền phòng",
+      className: COLOR_CLASS.teal,
+    },
+    {
+      value: InvoiceItemType.DEN_BU,
+      label: "Đền bù",
+      className: COLOR_CLASS.red,
+    },
+    // --- Phương thức thanh toán ---
+    {
+      value: PaymentMethod.CHON_PHUONG_THUC,
+      label: "Chọn phương thức",
+      className: COLOR_CLASS.orange,
+    },
+    {
+      value: PaymentMethod.TIEN_MAT,
+      label: "Tiền mặt",
+      className: COLOR_CLASS.amber,
+    },
+    {
+      value: PaymentMethod.CHUYEN_KHOAN,
+      label: "Chuyển khoản",
+      className: COLOR_CLASS.blue,
+    },
+    {
+      value: PaymentMethod.VNPAY,
+      label: "VNPay",
+      className: COLOR_CLASS.purple,
+    },
+    {
+      value: PaymentMethod.ZALOPAY,
+      label: "ZaloPay",
+      className: COLOR_CLASS.pink,
+    },
+    {
+      value: PaymentMethod.MOMO,
+      label: "MoMo",
+      className: COLOR_CLASS.red,
+    },
+    // --- Trạng thái thanh toán ---
+    {
+      value: PaymentStatus.CHO_THANH_TOAN,
+      label: "Chờ thanh toán",
+      className: COLOR_CLASS.yellow,
+    },
+    {
+      value: PaymentStatus.CHO_XAC_NHAN,
+      label: "Chờ xác nhận",
+      className: COLOR_CLASS.blue,
+    },
+    {
+      value: PaymentStatus.DA_THANH_TOAN,
+      label: "Đã thanh toán",
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: PaymentStatus.TU_CHOI,
+      label: "Từ chối",
+      className: COLOR_CLASS.red,
+    },
+    {
+      value: PaymentStatus.HUY,
+      label: "Hủy",
+      className: COLOR_CLASS.gray,
+    },
+    {
+      value: NotificationType.CHUNG,
+      label: "Chung",
+      className: COLOR_CLASS.blue,
+    },
+    {
+      value: NotificationType.HE_THONG,
+      label: "Hệ thống",
+      className: COLOR_CLASS.green,
+    },
+    {
+      value: NotificationType.KHAC,
+      label: "Khác",
+      className: COLOR_CLASS.red,
+    },
+  ];
+};
 
 export const ACTION_BUTTONS_FOR_CONTRACT: IBtnType[] = [
   {

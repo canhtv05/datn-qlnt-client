@@ -7,7 +7,9 @@
       "save": "Save",
       "update": "Update",
       "reload": "Reload"
-    }
+    },
+    "noData": "No data",
+    "selectDateRange": "Select date range"
   },
   "status": {
     "updateSuccess": "Update successful",
@@ -111,6 +113,241 @@
       "members": "View Room Members",
       "electric": "View Electricity",
       "water": "View Water"
+    }
+  },
+  "dashboard": {
+    "sentBy": "Sent by {{name}} • {{date}}",
+    "noMoreNotification": "No more notifications"
+  },
+  "notificationFilter": {
+    "typePlaceholder": "-- Notification type --",
+    "typeLabel": "Notification type",
+    "type": {
+      "general": "General",
+      "system": "System",
+      "other": "Other"
+    },
+    "search": "Search",
+    "hide": "Hide",
+    "show": "Show"
+  },
+  "statusBadge": {
+    "empty": "Empty",
+    "yes": "Yes",
+    "no": "No",
+
+    "buildingStatus": {
+      "active": "Active",
+      "locked": "Locked",
+      "inactive": "Inactive"
+    },
+
+    "roomType": {
+      "vip": "Premium",
+      "shared": "Shared room",
+      "single": "Single room",
+      "other": "Other"
+    },
+
+    "buildingType": {
+      "nhaTro": "Boarding house",
+      "chungCuMini": "Mini apartment",
+      "canHoDichVu": "Service apartment",
+      "other": "Other"
+    },
+
+    "roomStatus": {
+      "empty": "Available",
+      "deposit": "Deposited",
+      "maintain": "Under maintenance",
+      "unfinished": "Unfinished",
+      "locked": "Locked",
+      "inactive": "Inactive"
+    },
+
+    "floorStatus": {
+      "active": "In use",
+      "inactive": "Not in use",
+      "locked": "Locked"
+    },
+
+    "floorType": {
+      "forRent": "For rent",
+      "notForRent": "Not for rent",
+      "residential": "Residential",
+      "storage": "Storage",
+      "other": "Other"
+    },
+
+    "assetGroup": {
+      "houseware": "Household",
+      "furniture": "Furniture",
+      "electric": "Electric",
+      "personal": "Personal",
+      "other": "Other"
+    },
+
+    "assetBelongTo": {
+      "room": "Room",
+      "common": "Common",
+      "personal": "Personal"
+    },
+
+    "assetType": {
+      "houseware": "Household",
+      "cleaning": "Cleaning",
+      "furniture": "Furniture",
+      "electric": "Electric",
+      "security": "Security",
+      "other": "Other"
+    },
+
+    "assetStatus": {
+      "active": "In use",
+      "cancelled": "Cancelled",
+      "broken": "Broken",
+      "maintenance": "Needs maintenance",
+      "lost": "Lost",
+      "liquidated": "Liquidated"
+    },
+
+    "tenantStatus": {
+      "renting": "Renting",
+      "returned": "Returned",
+      "potential": "Potential",
+      "locked": "Locked"
+    },
+
+    "gender": {
+      "male": "Male",
+      "female": "Female"
+    },
+
+    "vehicleType": {
+      "motorbike": "Motorbike",
+      "car": "Car",
+      "bicycle": "Bicycle",
+      "other": "Other"
+    },
+
+    "vehicleStatus": {
+      "active": "In use",
+      "inactive": "Not in use",
+      "locked": "Locked"
+    },
+
+    "contractStatus": {
+      "valid": "Valid",
+      "expiring": "Expiring soon",
+      "pending": "Pending activation",
+      "endedNotice": "Ended with notice",
+      "endedOnTime": "Ended on time",
+      "terminated": "Terminated without consent",
+      "cancelled": "Cancelled"
+    },
+
+    "serviceType": {
+      "fixed": "Fixed",
+      "metered": "Metered"
+    },
+
+    "serviceAppliedBy": {
+      "room": "Room",
+      "floor": "Floor",
+      "person": "Person"
+    },
+
+    "serviceStatus": {
+      "active": "Active",
+      "locked": "Locked",
+      "inactive": "Inactive"
+    },
+
+    "defaultServiceAppliesTo": {
+      "room": "Room",
+      "contract": "Contract"
+    },
+
+    "defaultServiceStatus": {
+      "active": "Active",
+      "paused": "Paused",
+      "cancelled": "Cancelled"
+    },
+
+    "serviceRoomStatus": {
+      "active": "In use",
+      "paused": "Paused",
+      "cancelled": "Cancelled"
+    },
+
+    "meterType": {
+      "electric": "Electric meter",
+      "water": "Water meter"
+    },
+
+    "invoiceStatus": {
+      "unpaid": "Unpaid",
+      "restored": "Restored",
+      "paid": "Paid",
+      "overdue": "Overdue",
+      "cancelled": "Cancelled"
+    },
+
+    "invoiceType": {
+      "monthly": "Monthly",
+      "final": "Final"
+    },
+
+    "serviceCategory": {
+      "electric": "Electricity",
+      "water": "Water",
+      "parking": "Parking",
+      "internet": "Internet",
+      "cleaning": "Cleaning",
+      "elevator": "Elevator",
+      "maintenance": "Maintenance",
+      "security": "Security",
+      "laundry": "Laundry",
+      "rent": "Rent",
+      "other": "Other"
+    },
+
+    "serviceCalculation": {
+      "byMeter": "By meter",
+      "byPerson": "By person",
+      "byRoom": "By room",
+      "byVehicle": "By vehicle"
+    },
+
+    "invoiceItemType": {
+      "electric": "Electricity",
+      "water": "Water",
+      "service": "Service",
+      "rent": "Rent",
+      "compensation": "Compensation"
+    },
+
+    "paymentMethod": {
+      "choose": "Choose method",
+      "cash": "Cash",
+      "transfer": "Bank transfer",
+      "vnpay": "VNPay",
+      "zalopay": "ZaloPay",
+      "momo": "MoMo"
+    },
+
+    "paymentStatus": {
+      "pending": "Pending payment",
+      "confirming": "Pending confirmation",
+      "paid": "Paid",
+      "rejected": "Rejected",
+      "cancelled": "Cancelled"
+    },
+
+    "notificationType": {
+      "common": "General",
+      "system": "System",
+      "other": "Other"
     }
   }
 }

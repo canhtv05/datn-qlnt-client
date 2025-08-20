@@ -33,6 +33,8 @@ import { twMerge } from "tailwind-merge";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { TFunction } from "i18next";
+import { Locale } from "date-fns";
+import { enUS, vi } from "date-fns/locale";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -437,4 +439,9 @@ export const switchRole = (role: RoleType, t: TFunction<"translation", undefined
   };
 
   return map[role];
+};
+
+export const localeMap: Record<string, Locale> = {
+  vi: vi,
+  en: enUS,
 };
