@@ -61,5 +61,56 @@
     "dob": "Ngày sinh",
     "phoneNumber": "Số điện thoại",
     "enterPhoneNumber": "Nhập số điện thoại"
+  },
+  "sidebar": {
+    "dashboard": { "label": "Theo dõi nhanh", "title": "Bảng tin" },
+    "facilities": {
+      "label": "Quản lý vận hành",
+      "title": "Cơ sở vật chất",
+      "buildings": "Tòa nhà",
+      "floors": "Tầng",
+      "rooms": "Phòng"
+    },
+    "assets": {
+      "label": "Quản lý tài sản",
+      "title": "Tài sản",
+      "assets": "Tài sản",
+      "roomAssets": "Tài sản phòng"
+    },
+    "services": {
+      "label": "Quản lý dịch vụ",
+      "title": "Dịch vụ",
+      "services": "Dịch vụ",
+      "roomServices": "Dịch vụ phòng"
+    },
+    "customers": {
+      "label": "Quản lý khách thuê",
+      "title": "Khách thuê",
+      "tenants": "Khách thuê",
+      "vehicles": "Phương tiện",
+      "contracts": "Hợp đồng"
+    },
+    "finance": {
+      "label": "Quản lý tài chính",
+      "title": "Tài chính",
+      "meters": "Công tơ",
+      "meterReading": "Ghi chỉ số",
+      "invoice": "Hóa đơn",
+      "receipt": "Phiếu thanh toán"
+    },
+    "notifications": {
+      "label": "Quản lý thông báo",
+      "title": "Thông báo"
+    },
+    "user": {
+      "info": "Thông tin",
+      "roomInfo": "Xem thông tin phòng",
+      "receipts": "Xem phiếu thanh toán",
+      "invoices": "Xem hóa đơn",
+      "contracts": "Xem hợp đồng",
+      "members": "Xem thành viên trong phòng",
+      "electric": "Xem điện",
+      "water": "Xem nước"
+    }
   }
 }

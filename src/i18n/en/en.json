@@ -61,5 +61,56 @@
     "dob": "Date of birth",
     "phoneNumber": "Phone number",
     "enterPhoneNumber": "Enter phone number"
+  },
+  "sidebar": {
+    "dashboard": { "label": "Quick Access", "title": "Dashboard" },
+    "facilities": {
+      "label": "Operations Management",
+      "title": "Facilities",
+      "buildings": "Buildings",
+      "floors": "Floors",
+      "rooms": "Rooms"
+    },
+    "assets": {
+      "label": "Asset Management",
+      "title": "Assets",
+      "assets": "Assets",
+      "roomAssets": "Room Assets"
+    },
+    "services": {
+      "label": "Service Management",
+      "title": "Services",
+      "services": "Services",
+      "roomServices": "Room Services"
+    },
+    "customers": {
+      "label": "Tenant Management",
+      "title": "Tenants",
+      "tenants": "Tenants",
+      "vehicles": "Vehicles",
+      "contracts": "Contracts"
+    },
+    "finance": {
+      "label": "Finance Management",
+      "title": "Finance",
+      "meters": "Meters",
+      "meterReading": "Meter Reading",
+      "invoice": "Invoice",
+      "receipt": "Payment Receipt"
+    },
+    "notifications": {
+      "label": "Notification Management",
+      "title": "Notifications"
+    },
+    "user": {
+      "info": "Information",
+      "roomInfo": "View Room Information",
+      "receipts": "View Payment Receipts",
+      "invoices": "View Invoices",
+      "contracts": "View Contracts",
+      "members": "View Room Members",
+      "electric": "View Electricity",
+      "water": "View Water"
+    }
   }
 }

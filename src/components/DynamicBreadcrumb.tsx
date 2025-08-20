@@ -10,13 +10,16 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Fragment } from "react";
 import { sidebarItems } from "@/constant";
+import { useTranslation } from "react-i18next";
 
 export function DynamicBreadcrumb({ role }: { role: "USER" | "MANAGER" | "ADMIN" | "STAFF" }) {
   const location = useLocation();
   const pathname = location.pathname;
   const paths = pathname.split("/").filter(Boolean);
 
-  const menu = sidebarItems(role);
+  const { t } = useTranslation();
+
+  const menu = sidebarItems(role, t);
 
   const findLabel = (segments: string[]): { title: string; url: string }[] => {
     const result: { title: string; url: string }[] = [];

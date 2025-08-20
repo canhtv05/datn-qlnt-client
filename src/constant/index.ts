@@ -30,6 +30,7 @@ import {
   PaymentStatus,
   PaymentMethod,
   NotificationType,
+  SidebarKey,
 } from "@/enums";
 import { formatNumber, formattedCurrency } from "@/lib/utils";
 import { IBtnType } from "@/types";
@@ -64,127 +65,130 @@ export interface SideBarType {
   }[];
 }
 
-export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): SideBarType[] | [] => {
+export const sidebarItems = (
+  role: "USER" | "ADMIN" | "STAFF" | "MANAGER",
+  t: TFunction<"translate", undefined>
+): SideBarType[] | [] => {
   const MANAGER = [
     {
-      label: "Theo dõi nhanh",
-      title: "Bảng tin",
+      label: t(SidebarKey.DASHBOARD_LABEL),
+      title: t(SidebarKey.DASHBOARD_TITLE),
       url: "/dashboard",
       icon: images.bulletinBoard,
     },
     {
-      label: "Quản lý vận hành",
-      title: "Cơ sở vật chất",
+      label: t(SidebarKey.FACILITIES_LABEL),
+      title: t(SidebarKey.FACILITIES_TITLE),
       url: "/facilities",
       icon: images.building,
       items: [
         {
-          title: "Tòa nhà",
+          title: t(SidebarKey.BUILDINGS),
           url: "/facilities/buildings",
           icon: images.oneBuilding,
         },
         {
-          title: "Tầng",
+          title: t(SidebarKey.FLOORS),
           url: "/facilities/floors",
           icon: images.floor,
         },
         {
-          title: "Phòng",
+          title: t(SidebarKey.ROOMS),
           url: "/facilities/rooms",
           icon: images.room,
         },
       ],
     },
     {
-      label: "Quản lý tài sản",
-      title: "Tài sản",
+      label: t(SidebarKey.ASSETS_LABEL),
+      title: t(SidebarKey.ASSETS_TITLE),
       url: "/asset-management",
       icon: images.fixedAsset,
       items: [
         {
-          title: "Tài sản",
+          title: t(SidebarKey.ASSETS),
           url: "/asset-management/assets",
           icon: images.assets,
         },
         {
-          title: "Tài sản phòng",
+          title: t(SidebarKey.ROOM_ASSETS),
           url: "/asset-management/room-assets",
           icon: images.coolingDevice,
         },
       ],
     },
     {
-      label: "Quản lý dịch vụ",
-      title: "Dịch vụ",
+      label: t(SidebarKey.SERVICES_LABEL),
+      title: t(SidebarKey.SERVICES_TITLE),
       url: "/service-management",
       icon: images.customerReview,
       items: [
         {
-          title: "Dịch vụ",
+          title: t(SidebarKey.SERVICES),
           url: "/service-management/services",
           icon: images.optimizing,
         },
         {
-          title: "Dịch vụ phòng",
+          title: t(SidebarKey.ROOM_SERVICES),
           url: "/service-management/room-services",
           icon: images.mattress,
         },
       ],
     },
     {
-      label: "Quản lý khách thuê",
-      title: "Khách thuê",
+      label: t(SidebarKey.CUSTOMERS_LABEL),
+      title: t(SidebarKey.CUSTOMERS_TITLE),
       url: "/customers",
       icon: images.lender,
       items: [
         {
-          title: "Khách thuê",
+          title: t(SidebarKey.TENANTS),
           url: "/customers/tenants",
           icon: images.team,
         },
         {
-          title: "Phương tiện",
+          title: t(SidebarKey.VEHICLES),
           url: "/customers/vehicles",
           icon: images.hatchback,
         },
         {
-          title: "Hợp đồng",
+          title: t(SidebarKey.CONTRACTS),
           url: "/customers/contracts",
           icon: images.contract,
         },
       ],
     },
     {
-      label: "Quản lý tài chính",
-      title: "Tài chính",
+      label: t(SidebarKey.FINANCE_LABEL),
+      title: t(SidebarKey.FINANCE_TITLE),
       url: "/finance",
       icon: images.finance,
       items: [
         {
-          title: "Công tơ",
+          title: t(SidebarKey.METERS),
           url: "/finance/meters",
           icon: images.usage,
         },
         {
-          title: "Ghi chỉ số",
+          title: t(SidebarKey.METER_READING),
           url: "/finance/meter-reading",
           icon: images.writing,
         },
         {
-          title: "Hóa đơn",
+          title: t(SidebarKey.INVOICE),
           url: "/finance/invoice",
           icon: images.invoice,
         },
         {
-          title: "Phiếu thanh toán",
+          title: t(SidebarKey.RECEIPT),
           url: "/finance/payment-receipt",
           icon: images.receipt,
         },
       ],
     },
     {
-      label: "Quản lý thông báo",
-      title: "Thông báo",
+      label: t(SidebarKey.NOTIFICATIONS_LABEL),
+      title: t(SidebarKey.NOTIFICATIONS_TITLE),
       url: "/notifications",
       icon: images.notification,
     },
@@ -192,29 +196,29 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
 
   const USER = [
     {
-      label: "Theo dõi nhanh",
-      title: "Bảng tin",
+      label: t(SidebarKey.DASHBOARD_LABEL),
+      title: t(SidebarKey.DASHBOARD_TITLE),
       url: "/dashboard",
       icon: images.bulletinBoard,
     },
     {
-      label: "Thông tin",
-      title: "Xem thông tin phòng",
+      label: t(SidebarKey.INFO),
+      title: t(SidebarKey.ROOM_INFO),
       url: "/room",
       icon: images.room,
     },
     {
-      title: "Xem phiếu thanh toán",
+      title: t(SidebarKey.RECEIPTS),
       url: "/payment-receipts",
       icon: images.receipt,
     },
     {
-      title: "Xem hóa đơn",
+      title: t(SidebarKey.INVOICES),
       url: "/invoices",
       icon: images.invoice,
     },
     {
-      title: "Xem hợp đồng",
+      title: t(SidebarKey.USER_CONTRACTS),
       url: "/contracts",
       icon: images.contract,
     },
@@ -224,17 +228,17 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
     //   icon: images.history,
     // },
     {
-      title: "Xem thành viên trong phòng",
+      title: t(SidebarKey.MEMBERS),
       url: "/members",
       icon: images.team,
     },
     {
-      title: "Xem điện",
+      title: t(SidebarKey.ELECTRIC),
       url: "/electric",
       icon: images.energy,
     },
     {
-      title: "Xem nước",
+      title: t(SidebarKey.WATER),
       url: "/water",
       icon: images.water,
     },

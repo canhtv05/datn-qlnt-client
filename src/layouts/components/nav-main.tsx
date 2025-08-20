@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { sidebarItems, SideBarType } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import useHighestRole from "@/hooks/useHighestRole";
+import { useTranslation } from "react-i18next";
 
 const NavBarParent = ({ props, isActive }: { props: SideBarType; isActive: boolean }) => {
   const { title, icon, items, url } = props;
@@ -59,8 +60,9 @@ const NavBarParent = ({ props, isActive }: { props: SideBarType; isActive: boole
 export function NavMain() {
   const location = useLocation();
   const highestRole = useHighestRole();
+  const { t } = useTranslation();
 
-  const sidebar = highestRole ? sidebarItems(highestRole) : [];
+  const sidebar = highestRole ? sidebarItems(highestRole, t) : [];
 
   return (
     <SidebarGroup>

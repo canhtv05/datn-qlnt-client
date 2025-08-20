@@ -263,3 +263,49 @@ export enum NotificationType {
   HE_THONG = "HE_THONG",
   KHAC = "KHAC",
 }
+
+export enum SidebarKey {
+  DASHBOARD_LABEL = "sidebar.dashboard.label",
+  DASHBOARD_TITLE = "sidebar.dashboard.title",
+
+  FACILITIES_LABEL = "sidebar.facilities.label",
+  FACILITIES_TITLE = "sidebar.facilities.title",
+  BUILDINGS = "sidebar.facilities.buildings",
+  FLOORS = "sidebar.facilities.floors",
+  ROOMS = "sidebar.facilities.rooms",
+
+  ASSETS_LABEL = "sidebar.assets.label",
+  ASSETS_TITLE = "sidebar.assets.title",
+  ASSETS = "sidebar.assets.assets",
+  ROOM_ASSETS = "sidebar.assets.roomAssets",
+
+  SERVICES_LABEL = "sidebar.services.label",
+  SERVICES_TITLE = "sidebar.services.title",
+  SERVICES = "sidebar.services.services",
+  ROOM_SERVICES = "sidebar.services.roomServices",
+
+  CUSTOMERS_LABEL = "sidebar.customers.label",
+  CUSTOMERS_TITLE = "sidebar.customers.title",
+  TENANTS = "sidebar.customers.tenants",
+  VEHICLES = "sidebar.customers.vehicles",
+  CONTRACTS = "sidebar.customers.contracts",
+
+  FINANCE_LABEL = "sidebar.finance.label",
+  FINANCE_TITLE = "sidebar.finance.title",
+  METERS = "sidebar.finance.meters",
+  METER_READING = "sidebar.finance.meterReading",
+  INVOICE = "sidebar.finance.invoice",
+  RECEIPT = "sidebar.finance.receipt",
+
+  NOTIFICATIONS_LABEL = "sidebar.notifications.label",
+  NOTIFICATIONS_TITLE = "sidebar.notifications.title",
+
+  INFO = "sidebar.user.info",
+  ROOM_INFO = "sidebar.user.roomInfo",
+  RECEIPTS = "sidebar.user.receipts",
+  INVOICES = "sidebar.user.invoices",
+  USER_CONTRACTS = "sidebar.user.contracts",
+  MEMBERS = "sidebar.user.members",
+  ELECTRIC = "sidebar.user.electric",
+  WATER = "sidebar.user.water",
+}
