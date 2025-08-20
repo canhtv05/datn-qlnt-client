@@ -256,3 +256,10 @@ export enum PaymentStatus {
   TU_CHOI = "TU_CHOI",
   HUY = "HUY",
 }
+
+/* NOTIFICATION */
+export enum NotificationType {
+  CHUNG = "CHUNG",
+  HE_THONG = "HE_THONG",
+  KHAC = "KHAC",
+}

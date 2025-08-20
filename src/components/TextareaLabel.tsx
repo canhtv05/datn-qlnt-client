@@ -26,7 +26,7 @@ const TextareaLabel = forwardRef<HTMLTextAreaElement, TextareaLabelProps>(
           ref={ref}
           onFocus={onFocus}
           onBlur={onBlur}
-          className={`text-label text-sm dark:bg-transparent resize-y border-input ${className}`}
+          className={`text-sm dark:bg-transparent resize-y text-foreground border-input ${className}`}
           {...props}
         />
       </div>

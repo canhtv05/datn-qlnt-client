@@ -17,7 +17,7 @@ import Image from "@/components/Image";
 import { useLogout } from "./useLogout";
 import { useConfirmDialog } from "@/hooks/useConfirmDialog";
 import useHighestRole from "@/hooks/useHighestRole";
-import Notification from "@/components/system/Notification";
+import SystemNotification from "@/components/system/SystemNotification";
 
 const HeaderLayout = () => {
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ const HeaderLayout = () => {
           <Sun className="size-5 stroke-white" />
         </RenderIf>
       </Button>
-      <Notification />
+      <SystemNotification />
       <div className="flex gap-2 items-center">
         <div className="flex flex-col md:max-w-[200px] sm:max-w-[200px] max-w-[100px]">
           <h2 className="font-semibold text-[14px] truncate text-white">

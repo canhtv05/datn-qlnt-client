@@ -19,6 +19,7 @@ const routes = {
     roomMembers: "/room/members/:id",
   },
   dashboard: "/dashboard",
+  notification: "/notifications",
   facilities: {
     buildings: "/facilities/buildings",
     buildingsHistory: "/facilities/buildings/history",

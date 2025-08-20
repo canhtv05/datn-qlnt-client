@@ -26,6 +26,7 @@ import {
   PaymentMethod,
   AssetType,
   AssetBeLongTo,
+  NotificationType,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -586,6 +587,7 @@ export default interface TenantResponse extends AbstractResponse {
   fullName: string;
   gender: Gender;
   dob: string;
+  userId?: string;
   email: string;
   pictureUrl: string;
   phoneNumber: string;
@@ -1159,4 +1161,52 @@ export interface SystemNotificationResponse {
 
 export interface UnreadNotificationCountResponse {
   totalUnreadNotifications: number;
+}
+
+/* NOTIFICATION */
+export interface SentToUsers {
+  id: string;
+  fullName: string;
+}
+
+export interface NotificationResponse {
+  id: string;
+  title: string;
+  content: string;
+  image: string;
+  notificationType: NotificationType;
+  sendToAll: boolean;
+  sentAt: string;
+  userId: string;
+  fullName: string;
+  senderImage: string;
+  sentToUsers: SentToUsers[];
+}
+
+export interface NotificationCreationAndUpdateRequest {
+  title: string;
+  content: string;
+  image?: File | null | string;
+  notificationType: NotificationType | string;
+  sendToAll: boolean;
+  users?: string[];
+}
+
+export interface NotificationFilter {
+  query: string;
+  notificationType: string | NotificationType;
+  fromDate: string;
+  toDate: string;
+}
+
+export interface NotificationDetailResponse {
+  notificationId: string;
+  title: string;
+  content: string;
+  notificationType: NotificationType;
+  sendToAll: boolean;
+  sentAt: string;
+  fullName: string;
+  isRead: boolean;
+  readAt: string;
 }

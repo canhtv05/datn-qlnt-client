@@ -9,12 +9,12 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Badge } from "../ui/badge";
-import useNotification from "./useNotification";
+import useSystemNotification from "./useSystemNotification";
 import NoData from "../NoData";
 import RenderIf from "../RenderIf";
 import { formatDate } from "@/lib/utils";
 
-const Notification = () => {
+const SystemNotification = () => {
   const {
     query: { data, isLoading, isFetchingNextPage },
     data: count,
@@ -22,7 +22,7 @@ const Notification = () => {
     handleReadNotification,
     handleRemoveReadNotification,
     handleScroll,
-  } = useNotification();
+  } = useSystemNotification();
 
   // const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string | number; type: "remove" | "read" }>({
   //   onConfirm: async ({ id, type }) => {
@@ -56,8 +56,8 @@ const Notification = () => {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-(--radix-dropdown-menu-trigger-width) min-w-94 rounded-lg px-2"
-        side={"bottom"}
+        className="w-(--radix-dropdown-menu-trigger-width) md:min-w-94 min-w-90 md:ml-0 ml-2 rounded-lg px-2"
+        side={"top"}
         align="end"
         sideOffset={4}
       >
@@ -75,7 +75,7 @@ const Notification = () => {
         <DropdownMenuSeparator />
         <div className="max-h-[300px] overflow-y-auto overflow-hidden" onScroll={handleScroll}>
           {isLoading && <p className="px-2 py-1 text-sm">Đang tải...</p>}
-          {notifications.length === 0 && <NoData />}
+          {notifications.length === 0 && !isLoading && <NoData />}
           {notifications.map((notification) => (
             <DropdownMenuItem
               onSelect={(e) => {
@@ -160,4 +160,4 @@ const Notification = () => {
   );
 };
 
-export default Notification;
+export default SystemNotification;

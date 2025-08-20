@@ -49,6 +49,14 @@ import {
   TodoList,
   Underline,
   AlignmentSupportedOption,
+  Image,
+  ImageToolbar,
+  ImageCaption,
+  ImageInsert,
+  ImageResize,
+  ImageStyle,
+  ImageUpload,
+  SimpleUploadAdapter,
 } from "ckeditor5";
 
 import "ckeditor5/ckeditor5.css";
@@ -174,6 +182,14 @@ const Editor = ({ content, onChange, children, errorText, isEmpty, validate }: E
           TextTransformation,
           TodoList,
           Underline,
+          Image,
+          ImageToolbar,
+          ImageCaption,
+          ImageInsert,
+          ImageResize,
+          ImageStyle,
+          ImageUpload,
+          SimpleUploadAdapter,
         ],
         alignment: {
           options: ["left", "center", "right", "justify"] as AlignmentSupportedOption[],
@@ -222,6 +238,16 @@ const Editor = ({ content, onChange, children, errorText, isEmpty, validate }: E
                 // /* See: https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html */
               ],
             },
+          ],
+        },
+        image: {
+          toolbar: [
+            "imageStyle:inline",
+            "imageStyle:block",
+            "imageStyle:side",
+            "|",
+            "toggleImageCaption",
+            "imageTextAlternative",
           ],
         },
       },

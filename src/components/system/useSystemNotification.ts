@@ -5,7 +5,7 @@ import { httpRequest } from "@/utils/httpRequest";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { useEffect } from "react";
 
-export default function useNotification() {
+export default function useSystemNotification() {
   const queryClient = useQueryClient();
   const { data, isError } = useQuery<ApiResponse<UnreadNotificationCountResponse>>({
     queryKey: ["unread-all"],

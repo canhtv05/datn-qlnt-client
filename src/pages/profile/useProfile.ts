@@ -52,6 +52,16 @@ export const useProfile = () => {
       }),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["current-user, authenticate"] });
+      const roles: RoleType[] = data.data.data.roles.map((r) => r.name as RoleType);
+
+      const highestRole = getHighestRole(roles);
+      if (highestRole === "ADMIN" || highestRole === "MANAGER") {
+        queryClient.invalidateQueries({
+          predicate(query) {
+            return Array.isArray(query.queryKey) && query.queryKey[0] === "notifications";
+          },
+        });
+      }
       setUser(data.data.data, true);
       setFile(undefined);
 

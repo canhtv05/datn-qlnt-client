@@ -17,6 +17,7 @@ import {
   InvoiceItemType,
   AssetType,
   AssetStatus,
+  NotificationType,
 } from "@/enums";
 import { isNumber } from "lodash";
 import { z } from "zod/v4";
@@ -690,3 +691,28 @@ export const invoiceDetailCreationSchema = invoiceDetailUpdateSchema
 export const rejectPaymentReceiptSchema = z.object({
   reason: z.string().min(1, "Không được để trống lý do"),
 });
+
+/* NOTIFICATION */
+export const createOrUpdateNotificationSchema = z
+  .object({
+    title: z.string().min(1, "Vui lòng nhập tiêu đề"),
+    content: z.string().min(1, "Vui lòng nhập nội dung"),
+    notificationType: z.enum(
+      [NotificationType.CHUNG, NotificationType.HE_THONG, NotificationType.KHAC],
+      "Loại thông báo không hợp lệ"
+    ),
+    sendToAll: z.boolean({ message: "Vui lòng chọn" }),
+    users: z.array(z.string()).optional(),
+  })
+  .refine(
+    (data) => {
+      const { sendToAll, users } = data;
+      if (sendToAll === false) {
+        return Array.isArray(users) && users?.length > 0;
+      } else return true;
+    },
+    {
+      message: "Vui lòng chọn 1 người dùng khi chọn gửi cho tất cả",
+      path: ["users"],
+    }
+  );

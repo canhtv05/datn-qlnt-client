@@ -29,6 +29,7 @@ import {
   AssetType,
   PaymentStatus,
   PaymentMethod,
+  NotificationType,
 } from "@/enums";
 import { formatNumber, formattedCurrency } from "@/lib/utils";
 import { IBtnType } from "@/types";
@@ -179,6 +180,12 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
           icon: images.receipt,
         },
       ],
+    },
+    {
+      label: "Quản lý thông báo",
+      title: "Thông báo",
+      url: "/notifications",
+      icon: images.notification,
     },
   ];
 
@@ -472,7 +479,7 @@ export const STATUS_BADGE = [
   },
   {
     value: AssetBeLongTo.CHUNG,
-    label: "Dùng chung",
+    label: "Chung",
     className: COLOR_CLASS.indigo,
   },
   {
@@ -942,6 +949,21 @@ export const STATUS_BADGE = [
     value: PaymentStatus.HUY,
     label: "Hủy",
     className: COLOR_CLASS.gray,
+  },
+  {
+    value: NotificationType.CHUNG,
+    label: "Chung",
+    className: COLOR_CLASS.blue,
+  },
+  {
+    value: NotificationType.HE_THONG,
+    label: "Hệ thống",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: NotificationType.KHAC,
+    label: "Khác",
+    className: COLOR_CLASS.red,
   },
 ];
 

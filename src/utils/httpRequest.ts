@@ -3,8 +3,8 @@ import cookieUtil from "./cookieUtil";
 import { refreshTokenRequest } from "@/services/auth";
 
 export const httpRequest = axios.create({
-  // baseURL: import.meta.env.VITE_BASE_URL,
-  baseURL: "https://qlnt.htphuong.com/api",
+  baseURL: import.meta.env.VITE_BASE_URL,
+  // baseURL: "https://datn.tran-van-canh.io.vn/api",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",

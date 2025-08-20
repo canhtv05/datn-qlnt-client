@@ -12,6 +12,7 @@ import {
   InvoiceStatus,
   InvoiceType,
   MeterType,
+  NotificationType,
   PaymentMethod,
   PaymentStatus,
   RoomStatus,
@@ -365,6 +366,16 @@ export const receiptStatusEnumToString = (status: PaymentStatus) => {
   };
 
   return map[status] || "Không xác định";
+};
+
+export const notificationTypeEnumToString = (type: NotificationType) => {
+  const map: Record<NotificationType, string> = {
+    CHUNG: "Chung",
+    HE_THONG: "Hệ thống",
+    KHAC: "Khác",
+  };
+
+  return map[type] || "Không xác định";
 };
 
 export const checkUser = (user: UserResponse | null, isLoading: boolean): boolean => {
