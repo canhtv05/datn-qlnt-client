@@ -18,12 +18,20 @@ import { useLogout } from "./useLogout";
 import { useConfirmDialog } from "@/hooks/useConfirmDialog";
 import useHighestRole from "@/hooks/useHighestRole";
 import SystemNotification from "@/components/system/SystemNotification";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import images from "@/assets/imgs";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import i18next from "i18next";
+import { switchRole } from "@/lib/utils";
 
 const HeaderLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
   const user = useAuthStore((state) => state.user);
+  const { t } = useTranslation();
+  const { dataStorage, setStorage } = useLocalStorage();
 
   const { handleLogout } = useLogout();
   const { ConfirmDialog, openDialog } = useConfirmDialog({
@@ -32,10 +40,30 @@ const HeaderLayout = () => {
     desc: "Bạn sẽ được đăng xuất khỏi hệ thống. Hành động này sẽ kết thúc phiên làm việc hiện tại của bạn.",
   });
 
+  const lang = dataStorage().language;
+
+  const [language, setLanguage] = useState<"vi" | "en">(lang === "vi" || lang === "en" ? lang : "en");
   const highestRole = useHighestRole();
+
+  const handleToggleLang = () => {
+    setLanguage((prev) => {
+      if (prev === "vi") {
+        setStorage({ language: "en" });
+        i18next.changeLanguage("en");
+        return "en";
+      } else {
+        setStorage({ language: "vi" });
+        i18next.changeLanguage("vi");
+        return "vi";
+      }
+    });
+  };
 
   return (
     <header className="flex items-center">
+      <div className="p-2 cursor-pointer" onClick={handleToggleLang}>
+        <img src={language === "en" ? images.american : images.vietnam} alt="vietnam" className="size-5 block" />
+      </div>
       <Button onClick={toggleTheme} className="shadow-none cursor-pointer">
         <RenderIf value={theme === "dark"}>
           <Moon className="size-5 stroke-white" />
@@ -52,7 +80,7 @@ const HeaderLayout = () => {
           </h2>
           <h2 className="font-normal truncate text-right text-white/80 text-[14px]">
             {(() => {
-              return highestRole ?? "N/A";
+              return switchRole(highestRole, t);
             })()}
           </h2>
         </div>
@@ -80,7 +108,7 @@ const HeaderLayout = () => {
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => navigate("/profile", { state: { background: location } })}>
               <CircleUserRound className="text-light" />
-              Hồ sơ cá nhân
+              {t("profile.personalProfile")}
             </DropdownMenuItem>
             {/* <DropdownMenuItem>
               <Settings className="text-light" />
@@ -89,7 +117,7 @@ const HeaderLayout = () => {
             {/* <DropdownMenuSeparator /> */}
             <DropdownMenuItem onClick={() => openDialog()}>
               <LogOut className="text-light" />
-              Đăng xuất
+              {t("profile.logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

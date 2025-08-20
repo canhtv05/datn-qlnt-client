@@ -71,7 +71,8 @@ const ViewInvoiceDetail = lazy(() => import("@/pages/finance/invoice/invoice-det
 const PaymentReceipt = lazy(() => import("@/pages/finance/payment-receipt"));
 
 /* USER ROLE */
-const UserRoom = lazy(() => import("@/pages/user/room"));
+// const UserRoom = lazy(() => import("@/pages/user/room"));
+const SelectRoom = lazy(() => import("@/pages/user/room/SelectRoom"));
 const UserPaymentReceipt = lazy(() => import("@/pages/user/payment-receipt"));
 const UserInvoice = lazy(() => import("@/pages/user/invoice"));
 const UserInvoicePayment = lazy(() => import("@/components/finance/invoice/InvoicePayment"));
@@ -111,7 +112,7 @@ const privateRoutes: RouteType[] = [
   {
     path: configs.routes.dashboard,
     component: DashBoard,
-    allowedRoles: ["ADMIN", "MANAGER"],
+    allowedRoles: ["ADMIN", "MANAGER", "USER"],
   },
   {
     path: configs.routes.notification,
@@ -336,7 +337,7 @@ const privateRoutes: RouteType[] = [
   // ROLE USER
   {
     path: configs.routes.user.room,
-    component: UserRoom,
+    component: SelectRoom,
     allowedRoles: ["USER"],
   },
   {

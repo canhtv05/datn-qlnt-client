@@ -73,12 +73,14 @@ const routes = {
   },
   user: {
     room: "/room",
-    roomDetail: "/room/detail/:id",
+    roomDetail: "/room/:id",
     invoice: "/invoices",
     paymentReceipt: "/payment-receipts",
     viewInvoice: "/invoices/view/:id",
     invoicePayment: "/invoices/payment/:id",
     paymentCallback: "/payments/payment-callback",
+    members: "/members",
+    membersId: "/members/:id",
   },
 };
 

@@ -37,8 +37,12 @@ import water from "./water.webp";
 import energy from "./energy.webp";
 import vnFlag from "./vietnam-26834_1280.webp";
 import notification from "./notification.webp";
+import american from "./american.webp";
+import vietnam from "./vietnam.webp";
 
 const images = {
+  american,
+  vietnam,
   notification,
   vnFlag,
   water,

@@ -1,0 +1,65 @@
+{
+  "common": {
+    "button": {
+      "search": "Tìm kiếm",
+      "cancel": "Hủy",
+      "delete": "Xóa",
+      "save": "Lưu",
+      "update": "Cập nhật",
+      "reload": "Làm mới"
+    }
+  },
+  "status": {
+    "updateSuccess": "Cập nhật thành công",
+    "updateFailed": "Cập nhật thất bại",
+    "addSuccess": "Thêm thành công",
+    "addFailed": "Thêm thất bại",
+    "removeSuccess": "Xóa thành công",
+    "removeFailed": "Xóa thất bại",
+    "error": "Có lỗi xảy ra",
+    "logoutFailed": "Đăng xuất thất bại",
+    "logoutSuccess": "Đăng xuất thành công",
+    "registerSuccess": "Đăng ký thành công, vui lòng đăng nhập",
+    "errorStatistics": "Có lỗi xảy ra khi lấy dữ liệu thống kê",
+    "restoreSuccess": "Khôi phục thành công",
+    "restoreFailed": "Khôi phục thất bại"
+  },
+  "notice": {
+    "remove": "Hành động này sẽ xóa vĩnh viễn dữ liệu đã chọn khỏi hệ thống. Bạn có chắc chắn muốn tiếp tục?",
+    "toggleStatus": "Bạn có chắc chắn muốn thay đổi trạng thái của mục này?",
+    "restore": "Bạn có chắc chắn muốn khôi phục mục này?",
+    "restores": "Bạn có chắc chắn muốn khôi phục các mục này?",
+    "update": "Hành động này sẽ cập nhật thông tin hiện tại. Bạn có chắc chắn muốn tiếp tục?",
+    "add": "Hành động này sẽ thêm mới một mục vào hệ thống. Bạn có chắc chắn muốn thực hiện?"
+  },
+  "toast": {
+    "imageOnly": "Vui lòng tải lên tệp hình ảnh (jpg, png, v.v.)",
+    "sizeExceeded": "Kích thước tệp vượt quá giới hạn 5MB",
+    "uploadSuccess": "Thay đổi ảnh đại diện thành công!",
+    "uploadFailed": "Tải lên thất bại. Vui lòng thử lại.",
+    "errorUpload": "Lỗi khi tải tệp. Vui lòng thử lại.",
+    "noChanges": "Không có thay đổi nào",
+    "updateSuccess": "Cập nhật thành công!",
+    "invalidFileType": "Chỉ hỗ trợ các định dạng ảnh JPG, JPEG, PNG, hoặc WEBP"
+  },
+  "profile": {
+    "personalProfile": "Hồ sơ cá nhân",
+    "logout": "Đăng xuất",
+    "manager": "Quản lý",
+    "user": "Người dùng",
+    "admin": "Admin",
+    "staff": "Nhân viên",
+    "enterEmail": "Nhập email:",
+    "username": "Tên người dùng",
+    "enterUsername": "Nhập tên người dùng",
+    "gender": "Giới tính",
+    "genderOptions": {
+      "MALE": "Nam",
+      "FEMALE": "Nữ",
+      "UNKNOWN": "Khác"
+    },
+    "dob": "Ngày sinh",
+    "phoneNumber": "Số điện thoại",
+    "enterPhoneNumber": "Nhập số điện thoại"
+  }
+}

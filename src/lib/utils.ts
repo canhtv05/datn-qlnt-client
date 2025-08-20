@@ -32,6 +32,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { TFunction } from "i18next";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -425,4 +426,15 @@ export const handleExportExcel = (name: string, exportData?: Record<string, any>
   const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
   const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
   saveAs(blob, `${name}.xlsx`);
+};
+
+export const switchRole = (role: RoleType, t: TFunction<"translation", undefined>): string => {
+  const map: Record<RoleType, string> = {
+    ADMIN: t("profile.admin"),
+    MANAGER: t("profile.manager"),
+    STAFF: t("profile.staff"),
+    USER: t("profile.user"),
+  };
+
+  return map[role];
 };

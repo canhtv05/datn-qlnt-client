@@ -11,7 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import NoData from "@/components/NoData";
 import { cn } from "@/lib/utils";
 import { Bed, BedDouble, Building2, Castle, CircleDot, Home, Landmark, Layers3, MapPin } from "lucide-react";
-import { JSX } from "react";
+import { JSX, useEffect } from "react";
 import { useSidebar } from "@/components/ui/sidebar";
 
 const getIconByBuildingType = (type: BuildingType, status: BuildingStatus): JSX.Element => {
@@ -52,7 +52,9 @@ const SelectBuilding = () => {
     retry: 1,
   });
 
-  if (isError) toast.error("Không lấy được dữ liệu tòa nhà");
+  useEffect(() => {
+    if (isError) toast.error("Không lấy được dữ liệu tòa nhà");
+  }, [isError]);
 
   return (
     <div

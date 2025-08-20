@@ -12,6 +12,7 @@ import { useAuthStore } from "@/zustand/authStore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { checkUser, getHighestRole } from "@/lib/utils";
 import { RoleType } from "@/hooks/useHighestRole";
+import { useTranslation } from "react-i18next";
 
 interface UserProfileValue {
   fullName: string | undefined;
@@ -28,6 +29,8 @@ export const useProfile = () => {
   const setUser = useAuthStore((state) => state.setUser);
   const location = useLocation();
   const navigate = useNavigate();
+
+  const { t } = useTranslation();
 
   const [value, setValue] = useState<UserProfileValue>({
     dob: user?.dob ?? "",
@@ -83,7 +86,7 @@ export const useProfile = () => {
         const target = highestRole === "MANAGER" || highestRole === "ADMIN" ? "/dashboard" : "/room";
         navigate(target, { replace: true, state: null });
       }
-      toast.success(Status.UPDATE_SUCCESS);
+      toast.success(t(Status.UPDATE_SUCCESS));
     },
     onError: (error) => {
       handleMutationError(error);
@@ -114,7 +117,7 @@ export const useProfile = () => {
     const isUnchanged = isDataUpdateEqual();
 
     if (isUnchanged) {
-      toast.warning("Không có thay đổi nào");
+      toast.warning(t("common.toast.noChanges"));
       return true;
     }
 
@@ -142,7 +145,7 @@ export const useProfile = () => {
       handleZodErrors(error);
       return false;
     }
-  }, [isDataUpdateEqual, clearErrors, file, handleZodErrors, updateProfileMutation, value]);
+  }, [isDataUpdateEqual, t, value, file, clearErrors, updateProfileMutation, handleZodErrors]);
 
   const handleBlur = () => {
     setValue((prev) => ({
@@ -168,7 +171,7 @@ export const useProfile = () => {
 
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/svg+xml", "image/gif"];
     if (!allowedTypes.includes(file.type)) {
-      toast.error("Chỉ hỗ trợ các định dạng ảnh JPG, JPEG, PNG, hoặc WEBP");
+      toast.error(t("common.toast.invalidFileType"));
       return;
     }
 

@@ -78,14 +78,14 @@ const NotificationButton = ({
     onError: handleMutationError,
     onSuccess: () => {
       toast.success(Status.ADD_SUCCESS);
-      // setValue({
-      //   content: "",
-      //   notificationType: NotificationType.CHUNG,
-      //   sendToAll: true,
-      //   title: "",
-      //   image: null,
-      //   users: [],
-      // });
+      setValue({
+        content: "",
+        notificationType: NotificationType.CHUNG,
+        sendToAll: true,
+        title: "",
+        image: null,
+        users: [],
+      });
       queryClient.invalidateQueries({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "notifications",
       });

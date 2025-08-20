@@ -12,6 +12,7 @@ import { useProfile } from "./useProfile";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks/useConfirmDialog";
 import { GENDER_OPTIONS } from "@/constant";
+import { useTranslation } from "react-i18next";
 
 const UserProfile = () => {
   const {
@@ -34,8 +35,10 @@ const UserProfile = () => {
     onConfirm: handleUpdate,
   });
 
+  const { t } = useTranslation();
+
   return (
-    <DialogLink title="Hồ sơ cá nhân">
+    <DialogLink title={t("profile.personalProfile")}>
       <form
         className="px-5 py-5 flex md:flex-row flex-col md:gap-20 gap-10 justify-between"
         onSubmit={(e) => {
@@ -72,7 +75,7 @@ const UserProfile = () => {
             id="email"
             name="email"
             label="Email:"
-            placeholder="Nhập email:"
+            placeholder={t("profile.enterEmail")}
             value={user?.email ?? ""}
             disabled
           />
@@ -80,8 +83,8 @@ const UserProfile = () => {
             type="text"
             id="name"
             name="fullName"
-            label="Tên người dùng:"
-            placeholder="Nhập tên người dùng"
+            label={t("profile.username")}
+            placeholder={t("profile.enterUsername")}
             value={value?.fullName ?? ""}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -90,25 +93,25 @@ const UserProfile = () => {
           <FieldsSelectLabel
             id="gender"
             name="gender"
-            placeholder="Giới tính"
-            label="Giới tính:"
-            labelSelect="Giới tính"
-            data={GENDER_OPTIONS}
+            placeholder={t("profile.gender")}
+            label={t("profile.gender")}
+            labelSelect={t("profile.gender")}
+            data={GENDER_OPTIONS(t)}
             value={value?.gender ?? Gender.UNKNOWN}
             onChange={(val) => setValue((prev) => ({ ...prev, gender: val as Gender }))}
           />
           <DatePickerLabel
             date={value?.dob ? new Date(value?.dob) : new Date()}
             setDate={(d) => setValue((prev) => ({ ...prev, dob: d.toISOString() }))}
-            label="Ngày sinh:"
+            label={t("profile.dob")}
             errorText={errors.dob}
           />
           <InputLabel
             type="text"
             id="phone"
             name="phoneNumber"
-            label="Số điện thoại:"
-            placeholder="Nhập số điện thoại"
+            label={t("profile.phoneNumber")}
+            placeholder={t("profile.enterPhoneNumber")}
             value={value?.phoneNumber ?? ""}
             onChange={handleChange}
             errorText={errors.phoneNumber}
@@ -116,11 +119,11 @@ const UserProfile = () => {
           <div className="flex justify-end gap-3">
             <DialogClose asChild>
               <Button variant={"ghost"} className="cursor-pointer">
-                Hủy
+                {t("common.button.cancel")}
               </Button>
             </DialogClose>
             <Button type="submit" disabled={isDataUpdateEqual()}>
-              <span className="text-white cursor-pointer">Cập nhật</span>
+              <span className="text-white cursor-pointer">{t("common.button.update")}</span>
             </Button>
           </div>
         </div>

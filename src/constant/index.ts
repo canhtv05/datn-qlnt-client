@@ -33,6 +33,7 @@ import {
 } from "@/enums";
 import { formatNumber, formattedCurrency } from "@/lib/utils";
 import { IBtnType } from "@/types";
+import { TFunction } from "i18next";
 import {
   Download,
   DoorOpen,
@@ -191,6 +192,12 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
 
   const USER = [
     {
+      label: "Theo dõi nhanh",
+      title: "Bảng tin",
+      url: "/dashboard",
+      icon: images.bulletinBoard,
+    },
+    {
       label: "Thông tin",
       title: "Xem thông tin phòng",
       url: "/room",
@@ -211,15 +218,15 @@ export const sidebarItems = (role: "USER" | "ADMIN" | "STAFF" | "MANAGER"): Side
       url: "/contracts",
       icon: images.contract,
     },
-    {
-      title: "Xem hóa đơn cũ",
-      url: "/invoices/history",
-      icon: images.history,
-    },
+    // {
+    //   title: "Xem hóa đơn cũ",
+    //   url: "/invoices/history",
+    //   icon: images.history,
+    // },
     {
       title: "Xem thành viên trong phòng",
       url: "/members",
-      icon: images.usage,
+      icon: images.team,
     },
     {
       title: "Xem điện",
@@ -1122,10 +1129,12 @@ export const formatNumberField = {
   asset: (val: number) => `${val} tài sản`,
 };
 
-export const GENDER_OPTIONS = [
-  { label: "Nam", value: "MALE" },
-  { label: "Nữ", value: "FEMALE" },
-];
+export const GENDER_OPTIONS = (t: TFunction<"translate", undefined>) => {
+  return [
+    { label: t(`profile.genderOptions.${Gender.MALE}`), value: Gender.MALE },
+    { label: t(`profile.genderOptions.${Gender.FEMALE}`), value: Gender.FEMALE },
+  ];
+};
 
 export const GET_BTNS = (...type: IBtnType["type"][]): IBtnType[] => {
   return BTNS.filter((btn) => type.includes(btn.type));

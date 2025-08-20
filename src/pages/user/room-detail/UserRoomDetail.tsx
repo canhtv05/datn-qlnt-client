@@ -30,6 +30,7 @@ import { AxiosError } from "axios";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { contractStatusEnumToString, roomStatusEnumToString, roomTypeEnumToString } from "@/lib/utils";
 
 const NA = "N/A";
 
@@ -135,12 +136,12 @@ const UserRoomDetail = () => {
                   <div className="flex items-center gap-2">
                     <Tag className="size-4 text-muted-foreground" />
                     <span className="font-medium text-muted-foreground">Loại phòng:</span>
-                    <span className="font-bold">{room?.roomType || NA}</span>
+                    <span className="font-bold">{room?.roomType ? roomTypeEnumToString(room.roomType) : NA}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <DoorOpen className="size-4 text-muted-foreground" />
                     <span className="font-medium text-muted-foreground">Trạng thái:</span>
-                    <span className="font-bold">{room?.status || NA}</span>
+                    <span className="font-bold">{room?.status ? roomStatusEnumToString(room?.status) : NA}</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <FileText className="size-4 mt-1 text-muted-foreground" />
@@ -213,7 +214,9 @@ const UserRoomDetail = () => {
                   <div className="flex items-center gap-2">
                     <BadgeDollarSign className="size-4 text-muted-foreground" />
                     <span className="font-medium text-muted-foreground">Trạng thái HĐ:</span>
-                    <span className="font-bold">{room?.contractStatus || NA}</span>
+                    <span className="font-bold">
+                      {room?.contractStatus ? contractStatusEnumToString(room?.contractStatus) : NA}
+                    </span>
                   </div>
 
                   <div className="flex items-center gap-2">

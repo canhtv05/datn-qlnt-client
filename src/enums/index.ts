@@ -14,28 +14,28 @@ export enum Gender {
 }
 
 export enum Status {
-  UPDATE_SUCCESS = "Cập nhật thành công",
-  UPDATE_FAILED = "Cập nhật thất bại",
-  ADD_SUCCESS = "Thêm thành công",
-  ADD_FAILED = "Thêm thất bại",
-  REMOVE_SUCCESS = "Xóa thành công",
-  REMOVE_FAILED = "Xóa thất bại",
-  ERROR = "Có lỗi xảy ra",
-  LOGOUT_FAILED = "Đăng xuất thất bại",
-  LOGOUT_SUCCESS = "Đăng xuất thành công",
-  REGISTER_SUCCESS = "Đăng ký thành công, vui lòng đăng nhập",
-  ERROR_STATISTICS = "Có lỗi xảy ra khi lấy dữ liệu thống kê",
-  RESTORE_SUCCESS = "Khôi phục thành công",
-  RESTORE_FAILED = "Khôi phục thất bại",
+  UPDATE_SUCCESS = "status.updateSuccess",
+  UPDATE_FAILED = "status.updateFailed",
+  ADD_SUCCESS = "status.addSuccess",
+  ADD_FAILED = "status.addFailed",
+  REMOVE_SUCCESS = "status.removeSuccess",
+  REMOVE_FAILED = "status.removeFailed",
+  ERROR = "status.error",
+  LOGOUT_FAILED = "status.logoutFailed",
+  LOGOUT_SUCCESS = "status.logoutSuccess",
+  REGISTER_SUCCESS = "status.registerSuccess",
+  ERROR_STATISTICS = "status.errorStatistics",
+  RESTORE_SUCCESS = "status.restoreSuccess",
+  RESTORE_FAILED = "status.restoreFailed",
 }
 
 export enum Notice {
-  REMOVE = "Hành động này sẽ xóa vĩnh viễn dữ liệu đã chọn khỏi hệ thống. Bạn có chắc chắn muốn tiếp tục?",
-  TOGGLE_STATUS = "Bạn có chắc chắn muốn thay đổi trạng thái của mục này?",
-  RESTORE = "Bạn có chắc chắn muốn khôi phục mục này?",
-  RESTORES = "Bạn có chắc chắn muốn khôi phục các mục này?",
-  UPDATE = "Hành động này sẽ cập nhật thông tin hiện tại. Bạn có chắc chắn muốn tiếp tục?",
-  ADD = "Hành động này sẽ thêm mới một mục vào hệ thống. Bạn có chắc chắn muốn thực hiện?",
+  REMOVE = "notice.remove",
+  TOGGLE_STATUS = "notice.toggleStatus",
+  RESTORE = "notice.restore",
+  RESTORES = "notice.restores",
+  UPDATE = "notice.update",
+  ADD = "notice.add",
 }
 
 /* BUILDING */

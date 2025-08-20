@@ -1,0 +1,65 @@
+{
+  "common": {
+    "button": {
+      "search": "Search",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "save": "Save",
+      "update": "Update",
+      "reload": "Reload"
+    }
+  },
+  "status": {
+    "updateSuccess": "Update successful",
+    "updateFailed": "Update failed",
+    "addSuccess": "Added successfully",
+    "addFailed": "Add failed",
+    "removeSuccess": "Removed successfully",
+    "removeFailed": "Remove failed",
+    "error": "An error occurred",
+    "logoutFailed": "Logout failed",
+    "logoutSuccess": "Logout successful",
+    "registerSuccess": "Registration successful, please login",
+    "errorStatistics": "An error occurred while fetching statistics",
+    "restoreSuccess": "Restored successfully",
+    "restoreFailed": "Restore failed"
+  },
+  "notice": {
+    "remove": "Hành động này sẽ xóa vĩnh viễn dữ liệu đã chọn khỏi hệ thống. Bạn có chắc chắn muốn tiếp tục?",
+    "toggleStatus": "Bạn có chắc chắn muốn thay đổi trạng thái của mục này?",
+    "restore": "Bạn có chắc chắn muốn khôi phục mục này?",
+    "restores": "Bạn có chắc chắn muốn khôi phục các mục này?",
+    "update": "Hành động này sẽ cập nhật thông tin hiện tại. Bạn có chắc chắn muốn tiếp tục?",
+    "add": "Hành động này sẽ thêm mới một mục vào hệ thống. Bạn có chắc chắn muốn thực hiện?"
+  },
+  "toast": {
+    "imageOnly": "Please upload an image file (jpg, png, etc.)",
+    "sizeExceeded": "File size exceeds 5MB limit",
+    "uploadSuccess": "Avatar changed successfully!",
+    "uploadFailed": "Upload failed. Please try again.",
+    "errorUpload": "Error uploading file. Please try again.",
+    "noChanges": "No changes detected",
+    "updateSuccess": "Profile updated successfully!",
+    "invalidFileType": "Only JPG, JPEG, PNG, or WEBP image formats are supported"
+  },
+  "profile": {
+    "personalProfile": "Personal profile",
+    "logout": "Logout",
+    "manager": "Manager",
+    "user": "User",
+    "admin": "Admin",
+    "staff": "Staff",
+    "enterEmail": "Enter email:",
+    "username": "Username",
+    "enterUsername": "Enter username",
+    "gender": "Gender",
+    "genderOptions": {
+      "MALE": "Male",
+      "FEMALE": "Female",
+      "UNKNOWN": "Other"
+    },
+    "dob": "Date of birth",
+    "phoneNumber": "Phone number",
+    "enterPhoneNumber": "Enter phone number"
+  }
+}
