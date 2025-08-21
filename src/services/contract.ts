@@ -22,6 +22,8 @@ import {
   serviceCategoryEnumToString,
   vehicleTypeEnumToString,
 } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
+import { TFunction } from "i18next";
 
 export const useRoomOptions = (): Option[] => {
   const { data } = useQuery({
@@ -101,7 +103,11 @@ const checkValue = (regex: RegExp, result: string) => {
 };
 
 // thay thế các kí tự có trong nội dung hợp đồng
-export const replacePlaceholders = (text: string, values: ContractDetailResponse | undefined) => {
+export const replacePlaceholders = (
+  text: string,
+  values: ContractDetailResponse | undefined,
+  t: TFunction<"translate", undefined>
+) => {
   if (!values) {
     return;
   }
@@ -141,8 +147,8 @@ export const replacePlaceholders = (text: string, values: ContractDetailResponse
             (a) =>
               `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Tên tài sản: ${
                 a.nameAsset || NA
-              } - Loại tài sản: ${assetTypeEnumToString(a.assetType) || NA} - Trạng thái: ${
-                assetStatusEnumToString(a.assetStatus) || NA
+              } - Loại tài sản: ${assetTypeEnumToString(a.assetType, t) || NA} - Trạng thái: ${
+                assetStatusEnumToString(a.assetStatus, t) || NA
               } - Mô tả: ${a.description || NA}</span>`
           );
           result = result.replace(regex, createListHtml(items));
@@ -154,9 +160,9 @@ export const replacePlaceholders = (text: string, values: ContractDetailResponse
             (s) =>
               `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Tên dịch vụ: ${
                 s.name || NA
-              } - Loại dịch vụ: ${serviceCategoryEnumToString(s.category) || NA} - Đơn vị: ${s.unit || NA} - Mô tả: ${
-                s.description || NA
-              }</span>`
+              } - Loại dịch vụ: ${serviceCategoryEnumToString(s.category, t) || NA} - Đơn vị: ${
+                s.unit || NA
+              } - Mô tả: ${s.description || NA}</span>`
           );
           result = result.replace(regex, createListHtml(items));
         }
@@ -166,7 +172,7 @@ export const replacePlaceholders = (text: string, values: ContractDetailResponse
           const items = (value as VehiclesBasicResponse[]).map(
             (v) =>
               `<li><p><span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Loại phương tiện: ${
-                vehicleTypeEnumToString(v.vehicleType) || NA
+                vehicleTypeEnumToString(v.vehicleType, t) || NA
               } - Biển số: ${v.licensePlate || NA} - Mô tả: ${v.description || NA}</span></p></li>`
           );
           result = result.replace(regex, createListHtml(items));
@@ -183,7 +189,7 @@ export const replacePlaceholders = (text: string, values: ContractDetailResponse
       } else if (key === "status") {
         if (!value) result = checkValue(regex, result);
         const contractStatus = value as ContractStatus;
-        result = result.replace(regex, contractStatusEnumToString(contractStatus));
+        result = result.replace(regex, contractStatusEnumToString(contractStatus, t));
       } else result = result.replace(regex, String(value ?? ""));
     }
   });
@@ -192,6 +198,7 @@ export const replacePlaceholders = (text: string, values: ContractDetailResponse
 };
 export const useContractMutation = () => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const addAndUpdateContentContractMutation = useMutation({
     mutationFn: async (payload: ICreateAndUpdateContract) => {
@@ -210,7 +217,7 @@ export const useContractMutation = () => {
         return;
       }
 
-      const newContent = replacePlaceholders(res?.data?.data?.content, result?.data);
+      const newContent = replacePlaceholders(res?.data?.data?.content, result?.data, t);
       if (!newContent) {
         toast.error("Nội dung hợp đồng rỗng");
         return;

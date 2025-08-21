@@ -32,7 +32,9 @@
     "confirmDialog": {
       "confirm": "Bạn có chắc chắn muốn tiếp tục không?",
       "delete": "Thao tác này sẽ xóa vĩnh viễn dữ liệu các {{name}} đã chọn. Bạn có chắc chắn muốn tiếp tục?"
-    }
+    },
+    "unknown": "Không xác định",
+    "other": "Khác"
   },
   "actions": {
     "serviceActions": {
@@ -68,7 +70,7 @@
     "remove": "Hành động này sẽ xóa vĩnh viễn dữ liệu đã chọn khỏi hệ thống. Bạn có chắc chắn muốn tiếp tục?",
     "toggleStatus": "Bạn có chắc chắn muốn thay đổi trạng thái của mục này?",
     "restore": "Bạn có chắc chắn muốn khôi phục mục này?",
-    "restores": "Bạn có chắc chắn muốn khôi phục các mục này?",
+    "restores": "Bạn có chắc chắn muốn khôi phục các mục đã chọn?",
     "update": "Hành động này sẽ cập nhật thông tin hiện tại. Bạn có chắc chắn muốn tiếp tục?",
     "add": "Hành động này sẽ thêm mới một mục vào hệ thống. Bạn có chắc chắn muốn thực hiện?"
   },
@@ -201,7 +203,8 @@
       "maintain": "Bảo trì",
       "unfinished": "Chưa hoàn thiện",
       "locked": "Tạm khóa",
-      "inactive": "Huỷ hoạt động"
+      "inactive": "Huỷ hoạt động",
+      "renting": "Đang thuê"
     },
 
     "floorStatus": {
@@ -247,14 +250,16 @@
       "broken": "Hư hỏng",
       "maintenance": "Cần bảo trì",
       "lost": "Thất lạc",
-      "liquidated": "Đã thanh lý"
+      "liquidated": "Đã thanh lý",
+      "inactive": "Không sử dụng"
     },
 
     "tenantStatus": {
       "renting": "Đang thuê",
       "returned": "Đã trả phòng",
       "potential": "Tiềm năng",
-      "locked": "Bị khóa"
+      "locked": "Bị khóa",
+      "cancelled": "Hủy bỏ"
     },
 
     "gender": {
@@ -329,7 +334,9 @@
       "restored": "Khôi phục",
       "paid": "Đã thanh toán",
       "overdue": "Quá hạn",
-      "cancelled": "Đã hủy"
+      "cancelled": "Đã hủy",
+      "waitingPayment": "Chờ thanh toán",
+      "restore": "Khôi phục"
     },
 
     "invoiceType": {
@@ -348,7 +355,8 @@
       "security": "An ninh",
       "laundry": "Giặt sấy",
       "rent": "Tiền phòng",
-      "other": "Khác"
+      "other": "Khác",
+      "compensation": "Đền bù"
     },
 
     "serviceCalculation": {
@@ -370,9 +378,9 @@
       "choose": "Chọn phương thức",
       "cash": "Tiền mặt",
       "transfer": "Chuyển khoản",
-      "vnpay": "VNPay",
-      "zalopay": "ZaloPay",
-      "momo": "MoMo"
+      "vnpay": "Ví điện tử VNPay",
+      "zalopay": "Ví điện tử ZaloPay",
+      "momo": "Ví điện tử MoMo"
     },
 
     "paymentStatus": {
@@ -421,7 +429,7 @@
       "placeholderAddress": "Hà Nội",
       "selectBuilding": "-- Chọn loại tòa nhà --",
       "buildingType": "Loại tòa nhà:",
-      "labelSelectBuildingType": "Xã/Phường",
+      "labelSelectBuildingType": "Loại tòa nhà",
       "actualNumberOfFloors": "Số tầng thực tế:",
       "numberOfFloorsForRent": "Số tầng cho thuê:",
       "description": "Mô tả:",

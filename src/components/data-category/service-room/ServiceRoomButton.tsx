@@ -180,14 +180,14 @@ const ServiceRoomButton = ({
         const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
           "Mã phòng": d.roomCode,
           "Tổng dịch vụ": d.totalServices,
-          "Loại phòng": roomTypeEnumToString(d.roomType),
-          "Trạng thái": roomStatusEnumToString(d.status),
+          "Loại phòng": roomTypeEnumToString(d.roomType, t),
+          "Trạng thái": roomStatusEnumToString(d.status, t),
           "Mô tả": d.description,
         }));
         handleExportExcel(`Dịch vụ phòng`, exportData, data);
       }
     },
-    [data, ids, openDialog]
+    [data, ids, openDialog, t]
   );
 
   const removeServiceRoomMutation = useMutation({

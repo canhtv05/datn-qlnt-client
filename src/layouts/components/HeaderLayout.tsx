@@ -62,7 +62,7 @@ const HeaderLayout = () => {
   return (
     <header className="flex items-center">
       <div className="p-2 cursor-pointer" onClick={handleToggleLang}>
-        <img src={language === "en" ? images.american : images.vietnam} alt="vietnam" className="size-5 block" />
+        <img src={language === "en" ? images.uk : images.vietnam} alt="vietnam" className="size-5 block" />
       </div>
       <Button onClick={toggleTheme} className="shadow-none cursor-pointer">
         <RenderIf value={theme === "dark"}>

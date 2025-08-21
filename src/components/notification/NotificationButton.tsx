@@ -157,7 +157,7 @@ const NotificationButton = ({
           "Tiêu đề": d.title,
           "Nội dung": d.content,
           "Hình ảnh": d.image,
-          "Loại thông báo": notificationTypeEnumToString(d.notificationType),
+          "Loại thông báo": notificationTypeEnumToString(d.notificationType, t),
           "Gửi cho tất cả": d.sendToAll ? "Có" : "Không",
           "Gửi lúc": formatDate(d.sentAt),
           "Tên người gửi": d.fullName,
@@ -166,7 +166,7 @@ const NotificationButton = ({
         handleExportExcel(`Thông báo`, exportData, data);
       }
     },
-    [data, ids, openDialog]
+    [data, ids, openDialog, t]
   );
 
   const removeNotificationMutation = useMutation({

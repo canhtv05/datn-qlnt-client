@@ -32,7 +32,9 @@
     "confirmDialog": {
       "confirm": "Are you sure you want to continue?",
       "delete": "This action will permanently delete the selected {{name}}. Are you sure you want to continue?"
-    }
+    },
+    "unknown": "Unknown",
+    "other": "Other"
   },
   "actions": {
     "serviceActions": {
@@ -65,12 +67,12 @@
     "restoreFailed": "Restore failed"
   },
   "notice": {
-    "remove": "Hành động này sẽ xóa vĩnh viễn dữ liệu đã chọn khỏi hệ thống. Bạn có chắc chắn muốn tiếp tục?",
-    "toggleStatus": "Bạn có chắc chắn muốn thay đổi trạng thái của mục này?",
-    "restore": "Bạn có chắc chắn muốn khôi phục mục này?",
-    "restores": "Bạn có chắc chắn muốn khôi phục các mục này?",
-    "update": "Hành động này sẽ cập nhật thông tin hiện tại. Bạn có chắc chắn muốn tiếp tục?",
-    "add": "Hành động này sẽ thêm mới một mục vào hệ thống. Bạn có chắc chắn muốn thực hiện?"
+    "remove": "This action will permanently delete the selected data from the system. Are you sure you want to continue?",
+    "toggleStatus": "Are you sure you want to change the status of this item?",
+    "restore": "Are you sure you want to restore this item?",
+    "restores": "Are you sure you want to restore the selected items?",
+    "update": "This action will update the current information. Are you sure you want to continue?",
+    "add": "This action will add a new item to the system. Are you sure you want to proceed?"
   },
   "toast": {
     "imageOnly": "Please upload an image file (jpg, png, etc.)",
@@ -201,7 +203,8 @@
       "maintain": "Under maintenance",
       "unfinished": "Unfinished",
       "locked": "Locked",
-      "inactive": "Inactive"
+      "inactive": "Inactive",
+      "renting": "Renting"
     },
 
     "floorStatus": {
@@ -247,14 +250,16 @@
       "broken": "Broken",
       "maintenance": "Needs maintenance",
       "lost": "Lost",
-      "liquidated": "Liquidated"
+      "liquidated": "Liquidated",
+      "inactive": "Not in use"
     },
 
     "tenantStatus": {
       "renting": "Renting",
       "returned": "Returned",
       "potential": "Potential",
-      "locked": "Locked"
+      "locked": "Locked",
+      "cancelled": "Cancelled"
     },
 
     "gender": {
@@ -329,7 +334,9 @@
       "restored": "Restored",
       "paid": "Paid",
       "overdue": "Overdue",
-      "cancelled": "Cancelled"
+      "cancelled": "Cancelled",
+      "waitingPayment": "Waiting for payment",
+      "restore": "Restore"
     },
 
     "invoiceType": {
@@ -348,7 +355,8 @@
       "security": "Security",
       "laundry": "Laundry",
       "rent": "Rent",
-      "other": "Other"
+      "other": "Other",
+      "compensation": "Compensation"
     },
 
     "serviceCalculation": {

@@ -134,16 +134,16 @@ const RoomButton = ({ ids, data }: { ids: Record<string, boolean>; data: RoomRes
           "Mã phòng": d.roomCode,
           "Diện tích": `${d.acreage}m²`,
           "Số người tối đa": d.maximumPeople,
-          "Loại phòng": roomTypeEnumToString(d.roomType),
+          "Loại phòng": roomTypeEnumToString(d.roomType, t),
           "Mô tả": d.description,
-          "Trạng thái": roomStatusEnumToString(d.status),
+          "Trạng thái": roomStatusEnumToString(d.status, t),
           "Ngày tạo": formatDate(new Date(d.createdAt)),
           "Ngày cập nhật": formatDate(new Date(d.updatedAt)),
         }));
         handleExportExcel(`Phòng_${data?.[0]?.floor?.buildingName}`, exportData, data);
       }
     },
-    [data, ids, navigate, openDialog]
+    [data, ids, navigate, openDialog, t]
   );
 
   return (

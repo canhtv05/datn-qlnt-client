@@ -31,10 +31,12 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { contractStatusEnumToString, roomStatusEnumToString, roomTypeEnumToString } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const NA = "N/A";
 
 const UserRoomDetail = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -136,12 +138,12 @@ const UserRoomDetail = () => {
                   <div className="flex items-center gap-2">
                     <Tag className="size-4 text-muted-foreground" />
                     <span className="font-medium text-muted-foreground">Loại phòng:</span>
-                    <span className="font-bold">{room?.roomType ? roomTypeEnumToString(room.roomType) : NA}</span>
+                    <span className="font-bold">{room?.roomType ? roomTypeEnumToString(room.roomType, t) : NA}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <DoorOpen className="size-4 text-muted-foreground" />
                     <span className="font-medium text-muted-foreground">Trạng thái:</span>
-                    <span className="font-bold">{room?.status ? roomStatusEnumToString(room?.status) : NA}</span>
+                    <span className="font-bold">{room?.status ? roomStatusEnumToString(room?.status, t) : NA}</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <FileText className="size-4 mt-1 text-muted-foreground" />
@@ -215,7 +217,7 @@ const UserRoomDetail = () => {
                     <BadgeDollarSign className="size-4 text-muted-foreground" />
                     <span className="font-medium text-muted-foreground">Trạng thái HĐ:</span>
                     <span className="font-bold">
-                      {room?.contractStatus ? contractStatusEnumToString(room?.contractStatus) : NA}
+                      {room?.contractStatus ? contractStatusEnumToString(room?.contractStatus, t) : NA}
                     </span>
                   </div>
 

@@ -140,16 +140,16 @@ const FloorButton = ({ ids, data }: { ids: Record<string, boolean>; data: FloorR
           "Tên tầng": d.nameFloor,
           "Tên tòa nhà": d.buildingName,
           "Số phòng tối đa": d.maximumRoom,
-          "Loại tầng": floorTypeEnumToString(d.floorType),
+          "Loại tầng": floorTypeEnumToString(d.floorType, t),
           "Mô tả": d.descriptionFloor,
-          "Trạng thái": floorStatusEnumToString(d.status),
+          "Trạng thái": floorStatusEnumToString(d.status, t),
           "Ngày tạo": formatDate(new Date(d.createdAt)),
           "Ngày cập nhật": formatDate(new Date(d.updatedAt)),
         }));
         handleExportExcel(`Tầng nhà_${data[0].buildingName}`, exportData, data);
       }
     },
-    [data, ids, navigate, openDialog]
+    [data, ids, navigate, openDialog, t]
   );
 
   const removeFloorMutation = useMutation({

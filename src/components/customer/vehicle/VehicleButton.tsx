@@ -144,9 +144,9 @@ const VehicleButton = ({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
           "Chủ sở hữu": d.fullName,
-          "Loại phương tiện": vehicleTypeEnumToString(d.vehicleType),
+          "Loại phương tiện": vehicleTypeEnumToString(d.vehicleType, t),
           "Biển số": d.licensePlate,
-          "Trạng thái": vehicleStatusEnumToString(d.vehicleStatus),
+          "Trạng thái": vehicleStatusEnumToString(d.vehicleStatus, t),
           "Ngày đăng ký": formatDate(d.registrationDate),
           "Mô tả": d.describe,
           "Ngày tạo": formatDate(d.createdAt),
@@ -155,7 +155,7 @@ const VehicleButton = ({
         handleExportExcel(`Phương tiện`, exportData, data);
       }
     },
-    [data, ids, navigate, openDialog]
+    [data, ids, navigate, openDialog, t]
   );
 
   const removeVehicleMutation = useMutation({
