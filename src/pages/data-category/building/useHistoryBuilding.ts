@@ -6,6 +6,7 @@ import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -21,6 +22,7 @@ type BulkRemovePayload = {
 };
 
 export const useHistoryBuilding = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
@@ -99,7 +101,7 @@ export const useHistoryBuilding = () => {
           });
           queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
 
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -126,7 +128,7 @@ export const useHistoryBuilding = () => {
           });
           queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
 
-          toast.success(Status.RESTORE_SUCCESS);
+          toast.success(t(Status.RESTORE_SUCCESS));
         },
       });
       return true;
@@ -174,7 +176,7 @@ export const useHistoryBuilding = () => {
       });
       queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       setRowSelection({});
       return true;
     } catch (error) {
@@ -200,7 +202,7 @@ export const useHistoryBuilding = () => {
       });
       queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
 
-      toast.success(Status.RESTORE_SUCCESS);
+      toast.success(t(Status.RESTORE_SUCCESS));
       setRowSelection({});
       return true;
     } catch (error) {
@@ -242,9 +244,9 @@ export const useHistoryBuilding = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải tòa nhà");
+      toast.error(t("building.errorFetch"));
     }
-  }, [isError]);
+  }, [isError, t]);
 
   return {
     query: {

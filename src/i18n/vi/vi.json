@@ -391,6 +391,7 @@
   },
   "building": {
     "title": "Tòa nhà",
+    "titleHistory": "Lịch sử xóa tòa nhà",
     "response": {
       "active": "Hoạt động",
       "inactive": "Không hoạt động",
@@ -411,6 +412,7 @@
       "buildingType": "-- Loại tòa nhà --"
     },
     "errorFetch": "Có lỗi xảy ra khi tải tòa nhà",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê tòa nhà",
     "totalRooms": "Tổng số phòng",
     "roomsAvailable": "Tổng số phòng trống",
     "addOrUpdate": {

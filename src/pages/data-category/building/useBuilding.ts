@@ -20,6 +20,7 @@ interface FilterValues {
 }
 
 export const useBuilding = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
@@ -133,7 +134,7 @@ export const useBuilding = () => {
           });
           queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
 
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
         },
       });
       return true;
@@ -160,7 +161,7 @@ export const useBuilding = () => {
           });
           queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
 
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -209,7 +210,7 @@ export const useBuilding = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "buildings",
           });
           queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
           setIsModalOpen(false);
         },
       });
@@ -219,7 +220,7 @@ export const useBuilding = () => {
       handleZodErrors(error);
       return false;
     }
-  }, [updateBuildingMutation, clearErrors, handleZodErrors, queryClient, value]);
+  }, [value, updateBuildingMutation, clearErrors, queryClient, t, handleZodErrors]);
 
   const handleActionClick = useCallback(
     (building: BuildingResponse, action: "update" | "delete" | "status") => {
@@ -265,7 +266,6 @@ export const useBuilding = () => {
     retry: 1,
   });
 
-  const { t } = useTranslation();
   const dataBuildings: StatisticCardType[] = [
     {
       icon: House,
@@ -293,13 +293,13 @@ export const useBuilding = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải tòa nhà");
+      toast.error(t("building.errorFetch"));
     }
 
     if (isStatisticsError) {
-      toast.error("Có lỗi xảy ra khi tải thống kê");
+      toast.error(t("building.errorFetchStatistics"));
     }
-  }, [isError, isStatisticsError]);
+  }, [isError, isStatisticsError, t]);
 
   return {
     query: {

@@ -27,9 +27,9 @@ const HistoryBuilding = () => {
   const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Mã tòa nhà", accessorKey: "buildingCode", isSort: true, hasHighlight: true },
+    { label: t("building.response.buildingCode"), accessorKey: "buildingCode", isSort: true, hasHighlight: true },
     {
-      label: "Thao tác",
+      label: t("building.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -75,25 +75,31 @@ const HistoryBuilding = () => {
         );
       },
     },
-    { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true },
-    { label: "Địa chỉ", accessorKey: "address", isSort: true },
-    { label: "Loại tòa nhà", accessorKey: "buildingType", isSort: true, hasBadge: true, isCenter: true },
-    { label: "Số tầng thực tế", accessorKey: "actualNumberOfFloors", isSort: true, isCenter: true },
-    { label: "Số tầng cho thuê", accessorKey: "numberOfFloorsForRent", isSort: true, isCenter: true },
-    { label: "Mô tả", accessorKey: "description" },
-    { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
+    { label: t("building.response.buildingName"), accessorKey: "buildingName", isSort: true },
+    { label: t("building.response.address"), accessorKey: "address", isSort: true },
     {
-      label: "Ngày tạo",
-      accessorKey: "createdAt",
+      label: t("building.response.buildingType"),
+      accessorKey: "buildingType",
       isSort: true,
-      hasDate: true,
+      hasBadge: true,
+      isCenter: true,
     },
     {
-      label: "Ngày cập nhật",
-      accessorKey: "updatedAt",
+      label: t("building.response.actualNumberOfFloors"),
+      accessorKey: "actualNumberOfFloors",
       isSort: true,
-      hasDate: true,
+      isCenter: true,
     },
+    {
+      label: t("building.response.numberOfFloorsForRent"),
+      accessorKey: "numberOfFloorsForRent",
+      isSort: true,
+      isCenter: true,
+    },
+    { label: t("building.response.description"), accessorKey: "description" },
+    { label: t("building.response.status"), accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
+    { label: t("building.response.createdAt"), accessorKey: "createdAt", isSort: true, hasDate: true },
+    { label: t("building.response.updatedAt"), accessorKey: "updatedAt", isSort: true, hasDate: true },
   ];
 
   return (
@@ -101,7 +107,7 @@ const HistoryBuilding = () => {
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
         <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-5 py-3 justify-between items-center">
-            <h3 className="font-semibold">Lịch sử xóa tòa nhà</h3>
+            <h3 className="font-semibold">{t("building.titleHistory")}</h3>
             <div className="flex gap-2">
               {BUTTON_HISTORY.map((btn, idx) => (
                 <TooltipProvider key={idx}>

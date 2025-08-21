@@ -24,7 +24,7 @@
     "table": {
       "of": "of",
       "selectedLines": "selected lines",
-      "column": "Column",
+      "column": "Columns",
       "showing": "Showing",
       "results": "results",
       "paging": "Number of records per page"
@@ -391,6 +391,7 @@
   },
   "building": {
     "title": "Building",
+    "titleHistory": "Building deletion history",
     "response": {
       "active": "Active",
       "inactive": "Inactive",
@@ -411,6 +412,7 @@
       "buildingType": "-- Building type --"
     },
     "errorFetch": "An error occurred while loading the building",
+    "errorFetchStatistics": "An error occurred while loading building statistics",
     "totalRooms": "Total rooms",
     "roomsAvailable": "Total number of rooms available",
     "addOrUpdate": {
