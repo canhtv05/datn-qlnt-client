@@ -9,6 +9,7 @@ import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CircleCheck, House, XCircle } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -264,20 +265,21 @@ export const useBuilding = () => {
     retry: 1,
   });
 
+  const { t } = useTranslation();
   const dataBuildings: StatisticCardType[] = [
     {
       icon: House,
-      label: "Tòa nhà",
+      label: t("building.title"),
       value: statistics?.data.totalBuilding ?? 0,
     },
     {
       icon: CircleCheck,
-      label: "Hoạt động",
+      label: t("building.response.active"),
       value: statistics?.data.activeBuilding ?? 0,
     },
     {
       icon: XCircle,
-      label: "Không hoạt động",
+      label: t("building.response.inactive"),
       value: statistics?.data.inactiveBuilding ?? 0,
     },
   ];

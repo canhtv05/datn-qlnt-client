@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { Bed, BedDouble, Building2, Castle, CircleDot, Home, Landmark, Layers3, MapPin } from "lucide-react";
 import { JSX, useEffect } from "react";
 import { useSidebar } from "@/components/ui/sidebar";
+import { useTranslation } from "react-i18next";
 
 const getIconByBuildingType = (type: BuildingType, status: BuildingStatus): JSX.Element => {
   const colorClass = status === BuildingStatus.HOAT_DONG ? "text-primary" : "text-yellow-500";
@@ -41,6 +42,7 @@ const styleGridItemWithSidebar = (open: boolean, length: number | undefined) => 
 };
 
 const SelectBuilding = () => {
+  const { t } = useTranslation();
   const { open } = useSidebar();
 
   const { data, isError, isLoading } = useQuery<ApiResponse<IBuildingCardsResponse[]>>({
@@ -53,8 +55,8 @@ const SelectBuilding = () => {
   });
 
   useEffect(() => {
-    if (isError) toast.error("Không lấy được dữ liệu tòa nhà");
-  }, [isError]);
+    if (isError) toast.error(t("building.errorFetch"));
+  }, [isError, t]);
 
   return (
     <div
@@ -109,7 +111,7 @@ const SelectBuilding = () => {
                       <Building2
                         className={`w-4 h-4 ${d.status === "HOAT_DONG" ? "text-primary" : "text-yellow-500"} stroke-2`}
                       />
-                      Tên tòa nhà:
+                      {t("building.response.buildingName")}:
                       <span className="ml-2 font-normal truncate">{d?.buildingName ?? ""}</span>
                     </span>
 
@@ -117,7 +119,7 @@ const SelectBuilding = () => {
                       <Layers3
                         className={`w-4 h-4 ${d.status === "HOAT_DONG" ? "text-primary" : "text-yellow-500"} stroke-2`}
                       />
-                      Loại tòa nhà:
+                      {t("building.response.buildingType")}:
                       <span className="ml-auto">{d.buildingType ? <StatusBadge status={d?.buildingType} /> : ""}</span>
                     </span>
 
@@ -125,15 +127,14 @@ const SelectBuilding = () => {
                       <BedDouble
                         className={`w-4 h-4 ${d.status === "HOAT_DONG" ? "text-primary" : "text-yellow-500"} stroke-2`}
                       />
-                      Tổng số phòng:
-                      <span className="ml-auto font-normal">{d?.totalRoom ?? 0}</span>
+                      {t("building.totalRooms")}: <span className="ml-auto font-normal">{d?.totalRoom ?? 0}</span>
                     </span>
 
                     <span className="flex items-center gap-2 font-bold">
                       <Bed
                         className={`w-4 h-4 ${d.status === "HOAT_DONG" ? "text-primary" : "text-yellow-500"} stroke-2`}
                       />
-                      Tổng số phòng trống:
+                      {t("building.roomsAvailable")}:{" "}
                       <span className="ml-auto font-normal">{d?.totalRoomAvail ?? 0}</span>
                     </span>
 
@@ -141,15 +142,14 @@ const SelectBuilding = () => {
                       <CircleDot
                         className={`w-4 h-4 ${d.status === "HOAT_DONG" ? "text-primary" : "text-yellow-500"} stroke-2`}
                       />
-                      Trạng thái:
+                      {t("building.response.status")}:
                       <span className="ml-auto">{d.status ? <StatusBadge status={d.status} /> : ""}</span>
                     </span>
                     <span className="flex items-center gap-2 font-bold">
                       <MapPin
                         className={`w-4 h-4 ${d.status === "HOAT_DONG" ? "text-primary" : "text-yellow-500"} stroke-2`}
                       />
-                      Địa chỉ:
-                      <span className="ml-auto font-normal">{d.address}</span>
+                      {t("building.response.address")}: <span className="ml-auto font-normal">{d.address}</span>
                     </span>
                   </div>
                 </CardContent>

@@ -1,10 +1,12 @@
-import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
+import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
 import { BuildingType } from "@/enums";
 import { ICreateBuildingValue } from "@/types";
+import { TFunction } from "i18next";
 import { MapPin } from "lucide-react";
 import { Dispatch } from "react";
+import { useTranslation } from "react-i18next";
 
 interface AddOrUpdateBuildingProps {
   value: ICreateBuildingValue;
@@ -14,34 +16,37 @@ interface AddOrUpdateBuildingProps {
   // address: ReactNode;
 }
 
-const buildingType: FieldsSelectLabelType[] = [
-  {
-    label: "Nhà trọ",
-    value: BuildingType.NHA_TRO,
-  },
-  {
-    label: "Căn hộ dịch vụ",
-    value: BuildingType.CAN_HO_DICH_VU,
-  },
-  {
-    label: "Chung cư mini",
-    value: BuildingType.CHUNG_CU_MINI,
-  },
-  {
-    label: "Khác",
-    value: BuildingType.KHAC,
-  },
-];
+const buildingType = (t: TFunction<"translation", undefined>) => {
+  return [
+    {
+      label: t("statusBadge.buildingType.nhaTro"),
+      value: BuildingType.NHA_TRO,
+    },
+    {
+      label: t("statusBadge.buildingType.canHoDichVu"),
+      value: BuildingType.CAN_HO_DICH_VU,
+    },
+    {
+      label: t("statusBadge.buildingType.chungCuMini"),
+      value: BuildingType.CHUNG_CU_MINI,
+    },
+    {
+      label: t("statusBadge.buildingType.other"),
+      value: BuildingType.KHAC,
+    },
+  ];
+};
 
 const AddOrUpdateBuilding = ({ value, handleChange, setValue, errors }: AddOrUpdateBuildingProps) => {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-3">
       <InputLabel
         id="buildingName"
         name="buildingName"
-        placeholder="Tên tòa nhà"
+        placeholder={t("building.response.buildingName")}
         required
-        label="Tên tòa nhà:"
+        label={t("building.addOrUpdate.buildingName")}
         value={value.buildingName ?? ""}
         onChange={handleChange}
         errorText={errors.buildingName}
@@ -52,9 +57,9 @@ const AddOrUpdateBuilding = ({ value, handleChange, setValue, errors }: AddOrUpd
       <InputLabel
         id="address"
         name="address"
-        placeholder="16 Phạm Hùng"
+        placeholder={t("building.addOrUpdate.placeholderAddress")}
         required
-        label="Địa chỉ chi tiết:"
+        label={t("building.addOrUpdate.detailedAddress")}
         icon={<MapPin className="size-4" />}
         value={value.address ?? ""}
         onChange={handleChange}
@@ -62,14 +67,14 @@ const AddOrUpdateBuilding = ({ value, handleChange, setValue, errors }: AddOrUpd
       />
 
       <FieldsSelectLabel
-        data={buildingType}
-        placeholder="-- Chọn loại tòa nhà --"
-        label="Loại tòa nhà:"
+        data={buildingType(t)}
+        placeholder={t("building.addOrUpdate.selectBuilding")}
+        label={t("building.addOrUpdate.buildingType")}
         id="buildingType"
         name="buildingType"
         value={value.buildingType ?? ""}
         onChange={(val) => setValue((prev) => ({ ...prev, buildingType: val as BuildingType }))}
-        labelSelect="Xã/Phường"
+        labelSelect={t("building.addOrUpdate.labelSelectBuildingType")}
         showClear
         errorText={errors.buildingType}
       />
@@ -80,7 +85,7 @@ const AddOrUpdateBuilding = ({ value, handleChange, setValue, errors }: AddOrUpd
           name="actualNumberOfFloors"
           placeholder="1"
           required
-          label="Số tầng thực tế:"
+          label={t("building.addOrUpdate.actualNumberOfFloors")}
           value={value.actualNumberOfFloors ?? ""}
           onChange={handleChange}
           errorText={errors.actualNumberOfFloors?.toString()}
@@ -91,7 +96,7 @@ const AddOrUpdateBuilding = ({ value, handleChange, setValue, errors }: AddOrUpd
           name="numberOfFloorsForRent"
           placeholder="1"
           required
-          label="Số tầng cho thuê:"
+          label={t("building.addOrUpdate.numberOfFloorsForRent")}
           value={value.numberOfFloorsForRent ?? ""}
           onChange={handleChange}
           errorText={errors.numberOfFloorsForRent?.toString()}
@@ -101,8 +106,8 @@ const AddOrUpdateBuilding = ({ value, handleChange, setValue, errors }: AddOrUpd
       <TextareaLabel
         id="description"
         name="description"
-        placeholder="Nhập mô tả"
-        label="Mô tả:"
+        placeholder={t("building.addOrUpdate.placeholderDescription")}
+        label={t("building.addOrUpdate.description")}
         value={value.description ?? ""}
         onChange={(e) => setValue((prev) => ({ ...prev, description: e.target.value }))}
       />

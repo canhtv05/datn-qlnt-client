@@ -131,7 +131,7 @@ const BuildingButton = ({ ids, data }: { ids: Record<string, boolean>; data: Bui
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveBuildingByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tòa nhà đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("common.confirmDialog.delete", { name: t("building.title") }),
     type: "warn",
   });
 
@@ -169,14 +169,14 @@ const BuildingButton = ({ ids, data }: { ids: Record<string, boolean>; data: Bui
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Tòa nhà</h3>
+        <h3 className="font-semibold">{t("building.title")}</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS_HISTORY.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Tòa nhà"
+                    title={t("building.title")}
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">

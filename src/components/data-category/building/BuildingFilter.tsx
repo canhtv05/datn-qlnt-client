@@ -5,6 +5,7 @@ import RenderIf from "@/components/RenderIf";
 import { BuildingStatus, BuildingType } from "@/enums";
 import { switchGrid3 } from "@/lib/utils";
 import { Dispatch, FormEvent, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface FilterValues {
   query: string;
@@ -20,6 +21,7 @@ export interface BuildingFilterProps {
 }
 
 const BuildingFilter = ({ props, type }: { props: BuildingFilterProps; type: "default" | "restore" }) => {
+  const { t } = useTranslation();
   const { query, status, buildingType } = props.filterValues;
   const setFilterValues = props.setFilterValues;
 
@@ -37,11 +39,11 @@ const BuildingFilter = ({ props, type }: { props: BuildingFilterProps; type: "de
       <div className={switchGrid3(type)}>
         <RenderIf value={type === "default"}>
           <FieldsSelectLabel
-            placeholder="-- Trạng thái hoạt động --"
-            labelSelect="Trạng thái"
+            placeholder={t("building.filter.status")}
+            labelSelect={t("building.response.status")}
             data={[
-              { label: "Hoạt động", value: BuildingStatus.HOAT_DONG },
-              { label: "Tạm khóa", value: BuildingStatus.TAM_KHOA },
+              { label: t("statusBadge.buildingStatus.active"), value: BuildingStatus.HOAT_DONG },
+              { label: t("statusBadge.buildingStatus.locked"), value: BuildingStatus.TAM_KHOA },
             ]}
             value={status}
             onChange={(value) => handleChange("status", String(value))}
@@ -49,13 +51,13 @@ const BuildingFilter = ({ props, type }: { props: BuildingFilterProps; type: "de
           />
         </RenderIf>
         <FieldsSelectLabel
-          placeholder="-- Loại nhà --"
-          labelSelect="Loại nhà"
+          placeholder={t("building.filter.buildingType")}
+          labelSelect={t("building.response.buildingType")}
           data={[
-            { label: "Căn hộ dịch vụ", value: BuildingType.CAN_HO_DICH_VU },
-            { label: "Chung cư mini", value: BuildingType.CHUNG_CU_MINI },
-            { label: "Nhà trọ", value: BuildingType.NHA_TRO },
-            { label: "Khác", value: BuildingType.KHAC },
+            { label: t("statusBadge.buildingType.canHoDichVu"), value: BuildingType.CAN_HO_DICH_VU },
+            { label: t("statusBadge.buildingType.chungCuMini"), value: BuildingType.CHUNG_CU_MINI },
+            { label: t("statusBadge.buildingType.nhaTro"), value: BuildingType.NHA_TRO },
+            { label: t("statusBadge.buildingType.other"), value: BuildingType.KHAC },
           ]}
           value={buildingType}
           onChange={(value) => handleChange("buildingType", String(value))}
@@ -65,7 +67,7 @@ const BuildingFilter = ({ props, type }: { props: BuildingFilterProps; type: "de
           type="text"
           id="search"
           name="search"
-          placeholder="Tìm kiếm"
+          placeholder={t("common.button.search")}
           value={query}
           onChange={(e) => handleChange("query", e.target.value)}
         />

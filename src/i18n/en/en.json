@@ -16,10 +16,23 @@
       "download": "Download",
       "downloadExcel": "Download Excel",
       "addNew": "Add new",
-      "history": "History"
+      "history": "History",
+      "confirm": "Confirm"
     },
     "noData": "No data",
-    "selectDateRange": "Select date range"
+    "selectDateRange": "Select date range",
+    "table": {
+      "of": "of",
+      "selectedLines": "selected lines",
+      "column": "Column",
+      "showing": "Showing",
+      "results": "results",
+      "paging": "Number of records per page"
+    },
+    "confirmDialog": {
+      "confirm": "Are you sure you want to continue?",
+      "delete": "This action will permanently delete the selected {{name}}. Are you sure you want to continue?"
+    }
   },
   "actions": {
     "serviceActions": {
@@ -72,6 +85,7 @@
   "profile": {
     "personalProfile": "Personal profile",
     "logout": "Logout",
+    "confirmLogout": "You will be logged out of the system. This action will end your current session",
     "manager": "Manager",
     "user": "User",
     "admin": "Admin",
@@ -373,6 +387,43 @@
       "common": "General",
       "system": "System",
       "other": "Other"
+    }
+  },
+  "building": {
+    "title": "Building",
+    "response": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "buildingCode": "Building code",
+      "actions": "Actions",
+      "buildingName": "Building name",
+      "address": "Address",
+      "buildingType": "Building type",
+      "actualNumberOfFloors": "Actual floors",
+      "numberOfFloorsForRent": "Floors for rent",
+      "description": "Description",
+      "status": "Status",
+      "createdAt": "Created at",
+      "updatedAt": "Updated at"
+    },
+    "filter": {
+      "status": "-- Status --",
+      "buildingType": "-- Building type --"
+    },
+    "errorFetch": "An error occurred while loading the building",
+    "totalRooms": "Total rooms",
+    "roomsAvailable": "Total number of rooms available",
+    "addOrUpdate": {
+      "buildingName": "Building name:",
+      "detailedAddress": "Detailed address",
+      "placeholderAddress": "Hanoi",
+      "selectBuilding": "-- Select building type --",
+      "buildingType": "Building type:",
+      "labelSelectBuildingType": "Ward/Commune",
+      "actualNumberOfFloors": "Actual number of floors:",
+      "numberOfFloorsForRent": "Number of floors for rent:",
+      "description": "Description:",
+      "placeholderDescription": "Enter description"
     }
   }
 }

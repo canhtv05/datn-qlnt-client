@@ -26,6 +26,7 @@ import {
 } from "./ui/dropdown-menu";
 import { Input } from "./ui/input";
 import NoData from "./NoData";
+import { useTranslation } from "react-i18next";
 
 type DataTableProps<T> = {
   data: T[];
@@ -54,6 +55,7 @@ export default function DataTable<T extends { id: string }>({
   setRowSelection,
   disableSelect = false,
 }: DataTableProps<T>) {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = React.useState<string>();
   const [searchParams, setSearchParams] = useSearchParams();
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -139,14 +141,14 @@ export default function DataTable<T extends { id: string }>({
       <div className="flex-1 text-sm text-muted-foreground py-2 flex justify-between items-center">
         {!disableSelect && (
           <span>
-            {table.getFilteredSelectedRowModel().rows.length} trên {table.getFilteredRowModel().rows.length} dòng được
-            chọn
+            {table.getFilteredSelectedRowModel().rows.length} {t("common.table.of")}{" "}
+            {table.getFilteredRowModel().rows.length} {t("common.table.selectedLines")}
           </span>
         )}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              <Columns3 /> Cột <ChevronDown className="ml-3" />
+              <Columns3 /> {t("common.table.column")} <ChevronDown className="ml-3" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -155,7 +157,7 @@ export default function DataTable<T extends { id: string }>({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-8"
-                placeholder="Tìm kiếm"
+                placeholder={t("common.button.search")}
                 onKeyDown={(e) => e.stopPropagation()}
               />
               <SearchIcon className="absolute inset-y-0 my-auto left-2 h-4 w-4" />
@@ -195,7 +197,7 @@ export default function DataTable<T extends { id: string }>({
                 setSearchQuery("");
               }}
             >
-              <RefreshCcw className="icon" /> Làm mới
+              <RefreshCcw className="icon" /> {t("common.button.reload")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -254,10 +256,10 @@ export default function DataTable<T extends { id: string }>({
       {!disablePagination && (
         <div className="flex md:flex-row flex-col items-center justify-between space-x-2 py-3">
           <div className="flex items-center gap-2 md:pb-0 pb-5">
-            <span className="text-[13px]">Hiển thị</span>
+            <span className="text-[13px]">{t("common.table.showing")}</span>
             <FieldsSelectLabel
-              placeholder="Số bản ghi mỗi trang"
-              labelSelect="Số bản ghi mỗi trang"
+              placeholder={t("common.table.paging")}
+              labelSelect={t("common.table.paging")}
               data={[
                 { label: "15", value: 15 },
                 { label: "30", value: 30 },
@@ -268,7 +270,9 @@ export default function DataTable<T extends { id: string }>({
               name="size"
               classNameTrigger="h-8"
             />
-            <span className="text-[13px]">trên tổng số {totalElements} kết quả</span>
+            <span className="text-[13px]">
+              {t("common.table.of")} {totalElements} {t("common.table.results")}
+            </span>
           </div>
           <div className="h-full flex items-center gap-2 flex-wrap">
             <Button

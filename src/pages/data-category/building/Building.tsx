@@ -37,9 +37,9 @@ const Building = () => {
   const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Mã tòa nhà", accessorKey: "buildingCode", isSort: true, hasHighlight: true },
+    { label: t("building.response.buildingCode"), accessorKey: "buildingCode", isSort: true, hasHighlight: true },
     {
-      label: "Thao tác",
+      label: t("building.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -52,7 +52,7 @@ const Building = () => {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
-                      size={"icon"}
+                      size="icon"
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => {
@@ -63,20 +63,11 @@ const Building = () => {
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent
-                    className="text-white"
-                    style={{
-                      background: btn.arrowColor,
-                    }}
-                    arrow={false}
-                  >
+                  <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
                     <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
-                      style={{
-                        fill: btn.arrowColor,
-                        background: btn.arrowColor,
-                      }}
-                      className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                      style={{ fill: btn.arrowColor, background: btn.arrowColor }}
+                      className="size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
                     />
                   </TooltipContent>
                 </Tooltip>
@@ -86,25 +77,31 @@ const Building = () => {
         );
       },
     },
-    { label: "Tên tòa nhà", accessorKey: "buildingName", isSort: true },
-    { label: "Địa chỉ", accessorKey: "address", isSort: true },
-    { label: "Loại tòa nhà", accessorKey: "buildingType", isSort: true, hasBadge: true, isCenter: true },
-    { label: "Số tầng thực tế", accessorKey: "actualNumberOfFloors", isSort: true, isCenter: true },
-    { label: "Số tầng cho thuê", accessorKey: "numberOfFloorsForRent", isSort: true, isCenter: true },
-    { label: "Mô tả", accessorKey: "description" },
-    { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
+    { label: t("building.response.buildingName"), accessorKey: "buildingName", isSort: true },
+    { label: t("building.response.address"), accessorKey: "address", isSort: true },
     {
-      label: "Ngày tạo",
-      accessorKey: "createdAt",
+      label: t("building.response.buildingType"),
+      accessorKey: "buildingType",
       isSort: true,
-      hasDate: true,
+      hasBadge: true,
+      isCenter: true,
     },
     {
-      label: "Ngày cập nhật",
-      accessorKey: "updatedAt",
+      label: t("building.response.actualNumberOfFloors"),
+      accessorKey: "actualNumberOfFloors",
       isSort: true,
-      hasDate: true,
+      isCenter: true,
     },
+    {
+      label: t("building.response.numberOfFloorsForRent"),
+      accessorKey: "numberOfFloorsForRent",
+      isSort: true,
+      isCenter: true,
+    },
+    { label: t("building.response.description"), accessorKey: "description" },
+    { label: t("building.response.status"), accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
+    { label: t("building.response.createdAt"), accessorKey: "createdAt", isSort: true, hasDate: true },
+    { label: t("building.response.updatedAt"), accessorKey: "updatedAt", isSort: true, hasDate: true },
   ];
 
   return (
@@ -125,7 +122,7 @@ const Building = () => {
           setRowSelection={setRowSelection}
         />
         <Modal
-          title="Tòa nhà"
+          title={t("building.title")}
           trigger={null}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
