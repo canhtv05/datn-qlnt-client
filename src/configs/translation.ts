@@ -12,16 +12,15 @@ const resources = {
 };
 
 const json = localStorage.getItem(keyStorage.key);
-let dataStorage = {};
+let dataStorage: { language?: string } = {};
 if (json) dataStorage = JSON.parse(json);
 
 if (!dataStorage.language) {
   dataStorage = { ...dataStorage, language: "en" };
-  console.log(dataStorage);
   localStorage.setItem(keyStorage.key, JSON.stringify(dataStorage));
 }
 
-const language = dataStorage.language;
+const language = dataStorage.language!;
 
 i18next.use(initReactI18next).init({
   resources,

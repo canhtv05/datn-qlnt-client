@@ -5,6 +5,7 @@ import TextareaLabel from "@/components/TextareaLabel";
 import { GENDER_OPTIONS } from "@/constant";
 import { ICreateAndUpdateTenant } from "@/types";
 import { Dispatch } from "react";
+import { useTranslation } from "react-i18next";
 
 interface AddOrUpdateTenantProps {
   value: ICreateAndUpdateTenant;
@@ -15,6 +16,7 @@ interface AddOrUpdateTenantProps {
 }
 
 const AddOrUpdateTenant = ({ value, handleChange, setValue, errors, onBlur }: AddOrUpdateTenantProps) => {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-3">
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
@@ -30,7 +32,7 @@ const AddOrUpdateTenant = ({ value, handleChange, setValue, errors, onBlur }: Ad
           onBlur={onBlur}
         />
         <FieldsSelectLabel
-          data={GENDER_OPTIONS}
+          data={GENDER_OPTIONS(t)}
           placeholder="-- Chọn giới tính --"
           label="Giới tính:"
           id="gender"

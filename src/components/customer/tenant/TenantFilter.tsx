@@ -7,6 +7,7 @@ import { TenantStatus } from "@/enums";
 import { switchGrid3 } from "@/lib/utils";
 import { TenantFilterValues } from "@/types";
 import { Dispatch, FormEvent, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface TenantFilterProps {
   filterValues: TenantFilterValues;
@@ -16,6 +17,7 @@ export interface TenantFilterProps {
 }
 
 const TenantFilter = ({ props, type }: { props: TenantFilterProps; type: "default" | "restore" }) => {
+  const { t } = useTranslation();
   const { gender, query, tenantStatus } = props.filterValues;
   const setFilterValues = props.setFilterValues;
 
@@ -50,7 +52,7 @@ const TenantFilter = ({ props, type }: { props: TenantFilterProps; type: "defaul
         <FieldsSelectLabel
           placeholder="-- Chọn giới tính --"
           labelSelect="Giới tính"
-          data={GENDER_OPTIONS}
+          data={GENDER_OPTIONS(t)}
           value={gender}
           onChange={(value) => handleChange("gender", String(value))}
           name="gender"
