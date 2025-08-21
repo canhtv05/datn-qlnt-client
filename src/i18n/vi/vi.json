@@ -6,10 +6,35 @@
       "delete": "Xóa",
       "save": "Lưu",
       "update": "Cập nhật",
-      "reload": "Làm mới"
+      "reload": "Làm mới",
+      "restore": "Khôi phục",
+      "toggle": "Chuyển đổi",
+      "changeStatus": "Đổi trạng thái",
+      "view": "Xem",
+      "paymentConfirmed": "Xác nhận đã thanh toán",
+      "docx": "Tải lên Docx",
+      "download": "Tải xuống",
+      "downloadExcel": "Tải xuống Excel",
+      "addNew": "Thêm mới",
+      "history": "Xem Lịch sử"
     },
     "noData": "Không có dữ liệu",
     "selectDateRange": "Chọn khoảng thời gian"
+  },
+  "actions": {
+    "serviceActions": {
+      "default": "Thêm 1 dịch vụ cho 1 phòng",
+      "building": "Thêm 1 dịch vụ cho tất cả các phòng trong 1 tòa nhà",
+      "floor": "Thêm 1 dịch vụ vào các phòng",
+      "undo": "Thêm các dịch vụ vào phòng cho 1 phòng",
+      "addToBuilding": "Thêm vào tòa nhà",
+      "addMore": "Thêm nhiều"
+    },
+    "invoiceActions": {
+      "createBuildingInvoice": "Tạo hóa đơn tòa nhà",
+      "createBuildingContract": "Tạo hóa đơn hợp đồng",
+      "view": "Xem hóa đơn"
+    }
   },
   "status": {
     "updateSuccess": "Cập nhật thành công",

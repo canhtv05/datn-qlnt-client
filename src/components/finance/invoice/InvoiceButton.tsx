@@ -36,6 +36,7 @@ import {
   invoiceStatusEnumToString,
   invoiceTypeEnumToString,
 } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const InvoiceButton = ({
   ids,
@@ -51,6 +52,7 @@ const InvoiceButton = ({
   // floorInitToAdd: ApiResponse<IdAndName[]> | undefined;
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [valueContract, setValueContract] = useState<InvoiceCreationRequest>({
     contractId: "",
     note: "",
@@ -265,7 +267,7 @@ const InvoiceButton = ({
 
   const ADD_BUTTON: IBtnType[] = [
     {
-      tooltipContent: "Xem lịch sử",
+      tooltipContent: "common.button.history",
       icon: History,
       arrowColor: "#5a5e78",
       type: "history",
@@ -275,7 +277,7 @@ const InvoiceButton = ({
       icon: Building,
       arrowColor: "var(--color-sky-500)",
       hasConfirm: true,
-      tooltipContent: "Tạo hóa đơn tòa nhà",
+      tooltipContent: "actions.invoiceActions.createBuildingInvoice",
       type: "building",
     },
     // {
@@ -289,7 +291,7 @@ const InvoiceButton = ({
       icon: FileText,
       arrowColor: "var(--color-indigo-500)",
       hasConfirm: true,
-      tooltipContent: "Tạo hóa đơn hợp đồng",
+      tooltipContent: "actions.invoiceActions.createBuildingContract",
       type: "contract",
     },
     // {
@@ -430,7 +432,7 @@ const InvoiceButton = ({
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

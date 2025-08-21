@@ -37,6 +37,7 @@ import CreateRoomServiceForService from "./CreateRoomServiceForService";
 import CreateRoomServiceForRoom from "./CreateRoomServiceForRoom";
 import { useParams } from "react-router-dom";
 import { handleExportExcel, roomStatusEnumToString, roomTypeEnumToString } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const ServiceRoomButton = ({
   ids,
@@ -51,6 +52,7 @@ const ServiceRoomButton = ({
   buildingOptions: FieldsSelectLabelType[] | Option[] | undefined;
   data?: ServiceRoomView[];
 }) => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [value, setValue] = useState<ServiceRoomCreationRequest>({
     roomId: "",
@@ -424,7 +426,7 @@ const ServiceRoomButton = ({
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

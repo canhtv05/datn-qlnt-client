@@ -12,6 +12,7 @@ import AssetFilter from "@/components/data-category/asset/AssetFilter";
 import AddOrUpdateAsset from "@/components/data-category/asset/AddOrUpdateAsset";
 import { GET_BTNS } from "@/constant";
 import StatisticCard from "@/components/StatisticCard";
+import { useTranslation } from "react-i18next";
 
 const Asset = () => {
   const {
@@ -33,6 +34,7 @@ const Asset = () => {
     ConfirmDialog,
   } = useAsset();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     { label: "Tên tài sản", accessorKey: "nameAsset", isSort: true },
@@ -69,7 +71,7 @@ const Asset = () => {
                     }}
                     arrow={false}
                   >
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,

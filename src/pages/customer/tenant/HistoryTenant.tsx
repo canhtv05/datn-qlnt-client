@@ -10,6 +10,7 @@ import { Notice } from "@/enums";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import TenantFilter from "@/components/customer/tenant/TenantFilter";
+import { useTranslation } from "react-i18next";
 
 const HistoryTenant = () => {
   const {
@@ -25,6 +26,7 @@ const HistoryTenant = () => {
     openDialogAll,
   } = useHistoryTenant();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     { label: "Mã khách hàng", accessorKey: "customerCode", isSort: true, hasHighlight: true },
@@ -59,7 +61,7 @@ const HistoryTenant = () => {
                     }}
                     arrow={false}
                   >
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,
@@ -163,7 +165,7 @@ const HistoryTenant = () => {
                       }}
                       arrow={false}
                     >
-                      <p>{btn.tooltipContent}</p>
+                      <p>{t(btn.tooltipContent)}</p>
                       <TooltipPrimitive.Arrow
                         style={{
                           fill: btn.arrowColor,

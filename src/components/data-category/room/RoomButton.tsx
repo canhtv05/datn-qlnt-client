@@ -17,8 +17,10 @@ import { createOrUpdateRoomSchema } from "@/lib/validation";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatDate, handleExportExcel, roomStatusEnumToString, roomTypeEnumToString } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const RoomButton = ({ ids, data }: { ids: Record<string, boolean>; data: RoomResponse[] | undefined }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [value, setValue] = useState<RoomFormValue>({
     floorId: "",
@@ -195,7 +197,7 @@ const RoomButton = ({ ids, data }: { ids: Record<string, boolean>; data: RoomRes
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

@@ -6,10 +6,35 @@
       "delete": "Delete",
       "save": "Save",
       "update": "Update",
-      "reload": "Reload"
+      "reload": "Reload",
+      "restore": "Restore",
+      "toggle": "Toggle",
+      "changeStatus": "Change status",
+      "view": "View",
+      "paymentConfirmed": "Payment confirmed",
+      "docx": "Upload Docx",
+      "download": "Download",
+      "downloadExcel": "Download Excel",
+      "addNew": "Add new",
+      "history": "History"
     },
     "noData": "No data",
     "selectDateRange": "Select date range"
+  },
+  "actions": {
+    "serviceActions": {
+      "default": "Add a service to a room",
+      "building": "Add a service to all rooms in a building",
+      "floor": "Add a service to rooms",
+      "undo": "Undo services added to a room",
+      "addToBuilding": "Add to building",
+      "addMore": "Add more"
+    },
+    "invoiceActions": {
+      "createBuildingInvoice": "Create building invoice",
+      "createBuildingContract": "Create building contract",
+      "view": "View contract"
+    }
   },
   "status": {
     "updateSuccess": "Update successful",

@@ -18,6 +18,7 @@ import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateDefaultService from "./AddOrUpdateDefaultService";
+import { useTranslation } from "react-i18next";
 
 const DefaultServiceButton = ({
   ids,
@@ -26,6 +27,7 @@ const DefaultServiceButton = ({
   ids: Record<string, boolean>;
   defaultServiceInit: ApiResponse<DefaultServiceInitResponse> | undefined;
 }) => {
+  const { t } = useTranslation();
   const [value, setValue] = useState<DefaultServiceCreationRequest>({
     buildingId: "",
     defaultServiceAppliesTo: "",
@@ -205,7 +207,7 @@ const DefaultServiceButton = ({
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

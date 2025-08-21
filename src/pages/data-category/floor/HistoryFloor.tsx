@@ -8,6 +8,7 @@ import { useHistoryFloor } from "./useHistoryFloor";
 import { BUTTON_HISTORY, GET_BTNS } from "@/constant";
 import { Notice } from "@/enums";
 import FloorFilter from "@/components/data-category/floor/FloorFilter";
+import { useTranslation } from "react-i18next";
 
 const HistoryFloor = () => {
   const {
@@ -23,6 +24,7 @@ const HistoryFloor = () => {
     openDialogAll,
   } = useHistoryFloor();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     { label: "Tên tầng", accessorKey: "nameFloor", isSort: true },
@@ -57,7 +59,7 @@ const HistoryFloor = () => {
                     }}
                     arrow={false}
                   >
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,
@@ -138,7 +140,7 @@ const HistoryFloor = () => {
                       }}
                       arrow={false}
                     >
-                      <p>{btn.tooltipContent}</p>
+                      <p>{t(btn.tooltipContent)}</p>
                       <TooltipPrimitive.Arrow
                         style={{
                           fill: btn.arrowColor,

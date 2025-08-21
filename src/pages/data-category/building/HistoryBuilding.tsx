@@ -8,6 +8,7 @@ import { useHistoryBuilding } from "./useHistoryBuilding";
 import { BUTTON_HISTORY, GET_BTNS } from "@/constant";
 import { Notice } from "@/enums";
 import BuildingFilter from "@/components/data-category/building/BuildingFilter";
+import { useTranslation } from "react-i18next";
 
 const HistoryBuilding = () => {
   const {
@@ -23,6 +24,7 @@ const HistoryBuilding = () => {
     openDialogAll,
   } = useHistoryBuilding();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     { label: "Mã tòa nhà", accessorKey: "buildingCode", isSort: true, hasHighlight: true },
@@ -57,7 +59,7 @@ const HistoryBuilding = () => {
                     }}
                     arrow={false}
                   >
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,
@@ -140,7 +142,7 @@ const HistoryBuilding = () => {
                       }}
                       arrow={false}
                     >
-                      <p>{btn.tooltipContent}</p>
+                      <p>{t(btn.tooltipContent)}</p>
                       <TooltipPrimitive.Arrow
                         style={{
                           fill: btn.arrowColor,

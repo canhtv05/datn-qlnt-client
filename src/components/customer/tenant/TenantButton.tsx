@@ -20,8 +20,10 @@ import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateTenant from "./AddOrUpdateTenant";
 import { useNavigate } from "react-router-dom";
 import { formatDate, genderEnumToString, handleExportExcel, tenantStatusEnumToString } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: TenantResponse[] }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [value, setValue] = useState<ICreateAndUpdateTenant>({
     address: "",
@@ -214,7 +216,7 @@ const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Tena
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

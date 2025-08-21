@@ -8,6 +8,7 @@ import { useHistoryService } from "./useHistoryService";
 import { BUTTON_HISTORY, GET_BTNS } from "@/constant";
 import { Notice } from "@/enums";
 import ServiceFilter from "@/components/data-category/service/ServiceFilter";
+import { useTranslation } from "react-i18next";
 
 const HistoryService = () => {
   const {
@@ -23,6 +24,7 @@ const HistoryService = () => {
     openDialogAll,
   } = useHistoryService();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     {
@@ -61,7 +63,7 @@ const HistoryService = () => {
                     }}
                     arrow={false}
                   >
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,
@@ -174,7 +176,7 @@ const HistoryService = () => {
                       }}
                       arrow={false}
                     >
-                      <p>{btn.tooltipContent}</p>
+                      <p>{t(btn.tooltipContent)}</p>
                       <TooltipPrimitive.Arrow
                         style={{
                           fill: btn.arrowColor,

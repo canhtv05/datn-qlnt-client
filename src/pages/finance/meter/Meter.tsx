@@ -11,6 +11,7 @@ import { useMeter } from "./useMeter";
 import MeterButton from "@/components/finance/meter/MeterButton";
 import MeterFilter from "@/components/finance/meter/MeterFilter";
 import AddOrUpdateMeter from "@/components/finance/meter/AddOrUpdateMeter";
+import { useTranslation } from "react-i18next";
 
 const Meter = () => {
   const {
@@ -32,6 +33,7 @@ const Meter = () => {
     ConfirmDialog,
   } = useMeter();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     {
@@ -70,7 +72,7 @@ const Meter = () => {
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,

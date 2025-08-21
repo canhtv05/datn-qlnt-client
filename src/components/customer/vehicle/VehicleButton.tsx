@@ -20,6 +20,7 @@ import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateVehicle from "./AddOrUpdateVehicle";
 import { useNavigate } from "react-router-dom";
 import { formatDate, handleExportExcel, vehicleStatusEnumToString, vehicleTypeEnumToString } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const VehicleButton = ({
   ids,
@@ -30,6 +31,7 @@ const VehicleButton = ({
   tenants?: ApiResponse<TenantResponse[]>;
   data?: VehicleResponse[];
 }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [value, setValue] = useState<ICreateVehicle>({
     describe: "",
@@ -212,7 +214,7 @@ const VehicleButton = ({
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

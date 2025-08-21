@@ -13,6 +13,7 @@ import VehicleFilter from "@/components/customer/vehicle/VehicleFilter";
 import AddOrUpdateVehicle from "@/components/customer/vehicle/AddOrUpdateVehicle";
 import { GET_BTNS } from "@/constant";
 import StatusBadge from "@/components/ui/StatusBadge";
+import { useTranslation } from "react-i18next";
 
 const Vehicle = () => {
   const {
@@ -35,6 +36,7 @@ const Vehicle = () => {
     ConfirmDialog,
   } = useVehicle();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     { label: "Chủ sở hữu", accessorKey: "fullName", isSort: true },
@@ -70,7 +72,7 @@ const Vehicle = () => {
                     }}
                     arrow={false}
                   >
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,

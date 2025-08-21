@@ -25,6 +25,7 @@ import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateMeterReading from "./AddOrUpdateMeterReading";
 import { formatDate, formatNumber, handleExportExcel, meterTypeEnumToString } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const MeterReadingButton = ({
   ids,
@@ -35,6 +36,7 @@ const MeterReadingButton = ({
   ids: Record<string, boolean>;
   meterInitResponse: ApiResponse<MeterFindAllResponse> | undefined;
 }) => {
+  const { t } = useTranslation();
   const [value, setValue] = useState<MeterReadingCreationRequest>({
     descriptionMeterReading: "",
     meterId: "",
@@ -210,7 +212,7 @@ const MeterReadingButton = ({
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

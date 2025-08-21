@@ -26,8 +26,10 @@ import {
   serviceCategoryEnumToString,
   serviceStatusEnumToString,
 } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const ServiceButton = ({ ids, data }: { ids: Record<string, boolean>; data?: ServiceResponse[] }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [value, setValue] = useState<ServiceCreationRequest>({
     description: "",
@@ -204,7 +206,7 @@ const ServiceButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Ser
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

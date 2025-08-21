@@ -8,11 +8,13 @@ import { ACTION_BUTTONS_FOR_PAYMENT_RECEIPT } from "@/constant";
 import { usePaymentReceipt } from "./usePaymentReceipt";
 import PaymentReceiptButton from "@/components/finance/payment-receipt/PaymentReceiptButton";
 import PaymentReceiptFilter from "@/components/finance/payment-receipt/PaymentReceiptFilter";
+import { useTranslation } from "react-i18next";
 
 const PaymentReceipt = () => {
   const { props, data, isLoading, query, handleActionClick, rowSelection, setRowSelection, ConfirmDialog } =
     usePaymentReceipt();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     {
@@ -52,7 +54,7 @@ const PaymentReceipt = () => {
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,

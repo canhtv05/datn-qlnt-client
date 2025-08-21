@@ -22,10 +22,12 @@ import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import { useNavigate } from "react-router-dom";
 import { buildingStatusEnumToString, buildingTypeEnumToString, formatDate, handleExportExcel } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 type AddData = ICreateBuildingValue & { userId: string | undefined };
 
 const BuildingButton = ({ ids, data }: { ids: Record<string, boolean>; data: BuildingResponse[] | undefined }) => {
+  const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
   const [value, setValue] = useState<ICreateBuildingValue>({
     actualNumberOfFloors: undefined,
@@ -214,7 +216,7 @@ const BuildingButton = ({ ids, data }: { ids: Record<string, boolean>; data: Bui
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

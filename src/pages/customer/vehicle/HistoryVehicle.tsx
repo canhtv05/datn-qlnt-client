@@ -9,6 +9,7 @@ import { BUTTON_HISTORY, GET_BTNS } from "@/constant";
 import { Notice } from "@/enums";
 import StatusBadge from "@/components/ui/StatusBadge";
 import VehicleFilter from "@/components/customer/vehicle/VehicleFilter";
+import { useTranslation } from "react-i18next";
 
 const HistoryVehicle = () => {
   const {
@@ -24,6 +25,7 @@ const HistoryVehicle = () => {
     openDialogAll,
   } = useHistoryVehicle();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     { label: "Chủ sở hữu", accessorKey: "fullName", isSort: true },
@@ -58,7 +60,7 @@ const HistoryVehicle = () => {
                     }}
                     arrow={false}
                   >
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,
@@ -171,7 +173,7 @@ const HistoryVehicle = () => {
                       }}
                       arrow={false}
                     >
-                      <p>{btn.tooltipContent}</p>
+                      <p>{t(btn.tooltipContent)}</p>
                       <TooltipPrimitive.Arrow
                         style={{
                           fill: btn.arrowColor,

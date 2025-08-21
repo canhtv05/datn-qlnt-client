@@ -9,11 +9,13 @@ import { GET_BTNS } from "@/constant";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import cookieUtil from "@/utils/cookieUtil";
+import { useTranslation } from "react-i18next";
 
 const UserPaymentReceipt = () => {
   const { props, data, isLoading, query, rowSelection, setRowSelection } = useUserPaymentReceipt();
   const { page, size } = query;
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     {
@@ -53,7 +55,7 @@ const UserPaymentReceipt = () => {
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,

@@ -12,6 +12,7 @@ import AddOrUpdateFloor from "@/components/data-category/floor/AddOrUpdateFloor"
 import FloorButton from "@/components/data-category/floor/FloorButton";
 import FloorFilter from "@/components/data-category/floor/FloorFilter";
 import { GET_BTNS } from "@/constant";
+import { useTranslation } from "react-i18next";
 
 const Floor = () => {
   const {
@@ -33,6 +34,7 @@ const Floor = () => {
     ConfirmDialog,
   } = useFloor();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     { label: "Tên tầng", accessorKey: "nameFloor", isSort: true },
@@ -68,7 +70,7 @@ const Floor = () => {
                     }}
                     arrow={false}
                   >
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,

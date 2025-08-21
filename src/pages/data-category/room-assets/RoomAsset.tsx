@@ -10,6 +10,7 @@ import { GET_BTNS } from "@/constant";
 import RoomAssetFilter from "@/components/data-category/room-assets/RoomAssetFilter";
 import { useNavigate, useParams } from "react-router-dom";
 import RoomAssetButton from "@/components/data-category/room-assets/RoomAssetButton";
+import { useTranslation } from "react-i18next";
 
 const RoomAsset = () => {
   const { data, isLoading, statistics, ConfirmDialog, query, rowSelection, setRowSelection, props } = useRoomAssetAll();
@@ -18,6 +19,7 @@ const RoomAsset = () => {
   const { id } = useParams();
 
   const { page, size } = query;
+  const { t } = useTranslation();
   const columnConfigs: ColumnConfig[] = [
     {
       label: "Mã phòng",
@@ -50,7 +52,7 @@ const RoomAsset = () => {
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

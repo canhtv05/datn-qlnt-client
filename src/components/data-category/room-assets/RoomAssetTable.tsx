@@ -12,6 +12,7 @@ import { Notice } from "@/enums";
 import AddOrUpdateRoomAsset from "./AddOrUpdateRoomAsset";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { Dispatch, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 
 interface RoomAssetTableProps {
   roomId: string;
@@ -35,6 +36,7 @@ const RoomAssetTable: React.FC<RoomAssetTableProps> = ({ roomId }) => {
     ConfirmDialog,
   } = useRoomAsset({ roomId });
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     { label: "Tên tài sản", accessorKey: "assetName", isSort: true },
@@ -70,7 +72,7 @@ const RoomAssetTable: React.FC<RoomAssetTableProps> = ({ roomId }) => {
                     }}
                     arrow={false}
                   >
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,

@@ -9,6 +9,7 @@ import { BUTTON_HISTORY, GET_BTNS } from "@/constant";
 import { Notice } from "@/enums";
 import StatusBadge from "@/components/ui/StatusBadge";
 import ContractFilter from "@/components/customer/contract/ContractFilter";
+import { useTranslation } from "react-i18next";
 
 const HistoryContract = () => {
   const {
@@ -24,6 +25,7 @@ const HistoryContract = () => {
     openDialogAll,
   } = useHistoryContract();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     {
@@ -63,7 +65,7 @@ const HistoryContract = () => {
                     }}
                     arrow={false}
                   >
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,
@@ -189,7 +191,7 @@ const HistoryContract = () => {
                       }}
                       arrow={false}
                     >
-                      <p>{btn.tooltipContent}</p>
+                      <p>{t(btn.tooltipContent)}</p>
                       <TooltipPrimitive.Arrow
                         style={{
                           fill: btn.arrowColor,

@@ -298,700 +298,698 @@ export const COLOR_CLASS = {
     "text-black dark:text-white bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-300 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white",
 };
 
-export const STATUS_BADGE = (t: TFunction<"translation", undefined>) => {
-  return [
-    {
-      value: "__EMPTY__",
-      label: t("statusBadge.empty"),
-      className: COLOR_CLASS.gray,
-    },
-    {
-      value: "",
-      label: t("statusBadge.empty"),
-      className: COLOR_CLASS.gray,
-    },
-    {
-      value: null,
-      label: t("statusBadge.empty"),
-      className: COLOR_CLASS.gray,
-    },
-    {
-      value: "isRepresentative=true",
-      label: t("statusBadge.yes"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: "isRepresentative=false",
-      label: t("statusBadge.no"),
-      className: COLOR_CLASS.stone,
-    },
-    // --- Trạng thái hoạt động của tòa nhà ---
-    {
-      value: BuildingStatus.HOAT_DONG,
-      label: t("statusBadge.buildingStatus.active"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: BuildingStatus.TAM_KHOA,
-      label: t("statusBadge.buildingStatus.locked"),
-      className: COLOR_CLASS.yellow,
-    },
-    {
-      value: BuildingStatus.HUY_HOAT_DONG,
-      label: t("statusBadge.buildingStatus.inactive"),
-      className: COLOR_CLASS.red,
-    },
-    // --- Loại phòng ---
-    {
-      value: RoomType.CAO_CAP,
-      label: t("statusBadge.roomType.vip"),
-      className: COLOR_CLASS.rose,
-    },
-    {
-      value: RoomType.GHEP,
-      label: t("statusBadge.roomType.shared"),
-      className: COLOR_CLASS.blue,
-    },
-    {
-      value: RoomType.DON,
-      label: t("statusBadge.roomType.single"),
-      className: COLOR_CLASS.purple,
-    },
-    {
-      value: RoomType.KHAC,
-      label: t("statusBadge.roomType.other"),
-      className: COLOR_CLASS.neutral,
-    },
-    // --- Loại tòa nhà ---
-    {
-      value: BuildingType.NHA_TRO,
-      label: t("statusBadge.buildingType.nhaTro"),
-      className: COLOR_CLASS.blue,
-    },
-    {
-      value: BuildingType.CHUNG_CU_MINI,
-      label: t("statusBadge.buildingType.chungCuMini"),
-      className: COLOR_CLASS.purple,
-    },
-    {
-      value: BuildingType.CAN_HO_DICH_VU,
-      label: t("statusBadge.buildingType.canHoDichVu"),
-      className: COLOR_CLASS.indigo,
-    },
-    {
-      value: BuildingType.KHAC,
-      label: t("statusBadge.buildingType.other"),
-      className: COLOR_CLASS.neutral,
-    },
-    // --- Trạng thái phòng ---
-    {
-      value: RoomStatus.TRONG,
-      label: t("statusBadge.roomStatus.empty"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: RoomStatus.DA_DAT_COC,
-      label: t("statusBadge.roomStatus.deposit"),
-      className: COLOR_CLASS.yellow,
-    },
-    {
-      value: RoomStatus.DANG_BAO_TRI,
-      label: t("statusBadge.roomStatus.maintain"),
-      className: COLOR_CLASS.gray,
-    },
-    {
-      value: RoomStatus.CHUA_HOAN_THIEN,
-      label: t("statusBadge.roomStatus.unfinished"),
-      className: COLOR_CLASS.blue,
-    },
-    {
-      value: RoomStatus.TAM_KHOA,
-      label: t("statusBadge.roomStatus.locked"),
-      className: COLOR_CLASS.purple,
-    },
-    {
-      value: RoomStatus.HUY_HOAT_DONG,
-      label: t("statusBadge.roomStatus.inactive"),
-      className: COLOR_CLASS.black,
-    },
-    // --- Trạng thái tầng ---
-    {
-      value: FloorStatus.HOAT_DONG,
-      label: t("statusBadge.floorStatus.active"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: FloorStatus.KHONG_SU_DUNG,
-      label: t("statusBadge.floorStatus.inactive"),
-      className: COLOR_CLASS.stone,
-    },
-    {
-      value: FloorStatus.TAM_KHOA,
-      label: t("statusBadge.floorStatus.locked"),
-      className: COLOR_CLASS.yellow,
-    },
-    // --- Loại tầng ---
-    {
-      value: FloorType.CHO_THUE,
-      label: t("statusBadge.floorType.forRent"),
+export const STATUS_BADGE = [
+  {
+    value: "__EMPTY__",
+    label: "statusBadge.empty",
+    className: COLOR_CLASS.gray,
+  },
+  {
+    value: "",
+    label: "statusBadge.empty",
+    className: COLOR_CLASS.gray,
+  },
+  {
+    value: null,
+    label: "statusBadge.empty",
+    className: COLOR_CLASS.gray,
+  },
+  {
+    value: "isRepresentative=true",
+    label: "statusBadge.yes",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: "isRepresentative=false",
+    label: "statusBadge.no",
+    className: COLOR_CLASS.stone,
+  },
+  // --- Trạng thái hoạt động của tòa nhà ---
+  {
+    value: BuildingStatus.HOAT_DONG,
+    label: "statusBadge.buildingStatus.active",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: BuildingStatus.TAM_KHOA,
+    label: "statusBadge.buildingStatus.locked",
+    className: COLOR_CLASS.yellow,
+  },
+  {
+    value: BuildingStatus.HUY_HOAT_DONG,
+    label: "statusBadge.buildingStatus.inactive",
+    className: COLOR_CLASS.red,
+  },
+  // --- Loại phòng ---
+  {
+    value: RoomType.CAO_CAP,
+    label: "statusBadge.roomType.vip",
+    className: COLOR_CLASS.rose,
+  },
+  {
+    value: RoomType.GHEP,
+    label: "statusBadge.roomType.shared",
+    className: COLOR_CLASS.blue,
+  },
+  {
+    value: RoomType.DON,
+    label: "statusBadge.roomType.single",
+    className: COLOR_CLASS.purple,
+  },
+  {
+    value: RoomType.KHAC,
+    label: "statusBadge.roomType.other",
+    className: COLOR_CLASS.neutral,
+  },
+  // --- Loại tòa nhà ---
+  {
+    value: BuildingType.NHA_TRO,
+    label: "statusBadge.buildingType.nhaTro",
+    className: COLOR_CLASS.blue,
+  },
+  {
+    value: BuildingType.CHUNG_CU_MINI,
+    label: "statusBadge.buildingType.chungCuMini",
+    className: COLOR_CLASS.purple,
+  },
+  {
+    value: BuildingType.CAN_HO_DICH_VU,
+    label: "statusBadge.buildingType.canHoDichVu",
+    className: COLOR_CLASS.indigo,
+  },
+  {
+    value: BuildingType.KHAC,
+    label: "statusBadge.buildingType.other",
+    className: COLOR_CLASS.neutral,
+  },
+  // --- Trạng thái phòng ---
+  {
+    value: RoomStatus.TRONG,
+    label: "statusBadge.roomStatus.empty",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: RoomStatus.DA_DAT_COC,
+    label: "statusBadge.roomStatus.deposit",
+    className: COLOR_CLASS.yellow,
+  },
+  {
+    value: RoomStatus.DANG_BAO_TRI,
+    label: "statusBadge.roomStatus.maintain",
+    className: COLOR_CLASS.gray,
+  },
+  {
+    value: RoomStatus.CHUA_HOAN_THIEN,
+    label: "statusBadge.roomStatus.unfinished",
+    className: COLOR_CLASS.blue,
+  },
+  {
+    value: RoomStatus.TAM_KHOA,
+    label: "statusBadge.roomStatus.locked",
+    className: COLOR_CLASS.purple,
+  },
+  {
+    value: RoomStatus.HUY_HOAT_DONG,
+    label: "statusBadge.roomStatus.inactive",
+    className: COLOR_CLASS.black,
+  },
+  // --- Trạng thái tầng ---
+  {
+    value: FloorStatus.HOAT_DONG,
+    label: "statusBadge.floorStatus.active",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: FloorStatus.KHONG_SU_DUNG,
+    label: "statusBadge.floorStatus.inactive",
+    className: COLOR_CLASS.stone,
+  },
+  {
+    value: FloorStatus.TAM_KHOA,
+    label: "statusBadge.floorStatus.locked",
+    className: COLOR_CLASS.yellow,
+  },
+  // --- Loại tầng ---
+  {
+    value: FloorType.CHO_THUE,
+    label: "statusBadge.floorType.forRent",
 
-      className: COLOR_CLASS.sky,
-    },
-    {
-      value: FloorType.KHONG_CHO_THUE,
-      label: t("statusBadge.floorType.notForRent"),
-      className: COLOR_CLASS.zinc,
-    },
-    {
-      value: FloorType.DE_O,
-      label: t("statusBadge.floorType.residential"),
-      className: COLOR_CLASS.cyan,
-    },
-    {
-      value: FloorType.KHO,
-      label: t("statusBadge.floorType.storage"),
-      className: COLOR_CLASS.amber,
-    },
-    {
-      value: FloorType.KHAC,
-      label: t("statusBadge.floorType.other"),
-      className: COLOR_CLASS.neutral,
-    },
-    // --- Nhóm tài sản ---
-    {
-      value: AssetGroup.GIA_DUNG,
-      label: t("statusBadge.assetGroup.houseware"),
-      className: COLOR_CLASS.rose,
-    },
-    {
-      value: AssetGroup.NOI_THAT,
-      label: t("statusBadge.assetGroup.furniture"),
-      className: COLOR_CLASS.lime,
-    },
-    {
-      value: AssetGroup.DIEN,
-      label: t("statusBadge.assetGroup.electric"),
-      className: COLOR_CLASS.orange,
-    },
-    {
-      value: AssetGroup.CA_NHAN,
-      label: t("statusBadge.assetGroup.personal"),
-      className: COLOR_CLASS.pink,
-    },
-    {
-      value: AssetGroup.KHAC,
-      label: t("statusBadge.assetGroup.other"),
-      className: COLOR_CLASS.neutral,
-    },
-    // --- Thuộc về tài sản ---
-    {
-      value: AssetBeLongTo.PHONG,
-      label: t("statusBadge.assetBelongTo.room"),
-      className: COLOR_CLASS.teal,
-    },
-    {
-      value: AssetBeLongTo.CHUNG,
-      label: t("statusBadge.assetBelongTo.common"),
-      className: COLOR_CLASS.indigo,
-    },
-    {
-      value: AssetBeLongTo.CA_NHAN,
-      label: t("statusBadge.assetBelongTo.personal"),
-      className: COLOR_CLASS.purple,
-    },
-    // --- Loại tài sản ---
-    {
-      value: AssetType.GIA_DUNG,
-      label: t("statusBadge.assetType.houseware"),
-      className: COLOR_CLASS.rose,
-    },
-    {
-      value: AssetType.VE_SINH,
-      label: t("statusBadge.assetType.cleaning"),
-      className: COLOR_CLASS.lime,
-    },
-    {
-      value: AssetType.NOI_THAT,
-      label: t("statusBadge.assetType.furniture"),
-      className: COLOR_CLASS.orange,
-    },
-    {
-      value: AssetType.DIEN,
-      label: t("statusBadge.assetType.electric"),
-      className: COLOR_CLASS.pink,
-    },
-    {
-      value: AssetType.AN_NINH,
-      label: t("statusBadge.assetType.security"),
-      className: COLOR_CLASS.sky,
-    },
-    {
-      value: AssetType.KHAC,
-      label: t("statusBadge.assetType.other"),
-      className: COLOR_CLASS.neutral,
-    },
-    // --- Trạng thái tài sản ---
-    {
-      value: AssetStatus.HOAT_DONG,
-      label: t("statusBadge.assetStatus.active"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: AssetStatus.HUY,
-      label: t("statusBadge.assetStatus.cancelled"),
-      className: COLOR_CLASS.red,
-    },
-    {
-      value: AssetStatus.HU_HONG,
-      label: t("statusBadge.assetStatus.broken"),
-      className: COLOR_CLASS.red,
-    },
-    {
-      value: AssetStatus.CAN_BAO_TRI,
-      label: t("statusBadge.assetStatus.maintenance"),
-      className: COLOR_CLASS.yellow,
-    },
-    {
-      value: AssetStatus.THAT_LAC,
-      label: t("statusBadge.assetStatus.lost"),
-      className: COLOR_CLASS.orange,
-    },
-    {
-      value: AssetStatus.DA_THANH_LY,
-      label: t("statusBadge.assetStatus.liquidated"),
-      className: COLOR_CLASS.gray,
-    },
-    // --- TENANT ---
-    {
-      value: TenantStatus.DANG_THUE,
-      label: t("statusBadge.tenantStatus.renting"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: TenantStatus.DA_TRA_PHONG,
-      label: t("statusBadge.tenantStatus.returned"),
-      className: COLOR_CLASS.gray,
-    },
-    {
-      value: TenantStatus.TIEM_NANG,
-      label: t("statusBadge.tenantStatus.potential"),
-      className: COLOR_CLASS.yellow,
-    },
-    {
-      value: TenantStatus.KHOA,
-      label: t("statusBadge.tenantStatus.locked"),
-      className: COLOR_CLASS.red,
-    },
-    // --- GENDER ---
-    {
-      value: Gender.MALE,
-      label: t("statusBadge.gender.male"),
-      className: COLOR_CLASS.blue,
-    },
-    {
-      value: Gender.FEMALE,
-      label: t("statusBadge.gender.female"),
-      className: COLOR_CLASS.pink,
-    },
-    // --- Vehicle Types ---
-    {
-      value: VehicleType.XE_MAY,
-      label: t("statusBadge.vehicleType.motorbike"),
-      className: COLOR_CLASS.blue,
-    },
-    {
-      value: VehicleType.O_TO,
-      label: t("statusBadge.vehicleType.car"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: VehicleType.XE_DAP,
-      label: t("statusBadge.vehicleType.bicycle"),
-      className: COLOR_CLASS.orange,
-    },
-    {
-      value: VehicleType.KHAC,
-      label: t("statusBadge.vehicleType.other"),
-      className: COLOR_CLASS.neutral,
-    },
-    // --- Vehicle Status ---
-    {
-      value: VehicleStatus.SU_DUNG,
-      label: t("statusBadge.vehicleStatus.active"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: VehicleStatus.KHONG_SU_DUNG,
-      label: t("statusBadge.vehicleStatus.inactive"),
-      className: COLOR_CLASS.gray,
-    },
-    {
-      value: VehicleStatus.TAM_KHOA,
-      label: t("statusBadge.vehicleStatus.locked"),
-      className: COLOR_CLASS.red,
-    },
-    // --- Contract status ---
-    {
-      value: ContractStatus.HIEU_LUC,
-      label: t("statusBadge.contractStatus.valid"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: ContractStatus.SAP_HET_HAN,
-      label: t("statusBadge.contractStatus.expiring"),
-      className: COLOR_CLASS.yellow,
-    },
-    {
-      value: ContractStatus.CHO_KICH_HOAT,
-      label: t("statusBadge.contractStatus.pending"),
-      className: COLOR_CLASS.orange,
-    },
-    {
-      value: ContractStatus.KET_THUC_CO_BAO_TRUOC,
-      label: t("statusBadge.contractStatus.endedNotice"),
-      className: COLOR_CLASS.blue,
-    },
-    {
-      value: ContractStatus.KET_THUC_DUNG_HAN,
-      label: t("statusBadge.contractStatus.endedOnTime"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: ContractStatus.TU_Y_HUY_BO,
-      label: t("statusBadge.contractStatus.terminated"),
-      className: COLOR_CLASS.red,
-    },
-    {
-      value: ContractStatus.DA_HUY,
-      label: t("statusBadge.contractStatus.cancelled"),
-      className: COLOR_CLASS.red,
-    },
-    // --- Loại dịch vụ ---
-    {
-      value: ServiceType.CO_DINH,
-      label: t("statusBadge.serviceType.fixed"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: ServiceType.TINH_THEO_SO,
-      label: t("statusBadge.serviceType.metered"),
-      className: COLOR_CLASS.blue,
-    },
-    // --- Áp dụng theo ---
-    {
-      value: ServiceAppliedBy.PHONG,
-      label: t("statusBadge.serviceAppliedBy.room"),
-      className: COLOR_CLASS.orange,
-    },
-    {
-      value: ServiceAppliedBy.TANG,
-      label: t("statusBadge.serviceAppliedBy.floor"),
-      className: COLOR_CLASS.purple,
-    },
-    {
-      value: ServiceAppliedBy.NGUOI,
-      label: t("statusBadge.serviceAppliedBy.person"),
-      className: COLOR_CLASS.pink,
-    },
-    // --- Trạng thái dịch vụ ---
-    {
-      value: ServiceStatus.HOAT_DONG,
-      label: t("statusBadge.serviceStatus.active"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: ServiceStatus.TAM_KHOA,
-      label: t("statusBadge.serviceStatus.locked"),
-      className: COLOR_CLASS.yellow,
-    },
-    {
-      value: ServiceStatus.KHONG_SU_DUNG,
-      label: t("statusBadge.serviceStatus.inactive"),
-      className: COLOR_CLASS.gray,
-    },
-    // --- DEFAULT SERVICE ---
-    {
-      value: DefaultServiceAppliesTo.PHONG,
-      label: t("statusBadge.defaultServiceAppliesTo.room"),
-      className: COLOR_CLASS.orange,
-    },
-    {
-      value: DefaultServiceAppliesTo.HOP_DONG,
-      label: t("statusBadge.defaultServiceAppliesTo.contract"),
-      className: COLOR_CLASS.purple,
-    },
-    {
-      value: DefaultServiceStatus.HOAT_DONG,
-      label: t("statusBadge.defaultServiceStatus.active"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: DefaultServiceStatus.TAM_DUNG,
-      label: t("statusBadge.defaultServiceStatus.paused"),
-      className: COLOR_CLASS.yellow,
-    },
-    {
-      value: DefaultServiceStatus.HUY_BO,
-      label: t("statusBadge.defaultServiceStatus.cancelled"),
-      className: COLOR_CLASS.red,
-    },
-    {
-      value: ServiceRoomStatus.DANG_SU_DUNG,
-      label: t("statusBadge.serviceRoomStatus.active"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: ServiceRoomStatus.TAM_DUNG,
-      label: t("statusBadge.serviceRoomStatus.paused"),
-      className: COLOR_CLASS.yellow,
-    },
-    {
-      value: ServiceRoomStatus.DA_HUY,
-      label: t("statusBadge.serviceRoomStatus.cancelled"),
-      className: COLOR_CLASS.red,
-    },
-    // --- Meter Types ---
-    {
-      value: MeterType.DIEN,
-      label: t("statusBadge.meterType.electric"),
-      className: COLOR_CLASS.yellow,
-    },
-    {
-      value: MeterType.NUOC,
-      label: t("statusBadge.meterType.water"),
-      className: COLOR_CLASS.blue,
-    },
-    // --- Invoice Status ---
-    {
-      value: InvoiceStatus.CHUA_THANH_TOAN,
-      label: t("statusBadge.invoiceStatus.unpaid"),
-      className: COLOR_CLASS.red,
-    },
-    {
-      value: InvoiceStatus.KHOI_PHUC,
-      label: t("statusBadge.invoiceStatus.restored"),
-      className: COLOR_CLASS.yellow,
-    },
-    {
-      value: InvoiceStatus.DA_THANH_TOAN,
-      label: t("statusBadge.invoiceStatus.paid"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: InvoiceStatus.QUA_HAN,
-      label: t("statusBadge.invoiceStatus.overdue"),
-      className: COLOR_CLASS.orange,
-    },
-    {
-      value: InvoiceStatus.HUY,
-      label: t("statusBadge.invoiceStatus.cancelled"),
-      className: COLOR_CLASS.gray,
-    },
-    // --- Invoice Type ---
-    {
-      value: InvoiceType.HANG_THANG,
-      label: t("statusBadge.invoiceType.monthly"),
-      className: COLOR_CLASS.blue,
-    },
-    {
-      value: InvoiceType.CUOI_CUNG,
-      label: t("statusBadge.invoiceType.final"),
-      className: COLOR_CLASS.purple,
-    },
-    // --- Service Category ---
-    {
-      value: ServiceCategory.DIEN,
-      label: t("statusBadge.invoiceType.electric"),
-      className: COLOR_CLASS.yellow,
-    },
-    {
-      value: ServiceCategory.NUOC,
-      label: t("statusBadge.invoiceType.water"),
-      className: COLOR_CLASS.blue,
-    },
-    {
-      value: ServiceCategory.GUI_XE,
-      label: t("statusBadge.invoiceType.parking"),
-      className: COLOR_CLASS.gray,
-    },
-    {
-      value: ServiceCategory.INTERNET,
-      label: t("statusBadge.invoiceType.internet"),
-      className: COLOR_CLASS.indigo,
-    },
-    {
-      value: ServiceCategory.VE_SINH,
-      label: t("statusBadge.invoiceType.cleaning"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: ServiceCategory.THANG_MAY,
-      label: t("statusBadge.invoiceType.elevator"),
-      className: COLOR_CLASS.purple,
-    },
-    {
-      value: ServiceCategory.BAO_TRI,
-      label: t("statusBadge.invoiceType.maintenance"),
-      className: COLOR_CLASS.red,
-    },
-    {
-      value: ServiceCategory.AN_NINH,
-      label: t("statusBadge.invoiceType.security"),
-      className: COLOR_CLASS.orange,
-    },
-    {
-      value: ServiceCategory.GIAT_SAY,
-      label: t("statusBadge.invoiceType.laundry"),
-      className: COLOR_CLASS.pink,
-    },
-    {
-      value: ServiceCategory.TIEN_PHONG,
-      label: t("statusBadge.invoiceType.rent"),
-      className: COLOR_CLASS.teal,
-    },
-    {
-      value: ServiceCategory.KHAC,
-      label: t("statusBadge.invoiceType.other"),
-      className: COLOR_CLASS.neutral,
-    },
-    {
-      value: ServiceCalculation.TINH_THEO_SO,
-      label: t("statusBadge.serviceCalculation.byMeter"),
-      className: COLOR_CLASS.blue,
-    },
-    {
-      value: ServiceCalculation.TINH_THEO_NGUOI,
-      label: t("statusBadge.serviceCalculation.byPerson"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: ServiceCalculation.TINH_THEO_PHONG,
-      label: t("statusBadge.serviceCalculation.byRoom"),
-      className: COLOR_CLASS.purple,
-    },
-    {
-      value: ServiceCalculation.TINH_THEO_PHUONG_TIEN,
-      label: t("statusBadge.serviceCalculation.byVehicle"),
-      className: COLOR_CLASS.indigo,
-    },
-    // --- Invoice Item Type ---
-    {
-      value: InvoiceItemType.DIEN,
-      label: t("statusBadge.invoiceItemType.electric"),
-      className: COLOR_CLASS.yellow,
-    },
-    {
-      value: InvoiceItemType.NUOC,
-      label: t("statusBadge.invoiceItemType.water"),
-      className: COLOR_CLASS.blue,
-    },
-    {
-      value: InvoiceItemType.DICH_VU,
-      label: t("statusBadge.invoiceItemType.service"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: InvoiceItemType.TIEN_PHONG,
-      label: t("statusBadge.invoiceItemType.rent"),
-      className: COLOR_CLASS.teal,
-    },
-    {
-      value: InvoiceItemType.DEN_BU,
-      label: t("statusBadge.invoiceItemType.compensation"),
-      className: COLOR_CLASS.red,
-    },
-    // --- Phương thức thanh toán ---
-    {
-      value: PaymentMethod.CHON_PHUONG_THUC,
-      label: t("statusBadge.paymentMethod.choose"),
-      className: COLOR_CLASS.orange,
-    },
-    {
-      value: PaymentMethod.TIEN_MAT,
-      label: t("statusBadge.paymentMethod.cash"),
-      className: COLOR_CLASS.amber,
-    },
-    {
-      value: PaymentMethod.CHUYEN_KHOAN,
-      label: t("statusBadge.paymentMethod.transfer"),
-      className: COLOR_CLASS.blue,
-    },
-    {
-      value: PaymentMethod.VNPAY,
-      label: t("statusBadge.paymentMethod.vnpay"),
-      className: COLOR_CLASS.purple,
-    },
-    {
-      value: PaymentMethod.ZALOPAY,
-      label: t("statusBadge.paymentMethod.zalopay"),
-      className: COLOR_CLASS.pink,
-    },
-    {
-      value: PaymentMethod.MOMO,
-      label: t("statusBadge.paymentMethod.momo"),
-      className: COLOR_CLASS.red,
-    },
-    // --- Trạng thái thanh toán ---
-    {
-      value: PaymentStatus.CHO_THANH_TOAN,
-      label: t("statusBadge.paymentStatus.pending"),
-      className: COLOR_CLASS.yellow,
-    },
-    {
-      value: PaymentStatus.CHO_XAC_NHAN,
-      label: t("statusBadge.paymentStatus.confirming"),
-      className: COLOR_CLASS.blue,
-    },
-    {
-      value: PaymentStatus.DA_THANH_TOAN,
-      label: t("statusBadge.paymentStatus.paid"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: PaymentStatus.TU_CHOI,
-      label: t("statusBadge.paymentStatus.rejected"),
-      className: COLOR_CLASS.red,
-    },
-    {
-      value: PaymentStatus.HUY,
-      label: t("statusBadge.paymentStatus.cancelled"),
-      className: COLOR_CLASS.gray,
-    },
-    {
-      value: NotificationType.CHUNG,
-      label: t("statusBadge.notificationType.common"),
-      className: COLOR_CLASS.blue,
-    },
-    {
-      value: NotificationType.HE_THONG,
-      label: t("statusBadge.notificationType.system"),
-      className: COLOR_CLASS.green,
-    },
-    {
-      value: NotificationType.KHAC,
-      label: t("statusBadge.notificationType.other"),
-      className: COLOR_CLASS.red,
-    },
-  ];
-};
+    className: COLOR_CLASS.sky,
+  },
+  {
+    value: FloorType.KHONG_CHO_THUE,
+    label: "statusBadge.floorType.notForRent",
+    className: COLOR_CLASS.zinc,
+  },
+  {
+    value: FloorType.DE_O,
+    label: "statusBadge.floorType.residential",
+    className: COLOR_CLASS.cyan,
+  },
+  {
+    value: FloorType.KHO,
+    label: "statusBadge.floorType.storage",
+    className: COLOR_CLASS.amber,
+  },
+  {
+    value: FloorType.KHAC,
+    label: "statusBadge.floorType.other",
+    className: COLOR_CLASS.neutral,
+  },
+  // --- Nhóm tài sản ---
+  {
+    value: AssetGroup.GIA_DUNG,
+    label: "statusBadge.assetGroup.houseware",
+    className: COLOR_CLASS.rose,
+  },
+  {
+    value: AssetGroup.NOI_THAT,
+    label: "statusBadge.assetGroup.furniture",
+    className: COLOR_CLASS.lime,
+  },
+  {
+    value: AssetGroup.DIEN,
+    label: "statusBadge.assetGroup.electric",
+    className: COLOR_CLASS.orange,
+  },
+  {
+    value: AssetGroup.CA_NHAN,
+    label: "statusBadge.assetGroup.personal",
+    className: COLOR_CLASS.pink,
+  },
+  {
+    value: AssetGroup.KHAC,
+    label: "statusBadge.assetGroup.other",
+    className: COLOR_CLASS.neutral,
+  },
+  // --- Thuộc về tài sản ---
+  {
+    value: AssetBeLongTo.PHONG,
+    label: "statusBadge.assetBelongTo.room",
+    className: COLOR_CLASS.teal,
+  },
+  {
+    value: AssetBeLongTo.CHUNG,
+    label: "statusBadge.assetBelongTo.common",
+    className: COLOR_CLASS.indigo,
+  },
+  {
+    value: AssetBeLongTo.CA_NHAN,
+    label: "statusBadge.assetBelongTo.personal",
+    className: COLOR_CLASS.purple,
+  },
+  // --- Loại tài sản ---
+  {
+    value: AssetType.GIA_DUNG,
+    label: "statusBadge.assetType.houseware",
+    className: COLOR_CLASS.rose,
+  },
+  {
+    value: AssetType.VE_SINH,
+    label: "statusBadge.assetType.cleaning",
+    className: COLOR_CLASS.lime,
+  },
+  {
+    value: AssetType.NOI_THAT,
+    label: "statusBadge.assetType.furniture",
+    className: COLOR_CLASS.orange,
+  },
+  {
+    value: AssetType.DIEN,
+    label: "statusBadge.assetType.electric",
+    className: COLOR_CLASS.pink,
+  },
+  {
+    value: AssetType.AN_NINH,
+    label: "statusBadge.assetType.security",
+    className: COLOR_CLASS.sky,
+  },
+  {
+    value: AssetType.KHAC,
+    label: "statusBadge.assetType.other",
+    className: COLOR_CLASS.neutral,
+  },
+  // --- Trạng thái tài sản ---
+  {
+    value: AssetStatus.HOAT_DONG,
+    label: "statusBadge.assetStatus.active",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: AssetStatus.HUY,
+    label: "statusBadge.assetStatus.cancelled",
+    className: COLOR_CLASS.red,
+  },
+  {
+    value: AssetStatus.HU_HONG,
+    label: "statusBadge.assetStatus.broken",
+    className: COLOR_CLASS.red,
+  },
+  {
+    value: AssetStatus.CAN_BAO_TRI,
+    label: "statusBadge.assetStatus.maintenance",
+    className: COLOR_CLASS.yellow,
+  },
+  {
+    value: AssetStatus.THAT_LAC,
+    label: "statusBadge.assetStatus.lost",
+    className: COLOR_CLASS.orange,
+  },
+  {
+    value: AssetStatus.DA_THANH_LY,
+    label: "statusBadge.assetStatus.liquidated",
+    className: COLOR_CLASS.gray,
+  },
+  // --- TENANT ---
+  {
+    value: TenantStatus.DANG_THUE,
+    label: "statusBadge.tenantStatus.renting",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: TenantStatus.DA_TRA_PHONG,
+    label: "statusBadge.tenantStatus.returned",
+    className: COLOR_CLASS.gray,
+  },
+  {
+    value: TenantStatus.TIEM_NANG,
+    label: "statusBadge.tenantStatus.potential",
+    className: COLOR_CLASS.yellow,
+  },
+  {
+    value: TenantStatus.KHOA,
+    label: "statusBadge.tenantStatus.locked",
+    className: COLOR_CLASS.red,
+  },
+  // --- GENDER ---
+  {
+    value: Gender.MALE,
+    label: "statusBadge.gender.male",
+    className: COLOR_CLASS.blue,
+  },
+  {
+    value: Gender.FEMALE,
+    label: "statusBadge.gender.female",
+    className: COLOR_CLASS.pink,
+  },
+  // --- Vehicle Types ---
+  {
+    value: VehicleType.XE_MAY,
+    label: "statusBadge.vehicleType.motorbike",
+    className: COLOR_CLASS.blue,
+  },
+  {
+    value: VehicleType.O_TO,
+    label: "statusBadge.vehicleType.car",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: VehicleType.XE_DAP,
+    label: "statusBadge.vehicleType.bicycle",
+    className: COLOR_CLASS.orange,
+  },
+  {
+    value: VehicleType.KHAC,
+    label: "statusBadge.vehicleType.other",
+    className: COLOR_CLASS.neutral,
+  },
+  // --- Vehicle Status ---
+  {
+    value: VehicleStatus.SU_DUNG,
+    label: "statusBadge.vehicleStatus.active",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: VehicleStatus.KHONG_SU_DUNG,
+    label: "statusBadge.vehicleStatus.inactive",
+    className: COLOR_CLASS.gray,
+  },
+  {
+    value: VehicleStatus.TAM_KHOA,
+    label: "statusBadge.vehicleStatus.locked",
+    className: COLOR_CLASS.red,
+  },
+  // --- Contract status ---
+  {
+    value: ContractStatus.HIEU_LUC,
+    label: "statusBadge.contractStatus.valid",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: ContractStatus.SAP_HET_HAN,
+    label: "statusBadge.contractStatus.expiring",
+    className: COLOR_CLASS.yellow,
+  },
+  {
+    value: ContractStatus.CHO_KICH_HOAT,
+    label: "statusBadge.contractStatus.pending",
+    className: COLOR_CLASS.orange,
+  },
+  {
+    value: ContractStatus.KET_THUC_CO_BAO_TRUOC,
+    label: "statusBadge.contractStatus.endedNotice",
+    className: COLOR_CLASS.blue,
+  },
+  {
+    value: ContractStatus.KET_THUC_DUNG_HAN,
+    label: "statusBadge.contractStatus.endedOnTime",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: ContractStatus.TU_Y_HUY_BO,
+    label: "statusBadge.contractStatus.terminated",
+    className: COLOR_CLASS.red,
+  },
+  {
+    value: ContractStatus.DA_HUY,
+    label: "statusBadge.contractStatus.cancelled",
+    className: COLOR_CLASS.red,
+  },
+  // --- Loại dịch vụ ---
+  {
+    value: ServiceType.CO_DINH,
+    label: "statusBadge.serviceType.fixed",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: ServiceType.TINH_THEO_SO,
+    label: "statusBadge.serviceType.metered",
+    className: COLOR_CLASS.blue,
+  },
+  // --- Áp dụng theo ---
+  {
+    value: ServiceAppliedBy.PHONG,
+    label: "statusBadge.serviceAppliedBy.room",
+    className: COLOR_CLASS.orange,
+  },
+  {
+    value: ServiceAppliedBy.TANG,
+    label: "statusBadge.serviceAppliedBy.floor",
+    className: COLOR_CLASS.purple,
+  },
+  {
+    value: ServiceAppliedBy.NGUOI,
+    label: "statusBadge.serviceAppliedBy.person",
+    className: COLOR_CLASS.pink,
+  },
+  // --- Trạng thái dịch vụ ---
+  {
+    value: ServiceStatus.HOAT_DONG,
+    label: "statusBadge.serviceStatus.active",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: ServiceStatus.TAM_KHOA,
+    label: "statusBadge.serviceStatus.locked",
+    className: COLOR_CLASS.yellow,
+  },
+  {
+    value: ServiceStatus.KHONG_SU_DUNG,
+    label: "statusBadge.serviceStatus.inactive",
+    className: COLOR_CLASS.gray,
+  },
+  // --- DEFAULT SERVICE ---
+  {
+    value: DefaultServiceAppliesTo.PHONG,
+    label: "statusBadge.defaultServiceAppliesTo.room",
+    className: COLOR_CLASS.orange,
+  },
+  {
+    value: DefaultServiceAppliesTo.HOP_DONG,
+    label: "statusBadge.defaultServiceAppliesTo.contract",
+    className: COLOR_CLASS.purple,
+  },
+  {
+    value: DefaultServiceStatus.HOAT_DONG,
+    label: "statusBadge.defaultServiceStatus.active",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: DefaultServiceStatus.TAM_DUNG,
+    label: "statusBadge.defaultServiceStatus.paused",
+    className: COLOR_CLASS.yellow,
+  },
+  {
+    value: DefaultServiceStatus.HUY_BO,
+    label: "statusBadge.defaultServiceStatus.cancelled",
+    className: COLOR_CLASS.red,
+  },
+  {
+    value: ServiceRoomStatus.DANG_SU_DUNG,
+    label: "statusBadge.serviceRoomStatus.active",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: ServiceRoomStatus.TAM_DUNG,
+    label: "statusBadge.serviceRoomStatus.paused",
+    className: COLOR_CLASS.yellow,
+  },
+  {
+    value: ServiceRoomStatus.DA_HUY,
+    label: "statusBadge.serviceRoomStatus.cancelled",
+    className: COLOR_CLASS.red,
+  },
+  // --- Meter Types ---
+  {
+    value: MeterType.DIEN,
+    label: "statusBadge.meterType.electric",
+    className: COLOR_CLASS.yellow,
+  },
+  {
+    value: MeterType.NUOC,
+    label: "statusBadge.meterType.water",
+    className: COLOR_CLASS.blue,
+  },
+  // --- Invoice Status ---
+  {
+    value: InvoiceStatus.CHUA_THANH_TOAN,
+    label: "statusBadge.invoiceStatus.unpaid",
+    className: COLOR_CLASS.red,
+  },
+  {
+    value: InvoiceStatus.KHOI_PHUC,
+    label: "statusBadge.invoiceStatus.restored",
+    className: COLOR_CLASS.yellow,
+  },
+  {
+    value: InvoiceStatus.DA_THANH_TOAN,
+    label: "statusBadge.invoiceStatus.paid",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: InvoiceStatus.QUA_HAN,
+    label: "statusBadge.invoiceStatus.overdue",
+    className: COLOR_CLASS.orange,
+  },
+  {
+    value: InvoiceStatus.HUY,
+    label: "statusBadge.invoiceStatus.cancelled",
+    className: COLOR_CLASS.gray,
+  },
+  // --- Invoice Type ---
+  {
+    value: InvoiceType.HANG_THANG,
+    label: "statusBadge.invoiceType.monthly",
+    className: COLOR_CLASS.blue,
+  },
+  {
+    value: InvoiceType.CUOI_CUNG,
+    label: "statusBadge.invoiceType.final",
+    className: COLOR_CLASS.purple,
+  },
+  // --- Service Category ---
+  {
+    value: ServiceCategory.DIEN,
+    label: "statusBadge.invoiceType.electric",
+    className: COLOR_CLASS.yellow,
+  },
+  {
+    value: ServiceCategory.NUOC,
+    label: "statusBadge.invoiceType.water",
+    className: COLOR_CLASS.blue,
+  },
+  {
+    value: ServiceCategory.GUI_XE,
+    label: "statusBadge.invoiceType.parking",
+    className: COLOR_CLASS.gray,
+  },
+  {
+    value: ServiceCategory.INTERNET,
+    label: "statusBadge.invoiceType.internet",
+    className: COLOR_CLASS.indigo,
+  },
+  {
+    value: ServiceCategory.VE_SINH,
+    label: "statusBadge.invoiceType.cleaning",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: ServiceCategory.THANG_MAY,
+    label: "statusBadge.invoiceType.elevator",
+    className: COLOR_CLASS.purple,
+  },
+  {
+    value: ServiceCategory.BAO_TRI,
+    label: "statusBadge.invoiceType.maintenance",
+    className: COLOR_CLASS.red,
+  },
+  {
+    value: ServiceCategory.AN_NINH,
+    label: "statusBadge.invoiceType.security",
+    className: COLOR_CLASS.orange,
+  },
+  {
+    value: ServiceCategory.GIAT_SAY,
+    label: "statusBadge.invoiceType.laundry",
+    className: COLOR_CLASS.pink,
+  },
+  {
+    value: ServiceCategory.TIEN_PHONG,
+    label: "statusBadge.invoiceType.rent",
+    className: COLOR_CLASS.teal,
+  },
+  {
+    value: ServiceCategory.KHAC,
+    label: "statusBadge.invoiceType.other",
+    className: COLOR_CLASS.neutral,
+  },
+  {
+    value: ServiceCalculation.TINH_THEO_SO,
+    label: "statusBadge.serviceCalculation.byMeter",
+    className: COLOR_CLASS.blue,
+  },
+  {
+    value: ServiceCalculation.TINH_THEO_NGUOI,
+    label: "statusBadge.serviceCalculation.byPerson",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: ServiceCalculation.TINH_THEO_PHONG,
+    label: "statusBadge.serviceCalculation.byRoom",
+    className: COLOR_CLASS.purple,
+  },
+  {
+    value: ServiceCalculation.TINH_THEO_PHUONG_TIEN,
+    label: "statusBadge.serviceCalculation.byVehicle",
+    className: COLOR_CLASS.indigo,
+  },
+  // --- Invoice Item Type ---
+  {
+    value: InvoiceItemType.DIEN,
+    label: "statusBadge.invoiceItemType.electric",
+    className: COLOR_CLASS.yellow,
+  },
+  {
+    value: InvoiceItemType.NUOC,
+    label: "statusBadge.invoiceItemType.water",
+    className: COLOR_CLASS.blue,
+  },
+  {
+    value: InvoiceItemType.DICH_VU,
+    label: "statusBadge.invoiceItemType.service",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: InvoiceItemType.TIEN_PHONG,
+    label: "statusBadge.invoiceItemType.rent",
+    className: COLOR_CLASS.teal,
+  },
+  {
+    value: InvoiceItemType.DEN_BU,
+    label: "statusBadge.invoiceItemType.compensation",
+    className: COLOR_CLASS.red,
+  },
+  // --- Phương thức thanh toán ---
+  {
+    value: PaymentMethod.CHON_PHUONG_THUC,
+    label: "statusBadge.paymentMethod.choose",
+    className: COLOR_CLASS.orange,
+  },
+  {
+    value: PaymentMethod.TIEN_MAT,
+    label: "statusBadge.paymentMethod.cash",
+    className: COLOR_CLASS.amber,
+  },
+  {
+    value: PaymentMethod.CHUYEN_KHOAN,
+    label: "statusBadge.paymentMethod.transfer",
+    className: COLOR_CLASS.blue,
+  },
+  {
+    value: PaymentMethod.VNPAY,
+    label: "statusBadge.paymentMethod.vnpay",
+    className: COLOR_CLASS.purple,
+  },
+  {
+    value: PaymentMethod.ZALOPAY,
+    label: "statusBadge.paymentMethod.zalopay",
+    className: COLOR_CLASS.pink,
+  },
+  {
+    value: PaymentMethod.MOMO,
+    label: "statusBadge.paymentMethod.momo",
+    className: COLOR_CLASS.red,
+  },
+  // --- Trạng thái thanh toán ---
+  {
+    value: PaymentStatus.CHO_THANH_TOAN,
+    label: "statusBadge.paymentStatus.pending",
+    className: COLOR_CLASS.yellow,
+  },
+  {
+    value: PaymentStatus.CHO_XAC_NHAN,
+    label: "statusBadge.paymentStatus.confirming",
+    className: COLOR_CLASS.blue,
+  },
+  {
+    value: PaymentStatus.DA_THANH_TOAN,
+    label: "statusBadge.paymentStatus.paid",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: PaymentStatus.TU_CHOI,
+    label: "statusBadge.paymentStatus.rejected",
+    className: COLOR_CLASS.red,
+  },
+  {
+    value: PaymentStatus.HUY,
+    label: "statusBadge.paymentStatus.cancelled",
+    className: COLOR_CLASS.gray,
+  },
+  {
+    value: NotificationType.CHUNG,
+    label: "statusBadge.notificationType.common",
+    className: COLOR_CLASS.blue,
+  },
+  {
+    value: NotificationType.HE_THONG,
+    label: "statusBadge.notificationType.system",
+    className: COLOR_CLASS.green,
+  },
+  {
+    value: NotificationType.KHAC,
+    label: "statusBadge.notificationType.other",
+    className: COLOR_CLASS.red,
+  },
+];
 
 export const ACTION_BUTTONS_FOR_CONTRACT: IBtnType[] = [
   {
-    tooltipContent: "Chỉnh sửa",
+    tooltipContent: "common.button.update",
     icon: PenTool,
     arrowColor: "var(--color-primary)",
     type: "default",
     hasConfirm: true,
   },
   {
-    tooltipContent: "Tải lên Docx",
+    tooltipContent: "common.button.docx",
     icon: Upload,
     arrowColor: "var(--color-amber-500)",
     type: "upload",
     hasConfirm: false,
   },
   {
-    tooltipContent: "Tải xuống",
+    tooltipContent: "common.button.download",
     icon: Download,
     arrowColor: "var(--color-emerald-500)",
     type: "download",
@@ -1001,7 +999,7 @@ export const ACTION_BUTTONS_FOR_CONTRACT: IBtnType[] = [
 
 export const ACTION_BUTTONS: IBtnType[] = [
   {
-    tooltipContent: "Thêm mới",
+    tooltipContent: "common.button.addNew",
     icon: Plus,
     arrowColor: "var(--color-primary)",
     type: "default",
@@ -1015,14 +1013,14 @@ export const ACTION_BUTTONS: IBtnType[] = [
   //   hasConfirm: false,
   // },
   {
-    tooltipContent: "Tải xuống Excel",
+    tooltipContent: "common.button.downloadExcel",
     icon: Download,
     arrowColor: "var(--color-emerald-500)",
     type: "download",
     hasConfirm: false,
   },
   {
-    tooltipContent: "Xóa",
+    tooltipContent: "common.button.delete",
     icon: Trash2,
     arrowColor: "var(--color-red-400)",
     type: "delete",
@@ -1032,14 +1030,14 @@ export const ACTION_BUTTONS: IBtnType[] = [
 
 export const ACTION_BUTTONS_HISTORY: IBtnType[] = [
   {
-    tooltipContent: "Xem lịch sử",
+    tooltipContent: "common.button.history",
     icon: History,
     arrowColor: "#5a5e78",
     type: "history",
     hasConfirm: false,
   },
   {
-    tooltipContent: "Thêm mới",
+    tooltipContent: "common.button.addNew",
     icon: Plus,
     arrowColor: "var(--color-primary)",
     type: "default",
@@ -1053,14 +1051,14 @@ export const ACTION_BUTTONS_HISTORY: IBtnType[] = [
   //   hasConfirm: false,
   // },
   {
-    tooltipContent: "Tải xuống Excel",
+    tooltipContent: "common.button.downloadExcel",
     icon: Download,
     arrowColor: "var(--color-emerald-500)",
     type: "download",
     hasConfirm: false,
   },
   {
-    tooltipContent: "Xóa",
+    tooltipContent: "common.button.delete",
     icon: Trash2,
     arrowColor: "var(--color-red-400)",
     type: "delete",
@@ -1070,14 +1068,14 @@ export const ACTION_BUTTONS_HISTORY: IBtnType[] = [
 
 export const BUTTON_HISTORY: IBtnType[] = [
   {
-    tooltipContent: "Khôi phục",
+    tooltipContent: "common.button.restore",
     icon: Undo,
     arrowColor: "var(--color-violet-500)",
     type: "undo",
     hasConfirm: true,
   },
   {
-    tooltipContent: "Xóa",
+    tooltipContent: "common.button.delete",
     icon: Trash2,
     arrowColor: "var(--color-red-400)",
     type: "delete",
@@ -1087,35 +1085,35 @@ export const BUTTON_HISTORY: IBtnType[] = [
 
 export const ACTION_BUTTONS_SERVICE_ROOM: IBtnType[] = [
   {
-    tooltipContent: "Thêm 1 dịch vụ cho 1 phòng",
+    tooltipContent: "actions.serviceActions.default",
     icon: Plus,
     arrowColor: "var(--color-primary)",
     type: "default",
     hasConfirm: true,
   },
   {
-    tooltipContent: "Thêm 1 dịch vụ cho tất cả các phòng trong 1 tòa nhà",
+    tooltipContent: "actions.serviceActions.building",
     icon: Building2,
     arrowColor: "var(--color-sky-600)",
     type: "building",
     hasConfirm: true,
   },
   {
-    tooltipContent: "Thêm 1 dịch vụ vào các phòng",
+    tooltipContent: "actions.serviceActions.floor",
     icon: DoorOpen,
     arrowColor: "var(--color-teal-500)",
     type: "floor",
     hasConfirm: true,
   },
   {
-    tooltipContent: "Thêm các dịch vụ vào phòng cho 1 phòng",
+    tooltipContent: "actions.serviceActions.undo",
     icon: Gavel,
     arrowColor: "var(--color-violet-500)",
     type: "undo",
     hasConfirm: true,
   },
   {
-    tooltipContent: "Tải xuống Excel",
+    tooltipContent: "common.button.downloadExcel",
     icon: Download,
     arrowColor: "var(--color-emerald-500)",
     type: "download",
@@ -1143,42 +1141,42 @@ export const GET_BTNS = (...type: IBtnType["type"][]): IBtnType[] => {
 
 export const BTNS: IBtnType[] = [
   {
-    tooltipContent: "Khôi phục",
+    tooltipContent: "common.button.restore",
     icon: Undo,
     arrowColor: "var(--color-violet-500)",
     type: "undo",
     hasConfirm: true,
   },
   {
-    tooltipContent: "Chỉnh sửa",
+    tooltipContent: "common.button.update",
     icon: SquarePen,
     arrowColor: "#44475A",
     type: "update",
     hasConfirm: true,
   },
   {
-    tooltipContent: "Chuyển đổi",
+    tooltipContent: "common.button.toggle",
     icon: ToggleLeft,
     arrowColor: "#44475A",
     type: "toggle",
     hasConfirm: true,
   },
   {
-    tooltipContent: "Xóa",
+    tooltipContent: "common.button.delete",
     icon: Trash2,
     arrowColor: "var(--color-red-400)",
     type: "delete",
     hasConfirm: true,
   },
   {
-    tooltipContent: "Đổi trạng thái",
+    tooltipContent: "common.button.changeStatus",
     icon: ArrowRightLeft,
     arrowColor: "var(--color-sky-500)",
     type: "status",
     hasConfirm: true,
   },
   {
-    tooltipContent: "Xem",
+    tooltipContent: "common.button.view",
     icon: Eye,
     arrowColor: "var(--color-emerald-500)",
     type: "view",
@@ -1190,7 +1188,7 @@ export const BTNS: IBtnType[] = [
 export const ACTION_BUTTONS_FOR_PAYMENT_RECEIPT = (type: PaymentMethod, status: PaymentStatus): IBtnType[] => {
   const CASH: IBtnType[] = [
     {
-      tooltipContent: "Xác nhận đã thanh toán",
+      tooltipContent: "common.button.paymentConfirmed",
       icon: Banknote,
       arrowColor: "var(--color-amber-500)",
       type: "cash",
@@ -1200,14 +1198,14 @@ export const ACTION_BUTTONS_FOR_PAYMENT_RECEIPT = (type: PaymentMethod, status: 
 
   const res: IBtnType[] = [
     {
-      tooltipContent: "Xem",
+      tooltipContent: "common.button.view",
       icon: Eye,
       arrowColor: "var(--color-emerald-500)",
       type: "view",
       hasConfirm: false,
     },
     {
-      tooltipContent: "Xóa",
+      tooltipContent: "common.button.delete",
       icon: Trash2,
       arrowColor: "var(--color-red-400)",
       type: "delete",

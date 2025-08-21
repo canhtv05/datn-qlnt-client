@@ -19,6 +19,7 @@ import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateNotification from "./AddOrUpdateNotification";
 import { formatDate, handleExportExcel, notificationTypeEnumToString } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const NotificationButton = ({
   ids,
@@ -29,6 +30,7 @@ const NotificationButton = ({
   ids: Record<string, boolean>;
   tennantOptions: Option[];
 }) => {
+  const { t } = useTranslation();
   const [value, setValue] = useState<NotificationCreationAndUpdateRequest>({
     content: "",
     notificationType: NotificationType.CHUNG,
@@ -222,7 +224,7 @@ const NotificationButton = ({
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

@@ -20,8 +20,10 @@ import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateFloor from "./AddOrUpdateFloor";
 import { useNavigate, useParams } from "react-router-dom";
 import { floorStatusEnumToString, floorTypeEnumToString, formatDate, handleExportExcel } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const FloorButton = ({ ids, data }: { ids: Record<string, boolean>; data: FloorResponse[] }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [value, setValue] = useState<ICreateFloorValue>({
     descriptionFloor: "",
@@ -205,7 +207,7 @@ const FloorButton = ({ ids, data }: { ids: Record<string, boolean>; data: FloorR
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

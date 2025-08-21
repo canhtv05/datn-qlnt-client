@@ -27,6 +27,7 @@ import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateMeter from "./AddOrUpdateMeter";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatDate, formatNumber, handleExportExcel, meterTypeEnumToString } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const MeterButton = ({
   ids,
@@ -37,6 +38,7 @@ const MeterButton = ({
   ids: Record<string, boolean>;
   meterInit: ApiResponse<CreateMeterInitResponse> | undefined;
 }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [value, setValue] = useState<MeterCreationAndUpdatedRequest>({
@@ -239,7 +241,7 @@ const MeterButton = ({
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

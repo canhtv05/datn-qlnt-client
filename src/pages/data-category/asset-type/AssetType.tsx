@@ -11,6 +11,7 @@ import AssetTypeButton from "@/components/data-category/asset-type/AssetTypeButt
 import AssetTypeFilter from "@/components/data-category/asset-type/AssetTypeFilter";
 import AddOrUpdateAssetType from "@/components/data-category/asset-type/AddOrUpdateAssetType";
 import { GET_BTNS } from "@/constant";
+import { useTranslation } from "react-i18next";
 
 const AssetType = () => {
   const {
@@ -31,6 +32,7 @@ const AssetType = () => {
     ConfirmDialog,
   } = useAssetType();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     { label: "Tên loại tài sản", accessorKey: "nameAssetType", isSort: true },
@@ -66,7 +68,7 @@ const AssetType = () => {
                     }}
                     arrow={false}
                   >
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,

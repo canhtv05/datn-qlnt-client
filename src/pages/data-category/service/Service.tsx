@@ -12,6 +12,7 @@ import ServiceButton from "@/components/data-category/service/ServiceButton";
 import ServiceFilter from "@/components/data-category/service/ServiceFilter";
 import AddOrUpdateService from "@/components/data-category/service/AddOrUpdateService";
 import StatisticCard from "@/components/StatisticCard";
+import { useTranslation } from "react-i18next";
 
 const AssetType = () => {
   const {
@@ -33,6 +34,7 @@ const AssetType = () => {
     ConfirmDialog,
   } = useAssetType();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     {
@@ -64,7 +66,7 @@ const AssetType = () => {
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

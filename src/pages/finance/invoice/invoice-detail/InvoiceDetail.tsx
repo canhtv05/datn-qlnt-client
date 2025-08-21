@@ -15,8 +15,10 @@ import { ColumnConfig, InvoiceItemResponse } from "@/types";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { Info } from "lucide-react";
 import { formattedCurrency } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const InvoiceDetail = () => {
+  const { t } = useTranslation();
   const {
     handleChange,
     handleActionClick,
@@ -80,7 +82,7 @@ const InvoiceDetail = () => {
                             </Button>
                           </TooltipTrigger>
                           <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
-                            <p>{btn.tooltipContent}</p>
+                            <p>{t(btn.tooltipContent)}</p>
                             <TooltipPrimitive.Arrow
                               style={{
                                 fill: btn.arrowColor,
@@ -224,7 +226,7 @@ const InvoiceDetail = () => {
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

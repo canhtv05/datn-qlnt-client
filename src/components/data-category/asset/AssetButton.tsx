@@ -27,8 +27,10 @@ import {
   formattedCurrency,
   handleExportExcel,
 } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: AssetResponse[] }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
   const [value, setValue] = useState<ICreateAsset>({
@@ -245,7 +247,7 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

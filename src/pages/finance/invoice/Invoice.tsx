@@ -12,6 +12,7 @@ import Modal from "@/components/Modal";
 import { Notice } from "@/enums";
 import UpdateInvoice from "@/components/finance/invoice/UpdateInvoice";
 import StatisticCard from "@/components/StatisticCard";
+import { useTranslation } from "react-i18next";
 
 const Invoice = () => {
   const {
@@ -36,6 +37,7 @@ const Invoice = () => {
     ConfirmDialog,
   } = useInvoice();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     {
@@ -69,7 +71,7 @@ const Invoice = () => {
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,

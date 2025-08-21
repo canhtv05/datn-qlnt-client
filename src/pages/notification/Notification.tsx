@@ -12,6 +12,7 @@ import NotificationFilter from "@/components/notification/NotificationFilter";
 import AddOrUpdateNotification from "@/components/notification/AddOrUpdateNotification";
 import NotificationButton from "@/components/notification/NotificationButton";
 import StatusBadge from "@/components/ui/StatusBadge";
+import { useTranslation } from "react-i18next";
 
 const Notification = () => {
   const {
@@ -33,6 +34,7 @@ const Notification = () => {
     tenantOptions,
   } = useNotification();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     {
@@ -70,7 +72,7 @@ const Notification = () => {
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,

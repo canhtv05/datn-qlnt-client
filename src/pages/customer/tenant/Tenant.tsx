@@ -15,6 +15,7 @@ import { GET_BTNS } from "@/constant";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatDate } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const Tenant = () => {
   const {
@@ -37,6 +38,7 @@ const Tenant = () => {
     ConfirmDialog,
   } = useTenant();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     { label: "Mã khách", accessorKey: "customerCode", isSort: true, hasHighlight: true },
@@ -66,7 +68,7 @@ const Tenant = () => {
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,

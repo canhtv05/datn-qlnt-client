@@ -8,6 +8,7 @@ import { useServiceRoomDetail } from "./useServiceRoomDetail";
 import { GET_BTNS } from "@/constant";
 import { Trash2 } from "lucide-react";
 import StatusBadge from "@/components/ui/StatusBadge";
+import { useTranslation } from "react-i18next";
 
 const ServiceRoomDetail = () => {
   const {
@@ -20,6 +21,7 @@ const ServiceRoomDetail = () => {
     ConfirmDialogRemoveAll,
     openDialogAll,
   } = useServiceRoomDetail();
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     { label: "Tên dịch vụ", accessorKey: "serviceName", isSort: true },
@@ -48,7 +50,7 @@ const ServiceRoomDetail = () => {
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,

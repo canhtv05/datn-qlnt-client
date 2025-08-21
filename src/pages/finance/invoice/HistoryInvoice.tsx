@@ -8,6 +8,7 @@ import { useHistoryInvoice } from "./useHistoryInvoice";
 import { BUTTON_HISTORY, GET_BTNS } from "@/constant";
 import { Notice } from "@/enums";
 import InvoiceFilter from "@/components/finance/invoice/InvoiceFilter";
+import { useTranslation } from "react-i18next";
 
 const HistoryInvoice = () => {
   const {
@@ -23,6 +24,7 @@ const HistoryInvoice = () => {
     openDialogAll,
   } = useHistoryInvoice();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     {
@@ -62,7 +64,7 @@ const HistoryInvoice = () => {
                     }}
                     arrow={false}
                   >
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,
@@ -187,7 +189,7 @@ const HistoryInvoice = () => {
                       }}
                       arrow={false}
                     >
-                      <p>{btn.tooltipContent}</p>
+                      <p>{t(btn.tooltipContent)}</p>
                       <TooltipPrimitive.Arrow
                         style={{
                           fill: btn.arrowColor,

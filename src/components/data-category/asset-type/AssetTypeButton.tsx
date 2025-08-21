@@ -18,8 +18,10 @@ import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateAssetType from "./AddOrUpdateAssetType";
+import { useTranslation } from "react-i18next";
 
 const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
+  const { t } = useTranslation();
   const [value, setValue] = useState<ICreateAssetType>({
     assetGroup: "",
     discriptionAssetType: "",
@@ -171,7 +173,7 @@ const AssetTypeButton = ({ ids }: { ids: Record<string, boolean> }) => {
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

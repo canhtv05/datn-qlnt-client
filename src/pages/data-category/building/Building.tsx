@@ -12,6 +12,7 @@ import Modal from "@/components/Modal";
 import AddOrUpdateBuilding from "@/components/data-category/building/AddOrUpdateBuilding";
 import { Notice } from "@/enums";
 import { GET_BTNS } from "@/constant";
+import { useTranslation } from "react-i18next";
 
 const Building = () => {
   const {
@@ -33,6 +34,7 @@ const Building = () => {
     ConfirmDialog,
   } = useBuilding();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     { label: "Mã tòa nhà", accessorKey: "buildingCode", isSort: true, hasHighlight: true },
@@ -68,7 +70,7 @@ const Building = () => {
                     }}
                     arrow={false}
                   >
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,

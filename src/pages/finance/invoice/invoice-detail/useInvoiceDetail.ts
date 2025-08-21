@@ -320,7 +320,7 @@ export default function useInvoiceDetail() {
 
   const viewBtn: IBtnType[] = [
     {
-      tooltipContent: "Xem hóa đơn",
+      tooltipContent: "actions.invoiceActions.view",
       icon: Eye,
       arrowColor: "var(--color-emerald-400)",
       type: "view",

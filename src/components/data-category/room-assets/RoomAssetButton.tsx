@@ -29,6 +29,7 @@ import { Building, Layers } from "lucide-react";
 import { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import { useParams, useSearchParams } from "react-router-dom";
 import { handleExportExcel, roomStatusEnumToString, roomTypeEnumToString } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const RoomAssetButton = ({
   ids,
@@ -43,6 +44,7 @@ const RoomAssetButton = ({
   type: "default" | "detail" | "asset";
   buildingOptions: FieldsSelectLabelType[] | undefined;
 }) => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const [value, setValue] = useState<RoomAssetFormValue>({
@@ -70,7 +72,7 @@ const RoomAssetButton = ({
 
   if (type === "default") {
     LOCAL_ACTION_BUTTONS.push({
-      tooltipContent: "Thêm nhiều",
+      tooltipContent: "actions.serviceActions.addMore",
       icon: Layers,
       arrowColor: "var(--color-emerald-500)",
       type: "bulkAdd",
@@ -86,7 +88,7 @@ const RoomAssetButton = ({
   if (type === "asset") {
     LOCAL_ACTION_BUTTONS = [
       {
-        tooltipContent: "Thêm vào tòa nhà",
+        tooltipContent: "actions.serviceActions.addToBuilding",
         icon: Building,
         arrowColor: "var(--color-green-600)",
         type: "addToAllRoom",
@@ -421,7 +423,7 @@ const RoomAssetButton = ({
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

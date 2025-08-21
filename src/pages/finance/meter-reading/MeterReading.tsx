@@ -12,6 +12,7 @@ import MeterReadingButton from "@/components/finance/meter-reading/MeterReadingB
 import MeterReadingFilter from "@/components/finance/meter-reading/MeterReadingFilter";
 import AddOrUpdateMeterReading from "@/components/finance/meter-reading/AddOrUpdateMeterReading";
 import { formatDate } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const MeterReading = () => {
   const {
@@ -33,6 +34,7 @@ const MeterReading = () => {
     meterFindAll,
   } = useMeterReading();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     {
@@ -71,7 +73,7 @@ const MeterReading = () => {
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,

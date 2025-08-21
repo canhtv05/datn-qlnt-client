@@ -8,6 +8,7 @@ import { useHistoryRoom } from "./useHistoryRoom";
 import { BUTTON_HISTORY, formatNumberField, GET_BTNS } from "@/constant";
 import { Notice } from "@/enums";
 import RoomFilter from "@/components/data-category/room/RoomFilter";
+import { useTranslation } from "react-i18next";
 
 const HistoryRoom = () => {
   const {
@@ -23,6 +24,7 @@ const HistoryRoom = () => {
     openDialogAll,
   } = useHistoryRoom();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     {
@@ -62,7 +64,7 @@ const HistoryRoom = () => {
                     }}
                     arrow={false}
                   >
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,
@@ -192,7 +194,7 @@ const HistoryRoom = () => {
                       }}
                       arrow={false}
                     >
-                      <p>{btn.tooltipContent}</p>
+                      <p>{t(btn.tooltipContent)}</p>
                       <TooltipPrimitive.Arrow
                         style={{
                           fill: btn.arrowColor,

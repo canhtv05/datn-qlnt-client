@@ -20,8 +20,10 @@ import {
   receiptMethodEnumToString,
   receiptStatusEnumToString,
 } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const PaymentReceiptButton = ({ ids, data }: { data?: PaymentReceiptResponse[]; ids: Record<string, boolean> }) => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
 
   const sendPaymentNoticeMutation = useMutation({
@@ -154,7 +156,7 @@ const PaymentReceiptButton = ({ ids, data }: { data?: PaymentReceiptResponse[]; 
                   }}
                   arrow={false}
                 >
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

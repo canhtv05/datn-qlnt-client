@@ -10,6 +10,7 @@ import ServiceRoomButton from "@/components/data-category/service-room/ServiceRo
 import ServiceRoomFilter from "@/components/data-category/service-room/ServiceRoomFilter";
 import StatisticCard from "@/components/StatisticCard";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const ServiceRoom = () => {
   const {
@@ -27,6 +28,7 @@ const ServiceRoom = () => {
   const { page, size } = query;
   const { id } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     { label: "Mã phòng", accessorKey: "roomCode", isSort: true, isCenter: true, hasHighlight: true },
@@ -56,7 +58,7 @@ const ServiceRoom = () => {
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,

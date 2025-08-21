@@ -9,6 +9,7 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const UserRoom = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const UserRoom = () => {
     },
     retry: 1,
   });
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     {
@@ -51,7 +53,7 @@ const UserRoom = () => {
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
-                  <p>{btn.tooltipContent}</p>
+                  <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
                       fill: btn.arrowColor,

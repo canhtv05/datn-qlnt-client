@@ -8,6 +8,7 @@ import { useHistoryAsset } from "./useHistoryAsset";
 import { BUTTON_HISTORY, GET_BTNS } from "@/constant";
 import { Notice } from "@/enums";
 import AssetFilter from "@/components/data-category/asset/AssetFilter";
+import { useTranslation } from "react-i18next";
 
 const HistoryBuilding = () => {
   const {
@@ -23,6 +24,7 @@ const HistoryBuilding = () => {
     openDialogAll,
   } = useHistoryAsset();
   const { page, size } = query;
+  const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     { label: "Tên tài sản", accessorKey: "nameAsset", isSort: true },
@@ -57,7 +59,7 @@ const HistoryBuilding = () => {
                     }}
                     arrow={false}
                   >
-                    <p>{btn.tooltipContent}</p>
+                    <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: btn.arrowColor,
@@ -142,7 +144,7 @@ const HistoryBuilding = () => {
                       }}
                       arrow={false}
                     >
-                      <p>{btn.tooltipContent}</p>
+                      <p>{t(btn.tooltipContent)}</p>
                       <TooltipPrimitive.Arrow
                         style={{
                           fill: btn.arrowColor,
