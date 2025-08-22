@@ -56,7 +56,7 @@ const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Tena
 
   const addTenantMutation = useMutation({
     mutationKey: ["add-tenant"],
-    mutationFn: async (payload: ICreateAndUpdateTenant) => await httpRequest.post("/tenants/owner", payload),
+    mutationFn: async (payload: ICreateAndUpdateTenant) => await httpRequest.post("/tenants", payload),
     onError: (error) => {
       handleMutationError(error);
     },
@@ -151,8 +151,8 @@ const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Tena
           "Ngày sinh": formatDate(d.dob),
           Email: d.email,
           "Số điện thoại": d.phoneNumber,
-          "Địa chỉ": d.address,
-          "Là đại diện": d.isRepresentative ? "Có" : "Không",
+          // "Địa chỉ": d.address,
+          // "Là đại diện": d.isRepresentative ? "Có" : "Không",
           "Trạng thái": tenantStatusEnumToString(d.tenantStatus, t),
         }));
         handleExportExcel(`Khách thuê`, exportData, data);

@@ -136,7 +136,7 @@ export enum VehicleStatus {
 export enum TenantStatus {
   DANG_THUE = "DANG_THUE",
   DA_TRA_PHONG = "DA_TRA_PHONG",
-  TIEM_NANG = "TIEM_NANG",
+  CHO_TAO_HOP_DONG = "CHO_TAO_HOP_DONG",
   KHOA = "KHOA",
   HUY_BO = "HUY_BO",
 }
@@ -296,6 +296,7 @@ export enum SidebarKey {
   METER_READING = "sidebar.finance.meterReading",
   INVOICE = "sidebar.finance.invoice",
   RECEIPT = "sidebar.finance.receipt",
+  DEPOSIT = "sidebar.finance.deposit",
 
   NOTIFICATIONS_LABEL = "sidebar.notifications.label",
   NOTIFICATIONS_TITLE = "sidebar.notifications.title",
@@ -308,4 +309,14 @@ export enum SidebarKey {
   MEMBERS = "sidebar.user.members",
   ELECTRIC = "sidebar.user.electric",
   WATER = "sidebar.user.water",
+}
+
+/* DEPOSIT */
+export enum DepositStatus {
+  DA_DAT_COC = "DA_DAT_COC",
+  DA_HOAN_TRA = "DA_HOAN_TRA",
+  CHUA_NHAN_COC = "CHUA_NHAN_COC",
+  CHO_XAC_NHAN = "CHO_XAC_NHAN",
+  KHONG_TRA_COC = "KHONG_TRA_COC",
+  HUY = "HUY",
 }

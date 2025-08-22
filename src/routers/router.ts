@@ -69,6 +69,7 @@ const HistoryInvoice = lazy(() => import("@/pages/finance/invoice/HistoryInvoice
 const InvoiceDetail = lazy(() => import("@/pages/finance/invoice/invoice-detail/InvoiceDetail"));
 const ViewInvoiceDetail = lazy(() => import("@/pages/finance/invoice/invoice-detail/ViewInvoiceDetail"));
 const PaymentReceipt = lazy(() => import("@/pages/finance/payment-receipt"));
+const Deposit = lazy(() => import("@/pages/finance/deposit"));
 
 /* USER ROLE */
 // const UserRoom = lazy(() => import("@/pages/user/room"));
@@ -257,6 +258,11 @@ const privateRoutes: RouteType[] = [
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
+    path: configs.routes.customer.tenantDetail,
+    component: DetailTenant,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
     path: configs.routes.customer.tenantsHistory,
     component: HistoryTenant,
     allowedRoles: ["ADMIN", "MANAGER"],
@@ -333,6 +339,11 @@ const privateRoutes: RouteType[] = [
     component: PaymentReceipt,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
+  {
+    path: configs.routes.finance.deposit,
+    component: Deposit,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
 
   // ROLE USER
   {
@@ -407,11 +418,6 @@ const modals: ModalRoute[] = [
     path: configs.routes.modals.profile,
     component: Profile,
     allowedRoles: ["ADMIN", "MANAGER", "STAFF", "USER"],
-  },
-  {
-    path: configs.routes.modals.tenantDetail,
-    component: DetailTenant,
-    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
     path: configs.routes.modals.roomMembers,

@@ -31,6 +31,7 @@ import {
   PaymentMethod,
   NotificationType,
   SidebarKey,
+  DepositStatus,
 } from "@/enums";
 import { formatNumber, formattedCurrency } from "@/lib/utils";
 import { IBtnType } from "@/types";
@@ -51,6 +52,7 @@ import {
   Gavel,
   History,
   Undo,
+  DollarSign,
 } from "lucide-react";
 
 export interface SideBarType {
@@ -183,6 +185,11 @@ export const sidebarItems = (
           title: t(SidebarKey.RECEIPT),
           url: "/finance/payment-receipt",
           icon: images.receipt,
+        },
+        {
+          title: t(SidebarKey.DEPOSIT),
+          url: "/finance/deposits",
+          icon: images.deposit,
         },
       ],
     },
@@ -572,8 +579,8 @@ export const STATUS_BADGE = [
     className: COLOR_CLASS.gray,
   },
   {
-    value: TenantStatus.TIEM_NANG,
-    label: "statusBadge.tenantStatus.potential",
+    value: TenantStatus.CHO_TAO_HOP_DONG,
+    label: "statusBadge.tenantStatus.waitContract",
     className: COLOR_CLASS.yellow,
   },
   {
@@ -971,6 +978,38 @@ export const STATUS_BADGE = [
     label: "statusBadge.notificationType.other",
     className: COLOR_CLASS.red,
   },
+
+  /* DEPOSIT */
+  {
+    value: DepositStatus.CHO_XAC_NHAN,
+    label: "statusBadge.depositStatus.pending",
+    className: COLOR_CLASS.red,
+  },
+  {
+    value: DepositStatus.CHUA_NHAN_COC,
+    label: "statusBadge.depositStatus.notReceived",
+    className: COLOR_CLASS.red,
+  },
+  {
+    value: DepositStatus.DA_DAT_COC,
+    label: "statusBadge.depositStatus.common",
+    className: COLOR_CLASS.red,
+  },
+  {
+    value: DepositStatus.DA_HOAN_TRA,
+    label: "statusBadge.depositStatus.refunded",
+    className: COLOR_CLASS.red,
+  },
+  {
+    value: DepositStatus.KHONG_TRA_COC,
+    label: "statusBadge.depositStatus.nonRefund",
+    className: COLOR_CLASS.red,
+  },
+  {
+    value: DepositStatus.HUY,
+    label: "statusBadge.depositStatus.cancelled",
+    className: COLOR_CLASS.red,
+  },
 ];
 
 export const ACTION_BUTTONS_FOR_CONTRACT: IBtnType[] = [
@@ -1180,6 +1219,13 @@ export const BTNS: IBtnType[] = [
     icon: Eye,
     arrowColor: "var(--color-emerald-500)",
     type: "view",
+    hasConfirm: false,
+  },
+  {
+    tooltipContent: "common.button.deposit1",
+    icon: DollarSign,
+    arrowColor: "var(--color-emerald-500)",
+    type: "deposit1",
     hasConfirm: false,
   },
 ];

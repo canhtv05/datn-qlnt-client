@@ -7,7 +7,7 @@ import TenantResponse, { ColumnConfig } from "@/types";
 import { useHistoryTenant } from "./useHistoryTenant";
 import { BUTTON_HISTORY, GET_BTNS } from "@/constant";
 import { Notice } from "@/enums";
-import StatusBadge from "@/components/ui/StatusBadge";
+// import StatusBadge from "@/components/ui/StatusBadge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import TenantFilter from "@/components/customer/tenant/TenantFilter";
 import { useTranslation } from "react-i18next";
@@ -95,21 +95,21 @@ const HistoryTenant = () => {
     { label: "Ngày sinh", accessorKey: "dob", isSort: true },
     { label: "Email", accessorKey: "email", isSort: true },
     { label: "Số điện thoại", accessorKey: "phoneNumber", isSort: true },
-    { label: "Địa chỉ", accessorKey: "address" },
-    { label: "Số CMND/CCCD", accessorKey: "identificationNumber" },
-    {
-      label: "Đại diện hộ",
-      accessorKey: "isRepresentative",
-      isCenter: true,
-      isSort: true,
-      render: (row: TenantResponse) => {
-        return row.isRepresentative ? (
-          <StatusBadge status={"isRepresentative=true"} />
-        ) : (
-          <StatusBadge status={"isRepresentative=false"} />
-        );
-      },
-    },
+    // { label: "Địa chỉ", accessorKey: "address", isHidden: true },
+    // { label: "Số CMND/CCCD", accessorKey: "identityCardNumber", isHidden: true },
+    // {
+    //   label: "Đại diện hộ",
+    //   accessorKey: "isRepresentative",
+    //   isCenter: true,
+    //   isSort: true,
+    //   render: (row: TenantResponse) => {
+    //     return row.isRepresentative ? (
+    //       <StatusBadge status={"isRepresentative=true"} />
+    //     ) : (
+    //       <StatusBadge status={"isRepresentative=false"} />
+    //     );
+    //   },
+    // },
     {
       label: "Trạng thái",
       accessorKey: "tenantStatus",

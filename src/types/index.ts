@@ -27,6 +27,7 @@ import {
   AssetType,
   AssetBeLongTo,
   NotificationType,
+  DepositStatus,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -54,7 +55,10 @@ export interface IBtnType {
     | "finalize"
     | "cash"
     | "history"
-    | "undo";
+    | "undo"
+    | "deposit1"
+    | "deposit2"
+    | "deposit3";
   hasConfirm: boolean;
 }
 
@@ -249,7 +253,7 @@ export interface RoomResponse extends AbstractResponse {
   };
 }
 export type RoomFormValue = {
-  floorId: string;
+  floorId?: string;
   acreage: number | null;
   price: number | null;
   maximumPeople: number | null;
@@ -562,41 +566,34 @@ export interface VehicleStatisticsResponse {
   byType: Record<VehicleTypeKey, number>;
 }
 /* TENANT */
-
-export interface TenantDetailResponse extends AbstractResponse {
-  customerCode: string;
-  buildingName: string;
-  buildingAddress: string;
-  floorName: string;
-  roomCode: string;
-  fullName: string;
-  gender: Gender | string;
-  dob: string;
-  email: string;
-  phoneNumber: string;
-  identityCardNumber: string;
-  pictureUrl: string;
-  address: string;
-  contractCode: string;
-  endDate: string;
-  tenantStatus: TenantStatus | string;
-  isRepresentative: string;
-}
-export default interface TenantResponse extends AbstractResponse {
+export default interface TenantResponse {
+  id: string;
   customerCode: string;
   fullName: string;
   gender: Gender;
   dob: string;
   userId?: string;
   email: string;
+  // address: string;
+  // identityCardNumber: string;
   pictureUrl: string;
   phoneNumber: string;
   tenantStatus: TenantStatus;
-  isRepresentative: string;
-  identityCardNumber: string;
-  identificationNumber: string;
-  address: string;
   contracts: ContractResponse[];
+}
+
+export interface TenantDetailResponse extends AbstractResponse {
+  customerCode: string;
+  fullName: string;
+  gender: string;
+  dob: string;
+  email: string;
+  phoneNumber: string;
+  pictureUrl: string;
+  identityCardNumber: string;
+  address: string;
+  tenantStatus: TenantStatus;
+  totalContract: number;
 }
 
 export interface ICreateAndUpdateTenant {
@@ -618,6 +615,7 @@ export interface TenantFilterValues {
 
 export interface ITenantStatisticsResponse {
   totalTenants: number;
+  totalWaitingTenants: number;
   totalRentingTenants: number;
   totalCheckedOutTenants: number;
   totalPotentialTenants: number;
@@ -1209,4 +1207,29 @@ export interface NotificationDetailResponse {
   fullName: string;
   isRead: boolean;
   readAt: string;
+}
+
+/* DEPOSIT */
+export interface DepositDetailView extends AbstractResponse {
+  contractId: string;
+  contractCode: string;
+  roomCode: string;
+  depositor: string;
+  depositRecipient: string;
+  depositAmount: number;
+  depositStatus: DepositStatus;
+  depositDate: string;
+  depositRefundDate: string;
+  securityDepositReturnDate: string;
+  note: string;
+}
+
+export interface ConfirmDepositResponse {
+  id: string;
+  depositStatus: DepositStatus;
+}
+
+export interface DepositFilter {
+  query: string;
+  depositStatus: string | DepositStatus;
 }

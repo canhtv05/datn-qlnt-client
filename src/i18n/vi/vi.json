@@ -1,526 +1,534 @@
 {
-    "common": {
-        "button": {
-            "search": "Tìm kiếm",
-            "cancel": "Hủy",
-            "delete": "Xóa",
-            "save": "Lưu",
-            "update": "Cập nhật",
-            "reload": "Làm mới",
-            "restore": "Khôi phục",
-            "toggle": "Chuyển đổi",
-            "changeStatus": "Đổi trạng thái",
-            "view": "Xem",
-            "paymentConfirmed": "Xác nhận đã thanh toán",
-            "docx": "Tải lên Docx",
-            "download": "Tải xuống",
-            "downloadExcel": "Tải xuống Excel",
-            "addNew": "Thêm mới",
-            "history": "Xem Lịch sử",
-            "confirm": "Xác nhận",
-            "continue": "Tiếp tục"
-        },
-        "noData": "Không có dữ liệu",
-        "selectDateRange": "Chọn khoảng thời gian",
-        "table": {
-            "of": "trên",
-            "selectedLines": "dòng được chọn",
-            "column": "Cột",
-            "showing": "Hiển thị",
-            "results": "kết quả",
-            "paging": "Số bản ghi mỗi trang"
-        },
-        "confirmDialog": {
-            "confirm": "Bạn có chắc chắn muốn tiếp tục không?",
-            "delete": "Thao tác này sẽ xóa vĩnh viễn dữ liệu các {{name}} đã chọn. Bạn có chắc chắn muốn tiếp tục?"
-        },
-        "unknown": "Không xác định",
-        "other": "Khác"
+  "common": {
+    "button": {
+      "search": "Tìm kiếm",
+      "cancel": "Hủy",
+      "delete": "Xóa",
+      "save": "Lưu",
+      "update": "Cập nhật",
+      "reload": "Làm mới",
+      "restore": "Khôi phục",
+      "toggle": "Chuyển đổi",
+      "changeStatus": "Đổi trạng thái",
+      "view": "Xem",
+      "paymentConfirmed": "Xác nhận đã thanh toán",
+      "docx": "Tải lên Docx",
+      "download": "Tải xuống",
+      "downloadExcel": "Tải xuống Excel",
+      "addNew": "Thêm mới",
+      "history": "Xem Lịch sử",
+      "confirm": "Xác nhận"
     },
-    "actions": {
-        "serviceActions": {
-            "default": "Thêm 1 dịch vụ cho 1 phòng",
-            "building": "Thêm 1 dịch vụ cho tất cả các phòng trong 1 tòa nhà",
-            "floor": "Thêm 1 dịch vụ vào các phòng",
-            "undo": "Thêm các dịch vụ vào phòng cho 1 phòng",
-            "addToBuilding": "Thêm vào tòa nhà",
-            "addMore": "Thêm nhiều"
-        },
-        "invoiceActions": {
-            "createBuildingInvoice": "Tạo hóa đơn tòa nhà",
-            "createBuildingContract": "Tạo hóa đơn hợp đồng",
-            "view": "Xem hóa đơn"
-        }
+    "noData": "Không có dữ liệu",
+    "selectDateRange": "Chọn khoảng thời gian",
+    "table": {
+      "of": "trên",
+      "selectedLines": "dòng được chọn",
+      "column": "Cột",
+      "showing": "Hiển thị",
+      "results": "kết quả",
+      "paging": "Số bản ghi mỗi trang"
     },
-    "status": {
-        "updateSuccess": "Cập nhật thành công",
-        "updateFailed": "Cập nhật thất bại",
-        "addSuccess": "Thêm thành công",
-        "addFailed": "Thêm thất bại",
-        "removeSuccess": "Xóa thành công",
-        "removeFailed": "Xóa thất bại",
-        "error": "Có lỗi xảy ra",
-        "logoutFailed": "Đăng xuất thất bại",
-        "logoutSuccess": "Đăng xuất thành công",
-        "registerSuccess": "Đăng ký thành công, vui lòng đăng nhập",
-        "errorStatistics": "Có lỗi xảy ra khi lấy dữ liệu thống kê",
-        "restoreSuccess": "Khôi phục thành công",
-        "restoreFailed": "Khôi phục thất bại"
+    "confirmDialog": {
+      "confirm": "Bạn có chắc chắn muốn tiếp tục không?",
+      "delete": "Thao tác này sẽ xóa vĩnh viễn dữ liệu các {{name}} đã chọn. Bạn có chắc chắn muốn tiếp tục?"
     },
-    "notice": {
-        "remove": "Hành động này sẽ xóa vĩnh viễn dữ liệu đã chọn khỏi hệ thống. Bạn có chắc chắn muốn tiếp tục?",
-        "toggleStatus": "Bạn có chắc chắn muốn thay đổi trạng thái của mục này?",
-        "restore": "Bạn có chắc chắn muốn khôi phục mục này?",
-        "restores": "Bạn có chắc chắn muốn khôi phục các mục đã chọn?",
-        "update": "Hành động này sẽ cập nhật thông tin hiện tại. Bạn có chắc chắn muốn tiếp tục?",
-        "add": "Hành động này sẽ thêm mới một mục vào hệ thống. Bạn có chắc chắn muốn thực hiện?"
+    "unknown": "Không xác định",
+    "other": "Khác"
+  },
+  "actions": {
+    "serviceActions": {
+      "default": "Thêm 1 dịch vụ cho 1 phòng",
+      "building": "Thêm 1 dịch vụ cho tất cả các phòng trong 1 tòa nhà",
+      "floor": "Thêm 1 dịch vụ vào các phòng",
+      "undo": "Thêm các dịch vụ vào phòng cho 1 phòng",
+      "addToBuilding": "Thêm vào tòa nhà",
+      "addMore": "Thêm nhiều"
     },
-    "toast": {
-        "imageOnly": "Vui lòng tải lên tệp hình ảnh (jpg, png, v.v.)",
-        "sizeExceeded": "Kích thước tệp vượt quá giới hạn 5MB",
-        "uploadSuccess": "Thay đổi ảnh đại diện thành công!",
-        "uploadFailed": "Tải lên thất bại. Vui lòng thử lại.",
-        "errorUpload": "Lỗi khi tải tệp. Vui lòng thử lại.",
-        "noChanges": "Không có thay đổi nào",
-        "updateSuccess": "Cập nhật thành công!",
-        "invalidFileType": "Chỉ hỗ trợ các định dạng ảnh JPG, JPEG, PNG, hoặc WEBP"
-    },
-    "profile": {
-        "personalProfile": "Hồ sơ cá nhân",
-        "logout": "Đăng xuất",
-        "confirmLogout": "Bạn sẽ được đăng xuất khỏi hệ thống. Hành động này sẽ kết thúc phiên làm việc hiện tại của bạn",
-        "manager": "Quản lý",
-        "user": "Người dùng",
-        "admin": "Admin",
-        "staff": "Nhân viên",
-        "enterEmail": "Nhập email:",
-        "username": "Tên người dùng",
-        "enterUsername": "Nhập tên người dùng",
-        "gender": "Giới tính",
-        "genderOptions": {
-            "MALE": "Nam",
-            "FEMALE": "Nữ",
-            "UNKNOWN": "Khác"
-        },
-        "dob": "Ngày sinh",
-        "phoneNumber": "Số điện thoại",
-        "enterPhoneNumber": "Nhập số điện thoại"
-    },
-    "sidebar": {
-        "dashboard": { "label": "Theo dõi nhanh", "title": "Bảng tin" },
-        "facilities": {
-            "label": "Quản lý vận hành",
-            "title": "Cơ sở vật chất",
-            "buildings": "Tòa nhà",
-            "floors": "Tầng",
-            "rooms": "Phòng"
-        },
-        "assets": {
-            "label": "Quản lý tài sản",
-            "title": "Tài sản",
-            "assets": "Tài sản",
-            "roomAssets": "Tài sản phòng"
-        },
-        "services": {
-            "label": "Quản lý dịch vụ",
-            "title": "Dịch vụ",
-            "services": "Dịch vụ",
-            "roomServices": "Dịch vụ phòng"
-        },
-        "customers": {
-            "label": "Quản lý khách thuê",
-            "title": "Khách thuê",
-            "tenants": "Khách thuê",
-            "vehicles": "Phương tiện",
-            "contracts": "Hợp đồng"
-        },
-        "finance": {
-            "label": "Quản lý tài chính",
-            "title": "Tài chính",
-            "meters": "Công tơ",
-            "meterReading": "Ghi chỉ số",
-            "invoice": "Hóa đơn",
-            "receipt": "Phiếu thanh toán"
-        },
-        "notifications": {
-            "label": "Quản lý thông báo",
-            "title": "Thông báo"
-        },
-        "user": {
-            "info": "Thông tin",
-            "roomInfo": "Xem thông tin phòng",
-            "receipts": "Xem phiếu thanh toán",
-            "invoices": "Xem hóa đơn",
-            "contracts": "Xem hợp đồng",
-            "members": "Xem thành viên trong phòng",
-            "electric": "Xem điện",
-            "water": "Xem nước"
-        }
-    },
-    "dashboard": {
-        "sentBy": "Gửi bởi {{name}} • {{date}}",
-        "noMoreNotification": "Không còn thông báo nào"
-    },
-    "notificationFilter": {
-        "typePlaceholder": "-- Loại thông báo --",
-        "typeLabel": "Loại thông báo",
-        "type": {
-            "general": "Chung",
-            "system": "Hệ thống",
-            "other": "Khác"
-        },
-        "search": "Tìm kiếm",
-        "hide": "Ẩn",
-        "show": "Hiện"
-    },
-    "statusBadge": {
-        "empty": "Trống",
-        "yes": "Có",
-        "no": "Không",
-
-        "buildingStatus": {
-            "active": "Hoạt động",
-            "locked": "Tạm khóa",
-            "inactive": "Hủy hoạt động"
-        },
-
-        "roomType": {
-            "vip": "Cao cấp",
-            "shared": "Phòng ghép",
-            "single": "Phòng đơn",
-            "other": "Khác"
-        },
-
-        "buildingType": {
-            "nhaTro": "Nhà trọ",
-            "chungCuMini": "Chung cư mini",
-            "canHoDichVu": "Căn hộ dịch vụ",
-            "other": "Khác"
-        },
-
-        "roomStatus": {
-            "empty": "Còn trống",
-            "deposit": "Đã đặt cọc",
-            "maintain": "Bảo trì",
-            "unfinished": "Chưa hoàn thiện",
-            "locked": "Tạm khóa",
-            "inactive": "Huỷ hoạt động",
-            "renting": "Đang thuê"
-        },
-
-        "floorStatus": {
-            "active": "Đang hoạt động",
-            "inactive": "Không sử dụng",
-            "locked": "Tạm khóa"
-        },
-
-        "floorType": {
-            "forRent": "Cho thuê",
-            "notForRent": "Không cho thuê",
-            "residential": "Để ở",
-            "storage": "Kho",
-            "other": "Khác"
-        },
-
-        "assetGroup": {
-            "houseware": "Gia dụng",
-            "furniture": "Nội thất",
-            "electric": "Điện",
-            "personal": "Cá nhân",
-            "other": "Khác"
-        },
-
-        "assetBelongTo": {
-            "room": "Phòng",
-            "common": "Chung",
-            "personal": "Cá nhân"
-        },
-
-        "assetType": {
-            "houseware": "Gia dụng",
-            "cleaning": "Vệ sinh",
-            "furniture": "Nội thất",
-            "electric": "Điện",
-            "security": "An ninh",
-            "other": "Khác"
-        },
-
-        "assetStatus": {
-            "active": "Hoạt động",
-            "cancelled": "Bị hủy",
-            "broken": "Hư hỏng",
-            "maintenance": "Cần bảo trì",
-            "lost": "Thất lạc",
-            "liquidated": "Đã thanh lý",
-            "inactive": "Không sử dụng"
-        },
-
-        "tenantStatus": {
-            "renting": "Đang thuê",
-            "returned": "Đã trả phòng",
-            "potential": "Tiềm năng",
-            "locked": "Bị khóa",
-            "cancelled": "Hủy bỏ"
-        },
-
-        "gender": {
-            "male": "Nam",
-            "female": "Nữ"
-        },
-
-        "vehicleType": {
-            "motorbike": "Xe máy",
-            "car": "Ô tô",
-            "bicycle": "Xe đạp",
-            "other": "Khác"
-        },
-
-        "vehicleStatus": {
-            "active": "Đang sử dụng",
-            "inactive": "Ngừng sử dụng",
-            "locked": "Tạm khóa"
-        },
-
-        "contractStatus": {
-            "valid": "Hiệu lực",
-            "expiring": "Sắp hết hạn",
-            "pending": "Chờ kích hoạt",
-            "endedNotice": "Kết thúc có báo trước",
-            "endedOnTime": "Kết thúc đúng hạn",
-            "terminated": "Tự ý hủy bỏ",
-            "cancelled": "Đã hủy"
-        },
-
-        "serviceType": {
-            "fixed": "Cố định",
-            "metered": "Tính theo số"
-        },
-
-        "serviceAppliedBy": {
-            "room": "Phòng",
-            "floor": "Tầng",
-            "person": "Người"
-        },
-
-        "serviceStatus": {
-            "active": "Hoạt động",
-            "locked": "Tạm khóa",
-            "inactive": "Ngừng sử dụng"
-        },
-
-        "defaultServiceAppliesTo": {
-            "room": "Phòng",
-            "contract": "Hợp đồng"
-        },
-
-        "defaultServiceStatus": {
-            "active": "Hoạt động",
-            "paused": "Tạm dừng",
-            "cancelled": "Hủy bỏ"
-        },
-
-        "serviceRoomStatus": {
-            "active": "Đang sử dụng",
-            "paused": "Tạm dừng",
-            "cancelled": "Đã hủy"
-        },
-
-        "meterType": {
-            "electric": "Công tơ điện",
-            "water": "Công tơ nước"
-        },
-
-        "invoiceStatus": {
-            "unpaid": "Chưa thanh toán",
-            "restored": "Khôi phục",
-            "paid": "Đã thanh toán",
-            "overdue": "Quá hạn",
-            "cancelled": "Đã hủy",
-            "waitingPayment": "Chờ thanh toán",
-            "restore": "Khôi phục"
-        },
-
-        "invoiceType": {
-            "monthly": "Hàng tháng",
-            "final": "Cuối cùng"
-        },
-
-        "serviceCategory": {
-            "electric": "Điện",
-            "water": "Nước",
-            "parking": "Gửi xe",
-            "internet": "Internet",
-            "cleaning": "Vệ sinh",
-            "elevator": "Thang máy",
-            "maintenance": "Bảo trì",
-            "security": "An ninh",
-            "laundry": "Giặt sấy",
-            "rent": "Tiền phòng",
-            "other": "Khác",
-            "compensation": "Đền bù"
-        },
-
-        "serviceCalculation": {
-            "byMeter": "Tính theo số",
-            "byPerson": "Tính theo người",
-            "byRoom": "Tính theo phòng",
-            "byVehicle": "Tính theo phương tiện"
-        },
-
-        "invoiceItemType": {
-            "electric": "Điện",
-            "water": "Nước",
-            "service": "Dịch vụ",
-            "rent": "Tiền phòng",
-            "compensation": "Đền bù"
-        },
-
-        "paymentMethod": {
-            "choose": "Chọn phương thức",
-            "cash": "Tiền mặt",
-            "transfer": "Chuyển khoản",
-            "vnpay": "Ví điện tử VNPay",
-            "zalopay": "Ví điện tử ZaloPay",
-            "momo": "Ví điện tử MoMo"
-        },
-
-        "paymentStatus": {
-            "pending": "Chờ thanh toán",
-            "confirming": "Chờ xác nhận",
-            "paid": "Đã thanh toán",
-            "rejected": "Từ chối",
-            "cancelled": "Hủy"
-        },
-
-        "notificationType": {
-            "common": "Chung",
-            "system": "Hệ thống",
-            "other": "Khác"
-        }
-    },
-    "building": {
-        "title": "Tòa nhà",
-        "titleHistory": "Lịch sử xóa tòa nhà",
-        "response": {
-            "active": "Hoạt động",
-            "inactive": "Không hoạt động",
-            "buildingCode": "Mã tòa nhà",
-            "actions": "Thao tác",
-            "buildingName": "Tên tòa nhà",
-            "address": "Địa chỉ",
-            "buildingType": "Loại tòa nhà",
-            "actualNumberOfFloors": "Số tầng thực tế",
-            "numberOfFloorsForRent": "Số tầng cho thuê",
-            "description": "Mô tả",
-            "status": "Trạng thái",
-            "createdAt": "Ngày tạo",
-            "updatedAt": "Ngày cập nhật"
-        },
-        "filter": {
-            "status": "-- Trạng thái --",
-            "buildingType": "-- Loại tòa nhà --"
-        },
-        "errorFetch": "Có lỗi xảy ra khi tải tòa nhà",
-        "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê tòa nhà",
-        "totalRooms": "Tổng số phòng",
-        "roomsAvailable": "Tổng số phòng trống",
-        "addOrUpdate": {
-            "buildingName": "Tên tòa nhà:",
-            "detailedAddress": "Địa chỉ chi tiết",
-            "placeholderAddress": "Hà Nội",
-            "selectBuilding": "-- Chọn loại tòa nhà --",
-            "buildingType": "Loại tòa nhà:",
-            "labelSelectBuildingType": "Loại tòa nhà",
-            "actualNumberOfFloors": "Số tầng thực tế:",
-            "numberOfFloorsForRent": "Số tầng cho thuê:",
-            "description": "Mô tả:",
-            "placeholderDescription": "Nhập mô tả"
-        }
-    },
-    "floor": {
-        "title": "Tầng",
-        "titleHistory": "Lịch sử xóa tầng",
-        "response": {
-            "active": "Hoạt động",
-            "inactive": "Không hoạt động",
-            "nameFloor": "Tên tầng",
-            "actions": "Thao tác",
-            "maximumRoom": "Số phòng tối đa",
-            "floorType": "Loại tầng",
-            "buildingId": "ID tòa nhà",
-            "buildingName": "Tên tòa nhà",
-            "descriptionFloor": "Mô tả",
-            "status": "Trạng thái",
-            "createdAt": "Ngày tạo",
-            "updatedAt": "Ngày cập nhật"
-        },
-        "filter": {
-            "status": "-- Trạng thái --",
-            "floorType": "-- Loại tầng --",
-            "buildingName": "-- Tòa nhà --"
-        },
-        "errorFetch": "Có lỗi xảy ra khi tải tầng",
-        "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê tầng",
-        "totalRooms": "Tổng số phòng",
-        "roomsAvailable": "Tổng số phòng trống",
-        "addOrUpdate": {
-            "nameFloor": "Tên tầng:",
-            "maximumRoom": "Số phòng tối đa:",
-            "floorType": "Loại tầng:",
-            "descriptionFloor": "Mô tả:",
-            "placeholderNameFloor": "Tên tầng",
-            "placeholderMaximumRoom": "1",
-            "selectFloorType": "-- Chọn loại tầng --",
-            "placeholderDescription": "Nhập mô tả"
-        }
-    },
-    "room": {
-        "title": "Phòng",
-        "titleHistory": "Lịch sử xóa phòng",
-        "response": {
-            "active": "Hoạt động",
-            "inactive": "Không hoạt động",
-            "roomCode": "Mã phòng",
-            "actions": "Thao tác",
-            "floorId": "Tầng",
-            "floorName": "Tên tầng",
-            "buildingName": "Tên tòa nhà",
-            "acreage": "Diện tích (m²)",
-            "price": "Giá (VNĐ)",
-            "maximumPeople": "Số người tối đa",
-            "roomType": "Loại phòng",
-            "status": "Trạng thái",
-            "description": "Mô tả",
-            "createdAt": "Ngày tạo",
-            "updatedAt": "Ngày cập nhật"
-        },
-        "filter": {
-            "status": "-- Trạng thái --",
-            "roomType": "-- Loại phòng --",
-            "floorName": "-- Tầng --",
-            "buildingName": "-- Tòa nhà --"
-        },
-        "errorFetch": "Có lỗi xảy ra khi tải phòng",
-        "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê phòng",
-        "totalRooms": "Tổng số phòng",
-        "roomsAvailable": "Tổng số phòng trống",
-        "addOrUpdate": {
-            "floorId": "Tầng:",
-            "acreage": "Diện tích (m²):",
-            "price": "Giá (VNĐ):",
-            "minPrice": "Giá từ:",
-            "maxPrice": "Giá đến:",
-            "maximumPeople": "Số người tối đa:",
-            "roomType": "Loại phòng:",
-            "status": "Trạng thái:",
-            "description": "Mô tả:",
-            "placeholderFloor": "-- Chọn tầng --",
-            "placeholderAcreage": "30",
-            "placeholderPrice": "3000000",
-            "placeholderMaximumPeople": "4",
-            "placeholderRoomType": "-- Chọn loại phòng --",
-            "placeholderStatus": "-- Chọn trạng thái --",
-            "placeholderDescription": "Nhập mô tả chi tiết"
-        }
+    "invoiceActions": {
+      "createBuildingInvoice": "Tạo hóa đơn tòa nhà",
+      "createBuildingContract": "Tạo hóa đơn hợp đồng",
+      "view": "Xem hóa đơn"
     }
+  },
+  "status": {
+    "updateSuccess": "Cập nhật thành công",
+    "updateFailed": "Cập nhật thất bại",
+    "addSuccess": "Thêm thành công",
+    "addFailed": "Thêm thất bại",
+    "removeSuccess": "Xóa thành công",
+    "removeFailed": "Xóa thất bại",
+    "error": "Có lỗi xảy ra",
+    "logoutFailed": "Đăng xuất thất bại",
+    "logoutSuccess": "Đăng xuất thành công",
+    "registerSuccess": "Đăng ký thành công, vui lòng đăng nhập",
+    "errorStatistics": "Có lỗi xảy ra khi lấy dữ liệu thống kê",
+    "restoreSuccess": "Khôi phục thành công",
+    "restoreFailed": "Khôi phục thất bại"
+  },
+  "notice": {
+    "remove": "Hành động này sẽ xóa vĩnh viễn dữ liệu đã chọn khỏi hệ thống. Bạn có chắc chắn muốn tiếp tục?",
+    "toggleStatus": "Bạn có chắc chắn muốn thay đổi trạng thái của mục này?",
+    "restore": "Bạn có chắc chắn muốn khôi phục mục này?",
+    "restores": "Bạn có chắc chắn muốn khôi phục các mục đã chọn?",
+    "update": "Hành động này sẽ cập nhật thông tin hiện tại. Bạn có chắc chắn muốn tiếp tục?",
+    "add": "Hành động này sẽ thêm mới một mục vào hệ thống. Bạn có chắc chắn muốn thực hiện?"
+  },
+  "toast": {
+    "imageOnly": "Vui lòng tải lên tệp hình ảnh (jpg, png, v.v.)",
+    "sizeExceeded": "Kích thước tệp vượt quá giới hạn 5MB",
+    "uploadSuccess": "Thay đổi ảnh đại diện thành công!",
+    "uploadFailed": "Tải lên thất bại. Vui lòng thử lại.",
+    "errorUpload": "Lỗi khi tải tệp. Vui lòng thử lại.",
+    "noChanges": "Không có thay đổi nào",
+    "updateSuccess": "Cập nhật thành công!",
+    "invalidFileType": "Chỉ hỗ trợ các định dạng ảnh JPG, JPEG, PNG, hoặc WEBP"
+  },
+  "profile": {
+    "personalProfile": "Hồ sơ cá nhân",
+    "logout": "Đăng xuất",
+    "confirmLogout": "Bạn sẽ được đăng xuất khỏi hệ thống. Hành động này sẽ kết thúc phiên làm việc hiện tại của bạn",
+    "manager": "Quản lý",
+    "user": "Người dùng",
+    "admin": "Admin",
+    "staff": "Nhân viên",
+    "enterEmail": "Nhập email:",
+    "username": "Tên người dùng",
+    "enterUsername": "Nhập tên người dùng",
+    "gender": "Giới tính",
+    "genderOptions": {
+      "MALE": "Nam",
+      "FEMALE": "Nữ",
+      "UNKNOWN": "Khác"
+    },
+    "dob": "Ngày sinh",
+    "phoneNumber": "Số điện thoại",
+    "enterPhoneNumber": "Nhập số điện thoại"
+  },
+  "sidebar": {
+    "dashboard": { "label": "Theo dõi nhanh", "title": "Bảng tin" },
+    "facilities": {
+      "label": "Quản lý vận hành",
+      "title": "Cơ sở vật chất",
+      "buildings": "Tòa nhà",
+      "floors": "Tầng",
+      "rooms": "Phòng"
+    },
+    "assets": {
+      "label": "Quản lý tài sản",
+      "title": "Tài sản",
+      "assets": "Tài sản",
+      "roomAssets": "Tài sản phòng"
+    },
+    "services": {
+      "label": "Quản lý dịch vụ",
+      "title": "Dịch vụ",
+      "services": "Dịch vụ",
+      "roomServices": "Dịch vụ phòng"
+    },
+    "customers": {
+      "label": "Quản lý khách thuê",
+      "title": "Khách thuê",
+      "tenants": "Khách thuê",
+      "vehicles": "Phương tiện",
+      "contracts": "Hợp đồng"
+    },
+    "finance": {
+      "label": "Quản lý tài chính",
+      "title": "Tài chính",
+      "meters": "Công tơ",
+      "meterReading": "Ghi chỉ số",
+      "invoice": "Hóa đơn",
+      "receipt": "Phiếu thanh toán",
+      "deposit": "Tiền cọc"
+    },
+    "notifications": {
+      "label": "Quản lý thông báo",
+      "title": "Thông báo"
+    },
+    "user": {
+      "info": "Thông tin",
+      "roomInfo": "Xem thông tin phòng",
+      "receipts": "Xem phiếu thanh toán",
+      "invoices": "Xem hóa đơn",
+      "contracts": "Xem hợp đồng",
+      "members": "Xem thành viên trong phòng",
+      "electric": "Xem điện",
+      "water": "Xem nước"
+    }
+  },
+  "dashboard": {
+    "sentBy": "Gửi bởi {{name}} • {{date}}",
+    "noMoreNotification": "Không còn thông báo nào"
+  },
+  "notificationFilter": {
+    "typePlaceholder": "-- Loại thông báo --",
+    "typeLabel": "Loại thông báo",
+    "type": {
+      "general": "Chung",
+      "system": "Hệ thống",
+      "other": "Khác"
+    },
+    "search": "Tìm kiếm",
+    "hide": "Ẩn",
+    "show": "Hiện"
+  },
+  "statusBadge": {
+    "empty": "Trống",
+    "yes": "Có",
+    "no": "Không",
+
+    "buildingStatus": {
+      "active": "Hoạt động",
+      "locked": "Tạm khóa",
+      "inactive": "Hủy hoạt động"
+    },
+
+    "roomType": {
+      "vip": "Cao cấp",
+      "shared": "Phòng ghép",
+      "single": "Phòng đơn",
+      "other": "Khác"
+    },
+
+    "buildingType": {
+      "nhaTro": "Nhà trọ",
+      "chungCuMini": "Chung cư mini",
+      "canHoDichVu": "Căn hộ dịch vụ",
+      "other": "Khác"
+    },
+
+    "roomStatus": {
+      "empty": "Còn trống",
+      "deposit": "Đã đặt cọc",
+      "maintain": "Bảo trì",
+      "unfinished": "Chưa hoàn thiện",
+      "locked": "Tạm khóa",
+      "inactive": "Huỷ hoạt động",
+      "renting": "Đang thuê"
+    },
+
+    "floorStatus": {
+      "active": "Đang hoạt động",
+      "inactive": "Không sử dụng",
+      "locked": "Tạm khóa"
+    },
+
+    "floorType": {
+      "forRent": "Cho thuê",
+      "notForRent": "Không cho thuê",
+      "residential": "Để ở",
+      "storage": "Kho",
+      "other": "Khác"
+    },
+
+    "assetGroup": {
+      "houseware": "Gia dụng",
+      "furniture": "Nội thất",
+      "electric": "Điện",
+      "personal": "Cá nhân",
+      "other": "Khác"
+    },
+
+    "assetBelongTo": {
+      "room": "Phòng",
+      "common": "Chung",
+      "personal": "Cá nhân"
+    },
+
+    "assetType": {
+      "houseware": "Gia dụng",
+      "cleaning": "Vệ sinh",
+      "furniture": "Nội thất",
+      "electric": "Điện",
+      "security": "An ninh",
+      "other": "Khác"
+    },
+
+    "assetStatus": {
+      "active": "Hoạt động",
+      "cancelled": "Bị hủy",
+      "broken": "Hư hỏng",
+      "maintenance": "Cần bảo trì",
+      "lost": "Thất lạc",
+      "liquidated": "Đã thanh lý",
+      "inactive": "Không sử dụng"
+    },
+
+    "tenantStatus": {
+      "renting": "Đang thuê",
+      "returned": "Đã trả phòng",
+      "waitContract": "Chờ tạo hợp đồng",
+      "locked": "Bị khóa",
+      "cancelled": "Hủy bỏ"
+    },
+
+    "gender": {
+      "male": "Nam",
+      "female": "Nữ"
+    },
+
+    "vehicleType": {
+      "motorbike": "Xe máy",
+      "car": "Ô tô",
+      "bicycle": "Xe đạp",
+      "other": "Khác"
+    },
+
+    "vehicleStatus": {
+      "active": "Đang sử dụng",
+      "inactive": "Ngừng sử dụng",
+      "locked": "Tạm khóa"
+    },
+
+    "contractStatus": {
+      "valid": "Hiệu lực",
+      "expiring": "Sắp hết hạn",
+      "pending": "Chờ kích hoạt",
+      "endedNotice": "Kết thúc có báo trước",
+      "endedOnTime": "Kết thúc đúng hạn",
+      "terminated": "Tự ý hủy bỏ",
+      "cancelled": "Đã hủy"
+    },
+
+    "serviceType": {
+      "fixed": "Cố định",
+      "metered": "Tính theo số"
+    },
+
+    "serviceAppliedBy": {
+      "room": "Phòng",
+      "floor": "Tầng",
+      "person": "Người"
+    },
+
+    "serviceStatus": {
+      "active": "Hoạt động",
+      "locked": "Tạm khóa",
+      "inactive": "Ngừng sử dụng"
+    },
+
+    "defaultServiceAppliesTo": {
+      "room": "Phòng",
+      "contract": "Hợp đồng"
+    },
+
+    "defaultServiceStatus": {
+      "active": "Hoạt động",
+      "paused": "Tạm dừng",
+      "cancelled": "Hủy bỏ"
+    },
+
+    "serviceRoomStatus": {
+      "active": "Đang sử dụng",
+      "paused": "Tạm dừng",
+      "cancelled": "Đã hủy"
+    },
+
+    "meterType": {
+      "electric": "Công tơ điện",
+      "water": "Công tơ nước"
+    },
+
+    "invoiceStatus": {
+      "unpaid": "Chưa thanh toán",
+      "restored": "Khôi phục",
+      "paid": "Đã thanh toán",
+      "overdue": "Quá hạn",
+      "cancelled": "Đã hủy",
+      "waitingPayment": "Chờ thanh toán",
+      "restore": "Khôi phục"
+    },
+
+    "invoiceType": {
+      "monthly": "Hàng tháng",
+      "final": "Cuối cùng"
+    },
+
+    "serviceCategory": {
+      "electric": "Điện",
+      "water": "Nước",
+      "parking": "Gửi xe",
+      "internet": "Internet",
+      "cleaning": "Vệ sinh",
+      "elevator": "Thang máy",
+      "maintenance": "Bảo trì",
+      "security": "An ninh",
+      "laundry": "Giặt sấy",
+      "rent": "Tiền phòng",
+      "other": "Khác",
+      "compensation": "Đền bù"
+    },
+
+    "serviceCalculation": {
+      "byMeter": "Tính theo số",
+      "byPerson": "Tính theo người",
+      "byRoom": "Tính theo phòng",
+      "byVehicle": "Tính theo phương tiện"
+    },
+
+    "invoiceItemType": {
+      "electric": "Điện",
+      "water": "Nước",
+      "service": "Dịch vụ",
+      "rent": "Tiền phòng",
+      "compensation": "Đền bù"
+    },
+
+    "paymentMethod": {
+      "choose": "Chọn phương thức",
+      "cash": "Tiền mặt",
+      "transfer": "Chuyển khoản",
+      "vnpay": "Ví điện tử VNPay",
+      "zalopay": "Ví điện tử ZaloPay",
+      "momo": "Ví điện tử MoMo"
+    },
+
+    "paymentStatus": {
+      "pending": "Chờ thanh toán",
+      "confirming": "Chờ xác nhận",
+      "paid": "Đã thanh toán",
+      "rejected": "Từ chối",
+      "cancelled": "Hủy"
+    },
+
+    "notificationType": {
+      "common": "Chung",
+      "system": "Hệ thống",
+      "other": "Khác"
+    }
+  },
+  "depositStatus": {
+    "common": "Đã đặt cọc",
+    "refunded": "Đã hoàn trả",
+    "notReceived": "Chưa nhận cọc",
+    "pending": "Chờ xác nhận",
+    "nonRefund": "Không trả cọc",
+    "cancelled": "Hủy"
+  },
+  "building": {
+    "title": "Tòa nhà",
+    "titleHistory": "Lịch sử xóa tòa nhà",
+    "response": {
+      "active": "Hoạt động",
+      "inactive": "Không hoạt động",
+      "buildingCode": "Mã tòa nhà",
+      "actions": "Thao tác",
+      "buildingName": "Tên tòa nhà",
+      "address": "Địa chỉ",
+      "buildingType": "Loại tòa nhà",
+      "actualNumberOfFloors": "Số tầng thực tế",
+      "numberOfFloorsForRent": "Số tầng cho thuê",
+      "description": "Mô tả",
+      "status": "Trạng thái",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật"
+    },
+    "filter": {
+      "status": "-- Trạng thái --",
+      "buildingType": "-- Loại tòa nhà --"
+    },
+    "errorFetch": "Có lỗi xảy ra khi tải tòa nhà",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê tòa nhà",
+    "totalRooms": "Tổng số phòng",
+    "roomsAvailable": "Tổng số phòng trống",
+    "addOrUpdate": {
+      "buildingName": "Tên tòa nhà:",
+      "detailedAddress": "Địa chỉ chi tiết",
+      "placeholderAddress": "Hà Nội",
+      "selectBuilding": "-- Chọn loại tòa nhà --",
+      "buildingType": "Loại tòa nhà:",
+      "labelSelectBuildingType": "Loại tòa nhà",
+      "actualNumberOfFloors": "Số tầng thực tế:",
+      "numberOfFloorsForRent": "Số tầng cho thuê:",
+      "description": "Mô tả:",
+      "placeholderDescription": "Nhập mô tả"
+    }
+  },
+  "floor": {
+    "title": "Tầng",
+    "titleHistory": "Lịch sử xóa tầng",
+    "response": {
+      "active": "Hoạt động",
+      "inactive": "Không hoạt động",
+      "nameFloor": "Tên tầng",
+      "actions": "Thao tác",
+      "maximumRoom": "Số phòng tối đa",
+      "floorType": "Loại tầng",
+      "buildingId": "ID tòa nhà",
+      "buildingName": "Tên tòa nhà",
+      "descriptionFloor": "Mô tả",
+      "status": "Trạng thái",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật"
+    },
+    "filter": {
+      "status": "-- Trạng thái --",
+      "floorType": "-- Loại tầng --",
+      "buildingName": "-- Tòa nhà --"
+    },
+    "errorFetch": "Có lỗi xảy ra khi tải tầng",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê tầng",
+    "totalRooms": "Tổng số phòng",
+    "roomsAvailable": "Tổng số phòng trống",
+    "addOrUpdate": {
+      "nameFloor": "Tên tầng:",
+      "maximumRoom": "Số phòng tối đa:",
+      "floorType": "Loại tầng:",
+      "descriptionFloor": "Mô tả:",
+      "placeholderNameFloor": "Tên tầng",
+      "placeholderMaximumRoom": "1",
+      "selectFloorType": "-- Chọn loại tầng --",
+      "placeholderDescription": "Nhập mô tả"
+    }
+  },
+  "room": {
+    "title": "Phòng",
+    "titleHistory": "Lịch sử xóa phòng",
+    "response": {
+      "active": "Hoạt động",
+      "inactive": "Không hoạt động",
+      "roomCode": "Mã phòng",
+      "actions": "Thao tác",
+      "floorId": "Tầng",
+      "floorName": "Tên tầng",
+      "buildingName": "Tên tòa nhà",
+      "acreage": "Diện tích (m²)",
+      "price": "Giá (VNĐ)",
+      "maximumPeople": "Số người tối đa",
+      "roomType": "Loại phòng",
+      "status": "Trạng thái",
+      "description": "Mô tả",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật"
+    },
+    "filter": {
+      "status": "-- Trạng thái --",
+      "roomType": "-- Loại phòng --",
+      "floorName": "-- Tầng --",
+      "buildingName": "-- Tòa nhà --"
+    },
+    "errorFetch": "Có lỗi xảy ra khi tải phòng",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê phòng",
+    "totalRooms": "Tổng số phòng",
+    "roomsAvailable": "Tổng số phòng trống",
+    "addOrUpdate": {
+      "floorId": "Tầng:",
+      "acreage": "Diện tích (m²):",
+      "price": "Giá (VNĐ):",
+      "minPrice": "Giá từ:",
+      "maxPrice": "Giá đến:",
+      "maximumPeople": "Số người tối đa:",
+      "roomType": "Loại phòng:",
+      "status": "Trạng thái:",
+      "description": "Mô tả:",
+      "placeholderFloor": "-- Chọn tầng --",
+      "placeholderAcreage": "30",
+      "placeholderPrice": "3000000",
+      "placeholderMaximumPeople": "4",
+      "placeholderRoomType": "-- Chọn loại phòng --",
+      "placeholderStatus": "-- Chọn trạng thái --",
+      "placeholderDescription": "Nhập mô tả chi tiết"
+    }
+  }
 }

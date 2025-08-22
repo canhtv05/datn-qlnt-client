@@ -2,7 +2,7 @@ import { ApiResponse, NotificationFilter, NotificationResponse } from "@/types";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 export default function useDashBoard() {
@@ -65,13 +65,27 @@ export default function useDashBoard() {
     retry: 1,
   });
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-    if (scrollTop + clientHeight >= scrollHeight - 10 && result.hasNextPage && !result.isFetchingNextPage) {
-      result.fetchNextPage();
-    }
-  };
+  const observerRef = useRef<HTMLDivElement | null>(null);
 
+  useEffect(() => {
+    if (!observerRef.current) return;
+
+    const el = observerRef.current;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting && result.hasNextPage && !result.isFetchingNextPage) {
+          result.fetchNextPage();
+        }
+      }
+      // { threshold: 1.0 }
+    );
+
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+    };
+  }, [result]);
   const props = {
     onFilter: handleFilter,
     onClear: handleClear,
@@ -79,5 +93,5 @@ export default function useDashBoard() {
     setFilterValues,
   };
 
-  return { result, handleScroll, props };
+  return { result, observerRef, props };
 }

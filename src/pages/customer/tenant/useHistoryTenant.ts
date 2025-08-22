@@ -109,7 +109,7 @@ export const useHistoryTenant = () => {
 
   const restoreTenantMutation = useMutation({
     mutationKey: ["restore-tenant"],
-    mutationFn: async (id: string) => await httpRequest.put(`/tenants/restore/${id}`),
+    mutationFn: async (id: string) => await httpRequest.put(`/tenants/${id}`),
   });
 
   const handleRestoreTenantById = async (id: string): Promise<boolean> => {

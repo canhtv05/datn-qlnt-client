@@ -1,526 +1,535 @@
 {
-    "common": {
-        "button": {
-            "search": "Search",
-            "cancel": "Cancel",
-            "delete": "Delete",
-            "save": "Save",
-            "update": "Update",
-            "reload": "Reload",
-            "restore": "Restore",
-            "toggle": "Toggle",
-            "changeStatus": "Change status",
-            "view": "View",
-            "paymentConfirmed": "Payment confirmed",
-            "docx": "Upload Docx",
-            "download": "Download",
-            "downloadExcel": "Download Excel",
-            "addNew": "Add new",
-            "history": "History",
-            "confirm": "Confirm",
-            "continue": "Continue"
-        },
-        "noData": "No data",
-        "selectDateRange": "Select date range",
-        "table": {
-            "of": "of",
-            "selectedLines": "selected lines",
-            "column": "Columns",
-            "showing": "Showing",
-            "results": "results",
-            "paging": "Number of records per page"
-        },
-        "confirmDialog": {
-            "confirm": "Are you sure you want to continue?",
-            "delete": "This action will permanently delete the selected {{name}}. Are you sure you want to continue?"
-        },
-        "unknown": "Unknown",
-        "other": "Other"
+  "common": {
+    "button": {
+      "search": "Search",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "save": "Save",
+      "update": "Update",
+      "reload": "Reload",
+      "restore": "Restore",
+      "toggle": "Toggle",
+      "changeStatus": "Change status",
+      "view": "View",
+      "paymentConfirmed": "Payment confirmed",
+      "docx": "Upload Docx",
+      "download": "Download",
+      "downloadExcel": "Download Excel",
+      "addNew": "Add new",
+      "history": "History",
+      "confirm": "Confirm",
+      "continue": "Continue"
     },
-    "actions": {
-        "serviceActions": {
-            "default": "Add a service to a room",
-            "building": "Add a service to all rooms in a building",
-            "floor": "Add a service to rooms",
-            "undo": "Undo services added to a room",
-            "addToBuilding": "Add to building",
-            "addMore": "Add more"
-        },
-        "invoiceActions": {
-            "createBuildingInvoice": "Create building invoice",
-            "createBuildingContract": "Create building contract",
-            "view": "View contract"
-        }
+    "noData": "No data",
+    "selectDateRange": "Select date range",
+    "table": {
+      "of": "of",
+      "selectedLines": "selected lines",
+      "column": "Columns",
+      "showing": "Showing",
+      "results": "results",
+      "paging": "Number of records per page"
     },
-    "status": {
-        "updateSuccess": "Update successful",
-        "updateFailed": "Update failed",
-        "addSuccess": "Added successfully",
-        "addFailed": "Add failed",
-        "removeSuccess": "Removed successfully",
-        "removeFailed": "Remove failed",
-        "error": "An error occurred",
-        "logoutFailed": "Logout failed",
-        "logoutSuccess": "Logout successful",
-        "registerSuccess": "Registration successful, please login",
-        "errorStatistics": "An error occurred while fetching statistics",
-        "restoreSuccess": "Restored successfully",
-        "restoreFailed": "Restore failed"
+    "confirmDialog": {
+      "confirm": "Are you sure you want to continue?",
+      "delete": "This action will permanently delete the selected {{name}}. Are you sure you want to continue?"
     },
-    "notice": {
-        "remove": "This action will permanently delete the selected data from the system. Are you sure you want to continue?",
-        "toggleStatus": "Are you sure you want to change the status of this item?",
-        "restore": "Are you sure you want to restore this item?",
-        "restores": "Are you sure you want to restore the selected items?",
-        "update": "This action will update the current information. Are you sure you want to continue?",
-        "add": "This action will add a new item to the system. Are you sure you want to proceed?"
+    "unknown": "Unknown",
+    "other": "Other"
+  },
+  "actions": {
+    "serviceActions": {
+      "default": "Add a service to a room",
+      "building": "Add a service to all rooms in a building",
+      "floor": "Add a service to rooms",
+      "undo": "Undo services added to a room",
+      "addToBuilding": "Add to building",
+      "addMore": "Add more"
     },
-    "toast": {
-        "imageOnly": "Please upload an image file (jpg, png, etc.)",
-        "sizeExceeded": "File size exceeds 5MB limit",
-        "uploadSuccess": "Avatar changed successfully!",
-        "uploadFailed": "Upload failed. Please try again.",
-        "errorUpload": "Error uploading file. Please try again.",
-        "noChanges": "No changes detected",
-        "updateSuccess": "Profile updated successfully!",
-        "invalidFileType": "Only JPG, JPEG, PNG, or WEBP image formats are supported"
-    },
-    "profile": {
-        "personalProfile": "Personal profile",
-        "logout": "Logout",
-        "confirmLogout": "You will be logged out of the system. This action will end your current session",
-        "manager": "Manager",
-        "user": "User",
-        "admin": "Admin",
-        "staff": "Staff",
-        "enterEmail": "Enter email:",
-        "username": "Username",
-        "enterUsername": "Enter username",
-        "gender": "Gender",
-        "genderOptions": {
-            "MALE": "Male",
-            "FEMALE": "Female",
-            "UNKNOWN": "Other"
-        },
-        "dob": "Date of birth",
-        "phoneNumber": "Phone number",
-        "enterPhoneNumber": "Enter phone number"
-    },
-    "sidebar": {
-        "dashboard": { "label": "Quick Access", "title": "Dashboard" },
-        "facilities": {
-            "label": "Operations Management",
-            "title": "Facilities",
-            "buildings": "Buildings",
-            "floors": "Floors",
-            "rooms": "Rooms"
-        },
-        "assets": {
-            "label": "Asset Management",
-            "title": "Assets",
-            "assets": "Assets",
-            "roomAssets": "Room Assets"
-        },
-        "services": {
-            "label": "Service Management",
-            "title": "Services",
-            "services": "Services",
-            "roomServices": "Room Services"
-        },
-        "customers": {
-            "label": "Tenant Management",
-            "title": "Tenants",
-            "tenants": "Tenants",
-            "vehicles": "Vehicles",
-            "contracts": "Contracts"
-        },
-        "finance": {
-            "label": "Finance Management",
-            "title": "Finance",
-            "meters": "Meters",
-            "meterReading": "Meter Reading",
-            "invoice": "Invoice",
-            "receipt": "Payment Receipt"
-        },
-        "notifications": {
-            "label": "Notification Management",
-            "title": "Notifications"
-        },
-        "user": {
-            "info": "Information",
-            "roomInfo": "View Room Information",
-            "receipts": "View Payment Receipts",
-            "invoices": "View Invoices",
-            "contracts": "View Contracts",
-            "members": "View Room Members",
-            "electric": "View Electricity",
-            "water": "View Water"
-        }
-    },
-    "dashboard": {
-        "sentBy": "Sent by {{name}} • {{date}}",
-        "noMoreNotification": "No more notifications"
-    },
-    "notificationFilter": {
-        "typePlaceholder": "-- Notification type --",
-        "typeLabel": "Notification type",
-        "type": {
-            "general": "General",
-            "system": "System",
-            "other": "Other"
-        },
-        "search": "Search",
-        "hide": "Hide",
-        "show": "Show"
-    },
-    "statusBadge": {
-        "empty": "Empty",
-        "yes": "Yes",
-        "no": "No",
-
-        "buildingStatus": {
-            "active": "Active",
-            "locked": "Locked",
-            "inactive": "Inactive"
-        },
-
-        "roomType": {
-            "vip": "Premium",
-            "shared": "Shared room",
-            "single": "Single room",
-            "other": "Other"
-        },
-
-        "buildingType": {
-            "nhaTro": "Boarding house",
-            "chungCuMini": "Mini apartment",
-            "canHoDichVu": "Service apartment",
-            "other": "Other"
-        },
-
-        "roomStatus": {
-            "empty": "Available",
-            "deposit": "Deposited",
-            "maintain": "Under maintenance",
-            "unfinished": "Unfinished",
-            "locked": "Locked",
-            "inactive": "Inactive",
-            "renting": "Renting"
-        },
-
-        "floorStatus": {
-            "active": "In use",
-            "inactive": "Not in use",
-            "locked": "Locked"
-        },
-
-        "floorType": {
-            "forRent": "For rent",
-            "notForRent": "Not for rent",
-            "residential": "Residential",
-            "storage": "Storage",
-            "other": "Other"
-        },
-
-        "assetGroup": {
-            "houseware": "Household",
-            "furniture": "Furniture",
-            "electric": "Electric",
-            "personal": "Personal",
-            "other": "Other"
-        },
-
-        "assetBelongTo": {
-            "room": "Room",
-            "common": "Common",
-            "personal": "Personal"
-        },
-
-        "assetType": {
-            "houseware": "Household",
-            "cleaning": "Cleaning",
-            "furniture": "Furniture",
-            "electric": "Electric",
-            "security": "Security",
-            "other": "Other"
-        },
-
-        "assetStatus": {
-            "active": "In use",
-            "cancelled": "Cancelled",
-            "broken": "Broken",
-            "maintenance": "Needs maintenance",
-            "lost": "Lost",
-            "liquidated": "Liquidated",
-            "inactive": "Not in use"
-        },
-
-        "tenantStatus": {
-            "renting": "Renting",
-            "returned": "Returned",
-            "potential": "Potential",
-            "locked": "Locked",
-            "cancelled": "Cancelled"
-        },
-
-        "gender": {
-            "male": "Male",
-            "female": "Female"
-        },
-
-        "vehicleType": {
-            "motorbike": "Motorbike",
-            "car": "Car",
-            "bicycle": "Bicycle",
-            "other": "Other"
-        },
-
-        "vehicleStatus": {
-            "active": "In use",
-            "inactive": "Not in use",
-            "locked": "Locked"
-        },
-
-        "contractStatus": {
-            "valid": "Valid",
-            "expiring": "Expiring soon",
-            "pending": "Pending activation",
-            "endedNotice": "Ended with notice",
-            "endedOnTime": "Ended on time",
-            "terminated": "Terminated without consent",
-            "cancelled": "Cancelled"
-        },
-
-        "serviceType": {
-            "fixed": "Fixed",
-            "metered": "Metered"
-        },
-
-        "serviceAppliedBy": {
-            "room": "Room",
-            "floor": "Floor",
-            "person": "Person"
-        },
-
-        "serviceStatus": {
-            "active": "Active",
-            "locked": "Locked",
-            "inactive": "Inactive"
-        },
-
-        "defaultServiceAppliesTo": {
-            "room": "Room",
-            "contract": "Contract"
-        },
-
-        "defaultServiceStatus": {
-            "active": "Active",
-            "paused": "Paused",
-            "cancelled": "Cancelled"
-        },
-
-        "serviceRoomStatus": {
-            "active": "In use",
-            "paused": "Paused",
-            "cancelled": "Cancelled"
-        },
-
-        "meterType": {
-            "electric": "Electric meter",
-            "water": "Water meter"
-        },
-
-        "invoiceStatus": {
-            "unpaid": "Unpaid",
-            "restored": "Restored",
-            "paid": "Paid",
-            "overdue": "Overdue",
-            "cancelled": "Cancelled",
-            "waitingPayment": "Waiting for payment",
-            "restore": "Restore"
-        },
-
-        "invoiceType": {
-            "monthly": "Monthly",
-            "final": "Final"
-        },
-
-        "serviceCategory": {
-            "electric": "Electricity",
-            "water": "Water",
-            "parking": "Parking",
-            "internet": "Internet",
-            "cleaning": "Cleaning",
-            "elevator": "Elevator",
-            "maintenance": "Maintenance",
-            "security": "Security",
-            "laundry": "Laundry",
-            "rent": "Rent",
-            "other": "Other",
-            "compensation": "Compensation"
-        },
-
-        "serviceCalculation": {
-            "byMeter": "By meter",
-            "byPerson": "By person",
-            "byRoom": "By room",
-            "byVehicle": "By vehicle"
-        },
-
-        "invoiceItemType": {
-            "electric": "Electricity",
-            "water": "Water",
-            "service": "Service",
-            "rent": "Rent",
-            "compensation": "Compensation"
-        },
-
-        "paymentMethod": {
-            "choose": "Choose method",
-            "cash": "Cash",
-            "transfer": "Bank transfer",
-            "vnpay": "VNPay",
-            "zalopay": "ZaloPay",
-            "momo": "MoMo"
-        },
-
-        "paymentStatus": {
-            "pending": "Pending payment",
-            "confirming": "Pending confirmation",
-            "paid": "Paid",
-            "rejected": "Rejected",
-            "cancelled": "Cancelled"
-        },
-
-        "notificationType": {
-            "common": "General",
-            "system": "System",
-            "other": "Other"
-        }
-    },
-    "building": {
-        "title": "Building",
-        "titleHistory": "Building deletion history",
-        "response": {
-            "active": "Active",
-            "inactive": "Inactive",
-            "buildingCode": "Building code",
-            "actions": "Actions",
-            "buildingName": "Building name",
-            "address": "Address",
-            "buildingType": "Building type",
-            "actualNumberOfFloors": "Actual floors",
-            "numberOfFloorsForRent": "Floors for rent",
-            "description": "Description",
-            "status": "Status",
-            "createdAt": "Created at",
-            "updatedAt": "Updated at"
-        },
-        "filter": {
-            "status": "-- Status --",
-            "buildingType": "-- Building type --"
-        },
-        "errorFetch": "An error occurred while loading the building",
-        "errorFetchStatistics": "An error occurred while loading building statistics",
-        "totalRooms": "Total rooms",
-        "roomsAvailable": "Total number of rooms available",
-        "addOrUpdate": {
-            "buildingName": "Building name:",
-            "detailedAddress": "Detailed address",
-            "placeholderAddress": "Hanoi",
-            "selectBuilding": "-- Select building type --",
-            "buildingType": "Building type:",
-            "labelSelectBuildingType": "Building type",
-            "actualNumberOfFloors": "Actual number of floors:",
-            "numberOfFloorsForRent": "Number of floors for rent:",
-            "description": "Description:",
-            "placeholderDescription": "Enter description"
-        }
-    },
-    "floor": {
-        "title": "Floor",
-        "titleHistory": "Deleted floor history",
-        "response": {
-            "active": "Active",
-            "inactive": "Inactive",
-            "nameFloor": "Floor name",
-            "actions": "Actions",
-            "maximumRoom": "Maximum rooms",
-            "floorType": "Floor type",
-            "buildingId": "Building ID",
-            "buildingName": "Building name",
-            "descriptionFloor": "Description",
-            "status": "Status",
-            "createdAt": "Created at",
-            "updatedAt": "Updated at"
-        },
-        "filter": {
-            "status": "-- Status --",
-            "floorType": "-- Floor type --",
-            "buildingName": "-- Building --"
-        },
-        "errorFetch": "An error occurred while fetching floors",
-        "errorFetchStatistics": "An error occurred while fetching floor statistics",
-        "totalRooms": "Total rooms",
-        "roomsAvailable": "Available rooms",
-        "addOrUpdate": {
-            "nameFloor": "Floor name:",
-            "maximumRoom": "Maximum rooms:",
-            "floorType": "Floor type:",
-            "descriptionFloor": "Description:",
-            "placeholderNameFloor": "Floor name",
-            "placeholderMaximumRoom": "1",
-            "selectFloorType": "-- Select floor type --",
-            "placeholderDescription": "Enter description"
-        }
-    },
-    "room": {
-        "title": "Room",
-        "titleHistory": "Deleted room history",
-        "response": {
-            "active": "Active",
-            "inactive": "Inactive",
-            "roomCode": "Room code",
-            "actions": "Actions",
-            "floorId": "Floor",
-            "floorName": "Floor name",
-            "buildingName": "Building name",
-            "acreage": "Acreage (m²)",
-            "price": "Price (VND)",
-            "maximumPeople": "Maximum people",
-            "roomType": "Room type",
-            "status": "Status",
-            "description": "Description",
-            "createdAt": "Created at",
-            "updatedAt": "Updated at"
-        },
-        "filter": {
-            "status": "-- Status --",
-            "roomType": "-- Room type --",
-            "floorName": "-- Floor --",
-            "buildingName": "-- Building --"
-        },
-        "errorFetch": "An error occurred while fetching rooms",
-        "errorFetchStatistics": "An error occurred while fetching room statistics",
-        "totalRooms": "Total rooms",
-        "roomsAvailable": "Available rooms",
-        "addOrUpdate": {
-            "floorId": "Floor:",
-            "acreage": "Acreage (m²):",
-            "price": "Price (VND):",
-            "minPrice": "Min price:",
-            "maxPrice": "Max price:",
-            "maximumPeople": "Maximum people:",
-            "roomType": "Room type:",
-            "status": "Status:",
-            "description": "Description:",
-            "placeholderFloor": "-- Select floor --",
-            "placeholderAcreage": "30",
-            "placeholderPrice": "3000000",
-            "placeholderMaximumPeople": "4",
-            "placeholderRoomType": "-- Select room type --",
-            "placeholderStatus": "-- Select status --",
-            "placeholderDescription": "Enter detailed description"
-        }
+    "invoiceActions": {
+      "createBuildingInvoice": "Create building invoice",
+      "createBuildingContract": "Create building contract",
+      "view": "View contract"
     }
+  },
+  "status": {
+    "updateSuccess": "Update successful",
+    "updateFailed": "Update failed",
+    "addSuccess": "Added successfully",
+    "addFailed": "Add failed",
+    "removeSuccess": "Removed successfully",
+    "removeFailed": "Remove failed",
+    "error": "An error occurred",
+    "logoutFailed": "Logout failed",
+    "logoutSuccess": "Logout successful",
+    "registerSuccess": "Registration successful, please login",
+    "errorStatistics": "An error occurred while fetching statistics",
+    "restoreSuccess": "Restored successfully",
+    "restoreFailed": "Restore failed"
+  },
+  "notice": {
+    "remove": "This action will permanently delete the selected data from the system. Are you sure you want to continue?",
+    "toggleStatus": "Are you sure you want to change the status of this item?",
+    "restore": "Are you sure you want to restore this item?",
+    "restores": "Are you sure you want to restore the selected items?",
+    "update": "This action will update the current information. Are you sure you want to continue?",
+    "add": "This action will add a new item to the system. Are you sure you want to proceed?"
+  },
+  "toast": {
+    "imageOnly": "Please upload an image file (jpg, png, etc.)",
+    "sizeExceeded": "File size exceeds 5MB limit",
+    "uploadSuccess": "Avatar changed successfully!",
+    "uploadFailed": "Upload failed. Please try again.",
+    "errorUpload": "Error uploading file. Please try again.",
+    "noChanges": "No changes detected",
+    "updateSuccess": "Profile updated successfully!",
+    "invalidFileType": "Only JPG, JPEG, PNG, or WEBP image formats are supported"
+  },
+  "profile": {
+    "personalProfile": "Personal profile",
+    "logout": "Logout",
+    "confirmLogout": "You will be logged out of the system. This action will end your current session",
+    "manager": "Manager",
+    "user": "User",
+    "admin": "Admin",
+    "staff": "Staff",
+    "enterEmail": "Enter email:",
+    "username": "Username",
+    "enterUsername": "Enter username",
+    "gender": "Gender",
+    "genderOptions": {
+      "MALE": "Male",
+      "FEMALE": "Female",
+      "UNKNOWN": "Other"
+    },
+    "dob": "Date of birth",
+    "phoneNumber": "Phone number",
+    "enterPhoneNumber": "Enter phone number"
+  },
+  "sidebar": {
+    "dashboard": { "label": "Quick Access", "title": "Dashboard" },
+    "facilities": {
+      "label": "Operations Management",
+      "title": "Facilities",
+      "buildings": "Buildings",
+      "floors": "Floors",
+      "rooms": "Rooms"
+    },
+    "assets": {
+      "label": "Asset Management",
+      "title": "Assets",
+      "assets": "Assets",
+      "roomAssets": "Room Assets"
+    },
+    "services": {
+      "label": "Service Management",
+      "title": "Services",
+      "services": "Services",
+      "roomServices": "Room Services"
+    },
+    "customers": {
+      "label": "Tenant Management",
+      "title": "Tenants",
+      "tenants": "Tenants",
+      "vehicles": "Vehicles",
+      "contracts": "Contracts"
+    },
+    "finance": {
+      "label": "Finance Management",
+      "title": "Finance",
+      "meters": "Meters",
+      "meterReading": "Meter Reading",
+      "invoice": "Invoice",
+      "receipt": "Payment Receipt",
+      "deposit": "Deposits"
+    },
+    "notifications": {
+      "label": "Notification Management",
+      "title": "Notifications"
+    },
+    "user": {
+      "info": "Information",
+      "roomInfo": "View Room Information",
+      "receipts": "View Payment Receipts",
+      "invoices": "View Invoices",
+      "contracts": "View Contracts",
+      "members": "View Room Members",
+      "electric": "View Electricity",
+      "water": "View Water"
+    }
+  },
+  "dashboard": {
+    "sentBy": "Sent by {{name}} • {{date}}",
+    "noMoreNotification": "No more notifications"
+  },
+  "notificationFilter": {
+    "typePlaceholder": "-- Notification type --",
+    "typeLabel": "Notification type",
+    "type": {
+      "general": "General",
+      "system": "System",
+      "other": "Other"
+    },
+    "search": "Search",
+    "hide": "Hide",
+    "show": "Show"
+  },
+  "statusBadge": {
+    "empty": "Empty",
+    "yes": "Yes",
+    "no": "No",
+
+    "buildingStatus": {
+      "active": "Active",
+      "locked": "Locked",
+      "inactive": "Inactive"
+    },
+
+    "roomType": {
+      "vip": "Premium",
+      "shared": "Shared room",
+      "single": "Single room",
+      "other": "Other"
+    },
+
+    "buildingType": {
+      "nhaTro": "Boarding house",
+      "chungCuMini": "Mini apartment",
+      "canHoDichVu": "Service apartment",
+      "other": "Other"
+    },
+
+    "roomStatus": {
+      "empty": "Available",
+      "deposit": "Deposited",
+      "maintain": "Under maintenance",
+      "unfinished": "Unfinished",
+      "locked": "Locked",
+      "inactive": "Inactive",
+      "renting": "Renting"
+    },
+
+    "floorStatus": {
+      "active": "In use",
+      "inactive": "Not in use",
+      "locked": "Locked"
+    },
+
+    "floorType": {
+      "forRent": "For rent",
+      "notForRent": "Not for rent",
+      "residential": "Residential",
+      "storage": "Storage",
+      "other": "Other"
+    },
+
+    "assetGroup": {
+      "houseware": "Household",
+      "furniture": "Furniture",
+      "electric": "Electric",
+      "personal": "Personal",
+      "other": "Other"
+    },
+
+    "assetBelongTo": {
+      "room": "Room",
+      "common": "Common",
+      "personal": "Personal"
+    },
+
+    "assetType": {
+      "houseware": "Household",
+      "cleaning": "Cleaning",
+      "furniture": "Furniture",
+      "electric": "Electric",
+      "security": "Security",
+      "other": "Other"
+    },
+
+    "assetStatus": {
+      "active": "In use",
+      "cancelled": "Cancelled",
+      "broken": "Broken",
+      "maintenance": "Needs maintenance",
+      "lost": "Lost",
+      "liquidated": "Liquidated",
+      "inactive": "Not in use"
+    },
+
+    "tenantStatus": {
+      "renting": "Renting",
+      "returned": "Returned",
+      "waitContract": "Waiting for contract creation",
+      "locked": "Locked",
+      "cancelled": "Cancelled"
+    },
+
+    "gender": {
+      "male": "Male",
+      "female": "Female"
+    },
+
+    "vehicleType": {
+      "motorbike": "Motorbike",
+      "car": "Car",
+      "bicycle": "Bicycle",
+      "other": "Other"
+    },
+
+    "vehicleStatus": {
+      "active": "In use",
+      "inactive": "Not in use",
+      "locked": "Locked"
+    },
+
+    "contractStatus": {
+      "valid": "Valid",
+      "expiring": "Expiring soon",
+      "pending": "Pending activation",
+      "endedNotice": "Ended with notice",
+      "endedOnTime": "Ended on time",
+      "terminated": "Terminated without consent",
+      "cancelled": "Cancelled"
+    },
+
+    "serviceType": {
+      "fixed": "Fixed",
+      "metered": "Metered"
+    },
+
+    "serviceAppliedBy": {
+      "room": "Room",
+      "floor": "Floor",
+      "person": "Person"
+    },
+
+    "serviceStatus": {
+      "active": "Active",
+      "locked": "Locked",
+      "inactive": "Inactive"
+    },
+
+    "defaultServiceAppliesTo": {
+      "room": "Room",
+      "contract": "Contract"
+    },
+
+    "defaultServiceStatus": {
+      "active": "Active",
+      "paused": "Paused",
+      "cancelled": "Cancelled"
+    },
+
+    "serviceRoomStatus": {
+      "active": "In use",
+      "paused": "Paused",
+      "cancelled": "Cancelled"
+    },
+
+    "meterType": {
+      "electric": "Electric meter",
+      "water": "Water meter"
+    },
+
+    "invoiceStatus": {
+      "unpaid": "Unpaid",
+      "restored": "Restored",
+      "paid": "Paid",
+      "overdue": "Overdue",
+      "cancelled": "Cancelled",
+      "waitingPayment": "Waiting for payment",
+      "restore": "Restore"
+    },
+
+    "invoiceType": {
+      "monthly": "Monthly",
+      "final": "Final"
+    },
+
+    "serviceCategory": {
+      "electric": "Electricity",
+      "water": "Water",
+      "parking": "Parking",
+      "internet": "Internet",
+      "cleaning": "Cleaning",
+      "elevator": "Elevator",
+      "maintenance": "Maintenance",
+      "security": "Security",
+      "laundry": "Laundry",
+      "rent": "Rent",
+      "other": "Other",
+      "compensation": "Compensation"
+    },
+
+    "serviceCalculation": {
+      "byMeter": "By meter",
+      "byPerson": "By person",
+      "byRoom": "By room",
+      "byVehicle": "By vehicle"
+    },
+
+    "invoiceItemType": {
+      "electric": "Electricity",
+      "water": "Water",
+      "service": "Service",
+      "rent": "Rent",
+      "compensation": "Compensation"
+    },
+
+    "paymentMethod": {
+      "choose": "Choose method",
+      "cash": "Cash",
+      "transfer": "Bank transfer",
+      "vnpay": "VNPay",
+      "zalopay": "ZaloPay",
+      "momo": "MoMo"
+    },
+
+    "paymentStatus": {
+      "pending": "Pending payment",
+      "confirming": "Pending confirmation",
+      "paid": "Paid",
+      "rejected": "Rejected",
+      "cancelled": "Cancelled"
+    },
+
+    "notificationType": {
+      "common": "General",
+      "system": "System",
+      "other": "Other"
+    }
+  },
+  "depositStatus": {
+    "common": "Deposited",
+    "refunded": "Refunded",
+    "notReceived": "Not received",
+    "pending": "Pending confirmation",
+    "nonRefund": "Non-refundable",
+    "cancelled": "Cancelled"
+  },
+  "building": {
+    "title": "Building",
+    "titleHistory": "Building deletion history",
+    "response": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "buildingCode": "Building code",
+      "actions": "Actions",
+      "buildingName": "Building name",
+      "address": "Address",
+      "buildingType": "Building type",
+      "actualNumberOfFloors": "Actual floors",
+      "numberOfFloorsForRent": "Floors for rent",
+      "description": "Description",
+      "status": "Status",
+      "createdAt": "Created at",
+      "updatedAt": "Updated at"
+    },
+    "filter": {
+      "status": "-- Status --",
+      "buildingType": "-- Building type --"
+    },
+    "errorFetch": "An error occurred while loading the building",
+    "errorFetchStatistics": "An error occurred while loading building statistics",
+    "totalRooms": "Total rooms",
+    "roomsAvailable": "Total number of rooms available",
+    "addOrUpdate": {
+      "buildingName": "Building name:",
+      "detailedAddress": "Detailed address",
+      "placeholderAddress": "Hanoi",
+      "selectBuilding": "-- Select building type --",
+      "buildingType": "Building type:",
+      "labelSelectBuildingType": "Ward/Commune",
+      "actualNumberOfFloors": "Actual number of floors:",
+      "numberOfFloorsForRent": "Number of floors for rent:",
+      "description": "Description:",
+      "placeholderDescription": "Enter description"
+    }
+  },
+  "floor": {
+    "title": "Floor",
+    "titleHistory": "Deleted floor history",
+    "response": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "nameFloor": "Floor name",
+      "actions": "Actions",
+      "maximumRoom": "Maximum rooms",
+      "floorType": "Floor type",
+      "buildingId": "Building ID",
+      "buildingName": "Building name",
+      "descriptionFloor": "Description",
+      "status": "Status",
+      "createdAt": "Created at",
+      "updatedAt": "Updated at"
+    },
+    "filter": {
+      "status": "-- Status --",
+      "floorType": "-- Floor type --",
+      "buildingName": "-- Building --"
+    },
+    "errorFetch": "An error occurred while fetching floors",
+    "errorFetchStatistics": "An error occurred while fetching floor statistics",
+    "totalRooms": "Total rooms",
+    "roomsAvailable": "Available rooms",
+    "addOrUpdate": {
+      "nameFloor": "Floor name:",
+      "maximumRoom": "Maximum rooms:",
+      "floorType": "Floor type:",
+      "descriptionFloor": "Description:",
+      "placeholderNameFloor": "Floor name",
+      "placeholderMaximumRoom": "1",
+      "selectFloorType": "-- Select floor type --",
+      "placeholderDescription": "Enter description"
+    }
+  },
+  "room": {
+    "title": "Room",
+    "titleHistory": "Deleted room history",
+    "response": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "roomCode": "Room code",
+      "actions": "Actions",
+      "floorId": "Floor",
+      "floorName": "Floor name",
+      "buildingName": "Building name",
+      "acreage": "Acreage (m²)",
+      "price": "Price (VND)",
+      "maximumPeople": "Maximum people",
+      "roomType": "Room type",
+      "status": "Status",
+      "description": "Description",
+      "createdAt": "Created at",
+      "updatedAt": "Updated at"
+    },
+    "filter": {
+      "status": "-- Status --",
+      "roomType": "-- Room type --",
+      "floorName": "-- Floor --",
+      "buildingName": "-- Building --"
+    },
+    "errorFetch": "An error occurred while fetching rooms",
+    "errorFetchStatistics": "An error occurred while fetching room statistics",
+    "totalRooms": "Total rooms",
+    "roomsAvailable": "Available rooms",
+    "addOrUpdate": {
+      "floorId": "Floor:",
+      "acreage": "Acreage (m²):",
+      "price": "Price (VND):",
+      "minPrice": "Min price:",
+      "maxPrice": "Max price:",
+      "maximumPeople": "Maximum people:",
+      "roomType": "Room type:",
+      "status": "Status:",
+      "description": "Description:",
+      "placeholderFloor": "-- Select floor --",
+      "placeholderAcreage": "30",
+      "placeholderPrice": "3000000",
+      "placeholderMaximumPeople": "4",
+      "placeholderRoomType": "-- Select room type --",
+      "placeholderStatus": "-- Select status --",
+      "placeholderDescription": "Enter detailed description"
+    }
+  }
 }

@@ -239,8 +239,8 @@ export const useAsset = () => {
       const data: IUpdateAsset = {
         assetBeLongTo,
         assetType: assetType ?? "",
-        descriptionAsset: descriptionAsset.trim(),
-        nameAsset: nameAsset.trim(),
+        descriptionAsset,
+        nameAsset,
         price: price || 0,
         quantity: quantity || 0,
         assetStatus,
@@ -248,7 +248,7 @@ export const useAsset = () => {
 
       await updateAssetSchema.parseAsync(data);
 
-      updateAssetMutation.mutate(data, {
+      await updateAssetMutation.mutateAsync(data, {
         onSuccess: () => {
           setValue({
             assetBeLongTo: "",
@@ -321,7 +321,7 @@ export const useAsset = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải loại tài sản");
+      toast.error("Có lỗi xảy ra khi tải tài sản");
     }
     if (isStatisticsError) {
       toast.error("Có lỗi xảy ra khi tải thống kê tài sản");

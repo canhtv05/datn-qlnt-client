@@ -27,6 +27,9 @@ const buttonVariants = cva(
         update: "bg-[#44475A] hover:bg-[#5a5e78]",
         history: "bg-[#44475A] hover:bg-[#5a5e78]",
         undo: "bg-violet-500 hover:bg-violet-400",
+        deposit1: "bg-violet-500 hover:bg-violet-400",
+        deposit2: "bg-purple-400 hover:bg-purple-300",
+        deposit3: "bg-indigo-600 hover:bg-indigo-500",
         status: "bg-sky-600 hover:bg-sky-500",
         view: "bg-emerald-500 hover:bg-emerald-400",
         contract: "bg-indigo-600 hover:bg-indigo-500", // Đậm, nghiêm túc
