@@ -160,7 +160,7 @@ const MeterButton = ({
           "Mã công tơ": d.meterCode,
           "Tên công tơ": d.meterName,
           "Tên dịch vụ": d.serviceName,
-          "Loại công tơ": meterTypeEnumToString(d.meterType),
+          "Loại công tơ": meterTypeEnumToString(d.meterType, t),
           "Chỉ số gần nhất": formatNumber(d.closestIndex),
           Phòng: d.roomCode,
           "Mô tả": d.descriptionMeter,
@@ -171,7 +171,7 @@ const MeterButton = ({
         handleExportExcel(`Công tơ`, exportData, data?.data);
       }
     },
-    [id, openDialog, ids, navigate, data]
+    [id, openDialog, ids, navigate, data?.data, t]
   );
 
   const removeMeterMutation = useMutation({

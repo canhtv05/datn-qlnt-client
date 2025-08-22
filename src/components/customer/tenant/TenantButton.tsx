@@ -147,18 +147,18 @@ const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Tena
           "Mã khách": d.customerCode,
           "Họ tên": d.fullName,
           "Hình ảnh": d.pictureUrl,
-          "Giới tính": genderEnumToString(d.gender),
+          "Giới tính": genderEnumToString(d.gender, t),
           "Ngày sinh": formatDate(d.dob),
           Email: d.email,
           "Số điện thoại": d.phoneNumber,
           "Địa chỉ": d.address,
           "Là đại diện": d.isRepresentative ? "Có" : "Không",
-          "Trạng thái": tenantStatusEnumToString(d.tenantStatus),
+          "Trạng thái": tenantStatusEnumToString(d.tenantStatus, t),
         }));
         handleExportExcel(`Khách thuê`, exportData, data);
       }
     },
-    [data, ids, navigate, openDialog]
+    [data, ids, navigate, openDialog, t]
   );
 
   const removeTenantsMutation = useMutation({

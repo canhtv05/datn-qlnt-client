@@ -136,11 +136,11 @@ const ServiceButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Ser
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
           "Tên dịch vụ": d.name,
-          "Loại dịch vụ": serviceCategoryEnumToString(d.serviceCategory),
+          "Loại dịch vụ": serviceCategoryEnumToString(d.serviceCategory, t),
           "Đơn vị": d.unit,
           Giá: formattedCurrency(d.price || 0),
-          "Áp dụng theo": serviceCalculationEnumToString(d.serviceCalculation),
-          "Trạng thái": serviceStatusEnumToString(d.status),
+          "Áp dụng theo": serviceCalculationEnumToString(d.serviceCalculation, t),
+          "Trạng thái": serviceStatusEnumToString(d.status, t),
           "Mô tả": d.description,
           "Ngày tạo": formatDate(new Date(d.createdAt)),
           "Ngày cập nhật": formatDate(new Date(d.updatedAt)),
@@ -148,7 +148,7 @@ const ServiceButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Ser
         handleExportExcel(`Dịch vụ`, exportData, data);
       }
     },
-    [data, ids, navigate, openDialog]
+    [data, ids, navigate, openDialog, t]
   );
 
   const removeServiceMutation = useMutation({

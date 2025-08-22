@@ -39,8 +39,10 @@ import vnFlag from "./vietnam-26834_1280.webp";
 import notification from "./notification.webp";
 import american from "./american.webp";
 import vietnam from "./vietnam.webp";
+import uk from "./uk.webp";
 
 const images = {
+  uk,
   american,
   vietnam,
   notification,

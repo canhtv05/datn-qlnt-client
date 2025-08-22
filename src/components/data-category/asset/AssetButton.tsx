@@ -153,8 +153,8 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
           "Tên tài sản": d.nameAsset,
-          "Loại tài sản": assetTypeEnumToString(d.assetType),
-          "Tài sản thuộc về": assetBelongToEnumToString(d.assetBeLongTo),
+          "Loại tài sản": assetTypeEnumToString(d.assetType, t),
+          "Tài sản thuộc về": assetBelongToEnumToString(d.assetBeLongTo, t),
           Giá: formattedCurrency(d.price),
           "Số lượng": d.quantity,
           "Còn lại": d.remainingQuantity,
@@ -165,7 +165,7 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
         handleExportExcel(`Tài sản_${data?.[0].buildingName}`, exportData, data);
       }
     },
-    [data, ids, navigate, openDialog]
+    [data, ids, navigate, openDialog, t]
   );
 
   const removeAssetTypeMutation = useMutation({

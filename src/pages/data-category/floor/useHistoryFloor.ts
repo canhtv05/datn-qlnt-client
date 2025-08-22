@@ -234,7 +234,7 @@ export const useHistoryFloor = () => {
             });
             queryClient.invalidateQueries({ queryKey: ["floors-statistics"] });
 
-            toast.success(Status.REMOVE_SUCCESS);
+            toast.success(t(Status.REMOVE_SUCCESS));
             setRowSelection({});
             return true;
         } catch (error) {

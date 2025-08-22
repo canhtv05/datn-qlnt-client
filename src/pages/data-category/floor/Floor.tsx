@@ -147,7 +147,7 @@ const Floor = () => {
                     open={isModalOpen}
                     onOpenChange={setIsModalOpen}
                     onConfirm={handleUpdateFloor}
-                    desc={Notice.UPDATE}
+                    desc={t(Notice.UPDATE)}
                 >
                     <AddOrUpdateFloor
                         handleChange={handleChange}

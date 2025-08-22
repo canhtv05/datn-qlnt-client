@@ -112,273 +112,276 @@ export const replaceText = (replacementText: string, findResult: FindResultType)
   editor.execute("replace", replacementText, findResult);
 };
 
-export const assetTypeEnumToString = (assetType: AssetType) => {
+export const assetTypeEnumToString = (assetType: AssetType, t: TFunction<"translate", undefined>) => {
   const map: Record<AssetType, string> = {
-    AN_NINH: "An ninh",
-    DIEN: "Điện",
-    GIA_DUNG: "Gia dụng",
-    KHAC: "Khác",
-    NOI_THAT: "Nội thất",
-    VE_SINH: "Vệ sinh",
+    AN_NINH: t("statusBadge.assetType.security"),
+    DIEN: t("statusBadge.assetType.electric"),
+    GIA_DUNG: t("statusBadge.assetType.houseware"),
+    KHAC: t("statusBadge.assetType.other"),
+    NOI_THAT: t("statusBadge.assetType.furniture"),
+    VE_SINH: t("statusBadge.assetType.cleaning"),
   };
 
-  return map[assetType] || "Không xác định";
+  return map[assetType] || t("common.unknown");
 };
 
-export const assetStatusEnumToString = (assetStatus: AssetStatus) => {
+export const assetStatusEnumToString = (assetStatus: AssetStatus, t: TFunction<"translate", undefined>) => {
   const map: Record<AssetStatus, string> = {
-    CAN_BAO_TRI: "Cần bảo trì",
-    DA_THANH_LY: "Đã thanh lý",
-    HOAT_DONG: "Hoạt động",
-    HU_HONG: "Bị hỏng",
-    HUY: "Bị hủy",
-    KHONG_SU_DUNG: "Không sử dụng",
-    THAT_LAC: "Thất lạc",
+    CAN_BAO_TRI: t("statusBadge.assetStatus.maintenance"),
+    DA_THANH_LY: t("statusBadge.assetStatus.liquidated"),
+    HOAT_DONG: t("statusBadge.assetStatus.active"),
+    HU_HONG: t("statusBadge.assetStatus.broken"),
+    HUY: t("statusBadge.assetStatus.cancelled"),
+    KHONG_SU_DUNG: t("statusBadge.assetStatus.inactive"),
+    THAT_LAC: t("statusBadge.assetStatus.lost"),
   };
 
-  return map[assetStatus] || "Không xác định";
+  return map[assetStatus] || t("common.unknown");
 };
 
-export const serviceCategoryEnumToString = (serviceCategory: ServiceCategory) => {
+export const serviceCategoryEnumToString = (serviceCategory: ServiceCategory, t: TFunction<"translate", undefined>) => {
   const map: Record<ServiceCategory, string> = {
-    DIEN: "Điện",
-    NUOC: "Nước",
-    GUI_XE: "Gửi xe",
-    INTERNET: "Internet",
-    VE_SINH: "Vệ sinh",
-    THANG_MAY: "Thang máy",
-    BAO_TRI: "Bảo trì",
-    AN_NINH: "An ninh",
-    GIAT_SAY: "Giặt sấy",
-    TIEN_PHONG: "Tiền phòng",
-    KHAC: "Khác",
-    DEN_BU: "Đền bù",
+    DIEN: t("statusBadge.serviceCategory.electric"),
+    NUOC: t("statusBadge.serviceCategory.water"),
+    GUI_XE: t("statusBadge.serviceCategory.parking"),
+    INTERNET: t("statusBadge.serviceCategory.internet"),
+    VE_SINH: t("statusBadge.serviceCategory.cleaning"),
+    THANG_MAY: t("statusBadge.serviceCategory.elevator"),
+    BAO_TRI: t("statusBadge.serviceCategory.maintenance"),
+    AN_NINH: t("statusBadge.serviceCategory.security"),
+    GIAT_SAY: t("statusBadge.serviceCategory.laundry"),
+    TIEN_PHONG: t("statusBadge.serviceCategory.rent"),
+    KHAC: t("statusBadge.serviceCategory.other"),
+    DEN_BU: t("statusBadge.serviceCategory.compensation"),
   };
 
-  return map[serviceCategory] || "Không xác định";
+  return map[serviceCategory] || t("common.unknown");
 };
 
-export const serviceCalculationEnumToString = (serviceApply: ServiceCalculation) => {
+export const serviceCalculationEnumToString = (
+  serviceApply: ServiceCalculation,
+  t: TFunction<"translate", undefined>
+) => {
   const map: Record<ServiceCalculation, string> = {
-    TINH_THEO_NGUOI: "Tính theo người",
-    TINH_THEO_PHONG: "Tính theo phòng",
-    TINH_THEO_PHUONG_TIEN: "Tính theo phương tiện",
-    TINH_THEO_SO: "Tính theo số",
+    TINH_THEO_NGUOI: t("statusBadge.serviceCalculation.byPerson"),
+    TINH_THEO_PHONG: t("statusBadge.serviceCalculation.byRoom"),
+    TINH_THEO_PHUONG_TIEN: t("statusBadge.serviceCalculation.byVehicle"),
+    TINH_THEO_SO: t("statusBadge.serviceCalculation.byMeter"),
   };
 
-  return map[serviceApply] || "Không xác định";
+  return map[serviceApply] || t("common.unknown");
 };
 
-export const serviceStatusEnumToString = (status: ServiceStatus) => {
+export const serviceStatusEnumToString = (status: ServiceStatus, t: TFunction<"translate", undefined>) => {
   const map: Record<ServiceStatus, string> = {
-    HOAT_DONG: "Hoạt động",
-    KHONG_SU_DUNG: "Không sử dụng",
-    TAM_KHOA: "Tạm khóa",
+    HOAT_DONG: t("statusBadge.serviceStatus.active"),
+    KHONG_SU_DUNG: t("statusBadge.serviceStatus.inactive"),
+    TAM_KHOA: t("statusBadge.serviceStatus.locked"),
   };
 
-  return map[status] || "Không xác định";
+  return map[status] || t("common.unknown");
 };
 
-export const vehicleTypeEnumToString = (vehicleType: VehicleType) => {
+export const vehicleTypeEnumToString = (vehicleType: VehicleType, t: TFunction<"translate", undefined>) => {
   const map: Record<VehicleType, string> = {
-    XE_MAY: "Xe máy",
-    O_TO: "Ô tô",
-    XE_DAP: "Xe đạp",
-    KHAC: "Khác",
+    XE_MAY: t("statusBadge.vehicleType.motorbike"),
+    O_TO: t("statusBadge.vehicleType.car"),
+    XE_DAP: t("statusBadge.vehicleType.bicycle"),
+    KHAC: t("statusBadge.vehicleType.other"),
   };
 
-  return map[vehicleType] || "Không xác định";
+  return map[vehicleType] || t("common.unknown");
 };
 
-export const vehicleStatusEnumToString = (status: VehicleStatus) => {
+export const vehicleStatusEnumToString = (status: VehicleStatus, t: TFunction<"translate", undefined>) => {
   const map: Record<VehicleStatus, string> = {
-    KHONG_SU_DUNG: "Không sử dụng",
-    SU_DUNG: "Sử dụng",
-    TAM_KHOA: "Tạm khóa",
+    KHONG_SU_DUNG: t("statusBadge.vehicleStatus.inactive"),
+    SU_DUNG: t("statusBadge.vehicleStatus.active"),
+    TAM_KHOA: t("statusBadge.vehicleStatus.locked"),
   };
 
-  return map[status] || "Không xác định";
+  return map[status] || t("common.unknown");
 };
 
-export const contractStatusEnumToString = (status: ContractStatus) => {
+export const contractStatusEnumToString = (status: ContractStatus, t: TFunction<"translate", undefined>) => {
   const map: Record<ContractStatus, string> = {
-    HIEU_LUC: "Hiệu lực",
-    SAP_HET_HAN: "Sắp hết hạn",
-    DA_HUY: "Đã hủy",
-    KET_THUC_DUNG_HAN: "Kết thúc đúng hạn",
-    KET_THUC_CO_BAO_TRUOC: "Kết thúc có báo trước",
-    TU_Y_HUY_BO: "Tự ý hủy bỏ",
-    CHO_KICH_HOAT: "Chờ kích hoạt",
+    HIEU_LUC: t("statusBadge.contractStatus.valid"),
+    SAP_HET_HAN: t("statusBadge.contractStatus.expiring"),
+    DA_HUY: t("statusBadge.contractStatus.cancelled"),
+    KET_THUC_DUNG_HAN: t("statusBadge.contractStatus.endedOnTime"),
+    KET_THUC_CO_BAO_TRUOC: t("statusBadge.contractStatus.endedNotice"),
+    TU_Y_HUY_BO: t("statusBadge.contractStatus.terminated"),
+    CHO_KICH_HOAT: t("statusBadge.contractStatus.pending"),
   };
 
-  return map[status] || "Không xác định";
+  return map[status] || t("common.unknown");
 };
 
-export const buildingTypeEnumToString = (type: BuildingType) => {
+export const buildingTypeEnumToString = (type: BuildingType, t: TFunction<"translate", undefined>) => {
   const map: Record<BuildingType, string> = {
-    CAN_HO_DICH_VU: "Căn hộ dịch vụ",
-    CHUNG_CU_MINI: "Chung cư mini",
-    KHAC: "Khác",
-    NHA_TRO: "Nhà trọ",
+    CAN_HO_DICH_VU: t("statusBadge.buildingType.canHoDichVu"),
+    CHUNG_CU_MINI: t("statusBadge.buildingType.chungCuMini"),
+    KHAC: t("statusBadge.buildingType.other"),
+    NHA_TRO: t("statusBadge.buildingType.nhaTro"),
   };
 
-  return map[type] || "Không xác định";
+  return map[type] || t("common.unknown");
 };
 
-export const buildingStatusEnumToString = (status: BuildingStatus) => {
+export const buildingStatusEnumToString = (status: BuildingStatus, t: TFunction<"translate", undefined>) => {
   const map: Record<BuildingStatus, string> = {
-    HOAT_DONG: "Hoạt động",
-    HUY_HOAT_DONG: "Hủy hoạt động",
-    TAM_KHOA: "Tạm khóa",
+    HOAT_DONG: t("statusBadge.buildingStatus.active"),
+    HUY_HOAT_DONG: t("statusBadge.buildingStatus.inactive"),
+    TAM_KHOA: t("statusBadge.buildingStatus.locked"),
   };
 
-  return map[status] || "Không xác định";
+  return map[status] || t("common.unknown");
 };
 
-export const floorTypeEnumToString = (type: FloorType) => {
+export const floorTypeEnumToString = (type: FloorType, t: TFunction<"translate", undefined>) => {
   const map: Record<FloorType, string> = {
-    CHO_THUE: "Cho thuê",
-    DE_O: "Để ở",
-    KHAC: "Khác",
-    KHO: "Kho",
-    KHONG_CHO_THUE: "Không cho thuê",
+    CHO_THUE: t("statusBadge.floorType.forRent"),
+    DE_O: t("statusBadge.floorType.residential"),
+    KHAC: t("statusBadge.floorType.other"),
+    KHO: t("statusBadge.floorType.storage"),
+    KHONG_CHO_THUE: t("statusBadge.floorType.notForRent"),
   };
 
-  return map[type] || "Không xác định";
+  return map[type] || t("common.unknown");
 };
 
-export const floorStatusEnumToString = (status: FloorStatus) => {
+export const floorStatusEnumToString = (status: FloorStatus, t: TFunction<"translate", undefined>) => {
   const map: Record<FloorStatus, string> = {
-    HOAT_DONG: "Hoạt động",
-    KHONG_SU_DUNG: "Không sử dụng",
-    TAM_KHOA: "Tạm khóa",
+    HOAT_DONG: t("statusBadge.floorStatus.active"),
+    KHONG_SU_DUNG: t("statusBadge.floorStatus.inactive"),
+    TAM_KHOA: t("statusBadge.floorStatus.locked"),
   };
 
-  return map[status] || "Không xác định";
+  return map[status] || t("common.unknown");
 };
 
-export const roomTypeEnumToString = (type: RoomType) => {
+export const roomTypeEnumToString = (type: RoomType, t: TFunction<"translate", undefined>) => {
   const map: Record<RoomType, string> = {
-    KHAC: "Khác",
-    CAO_CAP: "Cao cấp",
-    DON: "Đơn",
-    GHEP: "Ghép",
+    KHAC: t("statusBadge.roomType.other"),
+    CAO_CAP: t("statusBadge.roomType.vip"),
+    DON: t("statusBadge.roomType.single"),
+    GHEP: t("statusBadge.roomType.shared"),
   };
 
-  return map[type] || "Không xác định";
+  return map[type] || t("common.unknown");
 };
 
-export const roomStatusEnumToString = (status: RoomStatus) => {
+export const roomStatusEnumToString = (status: RoomStatus, t: TFunction<"translate", undefined>) => {
   const map: Record<RoomStatus, string> = {
-    TAM_KHOA: "Tạm khóa",
-    CHUA_HOAN_THIEN: "Chưa hoàn thiện",
-    DA_DAT_COC: "Đã đặt cọc",
-    DANG_BAO_TRI: "Đang bảo trì",
-    DANG_THUE: "Đang thuê",
-    HUY_HOAT_DONG: "Hủy hoạt động",
-    TRONG: "Trống",
+    TAM_KHOA: t("statusBadge.roomStatus.locked"),
+    CHUA_HOAN_THIEN: t("statusBadge.roomStatus.unfinished"),
+    DA_DAT_COC: t("statusBadge.roomStatus.deposit"),
+    DANG_BAO_TRI: t("statusBadge.roomStatus.maintain"),
+    DANG_THUE: t("statusBadge.roomStatus.renting"),
+    HUY_HOAT_DONG: t("statusBadge.roomStatus.inactive"),
+    TRONG: t("statusBadge.roomStatus.empty"),
   };
 
-  return map[status] || "Không xác định";
+  return map[status] || t("common.unknown");
 };
 
-export const assetBelongToEnumToString = (belongTo: AssetBeLongTo) => {
+export const assetBelongToEnumToString = (belongTo: AssetBeLongTo, t: TFunction<"translate", undefined>) => {
   const map: Record<AssetBeLongTo, string> = {
-    CA_NHAN: "Cá nhân",
-    CHUNG: "Chung",
-    PHONG: "Phòng",
+    CA_NHAN: t("statusBadge.assetBelongTo.personal"),
+    CHUNG: t("statusBadge.assetBelongTo.common"),
+    PHONG: t("statusBadge.assetBelongTo.room"),
   };
 
-  return map[belongTo] || "Không xác định";
+  return map[belongTo] || t("common.unknown");
 };
 
-export const genderEnumToString = (gender: Gender) => {
+export const genderEnumToString = (gender: Gender, t: TFunction<"translate", undefined>) => {
   const map: Record<Gender, string> = {
-    FEMALE: "Nữ",
-    MALE: "Nam",
-    OTHER: "Khác",
-    UNKNOWN: "Không xác định",
+    FEMALE: t("statusBadge.gender.female"),
+    MALE: t("statusBadge.gender.male"),
+    OTHER: t("common.other"),
+    UNKNOWN: t("common.unknown"),
   };
 
-  return map[gender] || "Không xác định";
+  return map[gender] || t("common.unknown");
 };
 
-export const tenantStatusEnumToString = (status: TenantStatus) => {
+export const tenantStatusEnumToString = (status: TenantStatus, t: TFunction<"translate", undefined>) => {
   const map: Record<TenantStatus, string> = {
-    DA_TRA_PHONG: "Đã trả phòng",
-    DANG_THUE: "Đang thuê",
-    HUY_BO: "Hủy bỏ",
-    KHOA: "Khóa",
-    TIEM_NANG: "Tiềm năng",
+    DA_TRA_PHONG: t("statusBadge.tenantStatus.returned"),
+    DANG_THUE: t("statusBadge.tenantStatus.renting"),
+    HUY_BO: t("statusBadge.tenantStatus.cancelled"),
+    KHOA: t("statusBadge.tenantStatus.locked"),
+    TIEM_NANG: t("statusBadge.tenantStatus.potential"),
   };
 
-  return map[status] || "Không xác định";
+  return map[status] || t("common.unknown");
 };
 
-export const meterTypeEnumToString = (type: MeterType) => {
+export const meterTypeEnumToString = (type: MeterType, t: TFunction<"translate", undefined>) => {
   const map: Record<MeterType, string> = {
-    DIEN: "Công tơ điện",
-    NUOC: "Công tơ nước",
+    DIEN: t("statusBadge.meterType.electric"),
+    NUOC: t("statusBadge.meterType.water"),
   };
 
-  return map[type] || "Không xác định";
+  return map[type] || t("common.unknown");
 };
 
-export const invoiceTypeEnumToString = (type: InvoiceType) => {
+export const invoiceTypeEnumToString = (type: InvoiceType, t: TFunction<"translate", undefined>) => {
   const map: Record<InvoiceType, string> = {
-    CUOI_CUNG: "Cuối cùng",
-    HANG_THANG: "Hàng tháng",
+    CUOI_CUNG: t("statusBadge.invoiceType.final"),
+    HANG_THANG: t("statusBadge.invoiceType.monthly"),
   };
 
-  return map[type] || "Không xác định";
+  return map[type] || t("common.unknown");
 };
 
-export const invoiceStatusEnumToString = (status: InvoiceStatus) => {
+export const invoiceStatusEnumToString = (status: InvoiceStatus, t: TFunction<"translate", undefined>) => {
   const map: Record<InvoiceStatus, string> = {
-    CHO_THANH_TOAN: "Chờ thanh toán",
-    CHUA_THANH_TOAN: "Chưa thanh toán",
-    DA_THANH_TOAN: "Đã thanh toán",
-    HUY: "Bị hủy",
-    KHOI_PHUC: "Khôi phục",
-    QUA_HAN: "Quá hạn",
+    CHO_THANH_TOAN: t("statusBadge.invoiceStatus.waitingPayment"),
+    CHUA_THANH_TOAN: t("statusBadge.invoiceStatus.unpaid"),
+    DA_THANH_TOAN: t("statusBadge.invoiceStatus.paid"),
+    HUY: t("statusBadge.invoiceStatus.cancelled"),
+    KHOI_PHUC: t("statusBadge.invoiceStatus.restore"),
+    QUA_HAN: t("statusBadge.invoiceStatus.overdue"),
   };
 
-  return map[status] || "Không xác định";
+  return map[status] || t("common.unknown");
 };
 
-export const receiptMethodEnumToString = (method: PaymentMethod) => {
+export const receiptMethodEnumToString = (method: PaymentMethod, t: TFunction<"translate", undefined>) => {
   const map: Record<PaymentMethod, string> = {
-    CHON_PHUONG_THUC: "Chọn phương thức",
-    CHUYEN_KHOAN: "Chuyển khoản",
-    MOMO: "Ví điện thử MoMo",
-    TIEN_MAT: "Tiền mặt",
-    VNPAY: "Ví điện thử VNPay",
-    ZALOPAY: "Ví điện thử ZaloPay",
+    CHON_PHUONG_THUC: t("statusBadge.paymentMethod.choose"),
+    CHUYEN_KHOAN: t("statusBadge.paymentMethod.transfer"),
+    MOMO: t("statusBadge.paymentMethod.momo"),
+    TIEN_MAT: t("statusBadge.paymentMethod.cash"),
+    VNPAY: t("statusBadge.paymentMethod.vnpay"),
+    ZALOPAY: t("statusBadge.paymentMethod.zalopay"),
   };
 
-  return map[method] || "Không xác định";
+  return map[method] || t("common.unknown");
 };
 
-export const receiptStatusEnumToString = (status: PaymentStatus) => {
+export const receiptStatusEnumToString = (status: PaymentStatus, t: TFunction<"translate", undefined>) => {
   const map: Record<PaymentStatus, string> = {
-    CHO_THANH_TOAN: "Chờ thanh toán",
-    CHO_XAC_NHAN: "Chờ xác nhận",
-    DA_THANH_TOAN: "Đã thanh toán",
-    HUY: "Bị hủy",
-    TU_CHOI: "Bị từ chối",
+    CHO_THANH_TOAN: t("statusBadge.paymentStatus.pending"),
+    CHO_XAC_NHAN: t("statusBadge.paymentStatus.confirming"),
+    DA_THANH_TOAN: t("statusBadge.paymentStatus.paid"),
+    HUY: t("statusBadge.paymentStatus.cancelled"),
+    TU_CHOI: t("statusBadge.paymentStatus.rejected"),
   };
 
-  return map[status] || "Không xác định";
+  return map[status] || t("common.unknown");
 };
 
-export const notificationTypeEnumToString = (type: NotificationType) => {
+export const notificationTypeEnumToString = (type: NotificationType, t: TFunction<"translate", undefined>) => {
   const map: Record<NotificationType, string> = {
-    CHUNG: "Chung",
-    HE_THONG: "Hệ thống",
-    KHAC: "Khác",
+    CHUNG: t("statusBadge.notificationType.common"),
+    HE_THONG: t("statusBadge.notificationType.system"),
+    KHAC: t("statusBadge.notificationType.other"),
   };
 
-  return map[type] || "Không xác định";
+  return map[type] || t("common.unknown");
 };
 
 export const checkUser = (user: UserResponse | null, isLoading: boolean): boolean => {

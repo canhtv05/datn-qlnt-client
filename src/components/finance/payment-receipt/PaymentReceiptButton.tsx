@@ -67,8 +67,8 @@ const PaymentReceiptButton = ({ ids, data }: { data?: PaymentReceiptResponse[]; 
           "Mã phiếu": d.receiptCode,
           "Mã hóa đơn": d.invoiceCode,
           "Số tiền": formattedCurrency(d.amount),
-          "Phương thức thanh toán": receiptMethodEnumToString(d.paymentMethod),
-          "Trạng thái thanh toán": receiptStatusEnumToString(d.paymentStatus),
+          "Phương thức thanh toán": receiptMethodEnumToString(d.paymentMethod, t),
+          "Trạng thái thanh toán": receiptStatusEnumToString(d.paymentStatus, t),
           "Người thu": d.collectedBy,
           "Ngày thanh toán": formatDate(d.paymentDate) !== "" ? formatDate(d.paymentDate) : "Chưa thanh toán",
           "Ghi chú": d.note,
@@ -78,7 +78,7 @@ const PaymentReceiptButton = ({ ids, data }: { data?: PaymentReceiptResponse[]; 
         handleExportExcel(`Phiếu thanh toán`, exportData, data);
       }
     },
-    [data, ids, openDialog]
+    [data, ids, openDialog, t]
   );
 
   const handleSendPaymentNotice = useCallback(async () => {

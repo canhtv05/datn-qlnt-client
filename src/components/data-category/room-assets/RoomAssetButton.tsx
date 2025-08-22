@@ -329,14 +329,14 @@ const RoomAssetButton = ({
         const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
           "Mã phòng": d.roomCode,
           "Số tài sản": d.totalAssets || 0,
-          "Loại phòng": roomTypeEnumToString(d.roomType),
-          "Trạng thái": roomStatusEnumToString(d.status),
+          "Loại phòng": roomTypeEnumToString(d.roomType, t),
+          "Trạng thái": roomStatusEnumToString(d.status, t),
           "Mô tả": d.description,
         }));
         handleExportExcel(`Tài sản phòng`, exportData, data);
       }
     },
-    [data, ids, openDialog]
+    [data, ids, openDialog, t]
   );
 
   return (

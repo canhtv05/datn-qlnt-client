@@ -22,29 +22,30 @@ const AddOrUpdateFloor = ({
     errors,
     type,
 }: AddOrUpdateFloorProps) => {
+    const { t } = useTranslation();
     const floorType: FieldsSelectLabelType[] = [
         {
-            label: "Cho thuê",
+            label: t("statusBadge.floorType.forRent"),
             value: FloorType.CHO_THUE,
         },
         {
-            label: "Để ở",
+            label: t("statusBadge.floorType.residential"),
             value: FloorType.DE_O,
         },
         {
-            label: "Kho",
+            label: t("statusBadge.floorType.storage"),
             value: FloorType.KHO,
         },
         {
-            label: "Không cho thuê",
+            label: t("statusBadge.floorType.notForRent"),
             value: FloorType.KHONG_CHO_THUE,
         },
         {
-            label: "Khác",
+            label: t("statusBadge.floorType.other"),
             value: FloorType.KHAC,
         },
     ];
-    const { t } = useTranslation();
+
     return (
         <div className="flex flex-col gap-3">
             <RenderIf value={type === "add"}>

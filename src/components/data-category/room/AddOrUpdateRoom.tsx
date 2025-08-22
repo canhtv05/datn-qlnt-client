@@ -4,148 +4,149 @@ import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
 import { RoomStatus, RoomType } from "@/enums";
 import { RoomFormValue, FloorBasicResponse } from "@/types";
+import { useTranslation } from "react-i18next";
 
 interface Props {
-  value: RoomFormValue;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setValue: Dispatch<React.SetStateAction<RoomFormValue>>;
-  errors: Partial<Record<keyof RoomFormValue, string>>;
-  floorList: FloorBasicResponse[];
-  type: "add" | "update";
+    value: RoomFormValue;
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    setValue: Dispatch<React.SetStateAction<RoomFormValue>>;
+    errors: Partial<Record<keyof RoomFormValue, string>>;
+    floorList: FloorBasicResponse[];
+    type: "add" | "update";
 }
 
-const roomTypes: FieldsSelectLabelType[] = [
-  { label: "Cao cấp", value: RoomType.CAO_CAP },
-  { label: "Phòng ghép", value: RoomType.GHEP },
-  { label: "Phòng đơn", value: RoomType.DON },
-  { label: "Khác", value: RoomType.KHAC },
-];
-
-const roomStatuses: FieldsSelectLabelType[] = [
-  { label: "Còn trống", value: RoomStatus.TRONG },
-  { label: "Đã thuê", value: RoomStatus.DANG_THUE },
-  { label: "Đặt cọc", value: RoomStatus.DA_DAT_COC },
-  { label: "Bảo trì", value: RoomStatus.DANG_BAO_TRI },
-  { label: "Chưa hoàn thiện", value: RoomStatus.CHUA_HOAN_THIEN },
-  { label: "Tạm khóa", value: RoomStatus.TAM_KHOA },
-];
-
 const AddOrUpdateRoom = ({ value, setValue, errors, floorList, type = "add" }: Props) => {
-  const floorOptions: FieldsSelectLabelType[] = floorList.map((floor) => ({
-    label: `${floor.nameFloor} - ${floor.buildingName}`,
-    value: floor.id,
-  }));
+    const { t } = useTranslation();
+    const roomTypes: FieldsSelectLabelType[] = [
+        { label: t("statusBadge.roomType.vip"), value: RoomType.CAO_CAP },
+        { label: t("statusBadge.roomType.shared"), value: RoomType.GHEP },
+        { label: t("statusBadge.roomType.single"), value: RoomType.DON },
+        { label: t("statusBadge.roomType.other"), value: RoomType.KHAC },
+    ];
 
-  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value: inputVal } = e.target;
-    const parsed = Number(inputVal.trim());
-    setValue((prev) => ({
-      ...prev,
-      [name]: inputVal.trim() === "" || isNaN(parsed) ? null : parsed,
+    const roomStatuses: FieldsSelectLabelType[] = [
+        { label: t("statusBadge.roomStatus.empty"), value: RoomStatus.TRONG },
+        { label: t("statusBadge.roomStatus.renting"), value: RoomStatus.DANG_THUE },
+        { label: t("statusBadge.roomStatus.deposit"), value: RoomStatus.DA_DAT_COC },
+        { label: t("statusBadge.roomStatus.maintain"), value: RoomStatus.DANG_BAO_TRI },
+        { label: t("statusBadge.roomStatus.unfinished"), value: RoomStatus.CHUA_HOAN_THIEN },
+        { label: t("statusBadge.roomStatus.locked"), value: RoomStatus.TAM_KHOA },
+    ];
+    const floorOptions: FieldsSelectLabelType[] = floorList.map((floor) => ({
+        label: `${floor.nameFloor} - ${floor.buildingName}`,
+        value: floor.id,
     }));
-  };
 
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="grid grid-cols-2 gap-4">
-        {/* FLOOR ID */}
-        <FieldsSelectLabel
-          data={floorOptions}
-          placeholder="-- Chọn tầng --"
-          label="Tầng:"
-          id="floorId"
-          name="floorId"
-          value={value.floorId ?? ""}
-          onChange={(val) => setValue((prev) => ({ ...prev, floorId: val as string }))}
-          labelSelect="Tầng"
-          showClear
-          errorText={errors.floorId}
-        />
+    const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value: inputVal } = e.target;
+        const parsed = Number(inputVal.trim());
+        setValue((prev) => ({
+            ...prev,
+            [name]: inputVal.trim() === "" || isNaN(parsed) ? null : parsed,
+        }));
+    };
 
-        {/* ACREAGE */}
-        <InputLabel
-          id="acreage"
-          name="acreage"
-          placeholder="30"
-          type="number"
-          label="Diện tích (m²):"
-          required
-          value={value.acreage ?? ""}
-          onChange={handleNumberChange}
-          errorText={errors.acreage}
-        />
+    return (
+        <div className="flex flex-col gap-3">
+            <div className="grid grid-cols-2 gap-4">
+                {/* FLOOR ID */}
+                <FieldsSelectLabel
+                    data={floorOptions}
+                    placeholder={t("room.addOrUpdate.placeholderFloor")}
+                    label={t("room.addOrUpdate.floorId")}
+                    id="floorId"
+                    name="floorId"
+                    value={value.floorId ?? ""}
+                    onChange={(val) => setValue((prev) => ({ ...prev, floorId: val as string }))}
+                    labelSelect={t("room.addOrUpdate.floorId")}
+                    showClear
+                    errorText={errors.floorId}
+                />
 
-        {/* PRICE */}
-        <InputLabel
-          id="price"
-          name="price"
-          placeholder="3000000"
-          type="number"
-          label="Giá (VNĐ):"
-          required
-          value={value.price ?? ""}
-          onChange={handleNumberChange}
-          errorText={errors.price}
-        />
+                {/* ACREAGE */}
+                <InputLabel
+                    id="acreage"
+                    name="acreage"
+                    placeholder="30"
+                    type="number"
+                    label={t("room.addOrUpdate.acreage")}
+                    required
+                    value={value.acreage ?? ""}
+                    onChange={handleNumberChange}
+                    errorText={errors.acreage}
+                />
 
-        {/* MAXIMUM PEOPLE */}
-        <InputLabel
-          id="maximumPeople"
-          name="maximumPeople"
-          placeholder="4"
-          type="number"
-          label="Số người tối đa:"
-          required
-          value={value.maximumPeople ?? ""}
-          onChange={handleNumberChange}
-          errorText={errors.maximumPeople}
-        />
+                {/* PRICE */}
+                <InputLabel
+                    id="price"
+                    name="price"
+                    placeholder="3000000"
+                    type="number"
+                    label={t("room.addOrUpdate.price")}
+                    required
+                    value={value.price ?? ""}
+                    onChange={handleNumberChange}
+                    errorText={errors.price}
+                />
 
-        {/* ROOM TYPE */}
+                {/* MAXIMUM PEOPLE */}
+                <InputLabel
+                    id="maximumPeople"
+                    name="maximumPeople"
+                    placeholder="4"
+                    type="number"
+                    label={t("room.addOrUpdate.maximumPeople")}
+                    required
+                    value={value.maximumPeople ?? ""}
+                    onChange={handleNumberChange}
+                    errorText={errors.maximumPeople}
+                />
 
-        {/* STATUS */}
-      </div>
+                {/* ROOM TYPE */}
 
-      <FieldsSelectLabel
-        data={roomTypes}
-        placeholder="-- Chọn loại phòng --"
-        label="Loại phòng:"
-        id="roomType"
-        name="roomType"
-        value={value.roomType ?? ""}
-        onChange={(val) => setValue((prev) => ({ ...prev, roomType: val as RoomType }))}
-        labelSelect="Loại phòng"
-        showClear
-        errorText={errors.roomType}
-        required
-      />
-      {type === "update" && (
-        <FieldsSelectLabel
-          data={roomStatuses}
-          placeholder="-- Chọn trạng thái --"
-          label="Trạng thái:"
-          id="status"
-          name="status"
-          value={value.status ?? ""}
-          onChange={(val) => setValue((prev) => ({ ...prev, status: val as RoomStatus }))}
-          labelSelect="Trạng thái"
-          showClear
-          errorText={errors.status}
-          required
-        />
-      )}
+                {/* STATUS */}
+            </div>
 
-      {/* DESCRIPTION */}
-      <TextareaLabel
-        id="description"
-        name="description"
-        placeholder="Nhập mô tả chi tiết"
-        label="Mô tả:"
-        value={value.description ?? ""}
-        onChange={(e) => setValue((prev) => ({ ...prev, description: e.target.value }))}
-      />
-    </div>
-  );
+            <FieldsSelectLabel
+                data={roomTypes}
+                placeholder={t("room.addOrUpdate.placeholderRoomType")}
+                label={t("room.addOrUpdate.roomType")}
+                id="roomType"
+                name="roomType"
+                value={value.roomType ?? ""}
+                onChange={(val) => setValue((prev) => ({ ...prev, roomType: val as RoomType }))}
+                labelSelect={t("room.addOrUpdate.roomType")}
+                showClear
+                errorText={errors.roomType}
+                required
+            />
+            {type === "update" && (
+                <FieldsSelectLabel
+                    data={roomStatuses}
+                    placeholder={t("room.addOrUpdate.placeholderStatus")}
+                    label={t("room.addOrUpdate.status")}
+                    id="status"
+                    name="status"
+                    value={value.status ?? ""}
+                    onChange={(val) => setValue((prev) => ({ ...prev, status: val as RoomStatus }))}
+                    labelSelect={t("room.addOrUpdate.status")}
+                    showClear
+                    errorText={errors.status}
+                    required
+                />
+            )}
+
+            {/* DESCRIPTION */}
+            <TextareaLabel
+                id="description"
+                name="description"
+                placeholder={t("room.addOrUpdate.placeholderDescription")}
+                label={t("room.addOrUpdate.description")}
+                value={value.description ?? ""}
+                onChange={(e) => setValue((prev) => ({ ...prev, description: e.target.value }))}
+            />
+        </div>
+    );
 };
 
 export default AddOrUpdateRoom;

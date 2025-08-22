@@ -17,7 +17,8 @@
             "downloadExcel": "Tải xuống Excel",
             "addNew": "Thêm mới",
             "history": "Xem Lịch sử",
-            "confirm": "Xác nhận"
+            "confirm": "Xác nhận",
+            "continue": "Tiếp tục"
         },
         "noData": "Không có dữ liệu",
         "selectDateRange": "Chọn khoảng thời gian",
@@ -32,7 +33,9 @@
         "confirmDialog": {
             "confirm": "Bạn có chắc chắn muốn tiếp tục không?",
             "delete": "Thao tác này sẽ xóa vĩnh viễn dữ liệu các {{name}} đã chọn. Bạn có chắc chắn muốn tiếp tục?"
-        }
+        },
+        "unknown": "Không xác định",
+        "other": "Khác"
     },
     "actions": {
         "serviceActions": {
@@ -68,7 +71,7 @@
         "remove": "Hành động này sẽ xóa vĩnh viễn dữ liệu đã chọn khỏi hệ thống. Bạn có chắc chắn muốn tiếp tục?",
         "toggleStatus": "Bạn có chắc chắn muốn thay đổi trạng thái của mục này?",
         "restore": "Bạn có chắc chắn muốn khôi phục mục này?",
-        "restores": "Bạn có chắc chắn muốn khôi phục các mục này?",
+        "restores": "Bạn có chắc chắn muốn khôi phục các mục đã chọn?",
         "update": "Hành động này sẽ cập nhật thông tin hiện tại. Bạn có chắc chắn muốn tiếp tục?",
         "add": "Hành động này sẽ thêm mới một mục vào hệ thống. Bạn có chắc chắn muốn thực hiện?"
     },
@@ -201,7 +204,8 @@
             "maintain": "Bảo trì",
             "unfinished": "Chưa hoàn thiện",
             "locked": "Tạm khóa",
-            "inactive": "Huỷ hoạt động"
+            "inactive": "Huỷ hoạt động",
+            "renting": "Đang thuê"
         },
 
         "floorStatus": {
@@ -247,14 +251,16 @@
             "broken": "Hư hỏng",
             "maintenance": "Cần bảo trì",
             "lost": "Thất lạc",
-            "liquidated": "Đã thanh lý"
+            "liquidated": "Đã thanh lý",
+            "inactive": "Không sử dụng"
         },
 
         "tenantStatus": {
             "renting": "Đang thuê",
             "returned": "Đã trả phòng",
             "potential": "Tiềm năng",
-            "locked": "Bị khóa"
+            "locked": "Bị khóa",
+            "cancelled": "Hủy bỏ"
         },
 
         "gender": {
@@ -329,7 +335,9 @@
             "restored": "Khôi phục",
             "paid": "Đã thanh toán",
             "overdue": "Quá hạn",
-            "cancelled": "Đã hủy"
+            "cancelled": "Đã hủy",
+            "waitingPayment": "Chờ thanh toán",
+            "restore": "Khôi phục"
         },
 
         "invoiceType": {
@@ -348,7 +356,8 @@
             "security": "An ninh",
             "laundry": "Giặt sấy",
             "rent": "Tiền phòng",
-            "other": "Khác"
+            "other": "Khác",
+            "compensation": "Đền bù"
         },
 
         "serviceCalculation": {
@@ -370,9 +379,9 @@
             "choose": "Chọn phương thức",
             "cash": "Tiền mặt",
             "transfer": "Chuyển khoản",
-            "vnpay": "VNPay",
-            "zalopay": "ZaloPay",
-            "momo": "MoMo"
+            "vnpay": "Ví điện tử VNPay",
+            "zalopay": "Ví điện tử ZaloPay",
+            "momo": "Ví điện tử MoMo"
         },
 
         "paymentStatus": {
@@ -421,7 +430,7 @@
             "placeholderAddress": "Hà Nội",
             "selectBuilding": "-- Chọn loại tòa nhà --",
             "buildingType": "Loại tòa nhà:",
-            "labelSelectBuildingType": "Xã/Phường",
+            "labelSelectBuildingType": "Loại tòa nhà",
             "actualNumberOfFloors": "Số tầng thực tế:",
             "numberOfFloorsForRent": "Số tầng cho thuê:",
             "description": "Mô tả:",
@@ -463,6 +472,55 @@
             "placeholderMaximumRoom": "1",
             "selectFloorType": "-- Chọn loại tầng --",
             "placeholderDescription": "Nhập mô tả"
+        }
+    },
+    "room": {
+        "title": "Phòng",
+        "titleHistory": "Lịch sử xóa phòng",
+        "response": {
+            "active": "Hoạt động",
+            "inactive": "Không hoạt động",
+            "roomCode": "Mã phòng",
+            "actions": "Thao tác",
+            "floorId": "Tầng",
+            "floorName": "Tên tầng",
+            "buildingName": "Tên tòa nhà",
+            "acreage": "Diện tích (m²)",
+            "price": "Giá (VNĐ)",
+            "maximumPeople": "Số người tối đa",
+            "roomType": "Loại phòng",
+            "status": "Trạng thái",
+            "description": "Mô tả",
+            "createdAt": "Ngày tạo",
+            "updatedAt": "Ngày cập nhật"
+        },
+        "filter": {
+            "status": "-- Trạng thái --",
+            "roomType": "-- Loại phòng --",
+            "floorName": "-- Tầng --",
+            "buildingName": "-- Tòa nhà --"
+        },
+        "errorFetch": "Có lỗi xảy ra khi tải phòng",
+        "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê phòng",
+        "totalRooms": "Tổng số phòng",
+        "roomsAvailable": "Tổng số phòng trống",
+        "addOrUpdate": {
+            "floorId": "Tầng:",
+            "acreage": "Diện tích (m²):",
+            "price": "Giá (VNĐ):",
+            "minPrice": "Giá từ:",
+            "maxPrice": "Giá đến:",
+            "maximumPeople": "Số người tối đa:",
+            "roomType": "Loại phòng:",
+            "status": "Trạng thái:",
+            "description": "Mô tả:",
+            "placeholderFloor": "-- Chọn tầng --",
+            "placeholderAcreage": "30",
+            "placeholderPrice": "3000000",
+            "placeholderMaximumPeople": "4",
+            "placeholderRoomType": "-- Chọn loại phòng --",
+            "placeholderStatus": "-- Chọn trạng thái --",
+            "placeholderDescription": "Nhập mô tả chi tiết"
         }
     }
 }

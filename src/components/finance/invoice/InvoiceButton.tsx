@@ -170,15 +170,15 @@ const InvoiceButton = ({
           Năm: d.year,
           "Tổng tiền": formattedCurrency(d.totalAmount),
           "Hạn thanh toán": formatDate(d.paymentDueDate),
-          "Loại hóa đơn": invoiceTypeEnumToString(d.invoiceType),
-          "Trạng thái": invoiceStatusEnumToString(d.invoiceStatus),
+          "Loại hóa đơn": invoiceTypeEnumToString(d.invoiceType, t),
+          "Trạng thái": invoiceStatusEnumToString(d.invoiceStatus, t),
           "Ghi chú": d.note,
           "Ngày tạo": formatDate(d.createdAt),
         }));
         handleExportExcel(`Hóa đơn`, exportData, data);
       }
     },
-    [data, ids, navigate, openDialog]
+    [data, ids, navigate, openDialog, t]
   );
 
   const removeInvoiceMutation = useMutation({

@@ -139,7 +139,7 @@ const MeterReadingButton = ({
         const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
           "Mã công tơ": d.meterCode,
           "Tên công tơ": d.meterName,
-          "Loại công tơ": meterTypeEnumToString(d.meterType),
+          "Loại công tơ": meterTypeEnumToString(d.meterType, t),
           "Chỉ số cũ": formatNumber(d.oldIndex),
           "Chỉ số mới": formatNumber(d.newIndex),
           "Số lượng": formatNumber(d.quantity),
@@ -153,7 +153,7 @@ const MeterReadingButton = ({
         handleExportExcel(`Ghi chỉ số`, exportData, data);
       }
     },
-    [data, ids, openDialog]
+    [data, ids, openDialog, t]
   );
 
   const removeMeterReadingMutation = useMutation({

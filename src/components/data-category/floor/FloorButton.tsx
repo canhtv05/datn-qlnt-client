@@ -59,7 +59,7 @@ const FloorButton = ({ ids, data }: { ids: Record<string, boolean>; data: FloorR
             handleMutationError(error);
         },
         onSuccess: () => {
-            toast.success(Status.ADD_SUCCESS);
+            toast.success(t(Status.ADD_SUCCESS));
             setValue({
                 descriptionFloor: "",
                 floorType: undefined,
@@ -82,7 +82,7 @@ const FloorButton = ({ ids, data }: { ids: Record<string, boolean>; data: FloorR
             await createFloorSchema.parseAsync(value);
 
             if (!id) {
-                toast.error(Status.ERROR);
+                toast.error(t(Status.ERROR));
                 return false;
             }
 
@@ -101,7 +101,7 @@ const FloorButton = ({ ids, data }: { ids: Record<string, boolean>; data: FloorR
             handleZodErrors(error);
             return false;
         }
-    }, [addFloorMutation, id, clearErrors, handleZodErrors, value]);
+    }, [value, id, addFloorMutation, clearErrors, t, handleZodErrors]);
 
     const handleRemoveFloorsByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
         try {
@@ -118,7 +118,7 @@ const FloorButton = ({ ids, data }: { ids: Record<string, boolean>; data: FloorR
             });
             queryClient.invalidateQueries({ queryKey: ["floors-statistics"] });
 
-            toast.success(Status.REMOVE_SUCCESS);
+            toast.success(t(Status.REMOVE_SUCCESS));
             return true;
         } catch (error) {
             handleMutationError(error);
@@ -144,19 +144,23 @@ const FloorButton = ({ ids, data }: { ids: Record<string, boolean>; data: FloorR
             } else if (btn.type === "download") {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
-                    "{t(floor.addOrUpdate.nameFloor)}": d.nameFloor,
-                    "Tên tòa nhà": d.buildingName,
-                    "Số phòng tối đa": d.maximumRoom,
-                    "Loại tầng": floorTypeEnumToString(d.floorType),
-                    "Mô tả": d.descriptionFloor,
-                    "Trạng thái": floorStatusEnumToString(d.status),
-                    "Ngày tạo": formatDate(new Date(d.createdAt)),
-                    "Ngày cập nhật": formatDate(new Date(d.updatedAt)),
+                    [t("floor.response.nameFloor")]: d.nameFloor,
+                    [t("floor.response.buildingName")]: d.buildingName,
+                    [t("floor.response.maximumRoom")]: d.maximumRoom,
+                    [t("floor.response.floorType")]: floorTypeEnumToString(d.floorType, t),
+                    [t("floor.response.descriptionFloor")]: d.descriptionFloor,
+                    [t("floor.response.status")]: floorStatusEnumToString(d.status, t),
+                    [t("floor.response.createdAt")]: formatDate(new Date(d.createdAt)),
+                    [t("floor.response.updatedAt")]: formatDate(new Date(d.updatedAt)),
                 }));
-                handleExportExcel(`Tầng nhà_${data[0].buildingName}`, exportData, data);
+                handleExportExcel(
+                    `t("floor.response.buildingName")${data[0].buildingName}`,
+                    exportData,
+                    data
+                );
             }
         },
-        [data, ids, navigate, openDialog]
+        [data, ids, navigate, openDialog, t]
     );
 
     const removeFloorMutation = useMutation({
@@ -167,14 +171,14 @@ const FloorButton = ({ ids, data }: { ids: Record<string, boolean>; data: FloorR
     return (
         <div className="h-full bg-background rounded-t-sm">
             <div className="flex px-4 py-3 justify-between items-center">
-                <h3 className="font-semibold">Tầng</h3>
+                <h3 className="font-semibold">{t("floor.title")}</h3>
                 <div className="flex gap-2">
                     {ACTION_BUTTONS_HISTORY.map((btn, index) => (
                         <TooltipProvider key={index}>
                             <Tooltip>
                                 <RenderIf value={btn.type === "default"}>
                                     <Modal
-                                        title="Tầng"
+                                        title={t("floor.title")}
                                         trigger={
                                             <TooltipTrigger asChild>
                                                 <Button
@@ -186,7 +190,7 @@ const FloorButton = ({ ids, data }: { ids: Record<string, boolean>; data: FloorR
                                                 </Button>
                                             </TooltipTrigger>
                                         }
-                                        desc={Notice.ADD}
+                                        desc={t(Notice.ADD)}
                                         onConfirm={handleAddFloor}
                                     >
                                         <AddOrUpdateFloor

@@ -163,21 +163,25 @@ const BuildingButton = ({
             } else if (btn.type === "download") {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
-                    "Mã tòa nhà": d.buildingCode,
-                    "Tên tòa nhà": d.buildingName,
-                    "Địa chỉ": d.address,
-                    "Loại tòa nhà": buildingTypeEnumToString(d.buildingType),
-                    "Số tầng thực tế": d.actualNumberOfFloors || 0,
-                    "Số tầng cho thuê": d.numberOfFloorsForRent || 0,
-                    "Mô tả": d.description,
-                    "Trạng thái": buildingStatusEnumToString(d.status),
-                    "Ngày tạo": formatDate(new Date(d.createdAt)),
-                    "Ngày cập nhật": formatDate(new Date(d.updatedAt)),
+                    [t("building.response.buildingCode")]: d.buildingCode,
+                    [t("building.response.buildingName")]: d.buildingName,
+                    [t("building.response.address")]: d.address,
+                    [t("building.response.buildingType")]: buildingTypeEnumToString(
+                        d.buildingType,
+                        t
+                    ),
+                    [t("building.response.actualNumberOfFloors")]: d.actualNumberOfFloors || 0,
+                    [t("building.response.numberOfFloorsForRent")]: d.numberOfFloorsForRent || 0,
+                    [t("building.response.description")]: d.description,
+                    [t("building.response.status")]: buildingStatusEnumToString(d.status, t),
+                    [t("building.response.createdAt")]: formatDate(new Date(d.createdAt)),
+                    [t("building.response.updatedAt")]: formatDate(new Date(d.updatedAt)),
                 }));
-                handleExportExcel("Tòa nhà", exportData, data);
+
+                handleExportExcel(t("building.title"), exportData, data);
             }
         },
-        [data, ids, navigate, openDialog]
+        [data, ids, navigate, openDialog, t]
     );
 
     const removeBuildingMutation = useMutation({
@@ -207,7 +211,7 @@ const BuildingButton = ({
                                                 </Button>
                                             </TooltipTrigger>
                                         }
-                                        desc={Notice.ADD}
+                                        desc={t(Notice.ADD)}
                                         onConfirm={handleAddBuilding}
                                     >
                                         <AddOrUpdateBuilding
