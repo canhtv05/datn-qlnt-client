@@ -27,6 +27,7 @@ import {
   AssetType,
   AssetBeLongTo,
   NotificationType,
+  DepositStatus,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -54,7 +55,10 @@ export interface IBtnType {
     | "finalize"
     | "cash"
     | "history"
-    | "undo";
+    | "undo"
+    | "deposit1"
+    | "deposit2"
+    | "deposit3";
   hasConfirm: boolean;
 }
 
@@ -1203,4 +1207,29 @@ export interface NotificationDetailResponse {
   fullName: string;
   isRead: boolean;
   readAt: string;
+}
+
+/* DEPOSIT */
+export interface DepositDetailView extends AbstractResponse {
+  contractId: string;
+  contractCode: string;
+  roomCode: string;
+  depositor: string;
+  depositRecipient: string;
+  depositAmount: number;
+  depositStatus: DepositStatus;
+  depositDate: string;
+  depositRefundDate: string;
+  securityDepositReturnDate: string;
+  note: string;
+}
+
+export interface ConfirmDepositResponse {
+  id: string;
+  depositStatus: DepositStatus;
+}
+
+export interface DepositFilter {
+  query: string;
+  depositStatus: string | DepositStatus;
 }

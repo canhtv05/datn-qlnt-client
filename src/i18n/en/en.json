@@ -139,7 +139,8 @@
       "meters": "Meters",
       "meterReading": "Meter Reading",
       "invoice": "Invoice",
-      "receipt": "Payment Receipt"
+      "receipt": "Payment Receipt",
+      "deposit": "Deposits"
     },
     "notifications": {
       "label": "Notification Management",
@@ -395,6 +396,15 @@
       "common": "General",
       "system": "System",
       "other": "Other"
+    },
+
+    "depositStatus": {
+      "common": "Deposited",
+      "refunded": "Refunded",
+      "notReceived": "Not received",
+      "pending": "Pending confirmation",
+      "nonRefund": "Non-refundable",
+      "cancelled": "Cancelled"
     }
   },
   "building": {

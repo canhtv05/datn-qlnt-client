@@ -40,8 +40,10 @@ import notification from "./notification.webp";
 import american from "./american.webp";
 import vietnam from "./vietnam.webp";
 import uk from "./uk.webp";
+import deposit from "./deposit.webp";
 
 const images = {
+  deposit,
   uk,
   american,
   vietnam,

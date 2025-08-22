@@ -139,7 +139,8 @@
       "meters": "Công tơ",
       "meterReading": "Ghi chỉ số",
       "invoice": "Hóa đơn",
-      "receipt": "Phiếu thanh toán"
+      "receipt": "Phiếu thanh toán",
+      "deposit": "Tiền cọc"
     },
     "notifications": {
       "label": "Quản lý thông báo",
@@ -395,6 +396,15 @@
       "common": "Chung",
       "system": "Hệ thống",
       "other": "Khác"
+    },
+
+    "depositStatus": {
+      "common": "Đã đặt cọc",
+      "refunded": "Đã hoàn trả",
+      "notReceived": "Chưa nhận cọc",
+      "pending": "Chờ xác nhận",
+      "nonRefund": "Không trả cọc",
+      "cancelled": "Hủy"
     }
   },
   "building": {

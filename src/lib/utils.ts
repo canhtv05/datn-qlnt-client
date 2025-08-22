@@ -6,6 +6,7 @@ import {
   BuildingStatus,
   BuildingType,
   ContractStatus,
+  DepositStatus,
   FloorStatus,
   FloorType,
   Gender,
@@ -382,6 +383,19 @@ export const notificationTypeEnumToString = (type: NotificationType, t: TFunctio
   };
 
   return map[type] || t("common.unknown");
+};
+
+export const depositStatusEnumToString = (status: DepositStatus, t: TFunction<"translate", undefined>) => {
+  const map: Record<DepositStatus, string> = {
+    CHO_XAC_NHAN: t("statusBadge.depositStatus.pending"),
+    CHUA_NHAN_COC: t("statusBadge.depositStatus.notReceived"),
+    DA_DAT_COC: t("statusBadge.depositStatus.common"),
+    DA_HOAN_TRA: t("statusBadge.depositStatus.refunded"),
+    HUY: t("statusBadge.depositStatus.cancelled"),
+    KHONG_TRA_COC: t("statusBadge.depositStatus.nonRefund"),
+  };
+
+  return map[status] || t("common.unknown");
 };
 
 export const checkUser = (user: UserResponse | null, isLoading: boolean): boolean => {

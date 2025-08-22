@@ -70,6 +70,7 @@ const routes = {
     paymentReceipt: "/finance/payment-receipt",
     invoiceId: "/finance/invoice/:id",
     invoiceViewId: "/finance/invoice/view/:id",
+    deposit: "/finance/deposits",
   },
   user: {
     room: "/room",

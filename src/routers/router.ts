@@ -69,6 +69,7 @@ const HistoryInvoice = lazy(() => import("@/pages/finance/invoice/HistoryInvoice
 const InvoiceDetail = lazy(() => import("@/pages/finance/invoice/invoice-detail/InvoiceDetail"));
 const ViewInvoiceDetail = lazy(() => import("@/pages/finance/invoice/invoice-detail/ViewInvoiceDetail"));
 const PaymentReceipt = lazy(() => import("@/pages/finance/payment-receipt"));
+const Deposit = lazy(() => import("@/pages/finance/deposit"));
 
 /* USER ROLE */
 // const UserRoom = lazy(() => import("@/pages/user/room"));
@@ -336,6 +337,11 @@ const privateRoutes: RouteType[] = [
   {
     path: configs.routes.finance.paymentReceipt,
     component: PaymentReceipt,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.finance.deposit,
+    component: Deposit,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
 
