@@ -12,7 +12,7 @@ import TenantButton from "@/components/customer/tenant/TenantButton";
 import TenantFilter from "@/components/customer/tenant/TenantFilter";
 import AddOrUpdateTenant from "@/components/customer/tenant/AddOrUpdateTenant";
 import { GET_BTNS } from "@/constant";
-import StatusBadge from "@/components/ui/StatusBadge";
+// import StatusBadge from "@/components/ui/StatusBadge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatDate } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
@@ -51,7 +51,7 @@ const Tenant = () => {
         const tenant: TenantResponse = row;
         return (
           <div className="flex gap-2">
-            {GET_BTNS("update", "delete", "status", "view").map((btn, index) => (
+            {GET_BTNS(/*"update",*/ "delete" /*, "status"*/, "view").map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -109,21 +109,21 @@ const Tenant = () => {
     },
     { label: "Email", accessorKey: "email", isSort: true },
     { label: "Số điện thoại", accessorKey: "phoneNumber", isSort: true },
-    { label: "Địa chỉ", accessorKey: "address" },
-    { label: "Số CMND/CCCD", accessorKey: "identificationNumber" },
-    {
-      label: "Là đại diện",
-      accessorKey: "isRepresentative",
-      isCenter: true,
-      isSort: true,
-      render: (row: TenantResponse) => {
-        return row.isRepresentative ? (
-          <StatusBadge status={"isRepresentative=true"} />
-        ) : (
-          <StatusBadge status={"isRepresentative=false"} />
-        );
-      },
-    },
+    // { label: "Địa chỉ", accessorKey: "address", isHidden: true },
+    // { label: "Số CMND/CCCD", accessorKey: "identityCardNumber", isHidden: true },
+    // {
+    //   label: "Là đại diện",
+    //   accessorKey: "isRepresentative",
+    //   isCenter: true,
+    //   isSort: true,
+    //   render: (row: TenantResponse) => {
+    //     return row.isRepresentative ? (
+    //       <StatusBadge status={"isRepresentative=true"} />
+    //     ) : (
+    //       <StatusBadge status={"isRepresentative=false"} />
+    //     );
+    //   },
+    // },
     {
       label: "Trạng thái",
       accessorKey: "tenantStatus",

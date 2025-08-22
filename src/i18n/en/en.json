@@ -257,7 +257,7 @@
     "tenantStatus": {
       "renting": "Renting",
       "returned": "Returned",
-      "potential": "Potential",
+      "waitContract": "Waiting for contract creation",
       "locked": "Locked",
       "cancelled": "Cancelled"
     },

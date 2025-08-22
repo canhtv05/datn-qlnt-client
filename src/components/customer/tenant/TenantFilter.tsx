@@ -40,7 +40,7 @@ const TenantFilter = ({ props, type }: { props: TenantFilterProps; type: "defaul
             data={[
               { label: "Đang thuê", value: TenantStatus.DANG_THUE },
               { label: "Đã trả phòng", value: TenantStatus.DA_TRA_PHONG },
-              { label: "Tiềm năng", value: TenantStatus.TIEM_NANG },
+              { label: "Chờ tạo hợp đồng", value: TenantStatus.CHO_TAO_HOP_DONG },
               { label: "Khóa", value: TenantStatus.KHOA },
             ]}
             value={tenantStatus}

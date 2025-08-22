@@ -12,9 +12,9 @@ import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { UsersIcon, UserCheckIcon, UserXIcon, UserPlusIcon, BanIcon, LockIcon } from "lucide-react";
+import { UsersIcon, UserCheckIcon, UserXIcon, BanIcon, LockIcon, FileIcon } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useTenant = () => {
@@ -46,7 +46,6 @@ export const useTenant = () => {
   const parsedSize = Math.max(Number(size) || 15, 1);
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAndUpdateTenant>();
 
@@ -224,18 +223,19 @@ export const useTenant = () => {
   const handleActionClick = useCallback(
     (tenant: TenantResponse, action: "update" | "delete" | "view") => {
       idRef.current = tenant.id;
-      if (action === "update") {
-        setValue({
-          address: tenant.address || "",
-          dob: tenant.dob || "",
-          email: tenant.email || "",
-          fullName: tenant.fullName || "",
-          gender: tenant.gender || "",
-          identityCardNumber: tenant.identificationNumber || "",
-          phoneNumber: tenant.phoneNumber || "",
-        });
-        setIsModalOpen(true);
-      } else if (action !== "view") {
+      // if (action === "update") {
+      //   setValue({
+      //     address: tenant.address || "",
+      //     dob: tenant.dob || "",
+      //     email: tenant.email || "",
+      //     fullName: tenant.fullName || "",
+      //     gender: tenant.gender || "",
+      //     identityCardNumber: tenant.identityCardNumber || "",
+      //     phoneNumber: tenant.phoneNumber || "",
+      //   });
+      //   setIsModalOpen(true);
+      // } else
+      if (action === "delete") {
         openDialog(
           { id: tenant.id, type: action },
           {
@@ -243,15 +243,11 @@ export const useTenant = () => {
             desc: action === "delete" ? Notice.REMOVE : Notice.TOGGLE_STATUS,
           }
         );
-      } else {
-        navigate(`/customers/tenants/${tenant.id}`, {
-          state: {
-            background: location,
-          },
-        });
+      } else if (action === "view") {
+        navigate(`/customers/tenants/${tenant.id}`);
       }
     },
-    [location, navigate, openDialog]
+    [navigate, openDialog]
   );
 
   const handleBlur = () => {
@@ -287,9 +283,9 @@ export const useTenant = () => {
       value: statistics?.data.totalCheckedOutTenants ?? 0,
     },
     {
-      icon: UserPlusIcon,
-      label: "Tiềm năng",
-      value: statistics?.data.totalPotentialTenants ?? 0,
+      icon: FileIcon,
+      label: "Chờ tạo hợp đồng",
+      value: statistics?.data.totalWaitingTenants ?? 0,
     },
     {
       icon: BanIcon,
@@ -303,17 +299,17 @@ export const useTenant = () => {
     },
   ];
 
-  const { data: tenants, isError: isErrorTenants } = useQuery<ApiResponse<TenantResponse[]>>({
-    queryKey: ["tenants-all"],
-    queryFn: async () => {
-      const res = await httpRequest.get("/tenants/all");
-      return res.data;
-    },
-    retry: 1,
-  });
+  // const { data: tenants, isError: isErrorTenants } = useQuery<ApiResponse<TenantResponse[]>>({
+  //   queryKey: ["tenants-all"],
+  //   queryFn: async () => {
+  //     const res = await httpRequest.get("/tenants/all");
+  //     return res.data;
+  //   },
+  //   retry: 1,
+  // });
 
   useEffect(() => {
-    if (isErrorTenants) toast.error("Có lỗi xảy ra khi tải khách thuê");
+    // if (isErrorTenants) toast.error("Có lỗi xảy ra khi tải khách thuê");
 
     if (isError) {
       toast.error("Có lỗi xảy ra khi tải danh sách khách thuê");
@@ -322,7 +318,7 @@ export const useTenant = () => {
     if (errorStatistics) {
       toast.error("Có lỗi xảy ra khi tải thống kê khách thuê");
     }
-  }, [isError, isErrorTenants, errorStatistics]);
+  }, [isError, errorStatistics]);
 
   const props = {
     filterValues,
@@ -356,6 +352,6 @@ export const useTenant = () => {
     errors,
     ConfirmDialog,
     handleBlur,
-    tenants,
+    // tenants,
   };
 };

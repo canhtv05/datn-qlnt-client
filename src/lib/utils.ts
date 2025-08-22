@@ -312,7 +312,7 @@ export const tenantStatusEnumToString = (status: TenantStatus, t: TFunction<"tra
     DANG_THUE: t("statusBadge.tenantStatus.renting"),
     HUY_BO: t("statusBadge.tenantStatus.cancelled"),
     KHOA: t("statusBadge.tenantStatus.locked"),
-    TIEM_NANG: t("statusBadge.tenantStatus.potential"),
+    CHO_TAO_HOP_DONG: t("statusBadge.tenantStatus.tenantStatus"),
   };
 
   return map[status] || t("common.unknown");

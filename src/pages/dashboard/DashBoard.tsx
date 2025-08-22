@@ -15,10 +15,10 @@ import { localeMap } from "@/lib/utils";
 const DashBoard = () => {
   const { t, i18n } = useTranslation();
   const currentLocale = localeMap[i18n.language] ?? enUS;
-  const { result, handleScroll, props } = useDashBoard();
+  const { result, observerRef, props } = useDashBoard();
 
   return (
-    <div className="h-[79vh] flex flex-col lg:flex-row-reverse w-full mx-auto overflow-y-auto" onScroll={handleScroll}>
+    <div className="h-[79vh] flex flex-col lg:flex-row-reverse w-full mx-auto overflow-y-auto">
       <div className="lg:w-[35%] w-full lg:ml-2 lg:mb-0 mb-5">
         <DashBoardFilter props={props} />
       </div>
@@ -34,35 +34,38 @@ const DashBoard = () => {
             <Skeleton key={idx} className="py-50" />
           ))}
         </RenderIf>
-        {result.data?.pages.flatMap((page) =>
-          page.data.map((item) => (
-            <Card key={item.id} className="shadow-none rounded-md">
-              <CardHeader className="flex flex-row items-center gap-3 px-4 py-2">
-                <Image src={item.senderImage} alt={item.fullName} />
-                <div className="flex-1">
-                  <p className="text-sm text-muted-foreground">
-                    {t("dashboard.sentBy", {
-                      name: item.fullName,
-                      date: format(new Date(item.sentAt), "dd/MM/yyyy HH:mm", {
-                        locale: currentLocale,
-                      }),
-                    })}
-                  </p>
-                  <StatusBadge status={item.notificationType} />
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <CardTitle className="text-base font-semibold">{item.title}</CardTitle>
-                <p className="text-sm text-foreground">{item.content}</p>
-
-                {item.image && (
-                  <div className="w-full">
-                    <img src={item.image} alt="notification" className="w-full rounded-lg border object-cover" />
+        {result.data?.pages.flatMap((page, pageIndex) =>
+          page.data.map((item, itemIndex) => {
+            const isLastItem = pageIndex === result.data.pages.length - 1 && itemIndex === page.data.length - 1;
+            return (
+              <Card key={item.id} className="shadow-none rounded-md" ref={isLastItem ? observerRef : null}>
+                <CardHeader className="flex flex-row items-center gap-3 px-4 py-2">
+                  <Image src={item.senderImage} alt={item.fullName} />
+                  <div className="flex-1">
+                    <p className="text-sm text-muted-foreground">
+                      {t("dashboard.sentBy", {
+                        name: item.fullName,
+                        date: format(new Date(item.sentAt), "dd/MM/yyyy HH:mm", {
+                          locale: currentLocale,
+                        }),
+                      })}
+                    </p>
+                    <StatusBadge status={item.notificationType} />
                   </div>
-                )}
-              </CardContent>
-            </Card>
-          ))
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <CardTitle className="text-base font-semibold">{item.title}</CardTitle>
+                  <p className="text-sm text-foreground">{item.content}</p>
+
+                  {item.image && (
+                    <div className="w-full">
+                      <img src={item.image} alt="notification" className="w-full rounded-lg border object-cover" />
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })
         )}
 
         {result.isFetchingNextPage && (

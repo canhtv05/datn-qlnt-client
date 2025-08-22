@@ -1,6 +1,6 @@
 import DataTable from "@/components/DataTable";
 import Overlay from "@/components/Overlay";
-import StatusBadge from "@/components/ui/StatusBadge";
+// import StatusBadge from "@/components/ui/StatusBadge";
 import TenantResponse, { ApiResponse, ColumnConfig } from "@/types";
 import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { httpRequest } from "@/utils/httpRequest";
@@ -37,19 +37,19 @@ const RoomMembers = () => {
       hasHighlight: true,
       isCenter: true,
     },
-    {
-      label: "Là đại diện",
-      accessorKey: "isRepresentative",
-      isCenter: true,
-      isSort: true,
-      render: (row: TenantResponse) => {
-        return row.isRepresentative ? (
-          <StatusBadge status={"isRepresentative=true"} />
-        ) : (
-          <StatusBadge status={"isRepresentative=false"} />
-        );
-      },
-    },
+    // {
+    //   label: "Là đại diện",
+    //   accessorKey: "isRepresentative",
+    //   isCenter: true,
+    //   isSort: true,
+    //   render: (row: TenantResponse) => {
+    //     return row.isRepresentative ? (
+    //       <StatusBadge status={"isRepresentative=true"} />
+    //     ) : (
+    //       <StatusBadge status={"isRepresentative=false"} />
+    //     );
+    //   },
+    // },
     {
       label: "Giới tính",
       accessorKey: "gender",
@@ -72,9 +72,10 @@ const RoomMembers = () => {
     },
     {
       label: "CCCD/CMT",
-      accessorKey: "identificationNumber",
+      accessorKey: "identityCardNumber",
       isSort: true,
       isCenter: true,
+      isHidden: true,
     },
     {
       label: "Email",
@@ -86,8 +87,8 @@ const RoomMembers = () => {
       label: "Địa chỉ",
       accessorKey: "address",
       isSort: true,
+      isHidden: true,
     },
-
     {
       label: "Trạng thái",
       accessorKey: "tenantStatus",

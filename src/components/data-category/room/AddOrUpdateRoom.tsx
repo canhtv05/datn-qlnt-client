@@ -47,20 +47,22 @@ const AddOrUpdateRoom = ({ value, setValue, errors, floorList, type = "add" }: P
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         {/* FLOOR ID */}
-        <FieldsSelectLabel
-          data={floorOptions}
-          placeholder="-- Chọn tầng --"
-          label="Tầng:"
-          id="floorId"
-          name="floorId"
-          value={value.floorId ?? ""}
-          onChange={(val) => setValue((prev) => ({ ...prev, floorId: val as string }))}
-          labelSelect="Tầng"
-          showClear
-          errorText={errors.floorId}
-        />
+        {type === "add" && (
+          <FieldsSelectLabel
+            data={floorOptions}
+            placeholder="-- Chọn tầng --"
+            label="Tầng:"
+            id="floorId"
+            name="floorId"
+            value={value.floorId ?? ""}
+            onChange={(val) => setValue((prev) => ({ ...prev, floorId: val as string }))}
+            labelSelect="Tầng"
+            showClear
+            errorText={errors.floorId}
+          />
+        )}
 
         {/* ACREAGE */}
         <InputLabel

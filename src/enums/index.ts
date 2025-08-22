@@ -136,7 +136,7 @@ export enum VehicleStatus {
 export enum TenantStatus {
   DANG_THUE = "DANG_THUE",
   DA_TRA_PHONG = "DA_TRA_PHONG",
-  TIEM_NANG = "TIEM_NANG",
+  CHO_TAO_HOP_DONG = "CHO_TAO_HOP_DONG",
   KHOA = "KHOA",
   HUY_BO = "HUY_BO",
 }

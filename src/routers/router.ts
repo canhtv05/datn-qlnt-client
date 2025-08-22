@@ -257,6 +257,11 @@ const privateRoutes: RouteType[] = [
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
+    path: configs.routes.customer.tenantDetail,
+    component: DetailTenant,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
     path: configs.routes.customer.tenantsHistory,
     component: HistoryTenant,
     allowedRoles: ["ADMIN", "MANAGER"],
@@ -407,11 +412,6 @@ const modals: ModalRoute[] = [
     path: configs.routes.modals.profile,
     component: Profile,
     allowedRoles: ["ADMIN", "MANAGER", "STAFF", "USER"],
-  },
-  {
-    path: configs.routes.modals.tenantDetail,
-    component: DetailTenant,
-    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
     path: configs.routes.modals.roomMembers,

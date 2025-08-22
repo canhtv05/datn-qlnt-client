@@ -257,7 +257,7 @@
     "tenantStatus": {
       "renting": "Đang thuê",
       "returned": "Đã trả phòng",
-      "potential": "Tiềm năng",
+      "waitContract": "Chờ tạo hợp đồng",
       "locked": "Bị khóa",
       "cancelled": "Hủy bỏ"
     },

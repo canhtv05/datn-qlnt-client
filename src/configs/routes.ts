@@ -15,7 +15,6 @@ const routes = {
   },
   modals: {
     profile: "/profile",
-    tenantDetail: "/customers/tenants/:id",
     roomMembers: "/room/members/:id",
   },
   dashboard: "/dashboard",
@@ -50,6 +49,7 @@ const routes = {
     serviceHistory: "/service-management/services/history",
   },
   customer: {
+    tenantDetail: "/customers/tenants/:id",
     vehicles: "/customers/vehicles",
     vehiclesHistory: "/customers/vehicles/history",
     tenants: "/customers/tenants",

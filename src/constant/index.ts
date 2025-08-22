@@ -572,8 +572,8 @@ export const STATUS_BADGE = [
     className: COLOR_CLASS.gray,
   },
   {
-    value: TenantStatus.TIEM_NANG,
-    label: "statusBadge.tenantStatus.potential",
+    value: TenantStatus.CHO_TAO_HOP_DONG,
+    label: "statusBadge.tenantStatus.waitContract",
     className: COLOR_CLASS.yellow,
   },
   {
