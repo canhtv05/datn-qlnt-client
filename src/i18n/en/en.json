@@ -452,6 +452,7 @@
     "response": {
       "active": "Active",
       "inactive": "Inactive",
+      "floorCode": "Floor code",
       "nameFloor": "Floor name",
       "actions": "Actions",
       "maximumRoom": "Maximum rooms",
@@ -531,6 +532,57 @@
       "placeholderPrice": "3000000",
       "placeholderMaximumPeople": "4",
       "placeholderRoomType": "-- Select room type --",
+      "placeholderStatus": "-- Select status --",
+      "placeholderDescription": "Enter detailed description"
+    }
+  },
+  "asset": {
+    "title": "Asset",
+    "titleHistory": "Asset Deletion History",
+    "response": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "nameAsset": "Asset Name",
+      "actions": "Actions",
+      "assetType": "Asset Type",
+      "assetBeLongTo": "Belongs To",
+      "assetStatus": "Status",
+      "price": "Price (VND)",
+      "quantity": "Quantity",
+      "remainingQuantity": "Remaining",
+      "descriptionAsset": "Description",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "roomID": "Room ID",
+      "floorID": "Floor ID",
+      "buildingID": "Building ID",
+      "tenantId": "Tenant ID"
+    },
+    "filter": {
+      "status": "-- Status --",
+      "assetType": "-- Asset Type --",
+      "assetBeLongTo": "-- Belongs To --"
+    },
+    "errorFetch": "An error occurred while loading assets",
+    "errorFetchStatistics": "An error occurred while loading asset statistics",
+    "noBuildingId": "Building code not found",
+    "totalAssets": "Total Assets",
+    "assetsAvailable": "Available Assets",
+    "addOrUpdate": {
+      "nameAsset": "Asset Name:",
+      "assetType": "Asset Type:",
+      "assetBeLongTo": "Belongs To:",
+      "price": "Price (VND):",
+      "quantity": "Quantity:",
+      "remainingQuantity": "Remaining:",
+      "assetStatus": "Status:",
+      "descriptionAsset": "Description:",
+      "placeholderNameAsset": "Enter asset name",
+      "placeholderAssetType": "-- Select asset type --",
+      "placeholderAssetBeLongTo": "-- Select owner --",
+      "placeholderPrice": "3000000",
+      "placeholderQuantity": "10",
+      "placeholderRemainingQuantity": "10",
       "placeholderStatus": "-- Select status --",
       "placeholderDescription": "Enter detailed description"
     }

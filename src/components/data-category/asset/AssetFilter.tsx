@@ -6,6 +6,7 @@ import { AssetBeLongTo, AssetStatus } from "@/enums";
 import { switchGrid3 } from "@/lib/utils";
 import { AssetFilter as Filter } from "@/types";
 import { Dispatch, FormEvent, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface AssetFilterProps {
   filterValues: Filter;
@@ -15,6 +16,7 @@ export interface AssetFilterProps {
 }
 
 const AssetFilter = ({ props, type }: { props: AssetFilterProps; type: "default" | "restore" }) => {
+  const { t } = useTranslation();
   const { nameAsset, assetBeLongTo, assetStatus } = props.filterValues;
   const setFilterValues = props.setFilterValues;
 
@@ -31,11 +33,11 @@ const AssetFilter = ({ props, type }: { props: AssetFilterProps; type: "default"
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
       <div className={switchGrid3(type)}>
         <FieldsSelectLabel
-          placeholder="-- Tài sản thuộc về --"
-          labelSelect="Tài sản thuộc về"
+          placeholder={t("asset.filter.assetBeLongTo")}
+          labelSelect={t("asset.response.assetBeLongTo")}
           data={[
-            { label: "Chung", value: AssetBeLongTo.CHUNG },
-            { label: "Phòng", value: AssetBeLongTo.PHONG },
+            { label: t("statusBadge.assetBelongTo.common"), value: AssetBeLongTo.CHUNG },
+            { label: t("statusBadge.assetBelongTo.room"), value: AssetBeLongTo.PHONG },
           ]}
           value={assetBeLongTo}
           onChange={(value) => handleChange("assetBeLongTo", String(value))}
@@ -44,14 +46,14 @@ const AssetFilter = ({ props, type }: { props: AssetFilterProps; type: "default"
         />
         <RenderIf value={type === "default"}>
           <FieldsSelectLabel
-            placeholder="-- Trạng thái --"
-            labelSelect="Trạng thái"
+            placeholder={t("asset.filter.status")}
+            labelSelect={t("asset.response.assetStatus")}
             data={[
-              { label: "Cần bảo trì", value: AssetStatus.CAN_BAO_TRI },
-              { label: "Đã thanh lý", value: AssetStatus.DA_THANH_LY },
-              { label: "Bị hư hỏng", value: AssetStatus.HU_HONG },
-              { label: "Bị thất lạc", value: AssetStatus.THAT_LAC },
-              { label: "Không sử dụng", value: AssetStatus.KHONG_SU_DUNG },
+              { label: t("statusBadge.assetStatus.maintenance"), value: AssetStatus.CAN_BAO_TRI },
+              { label: t("statusBadge.assetStatus.liquidated"), value: AssetStatus.DA_THANH_LY },
+              { label: t("statusBadge.assetStatus.broken"), value: AssetStatus.HU_HONG },
+              { label: t("statusBadge.assetStatus.lost"), value: AssetStatus.THAT_LAC },
+              { label: t("statusBadge.assetStatus.inactive"), value: AssetStatus.KHONG_SU_DUNG },
             ]}
             value={assetStatus}
             onChange={(value) => handleChange("assetStatus", String(value))}
@@ -63,7 +65,7 @@ const AssetFilter = ({ props, type }: { props: AssetFilterProps; type: "default"
           type="text"
           id="nameAsset"
           name="nameAsset"
-          placeholder="Tên tài sản"
+          placeholder={t("asset.response.nameAsset")}
           value={nameAsset}
           onChange={(e) => handleChange("nameAsset", e.target.value)}
         />

@@ -60,7 +60,7 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
     mutationFn: async (payload: ICreateAsset) => await httpRequest.post("/assets", payload),
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setValue({
         nameAsset: "",
         assetType: "",
@@ -76,7 +76,8 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
         },
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
       });
     },
   });
@@ -96,7 +97,7 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
       };
 
       if (!id) {
-        toast.error("Không có mã tòa nhà");
+        toast.error(t("asset.noBuildingId"));
         return false;
       }
 
@@ -108,7 +109,7 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
       handleZodErrors(error);
       return false;
     }
-  }, [addAssetMutation, clearErrors, handleZodErrors, id, value]);
+  }, [addAssetMutation, clearErrors, handleZodErrors, id, t, value]);
 
   const handleRemoveAssetTypeByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
@@ -123,10 +124,11 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
       });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       return true;
     } catch (error) {
       handleMutationError(error);
@@ -139,7 +141,7 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveAssetTypeByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tài sản đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("common.confirmDialog.delete", { name: t("asset.title") }),
     type: "warn",
   });
 
@@ -152,17 +154,17 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
       } else if (btn.type === "download") {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
-          "Tên tài sản": d.nameAsset,
-          "Loại tài sản": assetTypeEnumToString(d.assetType, t),
-          "Tài sản thuộc về": assetBelongToEnumToString(d.assetBeLongTo, t),
-          Giá: formattedCurrency(d.price),
-          "Số lượng": d.quantity,
-          "Còn lại": d.remainingQuantity,
-          "Mô tả": d.description,
-          "Ngày tạo": formatDate(new Date(d.createdAt)),
-          "Ngày cập nhật": formatDate(new Date(d.updatedAt)),
+          [t("asset.response.nameAsset")]: d.nameAsset,
+          [t("asset.response.assetType")]: assetTypeEnumToString(d.assetType, t),
+          [t("asset.response.assetBeLongTo")]: assetBelongToEnumToString(d.assetBeLongTo, t),
+          [t("asset.response.price")]: formattedCurrency(d.price),
+          [t("asset.response.quantity")]: d.quantity,
+          [t("asset.response.remainingQuantity")]: d.remainingQuantity,
+          [t("asset.response.description")]: d.description,
+          [t("asset.response.createdAt")]: formatDate(new Date(d.createdAt)),
+          [t("asset.response.updatedAt")]: formatDate(new Date(d.updatedAt)),
         }));
-        handleExportExcel(`Tài sản_${data?.[0].buildingName}`, exportData, data);
+        handleExportExcel(`t("asset.title")${data?.[0].buildingName}`, exportData, data);
       }
     },
     [data, ids, navigate, openDialog, t]
@@ -173,7 +175,9 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
     mutationFn: async (id: string) => await httpRequest.put(`/assets/soft-delete/${id}`),
   });
 
-  const { data: buildingInitToAdd, isError: errorBuildingInitToAdd } = useQuery<ApiResponse<IdAndName[]>>({
+  const { data: buildingInitToAdd, isError: errorBuildingInitToAdd } = useQuery<
+    ApiResponse<IdAndName[]>
+  >({
     queryKey: ["buildingInitToAdd"],
     queryFn: async () => {
       const res = await httpRequest.get("/buildings/all");
@@ -193,14 +197,14 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
 
   useEffect(() => {
     if (errorBuildingInitToAdd) {
-      toast.error("Có lỗi xảy ra khi tải tòa nhà");
+      toast.error(t(t("building.errorFetch")));
     }
-  }, [errorBuildingInitToAdd]);
+  }, [errorBuildingInitToAdd, t]);
 
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Tài sản</h3>
+        <h3 className="font-semibold">{t("asset.title")}</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS_HISTORY.map((btn, index) => (
             <TooltipProvider key={index}>
@@ -215,7 +219,7 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
                         </Button>
                       </TooltipTrigger>
                     }
-                    desc={Notice.ADD}
+                    desc={t(Notice.ADD)}
                     onConfirm={handleAddAssetType}
                   >
                     <AddOrUpdateAsset

@@ -14,12 +14,21 @@ import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AlertTriangle, CircleCheck, CircleDollarSign, HelpCircle, Wrench, XCircle } from "lucide-react";
+import {
+  AlertTriangle,
+  CircleCheck,
+  CircleDollarSign,
+  HelpCircle,
+  Wrench,
+  XCircle,
+} from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useAsset = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const { id } = useParams();
   const {
@@ -29,7 +38,15 @@ export const useAsset = () => {
     assetBeLongTo = "",
     assetStatus = "",
     assetType = "",
-  } = queryFilter(searchParams, "page", "size", "nameAsset", "assetType", "assetBeLongTo", "assetStatus");
+  } = queryFilter(
+    searchParams,
+    "page",
+    "size",
+    "nameAsset",
+    "assetType",
+    "assetBeLongTo",
+    "assetStatus"
+  );
 
   const [rowSelection, setRowSelection] = useState({});
   const idRef = useRef<string>("");
@@ -119,7 +136,9 @@ export const useAsset = () => {
     }));
   };
 
-  const { data: statistics, isError: isStatisticsError } = useQuery<ApiResponse<AssetStatusStatistic>>({
+  const { data: statistics, isError: isStatisticsError } = useQuery<
+    ApiResponse<AssetStatusStatistic>
+  >({
     queryKey: ["asset-statistics", id],
     queryFn: async () => {
       const res = await httpRequest.get("/assets/statistics", {
@@ -136,39 +155,40 @@ export const useAsset = () => {
   const dataAssets: StatisticCardType[] = [
     {
       icon: CircleDollarSign,
-      label: "Tài sản",
+      label: t("asset.title"),
       value: statistics?.data.totalAssets ?? 0,
     },
     {
       icon: CircleCheck,
-      label: "Hoạt động",
+      label: t("statusBadge.assetStatus.active"),
       value: statistics?.data.totalActiveAssets ?? 0,
     },
     {
       icon: Wrench,
-      label: "Bảo trì",
+      label: t("statusBadge.assetStatus.maintenance"),
       value: statistics?.data.totalMaintenanceAssets ?? 0,
     },
     {
       icon: AlertTriangle,
-      label: "Bị hỏng",
+      label: t("statusBadge.assetStatus.broken"),
       value: statistics?.data.totalBrokenAssets ?? 0,
     },
     {
       icon: HelpCircle,
-      label: "Bị mất",
+      label: t("statusBadge.assetStatus.lost"),
       value: statistics?.data.totalLostAssets ?? 0,
     },
     {
       icon: XCircle,
-      label: "Không hoạt động",
+      label: t("statusBadge.assetStatus.inactive"),
       value: statistics?.data.totalDisabledAssets ?? 0,
     },
   ];
 
   const updateAssetMutation = useMutation({
     mutationKey: ["update-assets"],
-    mutationFn: async (payload: IUpdateAsset) => await httpRequest.put(`/assets/${idRef.current}`, payload),
+    mutationFn: async (payload: IUpdateAsset) =>
+      await httpRequest.put(`/assets/${idRef.current}`, payload),
     onError: (error) => {
       handleMutationError(error);
     },
@@ -184,13 +204,15 @@ export const useAsset = () => {
     mutationFn: async (id: string) => await httpRequest.put(`/assets/toggle/${id}`),
   });
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>({
-    onConfirm: async ({ id, type }) => {
-      if (type === "delete") return await handleRemoveAssetById(id);
-      if (type === "status") return await handleToggleStatusBuildingById(id);
-      return false;
-    },
-  });
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>(
+    {
+      onConfirm: async ({ id, type }) => {
+        if (type === "delete") return await handleRemoveAssetById(id);
+        if (type === "status") return await handleToggleStatusBuildingById(id);
+        return false;
+      },
+    }
+  );
 
   const handleToggleStatusBuildingById = async (id: string): Promise<boolean> => {
     try {
@@ -200,9 +222,10 @@ export const useAsset = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
           });
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
         },
       });
       return true;
@@ -220,9 +243,10 @@ export const useAsset = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
           });
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -234,7 +258,15 @@ export const useAsset = () => {
 
   const handleUpdateFloor = useCallback(async () => {
     try {
-      const { assetBeLongTo, assetType, descriptionAsset, nameAsset, price, quantity, assetStatus } = value;
+      const {
+        assetBeLongTo,
+        assetType,
+        descriptionAsset,
+        nameAsset,
+        price,
+        quantity,
+        assetStatus,
+      } = value;
 
       const data: IUpdateAsset = {
         assetBeLongTo,
@@ -263,9 +295,10 @@ export const useAsset = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
           });
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
           setIsModalOpen(false);
         },
       });
@@ -275,7 +308,7 @@ export const useAsset = () => {
       handleZodErrors(error);
       return false;
     }
-  }, [updateAssetMutation, clearErrors, handleZodErrors, queryClient, value]);
+  }, [updateAssetMutation, clearErrors, handleZodErrors, queryClient, value, t]);
 
   const handleActionClick = useCallback(
     (asset: AssetResponse, action: "update" | "status" | "delete") => {
@@ -296,7 +329,7 @@ export const useAsset = () => {
           { id: asset.id, type: action },
           {
             type: "warn",
-            desc: Notice.REMOVE,
+            desc: t(Notice.REMOVE),
           }
         );
       } else {
@@ -304,12 +337,12 @@ export const useAsset = () => {
           { id: asset.id, type: action },
           {
             type: "default",
-            desc: Notice.TOGGLE_STATUS,
+            desc: t(Notice.TOGGLE_STATUS),
           }
         );
       }
     },
-    [openDialog]
+    [openDialog, t]
   );
 
   const props = {
@@ -321,12 +354,12 @@ export const useAsset = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải tài sản");
+      toast.error(t("asset.errorFetch"));
     }
     if (isStatisticsError) {
-      toast.error("Có lỗi xảy ra khi tải thống kê tài sản");
+      toast.error(t("asset.errorFetchStatistics"));
     }
-  }, [isError, isStatisticsError]);
+  }, [isError, isStatisticsError, t]);
 
   return {
     query: {

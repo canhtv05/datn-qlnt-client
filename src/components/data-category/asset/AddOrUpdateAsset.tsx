@@ -4,6 +4,7 @@ import TextareaLabel from "@/components/TextareaLabel";
 import { AssetBeLongTo, AssetStatus, AssetType } from "@/enums";
 import { ApiResponse, CreateAssetInit2Response, ICreateAsset, IUpdateAsset } from "@/types";
 import { Dispatch } from "react";
+import { useTranslation } from "react-i18next";
 
 interface CreateAssetProps {
   value: ICreateAsset;
@@ -25,45 +26,45 @@ interface UpdateAssetProps {
 
 type Props = CreateAssetProps | UpdateAssetProps;
 
-const assetBeLongTo: FieldsSelectLabelType[] = [
-  {
-    label: "Chung",
-    value: AssetBeLongTo.CHUNG,
-  },
-  {
-    label: "Phòng",
-    value: AssetBeLongTo.PHONG,
-  },
-];
-
-const assetType: FieldsSelectLabelType[] = [
-  {
-    label: "Gia dụng",
-    value: AssetType.GIA_DUNG,
-  },
-  {
-    label: "Vệ sinh",
-    value: AssetType.VE_SINH,
-  },
-  {
-    label: "Nội thất",
-    value: AssetType.NOI_THAT,
-  },
-  {
-    label: "Điện",
-    value: AssetType.DIEN,
-  },
-  {
-    label: "An ninh",
-    value: AssetType.AN_NINH,
-  },
-  {
-    label: "Khác",
-    value: AssetType.KHAC,
-  },
-];
-
 const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: Props) => {
+  const { t } = useTranslation();
+  const assetBeLongTo: FieldsSelectLabelType[] = [
+    {
+      label: t("statusBadge.assetBelongTo.common"),
+      value: AssetBeLongTo.CHUNG,
+    },
+    {
+      label: t("statusBadge.assetBelongTo.room"),
+      value: AssetBeLongTo.PHONG,
+    },
+  ];
+
+  const assetType: FieldsSelectLabelType[] = [
+    {
+      label: t("statusBadge.assetType.houseware"),
+      value: AssetType.GIA_DUNG,
+    },
+    {
+      label: t("statusBadge.assetType.cleaning"),
+      value: AssetType.VE_SINH,
+    },
+    {
+      label: t("statusBadge.assetType.furniture"),
+      value: AssetType.NOI_THAT,
+    },
+    {
+      label: t("statusBadge.assetType.electric"),
+      value: AssetType.DIEN,
+    },
+    {
+      label: t("statusBadge.assetType.security"),
+      value: AssetType.AN_NINH,
+    },
+    {
+      label: t("statusBadge.assetType.other"),
+      value: AssetType.KHAC,
+    },
+  ];
   // const hasAnyLocationSelected = !!value.tenantId || !!value.buildingID || !!value.floorID || !!value.roomID;
 
   // const buildingOptions = useMemo(() => {
@@ -107,9 +108,9 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: Props
       <InputLabel
         id="nameAsset"
         name="nameAsset"
-        placeholder="Điều hòa"
+        placeholder={t("asset.addOrUpdate.placeholderNameAsset")}
         required
-        label="Tên tài sản:"
+        label={t("asset.addOrUpdate.nameAsset")}
         value={value.nameAsset ?? ""}
         onChange={handleChange}
         errorText={errors.nameAsset}
@@ -175,8 +176,8 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: Props
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full">
         <FieldsSelectLabel
           data={assetType}
-          placeholder="-- Chọn loại tài sản --"
-          label="Loại tài sản:"
+          placeholder={t("asset.addOrUpdate.placeholderAssetType")}
+          label={t("asset.addOrUpdate.assetType")}
           id="assetType"
           name="assetType"
           value={value.assetType ?? ""}
@@ -184,7 +185,7 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: Props
             if (type === "update") setValue((prev) => ({ ...prev, assetType: val as string }));
             else setValue((prev) => ({ ...prev, assetType: val as string }));
           }}
-          labelSelect="Loại tài sản"
+          labelSelect={t("asset.addOrUpdate.assetType")}
           showClear
           errorText={errors.assetType}
           required
@@ -192,16 +193,17 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: Props
 
         <FieldsSelectLabel
           data={assetBeLongTo}
-          placeholder="-- Chọn tài sản thuộc về --"
-          label="Tài sản thuộc về:"
+          placeholder={t("asset.filter.assetBeLongTo")}
+          label={t("asset.addOrUpdate.assetBeLongTo")}
           id="assetBeLongTo"
           name="assetBeLongTo"
           value={value.assetBeLongTo ?? ""}
           onChange={(val) => {
-            if (type === "add") setValue((prev) => ({ ...prev, assetBeLongTo: val as AssetBeLongTo }));
+            if (type === "add")
+              setValue((prev) => ({ ...prev, assetBeLongTo: val as AssetBeLongTo }));
             else setValue((prev) => ({ ...prev, assetBeLongTo: val as AssetBeLongTo }));
           }}
-          labelSelect="Tài sản thuộc về"
+          labelSelect={t("asset.addOrUpdate.assetBeLongTo")}
           showClear
           errorText={errors.assetBeLongTo}
           required
@@ -226,41 +228,41 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: Props
         <FieldsSelectLabel
           data={[
             {
-              label: "Hoạt động",
+              label: t("statusBadge.assetStatus.active"),
               value: AssetStatus.HOAT_DONG,
             },
             {
-              label: "Cần bảo trì",
+              label: t("statusBadge.assetStatus.maintenance"),
               value: AssetStatus.CAN_BAO_TRI,
             },
             {
-              label: "Đã thanh lý",
+              label: t("statusBadge.assetStatus.liquidated"),
               value: AssetStatus.DA_THANH_LY,
             },
             {
-              label: "Hư hỏng",
+              label: t("statusBadge.assetStatus.broken"),
               value: AssetStatus.HU_HONG,
             },
             {
-              label: "Thất lạc",
+              label: t("statusBadge.assetStatus.lost"),
               value: AssetStatus.THAT_LAC,
             },
             {
-              label: "Không sử dụng",
+              label: t("statusBadge.assetStatus.inactive"),
               value: AssetStatus.KHONG_SU_DUNG,
             },
             {
-              label: "Hủy",
+              label: t("statusBadge.assetStatus.cancelled"),
               value: AssetStatus.HUY,
             },
           ]}
-          placeholder="-- Chọn trạng thái --"
-          label="Trạng thái:"
+          placeholder={t("asset.addOrUpdate.placeholderStatus")}
+          label={t("asset.addOrUpdate.assetStatus")}
           id="assetStatus"
           name="assetStatus"
           value={value.assetStatus ?? ""}
           onChange={(val) => setValue((prev) => ({ ...prev, assetStatus: val as AssetStatus }))}
-          labelSelect="Trạng thái"
+          labelSelect={t("asset.addOrUpdate.assetStatus")}
           showClear
           errorText={errors.assetStatus}
           required
@@ -274,7 +276,7 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: Props
           name="price"
           placeholder="1"
           required
-          label="Giá trị (VND):"
+          label={t("asset.addOrUpdate.price")}
           value={value.price ?? ""}
           onChange={handleChange}
           errorText={errors.price}
@@ -285,7 +287,7 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: Props
           name="quantity"
           placeholder="1"
           required
-          label="Số lượng:"
+          label={t("asset.addOrUpdate.quantity")}
           value={value.quantity ?? ""}
           onChange={handleChange}
           errorText={errors.quantity}
@@ -295,7 +297,7 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: Props
       <TextareaLabel
         id="descriptionAsset"
         name="descriptionAsset"
-        placeholder="Nhập mô tả"
+        placeholder={t("asset.addOrUpdate.descriptionAsset")}
         label="Mô tả:"
         value={value.descriptionAsset ?? ""}
         onChange={(e) => {
