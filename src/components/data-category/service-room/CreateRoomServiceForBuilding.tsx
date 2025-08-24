@@ -1,6 +1,7 @@
 import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import { ServiceRoomCreationForBuildingRequest } from "@/types";
 import { Dispatch } from "react";
+import { useTranslation } from "react-i18next";
 
 interface CreateRoomServiceForBuildingProps {
   value: ServiceRoomCreationForBuildingRequest;
@@ -18,6 +19,7 @@ const CreateRoomServiceForBuilding = ({
   // buildingOptions,
   serviceOptions,
 }: CreateRoomServiceForBuildingProps) => {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-3">
       <div className="grid md:grid-cols-1 grid-cols-1 gap-5 w-full mb-2">
@@ -36,17 +38,20 @@ const CreateRoomServiceForBuilding = ({
           required
         /> */}
         <FieldsSelectLabel
-          placeholder="-- Dịch vụ --"
-          labelSelect="Dịch vụ"
+          placeholder={t("service.filter.title")}
+          labelSelect={t("service.title")}
           data={serviceOptions ?? []}
           value={value?.serviceId ?? ""}
           onChange={(val) => {
-            setValue((prev: ServiceRoomCreationForBuildingRequest) => ({ ...prev, serviceId: String(val) }));
+            setValue((prev: ServiceRoomCreationForBuildingRequest) => ({
+              ...prev,
+              serviceId: String(val),
+            }));
           }}
           name="serviceId"
           showClear
           errorText={errors?.serviceId}
-          label="Dịch vụ:"
+          label={t("service.title")}
           required
         />
       </div>

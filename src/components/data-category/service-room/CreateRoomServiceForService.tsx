@@ -2,6 +2,7 @@ import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSel
 import FieldsMultiSelectLabel from "@/components/ui/FieldsMultiSelectLabel";
 import { Option, ServiceRoomCreationForServiceRequest } from "@/types";
 import { Dispatch, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 
 interface CreateRoomServiceForServiceProps {
   value: ServiceRoomCreationForServiceRequest;
@@ -19,6 +20,7 @@ const CreateRoomServiceForService = ({
   roomOptions,
   serviceOptions,
 }: CreateRoomServiceForServiceProps) => {
+  const { t } = useTranslation();
   const handleChange = useCallback(
     <K extends keyof ServiceRoomCreationForServiceRequest>(
       field: K,
@@ -37,11 +39,13 @@ const CreateRoomServiceForService = ({
       <div className="grid grid-cols-1 gap-5 w-full mb-10">
         <FieldsMultiSelectLabel
           data={toSelectType(roomOptions ?? [])}
-          placeholder="-- Chọn phòng --"
-          label="Phòng:"
+          placeholder={t("roomAsset.filter.roomName")}
+          label={t("room.title")}
           id="roomIds"
           name="roomIds"
-          value={toSelectType(roomOptions ?? []).filter((opt) => value.roomIds.includes(String(opt.value)))}
+          value={toSelectType(roomOptions ?? []).filter((opt) =>
+            value.roomIds.includes(String(opt.value))
+          )}
           onChange={(selected) =>
             handleChange(
               "roomIds",
@@ -52,17 +56,20 @@ const CreateRoomServiceForService = ({
           errorText={errors.roomIds}
         />
         <FieldsSelectLabel
-          placeholder="-- Dịch vụ --"
-          labelSelect="Dịch vụ"
+          placeholder={t("service.filter.title")}
+          labelSelect={t("service.title")}
           data={serviceOptions ?? []}
           value={value?.serviceId ?? ""}
           onChange={(val) => {
-            setValue((prev: ServiceRoomCreationForServiceRequest) => ({ ...prev, serviceId: String(val) }));
+            setValue((prev: ServiceRoomCreationForServiceRequest) => ({
+              ...prev,
+              serviceId: String(val),
+            }));
           }}
           name="serviceId"
           showClear
           errorText={errors?.serviceId}
-          label="Dịch vụ:"
+          label={t("service.title")}
           required
         />
       </div>

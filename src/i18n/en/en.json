@@ -677,6 +677,7 @@
       "updatedAt": "Updated At"
     },
     "filter": {
+      "title": "-- Service --",
       "category": "-- Service Category --",
       "calculation": "-- Service Calculation --",
       "status": "-- Status --",
@@ -693,6 +694,43 @@
       "price": "Price (VND):",
       "placeholderPrice": "3000000",
       "status": "Status",
+      "description": "Description:",
+      "placeholderDescription": "Enter description"
+    }
+  },
+  "serviceRoom": {
+    "title": "Room Service",
+    "titleAddOneServiceToOneRoom": "Add a service to a room",
+    "titleAddOneServiceToAllRoomsInBuilding": "Add a service to all rooms in a building",
+    "titleAddOneServiceToMultipleRooms": "Add a service to rooms",
+    "titleAddMultipleServicesToOneRoom": "Add multiple services to a room",
+    "search": "Search",
+    "detailTitle": "Room Service Details",
+    "errorFetch": "An error occurred while loading room services.",
+    "errorFetchStatistics": "An error occurred while loading room statistics.",
+    "errorFetchRoomAndService": "Failed to fetch room and service data.",
+    "response": {
+      "roomCode": "Room Code",
+      "actions": "Actions",
+      "totalServices": "Total Services",
+      "roomType": "Room Type",
+      "status": "Status",
+      "descriptionServiceRoom": "Description"
+    },
+    "filter": {
+      "roomType": "-- Room Type --",
+      "status": "-- Status --",
+      "search": "Search"
+    },
+    "addOrUpdate": {
+      "room": "Room:",
+      "placeholderRoom": "Select room",
+      "service": "Service:",
+      "placeholderService": "Select service",
+      "building": "Building:",
+      "placeholderBuilding": "Select building",
+      "floor": "Floor:",
+      "placeholderFloor": "Select floor",
       "description": "Description:",
       "placeholderDescription": "Enter description"
     }

@@ -24,9 +24,9 @@ const ServiceRoomDetail = () => {
   const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Tên dịch vụ", accessorKey: "serviceName", isSort: true },
+    { label: t("service.response.name"), accessorKey: "serviceName", isSort: true },
     {
-      label: "Thao tác",
+      label: t("service.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -49,7 +49,11 @@ const ServiceRoomDetail = () => {
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                  <TooltipContent
+                    className="text-white"
+                    style={{ background: btn.arrowColor }}
+                    arrow={false}
+                  >
                     <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
@@ -66,10 +70,10 @@ const ServiceRoomDetail = () => {
         );
       },
     },
-    { label: "Đơn giá", accessorKey: "unitPrice", isSort: true, isCenter: true },
-    { label: "Đơn vị", accessorKey: "unit", isSort: true, isCenter: true },
+    { label: t("service.response.price"), accessorKey: "unitPrice", isSort: true, isCenter: true },
+    { label: t("service.response.unit"), accessorKey: "unit", isSort: true, isCenter: true },
     {
-      label: "Trạng thái dịch vụ phòng",
+      label: t("service.response.status"),
       accessorKey: "serviceRoomStatus",
       isSort: true,
       hasBadge: true,
@@ -83,7 +87,7 @@ const ServiceRoomDetail = () => {
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
         <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-4 py-3 justify-between items-center">
-            <h3 className="font-semibold">Chi tiết dịch vụ phòng</h3>
+            <h3 className="font-semibold">{t("serviceRoom.detailTitle")}</h3>
             <div className="flex gap-2">
               <TooltipProvider>
                 <Tooltip>
@@ -135,20 +139,22 @@ const ServiceRoomDetail = () => {
         <div className="px-5 py-2 mt-5 w-full">
           <div className="w-full">
             <h3 className="font-semibold rounded-sm p-2 bg-primary/50 text-sm text-white mb-2 pl-5 border-b-2">
-              Thông tin phòng
+              {t("roomAsset.titleRoomInfo")}
             </h3>
             <div className="px-5 flex border-primary/20 flex-col space-y-2 [&_>span]:text-sm [&_>strong]:text-sm border-b-2 border-r-2 border-l-2 -mt-3 rounded-b-sm">
               <strong className="mt-2">
-                - Mã phòng: <span>{data?.data?.roomCode}</span>
+                - {t("room.response.roomCode")}: <span>{data?.data?.roomCode}</span>
               </strong>
               <strong>
-                - Loại phòng: <span>{data?.data?.roomType && <StatusBadge status={data?.data?.roomType} />}</span>
+                - {t("room.response.roomType")}:{" "}
+                <span>{data?.data?.roomType && <StatusBadge status={data?.data?.roomType} />}</span>
               </strong>
               <strong>
-                - Trạng thái: <span>{data?.data?.status && <StatusBadge status={data?.data?.status} />}</span>
+                - {t("room.response.status")}:{" "}
+                <span>{data?.data?.status && <StatusBadge status={data?.data?.status} />}</span>
               </strong>
               <strong className="pb-2">
-                - Mô tả:{" "}
+                - {t("room.response.description")}:{" "}
                 <p className="inline-block">
                   {data?.data?.description !== "" ? (
                     data?.data?.description
