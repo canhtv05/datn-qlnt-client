@@ -8,6 +8,10 @@ import { httpRequest } from "@/utils/httpRequest";
 import { useQuery } from "@tanstack/react-query";
 import { Download } from "lucide-react";
 import { useParams } from "react-router-dom";
+import { saveAs } from "file-saver";
+import { asBlob } from "html-docx-js-typescript";
+import { useCallback } from "react";
+import "ckeditor5/ckeditor5.css";
 
 const ContentContract = () => {
   const { contractId } = useParams();
@@ -25,6 +29,32 @@ const ContentContract = () => {
     content = content.slice(1, -1);
   }
 
+  const handleDownloadDocx = useCallback(async () => {
+    if (!content) return;
+
+    const result = await asBlob(content, {
+      orientation: "portrait",
+      margins: { top: 720, bottom: 720 },
+    });
+
+    let blob: Blob;
+
+    if (result instanceof Blob) {
+      blob = result;
+    } else if (result instanceof ArrayBuffer) {
+      blob = new Blob([result], {
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      });
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      blob = new Blob([new Uint8Array(result as any)], {
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      });
+    }
+
+    saveAs(blob, `hop_dong_${data?.id}.docx`);
+  }, [content, data?.id]);
+
   return (
     <>
       <RenderIf value={isLoading}>
@@ -38,9 +68,14 @@ const ContentContract = () => {
         </div>
       </RenderIf>
       <RenderIf value={!isLoading}>
-        <div className="flex justify-end items-center pb-2">
-          <Tooltip content="Tải hợp đồng">
+        <div className="flex justify-end items-center pb-2 gap-2">
+          <Tooltip content="Tải Pdf">
             <Button size={"icon"} className="text-white cursor-pointer" onClick={handleDownloadPdf}>
+              <Download />
+            </Button>
+          </Tooltip>
+          <Tooltip content="Tải Docx">
+            <Button size={"icon"} className="text-white cursor-pointer" onClick={handleDownloadDocx}>
               <Download />
             </Button>
           </Tooltip>

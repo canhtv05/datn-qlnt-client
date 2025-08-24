@@ -401,6 +401,16 @@ export const createOrUpdateTenantSchema = z.object({
   identityCardNumber: z.string().regex(/^\d{12}$/, "Căn cước công dân phải 12 chữ số"),
 
   address: z.string().min(1, "Địa chỉ không được để trống"),
+
+  frontCccd: z
+    .instanceof(File)
+    .nullable()
+    .refine((file) => !!file, "Bạn phải tải lên mặt trước CCCD"),
+
+  backCccd: z
+    .instanceof(File)
+    .nullable()
+    .refine((file) => !!file, "Bạn phải tải lên mặt sau CCCD"),
 });
 
 /* VEHICLE */

@@ -604,6 +604,8 @@ export interface ICreateAndUpdateTenant {
   phoneNumber: string;
   identityCardNumber: string;
   address: string;
+  frontCccd?: File | null;
+  backCccd?: File | null;
 }
 
 export interface TenantFilterValues {

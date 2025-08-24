@@ -1,3 +1,4 @@
+import CccdUpload from "@/components/CccdUpload";
 import DatePickerLabel from "@/components/DatePickerLabel";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
@@ -91,7 +92,14 @@ const AddOrUpdateTenant = ({ value, handleChange, setValue, errors, onBlur }: Ad
           errorText={errors.identityCardNumber}
         />
       </div>
-
+      <CccdUpload
+        frontImage={value.frontCccd ?? null}
+        backImage={value.backCccd ?? null}
+        setFrontImage={(file) => setValue((prev) => ({ ...prev, frontCccd: file }))}
+        setBackImage={(file) => setValue((prev) => ({ ...prev, backCccd: file }))}
+        setValue={setValue}
+        errors={errors}
+      />
       <TextareaLabel
         required
         errorText={errors.address}

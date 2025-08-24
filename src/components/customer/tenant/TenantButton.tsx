@@ -33,6 +33,8 @@ const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Tena
     gender: "",
     identityCardNumber: "",
     phoneNumber: "",
+    backCccd: null,
+    frontCccd: null,
   });
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAndUpdateTenant>();
@@ -70,6 +72,8 @@ const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Tena
         gender: "",
         identityCardNumber: "",
         phoneNumber: "",
+        backCccd: null,
+        frontCccd: null,
       });
       queryClient.invalidateQueries({
         predicate: (prev) => {

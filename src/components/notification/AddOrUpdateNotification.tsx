@@ -60,8 +60,12 @@ const AddOrUpdateNotification = ({
   );
 
   useEffect(() => {
-    if (value.image !== null) {
-      setUploadImage(value.image + "");
+    if (value.image instanceof File) {
+      setUploadImage(URL.createObjectURL(value.image));
+    } else if (typeof value.image === "string") {
+      setUploadImage(value.image);
+    } else {
+      setUploadImage(null);
     }
   }, [value.image]);
 
