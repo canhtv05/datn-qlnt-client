@@ -88,18 +88,6 @@ const HistoryContract = () => {
       isCenter: true,
     },
     {
-      label: "Khách thuê",
-      accessorKey: "tenants",
-      render: (row: ContractResponse) => row.tenants?.map((t) => t.fullName).join(", ") || "—",
-    },
-    {
-      label: "Số người",
-      accessorKey: "numberOfPeople",
-      isSort: true,
-      isCenter: true,
-      render: (row: ContractResponse) => `${row.numberOfPeople} người/phòng`,
-    },
-    {
       label: "Ngày bắt đầu",
       accessorKey: "startDate",
       isSort: true,

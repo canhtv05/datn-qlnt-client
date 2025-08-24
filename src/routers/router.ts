@@ -59,6 +59,9 @@ const Contract = lazy(() => import("@/pages/customer/contract"));
 const AddContract = lazy(() => import("@/components/customer/contract/AddContract"));
 const HistoryContract = lazy(() => import("@/pages/customer/contract/HistoryContract"));
 const ContractDetail = lazy(() => import("@/pages/customer/contract/ContractDetailPage"));
+const ContentContract = lazy(() => import("@/pages/customer/contract/ContentContract"));
+const ContractTenants = lazy(() => import("@/pages/customer/contract-tenant/ContractTenants"));
+const ContractVehicles = lazy(() => import("@/pages/customer/contract-vehicle/ContractVehicles"));
 
 /* FINANCE */
 const Meter = lazy(() => import("@/pages/finance/meter"));
@@ -285,6 +288,21 @@ const privateRoutes: RouteType[] = [
   {
     path: configs.routes.customer.contractDetail,
     component: ContractDetail,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.customer.contractDetailContent,
+    component: ContentContract,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.customer.contractTenants,
+    component: ContractTenants,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.customer.contractVehicles,
+    component: ContractVehicles,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
 

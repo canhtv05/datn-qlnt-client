@@ -17,7 +17,11 @@
       "downloadExcel": "Tải xuống Excel",
       "addNew": "Thêm mới",
       "history": "Xem Lịch sử",
-      "confirm": "Xác nhận"
+      "confirm": "Xác nhận",
+      "tenants": "Khách thuê",
+      "active": "Kích hoạt",
+      "vehicles": "Phương tiện",
+      "deposit1": "Hoàn trả tiền cọc"
     },
     "noData": "Không có dữ liệu",
     "selectDateRange": "Chọn khoảng thời gian",

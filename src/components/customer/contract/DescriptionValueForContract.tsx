@@ -10,7 +10,6 @@ const contractDescription = [
   { label: "SĐT người thuê", value: "{{phoneNumberUser}}" },
   { label: "CMND/CCCD", value: "{{identityCardUser}}" },
   { label: "Địa chỉ người thuê", value: "{{addressUser}}" },
-  { label: "Số lượng người", value: "{{numberOfPeople}}" },
   { label: "Ngày bắt đầu", value: "{{startDate}}" },
   { label: "Ngày kết thúc", value: "{{endDate}}" },
   { label: "Tiền cọc", value: "{{deposit}}" },

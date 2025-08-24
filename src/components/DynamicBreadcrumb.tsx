@@ -1,5 +1,5 @@
-import { Link, useLocation } from "react-router-dom";
-import { ChevronsRight, Home } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ChevronsRight, CircleArrowDown, Home } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,6 +16,7 @@ export function DynamicBreadcrumb({ role }: { role: "USER" | "MANAGER" | "ADMIN"
   const location = useLocation();
   const pathname = location.pathname;
   const paths = pathname.split("/").filter(Boolean);
+  const navigate = useNavigate();
 
   const { t } = useTranslation();
 
@@ -45,7 +46,7 @@ export function DynamicBreadcrumb({ role }: { role: "USER" | "MANAGER" | "ADMIN"
   const crumbs = findLabel(paths);
 
   return (
-    <Breadcrumb>
+    <Breadcrumb className="flex justify-between">
       <BreadcrumbList>
         <BreadcrumbItem>
           <Link to="/">
@@ -74,6 +75,11 @@ export function DynamicBreadcrumb({ role }: { role: "USER" | "MANAGER" | "ADMIN"
           );
         })}
       </BreadcrumbList>
+      <BreadcrumbItem className="rotate-90 cursor-pointer">
+        <span onClick={() => navigate(-1)}>
+          <CircleArrowDown />
+        </span>
+      </BreadcrumbItem>
     </Breadcrumb>
   );
 }

@@ -440,16 +440,21 @@ export const updateVehicleSchema = z.object({
   describe: z.string(),
 });
 /*CONTRACT*/
-export const createOrUpdateContractSchema = z
+export const updateContractSchema = z
   .object({
-    roomId: z.string().min(1, "Vui lòng chọn phòng"),
-    numberOfPeople: z.number({ message: "Số người phải là số" }).min(1, "Phải có ít nhất 1 người"),
-    startDate: z.date({ message: "Ngày bắt đầu không hợp lệ" }),
-    endDate: z.date({ message: "Ngày kết thúc không hợp lệ" }),
+    startDate: z
+      .string()
+      .refine((val) => {
+        return !isNaN(Date.parse(val));
+      }, "Ngày kết thúc không hợp lệ")
+      .transform((val) => new Date(val)),
+    endDate: z
+      .string()
+      .refine((val) => {
+        return !isNaN(Date.parse(val));
+      }, "Ngày kết thúc không hợp lệ")
+      .transform((val) => new Date(val)),
     deposit: z.number({ message: "Tiền cọc phải là số" }).min(1, "Tiền cọc phải lớn hơn 0"),
-    tenants: z.array(z.string()).min(1, "Phải có ít nhất một khách thuê"),
-    assets: z.array(z.string()).min(1, "Phải có ít nhất một tài sản"),
-    content: z.string().min(1, "Không được để trống hợp đồng"),
   })
   .refine(
     (data) => {
@@ -463,6 +468,29 @@ export const createOrUpdateContractSchema = z
       path: ["endDate"],
     }
   );
+
+export const createContractSchema = updateContractSchema.extend({
+  roomId: z.string().min(1, "Vui lòng chọn phòng"),
+  tenants: z
+    .array(
+      z.object({
+        tenantId: z.string().min(1, "Thiếu tenantId"),
+        representative: z.boolean(),
+      })
+    )
+    .min(1, "Phải có ít nhất một khách thuê"),
+  content: z.string().min(1, "Không được để trống hợp đồng"),
+});
+
+export const createContractTenantSchema = z.object({
+  tenantId: z.string().min(1, "Vui lòng chọn khách"),
+  contractId: z.string().min(1, "Không có mã hợp đồng"),
+});
+
+export const createContractVehicleSchema = z.object({
+  vehicleId: z.string().min(1, "Vui lòng chọn phương tiện"),
+  contractId: z.string().min(1, "Không có mã hợp đồng"),
+});
 
 /* SERVICE */
 export const createOrUpdateService = z.object({

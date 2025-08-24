@@ -58,6 +58,9 @@ const routes = {
     contractAdd: "/customers/contracts/add",
     contractHistory: "/customers/contracts/history",
     contractDetail: "/customers/contracts/:contractId",
+    contractDetailContent: "/customers/contracts/content/:contractId",
+    contractTenants: "/customers/contracts/tenants/:contractId",
+    contractVehicles: "/customers/contracts/vehicles/:contractId",
   },
   finance: {
     meter: "/finance/meters",

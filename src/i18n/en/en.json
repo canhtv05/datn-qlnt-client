@@ -18,7 +18,11 @@
       "addNew": "Add new",
       "history": "History",
       "confirm": "Confirm",
-      "continue": "Continue"
+      "continue": "Continue",
+      "tenants": "Tenants",
+      "active": "Active",
+      "vehicles": "Vehicles",
+      "deposit1": "Deposit refund"
     },
     "noData": "No data",
     "selectDateRange": "Select date range",

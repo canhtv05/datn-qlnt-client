@@ -322,12 +322,12 @@ export const STATUS_BADGE = [
     className: COLOR_CLASS.gray,
   },
   {
-    value: "isRepresentative=true",
+    value: true,
     label: "statusBadge.yes",
     className: COLOR_CLASS.green,
   },
   {
-    value: "isRepresentative=false",
+    value: false,
     label: "statusBadge.no",
     className: COLOR_CLASS.stone,
   },
@@ -1224,7 +1224,7 @@ export const BTNS: IBtnType[] = [
   {
     tooltipContent: "common.button.deposit1",
     icon: DollarSign,
-    arrowColor: "var(--color-emerald-500)",
+    arrowColor: "var(--color-violet-400)",
     type: "deposit1",
     hasConfirm: false,
   },

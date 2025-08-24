@@ -21,250 +21,219 @@ import { ACTION_BUTTONS_HISTORY } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import { useNavigate } from "react-router-dom";
-import {
-    buildingStatusEnumToString,
-    buildingTypeEnumToString,
-    formatDate,
-    handleExportExcel,
-} from "@/lib/utils";
+import { buildingStatusEnumToString, buildingTypeEnumToString, formatDate, handleExportExcel } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
 type AddData = ICreateBuildingValue & { userId: string | undefined };
 
-const BuildingButton = ({
-    ids,
-    data,
-}: {
-    ids: Record<string, boolean>;
-    data: BuildingResponse[] | undefined;
-}) => {
-    const { t } = useTranslation();
-    const user = useAuthStore((s) => s.user);
-    const [value, setValue] = useState<ICreateBuildingValue>({
+const BuildingButton = ({ ids, data }: { ids: Record<string, boolean>; data: BuildingResponse[] | undefined }) => {
+  const { t } = useTranslation();
+  const user = useAuthStore((s) => s.user);
+  const [value, setValue] = useState<ICreateBuildingValue>({
+    actualNumberOfFloors: undefined,
+    address: "",
+    buildingName: "",
+    buildingType: undefined,
+    description: "",
+    numberOfFloorsForRent: undefined,
+  });
+  const navigate = useNavigate();
+
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateBuildingValue>();
+  // const { fullAddress, Address, clearValue } = useFullAddress();
+
+  const queryClient = useQueryClient();
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setValue((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const addBuildingMutation = useMutation({
+    mutationKey: ["add-building"],
+    mutationFn: async (payload: AddData) => await httpRequest.post("/buildings", payload),
+    onError: (error) => {
+      handleMutationError(error);
+    },
+    onSuccess: () => {
+      toast.success(t(Status.ADD_SUCCESS));
+      setValue({
         actualNumberOfFloors: undefined,
         address: "",
         buildingName: "",
         buildingType: undefined,
         description: "",
         numberOfFloorsForRent: undefined,
-    });
-    const navigate = useNavigate();
+      });
+      // clearValue();
+      queryClient.invalidateQueries({
+        predicate: (prev) => {
+          return Array.isArray(prev.queryKey) && prev.queryKey[0] === "buildings";
+        },
+      });
+      queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
+    },
+  });
 
-    const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateBuildingValue>();
-    // const { fullAddress, Address, clearValue } = useFullAddress();
+  const handleAddBuilding = useCallback(async () => {
+    try {
+      const { actualNumberOfFloors, buildingName, buildingType, description, address, numberOfFloorsForRent } = value;
 
-    const queryClient = useQueryClient();
+      await createOrUpdateBuildingSchema.parseAsync(value);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setValue((prev) => ({
-            ...prev,
-            [name]: value,
+      const data: AddData = {
+        userId: user?.id,
+        // address: `${address}, ${fullAddress}`,
+        address: address.trim(),
+        buildingName: buildingName.trim(),
+        actualNumberOfFloors,
+        buildingType,
+        description: description.trim(),
+        numberOfFloorsForRent,
+      };
+
+      await addBuildingMutation.mutateAsync(data);
+      clearErrors();
+      return true;
+    } catch (error) {
+      handleZodErrors(error);
+      return false;
+    }
+  }, [addBuildingMutation, clearErrors, handleZodErrors, user?.id, value]);
+
+  const handleRemoveBuildingByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
+    try {
+      const selectedIds = Object.entries(ids)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .filter(([_, isSelected]) => isSelected)
+        .map(([id]) => id);
+
+      await Promise.all(selectedIds.map((id) => removeBuildingMutation.mutateAsync(id)));
+
+      queryClient.invalidateQueries({
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "buildings",
+      });
+      queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
+
+      toast.success(t(Status.REMOVE_SUCCESS));
+      return true;
+    } catch (error) {
+      handleMutationError(error);
+      return false;
+    }
+  };
+
+  const { ConfirmDialog, openDialog } = useConfirmDialog<Record<string, boolean>>({
+    onConfirm: async (ids?: Record<string, boolean>) => {
+      if (!ids || !Object.values(ids).some(Boolean)) return false;
+      return await handleRemoveBuildingByIds(ids);
+    },
+    desc: t("common.confirmDialog.delete", { name: t("building.title") }),
+    type: "warn",
+  });
+
+  const handleButton = useCallback(
+    (btn: IBtnType) => {
+      if (btn.type === "delete") {
+        openDialog(ids);
+      } else if (btn.type === "history") {
+        navigate(`/facilities/buildings/history`);
+      } else if (btn.type === "download") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
+          [t("building.response.buildingCode")]: d.buildingCode,
+          [t("building.response.buildingName")]: d.buildingName,
+          [t("building.response.address")]: d.address,
+          [t("building.response.buildingType")]: buildingTypeEnumToString(d.buildingType, t),
+          [t("building.response.actualNumberOfFloors")]: d.actualNumberOfFloors || 0,
+          [t("building.response.numberOfFloorsForRent")]: d.numberOfFloorsForRent || 0,
+          [t("building.response.description")]: d.description,
+          [t("building.response.status")]: buildingStatusEnumToString(d.status, t),
+          [t("building.response.createdAt")]: formatDate(new Date(d.createdAt)),
+          [t("building.response.updatedAt")]: formatDate(new Date(d.updatedAt)),
         }));
-    };
 
-    const addBuildingMutation = useMutation({
-        mutationKey: ["add-building"],
-        mutationFn: async (payload: AddData) => await httpRequest.post("/buildings", payload),
-        onError: (error) => {
-            handleMutationError(error);
-        },
-        onSuccess: () => {
-            toast.success(t(Status.ADD_SUCCESS));
-            setValue({
-                actualNumberOfFloors: undefined,
-                address: "",
-                buildingName: "",
-                buildingType: undefined,
-                description: "",
-                numberOfFloorsForRent: undefined,
-            });
-            // clearValue();
-            queryClient.invalidateQueries({
-                predicate: (prev) => {
-                    return Array.isArray(prev.queryKey) && prev.queryKey[0] === "buildings";
-                },
-            });
-            queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
-        },
-    });
+        handleExportExcel(t("building.title"), exportData, data);
+      }
+    },
+    [data, ids, navigate, openDialog, t]
+  );
 
-    const handleAddBuilding = useCallback(async () => {
-        try {
-            const {
-                actualNumberOfFloors,
-                buildingName,
-                buildingType,
-                description,
-                address,
-                numberOfFloorsForRent,
-            } = value;
+  const removeBuildingMutation = useMutation({
+    mutationKey: ["remove-building"],
+    mutationFn: async (id: string) => await httpRequest.put(`/buildings/soft-delete/${id}`),
+  });
 
-            await createOrUpdateBuildingSchema.parseAsync(value);
-
-            const data: AddData = {
-                userId: user?.id,
-                // address: `${address}, ${fullAddress}`,
-                address: address.trim(),
-                buildingName: buildingName.trim(),
-                actualNumberOfFloors,
-                buildingType,
-                description: description.trim(),
-                numberOfFloorsForRent,
-            };
-
-            await addBuildingMutation.mutateAsync(data);
-            clearErrors();
-            return true;
-        } catch (error) {
-            handleZodErrors(error);
-            return false;
-        }
-    }, [addBuildingMutation, clearErrors, handleZodErrors, user?.id, value]);
-
-    const handleRemoveBuildingByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
-        try {
-            const selectedIds = Object.entries(ids)
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                .filter(([_, isSelected]) => isSelected)
-                .map(([id]) => id);
-
-            await Promise.all(selectedIds.map((id) => removeBuildingMutation.mutateAsync(id)));
-
-            queryClient.invalidateQueries({
-                predicate: (query) =>
-                    Array.isArray(query.queryKey) && query.queryKey[0] === "buildings",
-            });
-            queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
-
-            toast.success(t(Status.REMOVE_SUCCESS));
-            return true;
-        } catch (error) {
-            handleMutationError(error);
-            return false;
-        }
-    };
-
-    const { ConfirmDialog, openDialog } = useConfirmDialog<Record<string, boolean>>({
-        onConfirm: async (ids?: Record<string, boolean>) => {
-            if (!ids || !Object.values(ids).some(Boolean)) return false;
-            return await handleRemoveBuildingByIds(ids);
-        },
-        desc: t("common.confirmDialog.delete", { name: t("building.title") }),
-        type: "warn",
-    });
-
-    const handleButton = useCallback(
-        (btn: IBtnType) => {
-            if (btn.type === "delete") {
-                openDialog(ids);
-            } else if (btn.type === "history") {
-                navigate(`/facilities/buildings/history`);
-            } else if (btn.type === "download") {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
-                    [t("building.response.buildingCode")]: d.buildingCode,
-                    [t("building.response.buildingName")]: d.buildingName,
-                    [t("building.response.address")]: d.address,
-                    [t("building.response.buildingType")]: buildingTypeEnumToString(
-                        d.buildingType,
-                        t
-                    ),
-                    [t("building.response.actualNumberOfFloors")]: d.actualNumberOfFloors || 0,
-                    [t("building.response.numberOfFloorsForRent")]: d.numberOfFloorsForRent || 0,
-                    [t("building.response.description")]: d.description,
-                    [t("building.response.status")]: buildingStatusEnumToString(d.status, t),
-                    [t("building.response.createdAt")]: formatDate(new Date(d.createdAt)),
-                    [t("building.response.updatedAt")]: formatDate(new Date(d.updatedAt)),
-                }));
-
-                handleExportExcel(t("building.title"), exportData, data);
-            }
-        },
-        [data, ids, navigate, openDialog, t]
-    );
-
-    const removeBuildingMutation = useMutation({
-        mutationKey: ["remove-building"],
-        mutationFn: async (id: string) => await httpRequest.put(`/buildings/soft-delete/${id}`),
-    });
-
-    return (
-        <div className="h-full bg-background rounded-t-sm">
-            <div className="flex px-4 py-3 justify-between items-center">
-                <h3 className="font-semibold">{t("building.title")}</h3>
-                <div className="flex gap-2">
-                    {ACTION_BUTTONS_HISTORY.map((btn, index) => (
-                        <TooltipProvider key={index}>
-                            <Tooltip>
-                                <RenderIf value={btn.type === "default"}>
-                                    <Modal
-                                        title={t("building.title")}
-                                        trigger={
-                                            <TooltipTrigger asChild>
-                                                <Button
-                                                    size={"icon"}
-                                                    variant={btn.type}
-                                                    className="cursor-pointer"
-                                                >
-                                                    <btn.icon className="text-white" />
-                                                </Button>
-                                            </TooltipTrigger>
-                                        }
-                                        desc={t(Notice.ADD)}
-                                        onConfirm={handleAddBuilding}
-                                    >
-                                        <AddOrUpdateBuilding
-                                            handleChange={handleChange}
-                                            value={value}
-                                            setValue={setValue}
-                                            errors={errors}
-                                            // address={<Address />}
-                                        />
-                                    </Modal>
-                                </RenderIf>
-                                <RenderIf value={btn.type !== "default"}>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            size={"icon"}
-                                            variant={btn.type}
-                                            className="cursor-pointer"
-                                            onClick={() => handleButton(btn)}
-                                            disabled={
-                                                btn.type === "delete" &&
-                                                !Object.values(ids).some(Boolean)
-                                            }
-                                        >
-                                            <btn.icon className="text-white" />
-                                        </Button>
-                                    </TooltipTrigger>
-                                </RenderIf>
-                                <TooltipContent
-                                    className="text-white"
-                                    style={{
-                                        background: btn.arrowColor,
-                                    }}
-                                    arrow={false}
-                                >
-                                    <p>{t(btn.tooltipContent)}</p>
-                                    <TooltipPrimitive.Arrow
-                                        style={{
-                                            fill: btn.arrowColor,
-                                            background: btn.arrowColor,
-                                        }}
-                                        className={
-                                            "size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
-                                        }
-                                    />
-                                </TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-                    ))}
-                </div>
-            </div>
-            <ConfirmDialog />
+  return (
+    <div className="h-full bg-background rounded-t-sm">
+      <div className="flex px-4 py-3 justify-between items-center">
+        <h3 className="font-semibold">{t("building.title")}</h3>
+        <div className="flex gap-2">
+          {ACTION_BUTTONS_HISTORY.map((btn, index) => (
+            <TooltipProvider key={index}>
+              <Tooltip>
+                <RenderIf value={btn.type === "default"}>
+                  <Modal
+                    title={t("building.title")}
+                    trigger={
+                      <TooltipTrigger asChild>
+                        <Button size={"icon"} variant={btn.type} className="cursor-pointer">
+                          <btn.icon className="text-white" />
+                        </Button>
+                      </TooltipTrigger>
+                    }
+                    desc={t(Notice.ADD)}
+                    onConfirm={handleAddBuilding}
+                  >
+                    <AddOrUpdateBuilding
+                      handleChange={handleChange}
+                      value={value}
+                      setValue={setValue}
+                      errors={errors}
+                      // address={<Address />}
+                    />
+                  </Modal>
+                </RenderIf>
+                <RenderIf value={btn.type !== "default"}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      size={"icon"}
+                      variant={btn.type}
+                      className="cursor-pointer"
+                      onClick={() => handleButton(btn)}
+                      disabled={btn.type === "delete" && !Object.values(ids).some(Boolean)}
+                    >
+                      <btn.icon className="text-white" />
+                    </Button>
+                  </TooltipTrigger>
+                </RenderIf>
+                <TooltipContent
+                  className="text-white"
+                  style={{
+                    background: btn.arrowColor,
+                  }}
+                  arrow={false}
+                >
+                  <p>{t(btn.tooltipContent)}</p>
+                  <TooltipPrimitive.Arrow
+                    style={{
+                      fill: btn.arrowColor,
+                      background: btn.arrowColor,
+                    }}
+                    className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                  />
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ))}
         </div>
-    );
+      </div>
+      <ConfirmDialog />
+    </div>
+  );
 };
 
 export default BuildingButton;

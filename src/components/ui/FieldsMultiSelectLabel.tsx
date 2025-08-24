@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Select from "react-select";
+import Select, { components } from "react-select";
 import { Label } from "./label";
 import RenderIf from "../RenderIf";
 import useTheme from "@/hooks/useTheme";
@@ -21,6 +21,7 @@ interface FieldsMultiSelectLabelProps {
   errorText?: string;
   isClearable?: boolean;
   isDisabled?: boolean;
+  renderValue?: (option: FieldsSelectLabelType) => React.ReactNode;
 }
 
 const FieldsMultiSelectLabel = ({
@@ -35,11 +36,29 @@ const FieldsMultiSelectLabel = ({
   errorText,
   isClearable = true,
   isDisabled = false,
+  renderValue,
 }: FieldsMultiSelectLabelProps) => {
   const [touched, setTouched] = useState(false);
   const { theme } = useTheme();
 
   const isInvalid = required && touched && value.length === 0;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const CustomMultiValueLabel = (props: any) => {
+    const option = props.data as FieldsSelectLabelType;
+    if (renderValue) {
+      return (
+        <div
+          className="flex items-center gap-2 py-1 pl-1"
+          onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
+          {renderValue(option)}
+        </div>
+      );
+    }
+    return <components.MultiValueLabel {...props} />;
+  };
 
   return (
     <div className="flex flex-col md:py-0 py-1">
@@ -60,6 +79,9 @@ const FieldsMultiSelectLabel = ({
         isDisabled={isDisabled}
         options={data}
         value={value}
+        components={{
+          MultiValueLabel: CustomMultiValueLabel,
+        }}
         onMenuClose={() => setTouched(true)}
         onChange={(selected) => onChange(selected as FieldsSelectLabelType[])}
         classNamePrefix="react-select"

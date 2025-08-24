@@ -20,6 +20,7 @@ import {
   RoomType,
   ServiceCalculation,
   ServiceCategory,
+  ServiceRoomStatus,
   ServiceStatus,
   TenantStatus,
   VehicleStatus,
@@ -178,6 +179,16 @@ export const serviceStatusEnumToString = (status: ServiceStatus, t: TFunction<"t
     HOAT_DONG: t("statusBadge.serviceStatus.active"),
     KHONG_SU_DUNG: t("statusBadge.serviceStatus.inactive"),
     TAM_KHOA: t("statusBadge.serviceStatus.locked"),
+  };
+
+  return map[status] || t("common.unknown");
+};
+
+export const serviceRoomStatusEnumToString = (status: ServiceRoomStatus, t: TFunction<"translate", undefined>) => {
+  const map: Record<ServiceRoomStatus, string> = {
+    DANG_SU_DUNG: t("statusBadge.serviceRoomStatus.active"),
+    TAM_DUNG: t("statusBadge.serviceRoomStatus.paused"),
+    DA_HUY: t("statusBadge.serviceRoomStatus.cancelled"),
   };
 
   return map[status] || t("common.unknown");

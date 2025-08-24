@@ -1,8 +1,8 @@
 import {
   ApiResponse,
-  AssetBasicResponse,
+  AssetLittleResponse,
   ContractDetailResponse,
-  ICreateAndUpdateContract,
+  ICreateContract,
   ServiceBasicResponse,
   VehiclesBasicResponse,
 } from "@/types";
@@ -16,9 +16,10 @@ import { handleMutationError } from "@/utils/handleMutationError";
 import { toast } from "sonner";
 import { ContractStatus, Status } from "@/enums";
 import {
+  assetBelongToEnumToString,
   assetStatusEnumToString,
-  assetTypeEnumToString,
   contractStatusEnumToString,
+  formattedCurrency,
   serviceCategoryEnumToString,
   vehicleTypeEnumToString,
 } from "@/lib/utils";
@@ -143,11 +144,13 @@ export const replacePlaceholders = (
       } else if (key === "assets") {
         if (!value) result = checkValue(regex, result);
         else {
-          const items = (value as AssetBasicResponse[]).map(
+          const items = (value as AssetLittleResponse[]).map(
             (a) =>
               `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Tên tài sản: ${
-                a.nameAsset || NA
-              } - Loại tài sản: ${assetTypeEnumToString(a.assetType, t) || NA} - Trạng thái: ${
+                a.assetName || NA
+              } - Tài sản thuộc về: ${assetBelongToEnumToString(a.assetBeLongTo, t) || NA} - Số lượng: ${
+                a.quantity || 0
+              } - Giá: ${formattedCurrency(a.price || 0)} - Trạng thái: ${
                 assetStatusEnumToString(a.assetStatus, t) || NA
               } - Mô tả: ${a.description || NA}</span>`
           );
@@ -190,6 +193,8 @@ export const replacePlaceholders = (
         if (!value) result = checkValue(regex, result);
         const contractStatus = value as ContractStatus;
         result = result.replace(regex, contractStatusEnumToString(contractStatus, t));
+      } else if (key === "roomPrice" || key === "deposit") {
+        result = result.replace(regex, formattedCurrency(value));
       } else result = result.replace(regex, String(value ?? ""));
     }
   });
@@ -201,7 +206,7 @@ export const useContractMutation = () => {
   const { t } = useTranslation();
 
   const addAndUpdateContentContractMutation = useMutation({
-    mutationFn: async (payload: ICreateAndUpdateContract) => {
+    mutationFn: async (payload: ICreateContract) => {
       const res = await httpRequest.post("/contracts", payload);
       const id = res?.data?.data?.id;
       if (!id) {

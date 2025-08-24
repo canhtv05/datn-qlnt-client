@@ -73,11 +73,13 @@ const Deposit = () => {
       label: "Người đặt cọc",
       accessorKey: "depositor",
       isSort: true,
+      isCenter: true,
     },
     {
       label: "Người nhận cọc",
       accessorKey: "depositRecipient",
       isSort: true,
+      isCenter: true,
     },
     {
       label: "Số tiền cọc",

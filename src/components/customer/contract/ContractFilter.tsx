@@ -49,7 +49,7 @@ const ContractFilter = ({ props, type }: { props: ContractFilterProps; type: "de
         <InputLabel
           id="query"
           name="query"
-          placeholder="Hãy nhập thông tin bạn muốn tìm"
+          placeholder="Tìm kiếm"
           value={query}
           onChange={(e) => handleChange("query", e.target.value)}
         />

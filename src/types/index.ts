@@ -634,59 +634,77 @@ export interface TenantBasicResponse {
 export interface ContractResponse extends AbstractResponse {
   contractCode: string;
   roomCode: string;
-  numberOfPeople: number;
   startDate: string;
   endDate: string;
   deposit: number;
   roomPrice: number;
   status: ContractStatus;
-  assets: AssetResponse[];
-  tenants: TenantBasicResponse[];
-  services: ServiceResponse[];
-  vehicles: VehicleResponse[];
+}
+
+export interface ICreateContract {
+  roomId: string;
+  startDate: string;
+  endDate: string;
+  deposit: number;
+  tenants: ContractTenantCreationRequest[];
+  vehicles: string[];
   content: string;
 }
 
-export interface ICreateAndUpdateContract {
-  roomId: string;
-  numberOfPeople: number;
-  startDate: string | Date;
-  endDate: string | Date;
-  deposit: number;
-  tenants: string[];
-  assets: string[];
-  services: string[];
-  vehicles: string[];
-  status: ContractStatus | undefined;
-  roomPrice?: number;
-  content: string;
+export interface ContractTenantCreationRequest {
+  tenantId: string;
+  representative: boolean;
 }
+
+export interface IUpdateContract {
+  endDate: string;
+  startDate: string;
+  deposit: number | undefined;
+}
+
+export interface TenantLittleResponse {
+  tenantId: string;
+  customerCode: string;
+  fullName: string;
+  gender: Gender;
+  phoneNumber: string;
+  email: string;
+  representative: boolean;
+}
+
+export interface VehicleBasicResponse {
+  tenantName: string;
+  vehicleType: VehicleType;
+  licensePlate: string;
+  description: string;
+}
+
 export interface ContractDetailResponse {
   id: string;
+  roomId: string;
   contractCode: string;
   roomCode: string;
-
   nameManager: string;
   phoneNumberManager: string;
-
   nameUser: string;
   emailUser: string;
   phoneNumberUser: string;
   identityCardUser: string;
   addressUser: string;
-
-  numberOfPeople: number;
   startDate: string;
   endDate: string;
   deposit: number;
   roomPrice: number;
   buildingAddress: string;
-
   status: ContractStatus;
+  electricPrice: number;
+  waterPrice: number;
+  tenants: TenantLittleResponse[];
+  assets: AssetLittleResponse[];
+  services: ServiceLittleResponse[];
+  vehicles: VehicleBasicResponse[];
   createdAt: string;
   updatedAt: string;
-
-  tenants: TenantBasicResponse[];
   content: string;
 }
 export interface IContractStatisticsResponse {
@@ -834,7 +852,7 @@ export interface ServiceLittleResponse {
   serviceName: string;
   unitPrice: number;
   unit: string;
-  serviceRoomStatus: string;
+  serviceRoomStatus: ServiceRoomStatus;
   description: string;
 }
 
@@ -1232,4 +1250,62 @@ export interface ConfirmDepositResponse {
 export interface DepositFilter {
   query: string;
   depositStatus: string | DepositStatus;
+}
+
+/* CONTRACT FOR VEHICLE */
+export interface ContractVehicleResponse extends AbstractResponse {
+  contractId: string;
+  tenantId: string;
+  vehicleId: string;
+  vehicleType: VehicleType;
+  licensePlate: string;
+  vehicleStatus: VehicleStatus;
+  registrationDate: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+}
+
+/* CONTRACT FOR TENANT */
+export interface ContractTenantDetailResponse {
+  id: string;
+  contractId: string;
+  tenantId: string;
+  customerCode: string;
+  fullName: string;
+  gender: string;
+  phoneNumber: string;
+  email: string;
+  representative: boolean;
+  startDate: string;
+  endDate: string;
+}
+
+export interface ContractTenantResponse {
+  contractId: string;
+  tenantId: string;
+  representative: boolean;
+  startDate: string;
+  endDate: string;
+}
+
+export interface AddTenantToContractRequest {
+  contractId: string;
+  tenantId: string;
+}
+
+export interface ContractTenantFilter {
+  query: string;
+  gender: string | Gender;
+}
+
+export interface AddVehicleToContractRequest {
+  contractId: string;
+  vehicleId: string;
+}
+
+export interface ContractVehicleFilter {
+  query: string;
+  vehicleType: string | VehicleType;
+  vehicleStatus: string | VehicleStatus;
 }

@@ -6,7 +6,7 @@ import { NotificationFilter as Filter } from "@/types";
 import { parseISO } from "date-fns";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 import { DateRange } from "react-day-picker";
-import { DateRangePicker } from "../DateRangePicker";
+import DateRangePicker from "../DateRangePicker";
 
 export interface NotificationFilterProps {
   filterValues: Filter;

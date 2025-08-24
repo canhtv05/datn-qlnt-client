@@ -1,60 +1,45 @@
-import DatePickerLabel from "@/components/DatePickerLabel";
 import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import FieldsMultiSelectLabel from "@/components/ui/FieldsMultiSelectLabel";
-import { ContractStatus } from "@/enums";
 import { useFormErrors } from "@/hooks";
 import "ckeditor5/ckeditor5.css";
 
-import { ICreateAndUpdateContract, Option } from "@/types";
+import { ICreateContract, Option } from "@/types";
 import { ChangeEvent, useCallback, useState } from "react";
 import Editor from "@/components/Editor";
 import DescriptionValueForContract from "./DescriptionValueForContract";
 import { Button } from "@/components/ui/button";
 import { contract_template } from "./contract_example";
-import {
-  useAssetOptions,
-  useContractMutation,
-  useRoomOptions,
-  useServiceOptions,
-  useTenantOptions,
-  useVehicleOptions,
-} from "@/services/contract";
-import { createOrUpdateContractSchema } from "@/lib/validation";
+import { useContractMutation, useRoomOptions, useTenantOptions, useVehicleOptions } from "@/services/contract";
+import { createContractSchema } from "@/lib/validation";
+import { Switch } from "@/components/ui/switch";
+import DateRangePicker from "@/components/DateRangePicker";
+import { DateRange } from "react-day-picker";
+import { parseISO } from "date-fns";
 
 const AddContract = () => {
   const { addAndUpdateContentContractMutation } = useContractMutation();
   const roomOptions = useRoomOptions();
   const tenantOptions = useTenantOptions();
-  const assetOptions = useAssetOptions();
-  const serviceOptions = useServiceOptions();
   const vehicleOptions = useVehicleOptions();
 
-  const [value, setValue] = useState<ICreateAndUpdateContract>({
+  const [value, setValue] = useState<ICreateContract>({
     roomId: "",
-    numberOfPeople: 1,
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: "",
+    endDate: "",
     deposit: 0,
     tenants: [],
-    assets: [],
-    services: [],
     vehicles: [],
-    status: ContractStatus.HIEU_LUC,
-    roomPrice: 0,
     content: contract_template,
   });
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateAndUpdateContract>();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateContract>();
 
-  const handleChange = useCallback(
-    <K extends keyof ICreateAndUpdateContract>(field: K, newValue: ICreateAndUpdateContract[K]) => {
-      setValue((prev) => ({ ...prev, [field]: newValue }));
-    },
-    []
-  );
+  const handleChange = useCallback(<K extends keyof ICreateContract>(field: K, newValue: ICreateContract[K]) => {
+    setValue((prev) => ({ ...prev, [field]: newValue }));
+  }, []);
 
-  const handleNumberChange = (e: ChangeEvent<HTMLInputElement>, key: "numberOfPeople" | "deposit") => {
+  const handleNumberChange = (e: ChangeEvent<HTMLInputElement>, key: "deposit") => {
     const parsed = Number(e.target.value.trim());
     handleChange(key, isNaN(parsed) ? 0 : parsed);
   };
@@ -64,8 +49,19 @@ const AddContract = () => {
 
   const handleAddContract = useCallback(async () => {
     try {
-      await createOrUpdateContractSchema.parseAsync(value);
-      await addAndUpdateContentContractMutation.mutateAsync(value);
+      const { content, deposit, endDate, roomId, startDate, tenants, vehicles } = value;
+      const data: ICreateContract = {
+        content: content.trim(),
+        deposit: deposit || 0,
+        endDate,
+        roomId,
+        startDate,
+        tenants,
+        vehicles,
+      };
+
+      await createContractSchema.parseAsync(data);
+      await addAndUpdateContentContractMutation.mutateAsync(data);
       clearErrors();
       return true;
     } catch (error) {
@@ -74,13 +70,30 @@ const AddContract = () => {
     }
   }, [addAndUpdateContentContractMutation, clearErrors, handleZodErrors, value]);
 
+  const dateRange = useCallback((): DateRange | undefined => {
+    return value.startDate || value.endDate
+      ? {
+          from: value.startDate ? parseISO(value.startDate) : undefined,
+          to: value.endDate ? parseISO(value.endDate) : undefined,
+        }
+      : undefined;
+  }, [value.endDate, value.startDate]);
+
+  const handleChangeDate = (range: DateRange | undefined) => {
+    setValue((prev) => ({
+      ...prev,
+      startDate: range?.from ? range.from.toISOString() : "",
+      endDate: range?.to ? range.to.toISOString() : "",
+    }));
+  };
+
   return (
     <div className="bg-background p-5 rounded-md">
       <div className="flex flex-col gap-6">
         <div className="space-y-4">
           <h3 className="text-lg font-semibold">Thêm hợp đồng</h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FieldsSelectLabel
               data={roomOptions}
               placeholder="-- Chọn phòng --"
@@ -95,18 +108,6 @@ const AddContract = () => {
               required
             />
             <InputLabel
-              id="numberOfPeople"
-              name="numberOfPeople"
-              placeholder="2"
-              type="number"
-              label="Số người:"
-              required
-              value={value.numberOfPeople.toString()}
-              onChange={(e) => handleNumberChange(e, "numberOfPeople")}
-              errorText={errors.numberOfPeople}
-            />
-
-            <InputLabel
               id="deposit"
               name="deposit"
               placeholder="1000000"
@@ -118,27 +119,15 @@ const AddContract = () => {
               errorText={errors.deposit}
             />
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <DatePickerLabel
-              label="Ngày bắt đầu:"
-              date={value.startDate ? new Date(value.startDate) : undefined}
-              setDate={(d) => handleChange("startDate", d)}
-              errorText={errors.startDate}
-              fromYear={new Date().getFullYear()}
-              required
-            />
-
-            <DatePickerLabel
-              label="Ngày kết thúc:"
-              date={value.endDate ? new Date(value.endDate) : undefined}
-              setDate={(d) => handleChange("endDate", d)}
-              errorText={errors.endDate}
-              fromYear={new Date().getFullYear()}
-              toYear={new Date().getFullYear() + 10}
-              required
-            />
-          </div>
+          <DateRangePicker
+            label="Chọn ngày hết hạn hơp đồng:"
+            required
+            value={dateRange()}
+            onChange={handleChangeDate}
+            fromYear={new Date().getFullYear()}
+            errorText={errors.startDate || errors.endDate}
+            toYear={new Date().getFullYear() + 10}
+          />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FieldsMultiSelectLabel
               data={toSelectType(tenantOptions)}
@@ -146,50 +135,43 @@ const AddContract = () => {
               label="Khách thuê:"
               id="tenants"
               name="tenants"
-              value={toSelectType(tenantOptions).filter((opt) => value.tenants.includes(String(opt.value)))}
+              value={toSelectType(tenantOptions).filter((opt) =>
+                value.tenants.some((t) => t.tenantId === String(opt.value))
+              )}
               onChange={(selected) =>
                 handleChange(
                   "tenants",
-                  selected.map((item) => String(item.value))
+                  selected.map((item) => ({
+                    tenantId: String(item.value),
+                    representative: false,
+                  }))
                 )
               }
               required
               errorText={errors.tenants}
+              renderValue={(option) => {
+                const tenant = value.tenants.find((t) => t.tenantId === option.value);
+                return (
+                  <>
+                    <span>{`${option.label} - Đại diện`}</span>
+                    <Switch
+                      className="cursor-pointer"
+                      checked={tenant?.representative ?? false}
+                      onCheckedChange={(checked) => {
+                        handleChange(
+                          "tenants",
+                          value.tenants.map((t) =>
+                            t.tenantId === option.value
+                              ? { ...t, representative: checked }
+                              : { ...t, representative: false }
+                          )
+                        );
+                      }}
+                    />
+                  </>
+                );
+              }}
             />
-
-            <FieldsMultiSelectLabel
-              data={toSelectType(assetOptions)}
-              placeholder="-- Chọn tài sản --"
-              label="Tài sản:"
-              id="assets"
-              name="assets"
-              value={toSelectType(assetOptions).filter((opt) => value.assets.includes(String(opt.value)))}
-              onChange={(selected) =>
-                handleChange(
-                  "assets",
-                  selected.map((item) => String(item.value))
-                )
-              }
-              required
-              errorText={errors.assets}
-            />
-
-            <FieldsMultiSelectLabel
-              data={toSelectType(serviceOptions)}
-              placeholder="-- Chọn dịch vụ --"
-              label="Dịch vụ:"
-              id="services"
-              name="services"
-              value={toSelectType(serviceOptions).filter((opt) => value.services.includes(String(opt.value)))}
-              onChange={(selected) =>
-                handleChange(
-                  "services",
-                  selected.map((item) => String(item.value))
-                )
-              }
-              errorText={errors.services}
-            />
-
             <FieldsMultiSelectLabel
               data={toSelectType(vehicleOptions)}
               placeholder="-- Chọn phương tiện --"
@@ -208,7 +190,6 @@ const AddContract = () => {
           </div>
 
           <div className="flex gap-10 flex-col">
-            <DescriptionValueForContract />
             <div>
               <span className="mb-1 text-label text-sm flex gap-1">
                 Nội dung hợp đồng
@@ -231,6 +212,7 @@ const AddContract = () => {
                 </Button>
               </Editor>
             </div>
+            <DescriptionValueForContract />
           </div>
         </div>
       </div>

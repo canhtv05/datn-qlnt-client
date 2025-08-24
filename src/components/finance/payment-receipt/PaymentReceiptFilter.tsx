@@ -1,5 +1,5 @@
 import ButtonFilter from "@/components/ButtonFilter";
-import { DateRangePicker } from "@/components/DateRangePicker";
+import DateRangePicker from "@/components/DateRangePicker";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import { PaymentMethod, PaymentStatus } from "@/enums";

@@ -87,22 +87,6 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
-                  {/*  }
-                    desc={Notice.ADD}
-                    onConfirm={handleAddContract}
-                >
-                    <AddOrUpdateContract
-                      value={value}
-                      errors={errors}
-                      handleChange={handleChange}
-                      roomOptions={roomOptions}
-                      tenantOptions={tenantOptions}
-                      assetOptions={assetOptions}
-                      servicesOptions={servicesOptions}
-                      vehiclesOptions={vehiclesOptions}
-                      type="add"
-                    />
-                  </Modal> */}
                 </RenderIf>
                 <RenderIf value={btn.type !== "default"}>
                   <TooltipTrigger asChild>

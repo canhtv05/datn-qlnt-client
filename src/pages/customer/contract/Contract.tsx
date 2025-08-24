@@ -6,14 +6,15 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import StatusBadge from "@/components/ui/StatusBadge";
 import Modal from "@/components/Modal";
-import { Notice } from "@/enums";
+import { ContractStatus, Notice } from "@/enums";
 import { GET_BTNS } from "@/constant";
 import { useContract } from "./useContract";
 import ContractButton from "@/components/customer/contract/ContractButton";
 import ContractFilter from "@/components/customer/contract/ContractFilter";
-import AddOrUpdateContract from "@/components/customer/contract/AddOrUpdateContract";
-import { ContractResponse, ColumnConfig } from "@/types";
+import UpdateContract from "@/components/customer/contract/UpdateContract";
+import { ContractResponse, ColumnConfig, IBtnType } from "@/types";
 import { useTranslation } from "react-i18next";
+import { Car, Play, Users2 } from "lucide-react";
 
 const Contract = () => {
   const {
@@ -30,15 +31,46 @@ const Contract = () => {
     errors,
     ConfirmDialog,
     handleActionClick,
-    handleSaveContract,
-    roomOptions,
-    tenantOptions,
-    assetOptions,
-    servicesOptions,
-    vehiclesOptions,
+    handleUpdateContract,
     handleChange,
+    setValue,
   } = useContract();
   const { t } = useTranslation();
+
+  const activeBtn = (isActive: boolean): IBtnType[] => {
+    return isActive
+      ? []
+      : [
+          {
+            tooltipContent: "common.button.active",
+            icon: Play,
+            arrowColor: "var(--color-amber-500)",
+            type: "cash",
+            hasConfirm: false,
+          },
+        ];
+  };
+
+  const memberBtn: IBtnType[] = [
+    {
+      tooltipContent: "common.button.tenants",
+      icon: Users2,
+      arrowColor: "var(--color-purple-400)",
+      type: "toggle",
+      hasConfirm: true,
+    },
+    {
+      tooltipContent: "common.button.vehicles",
+      icon: Car,
+      arrowColor: "var(--color-violet-400)",
+      type: "deposit1",
+      hasConfirm: true,
+    },
+  ];
+
+  const BTNS = (isActive: boolean) => {
+    return [...activeBtn(isActive), ...GET_BTNS("update", "delete", "view"), ...memberBtn];
+  };
 
   const columnConfigs: ColumnConfig[] = [
     {
@@ -54,7 +86,7 @@ const Contract = () => {
       isCenter: true,
       render: (row: ContractResponse) => (
         <div className="flex gap-2">
-          {GET_BTNS("update", "delete", "status", "view").map((btn, index) => (
+          {BTNS(row.status !== ContractStatus.CHO_KICH_HOAT).map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -62,7 +94,7 @@ const Contract = () => {
                     size="icon"
                     variant={btn.type}
                     className="cursor-pointer"
-                    onClick={() => handleActionClick(row, btn.type as "update" | "delete" | "view" | "status")}
+                    onClick={() => handleActionClick(row, btn.type as "update" | "delete" | "view" | "toggle" | "cash")}
                   >
                     <btn.icon className="text-white" />
                   </Button>
@@ -90,18 +122,6 @@ const Contract = () => {
       isCenter: true,
     },
     {
-      label: "Khách thuê",
-      accessorKey: "tenants",
-      render: (row: ContractResponse) => row.tenants?.map((t) => t.fullName).join(", ") || "—",
-    },
-    {
-      label: "Số người",
-      accessorKey: "numberOfPeople",
-      isSort: true,
-      isCenter: true,
-      render: (row: ContractResponse) => `${row.numberOfPeople} người/phòng`,
-    },
-    {
       label: "Ngày bắt đầu",
       accessorKey: "startDate",
       isSort: true,
@@ -111,6 +131,7 @@ const Contract = () => {
           month: "2-digit",
           year: "numeric",
         }),
+      isCenter: true,
     },
     {
       label: "Ngày kết thúc",
@@ -122,6 +143,7 @@ const Contract = () => {
           month: "2-digit",
           year: "numeric",
         }),
+      isCenter: true,
     },
     {
       label: "Tiền cọc",
@@ -169,20 +191,10 @@ const Contract = () => {
           trigger={null}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
-          onConfirm={handleSaveContract}
+          onConfirm={handleUpdateContract}
           desc={Notice.UPDATE}
         >
-          <AddOrUpdateContract
-            value={value}
-            errors={errors}
-            handleChange={handleChange}
-            roomOptions={roomOptions}
-            tenantOptions={tenantOptions}
-            assetOptions={assetOptions}
-            servicesOptions={servicesOptions}
-            vehiclesOptions={vehiclesOptions}
-            type="update"
-          />
+          <UpdateContract value={value} errors={errors} handleChange={handleChange} setValue={setValue} />
         </Modal>
         <ConfirmDialog />
       </div>
