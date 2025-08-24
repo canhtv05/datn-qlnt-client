@@ -574,8 +574,8 @@ export default interface TenantResponse {
   dob: string;
   userId?: string;
   email: string;
-  // address: string;
-  // identityCardNumber: string;
+  frontCCCD: string;
+  backCCCD: string;
   pictureUrl: string;
   phoneNumber: string;
   tenantStatus: TenantStatus;
@@ -585,7 +585,7 @@ export default interface TenantResponse {
 export interface TenantDetailResponse extends AbstractResponse {
   customerCode: string;
   fullName: string;
-  gender: string;
+  gender: Gender;
   dob: string;
   email: string;
   phoneNumber: string;
@@ -594,6 +594,8 @@ export interface TenantDetailResponse extends AbstractResponse {
   address: string;
   tenantStatus: TenantStatus;
   totalContract: number;
+  frontCCCD: string;
+  backCCCD: string;
 }
 
 export interface ICreateAndUpdateTenant {
@@ -604,8 +606,8 @@ export interface ICreateAndUpdateTenant {
   phoneNumber: string;
   identityCardNumber: string;
   address: string;
-  frontCccd?: File | null;
-  backCccd?: File | null;
+  frontCccd: File | null;
+  backCccd: File | null;
 }
 
 export interface TenantFilterValues {

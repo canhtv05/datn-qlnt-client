@@ -37,6 +37,8 @@ export const useTenant = () => {
     gender: "",
     identityCardNumber: "",
     phoneNumber: "",
+    backCccd: null,
+    frontCccd: null,
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -98,7 +100,6 @@ export const useTenant = () => {
       const res = await httpRequest.get("/tenants", {
         params,
       });
-
       return res.data;
     },
     retry: 1,
@@ -179,7 +180,7 @@ export const useTenant = () => {
 
   const handleUpdateFloor = useCallback(async () => {
     try {
-      const { address, dob, email, fullName, gender, identityCardNumber, phoneNumber } = value;
+      const { address, dob, email, fullName, gender, identityCardNumber, phoneNumber, backCccd, frontCccd } = value;
 
       await createOrUpdateTenantSchema.parseAsync(value);
 
@@ -191,6 +192,8 @@ export const useTenant = () => {
         identityCardNumber: identityCardNumber.trim(),
         gender,
         phoneNumber: phoneNumber.trim(),
+        backCccd,
+        frontCccd,
       };
 
       updateTenantMutation.mutate(data, {
@@ -203,6 +206,8 @@ export const useTenant = () => {
             gender: "",
             identityCardNumber: "",
             phoneNumber: "",
+            backCccd: null,
+            frontCccd: null,
           });
           queryClient.invalidateQueries({
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "tenants",

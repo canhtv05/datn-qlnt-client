@@ -58,7 +58,25 @@ const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Tena
 
   const addTenantMutation = useMutation({
     mutationKey: ["add-tenant"],
-    mutationFn: async (payload: ICreateAndUpdateTenant) => await httpRequest.post("/tenants", payload),
+    mutationFn: async (payload: ICreateAndUpdateTenant) => {
+      const formData = new FormData();
+      formData.append("fullName", payload.fullName.trim());
+      formData.append("dob", payload.dob);
+      formData.append("gender", payload.gender);
+      formData.append("identityCardNumber", payload.identityCardNumber.trim());
+      formData.append("phoneNumber", payload.phoneNumber.trim());
+      formData.append("email", payload.email.trim());
+      formData.append("address", payload.address.trim());
+
+      if (payload.frontCccd instanceof File) formData.append("frontCCCD", payload.frontCccd);
+      if (payload.backCccd instanceof File) formData.append("backCCCD", payload.backCccd);
+
+      return await httpRequest.post("/tenants", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    },
     onError: (error) => {
       handleMutationError(error);
     },
@@ -86,16 +104,20 @@ const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Tena
 
   const handleAddTenant = useCallback(async () => {
     try {
-      const { address, dob, email, fullName, gender, identityCardNumber, phoneNumber } = value;
+      const { address, dob, email, fullName, gender, identityCardNumber, phoneNumber, backCccd, frontCccd } = value;
 
+      const date = new Date(dob);
+      const formatted = date.toISOString().split("T")[0];
       const data: ICreateAndUpdateTenant = {
         address: address.trim(),
-        dob,
+        dob: formatted,
         email: email.trim(),
         fullName: fullName.trim(),
         gender,
         identityCardNumber: identityCardNumber.trim(),
         phoneNumber: phoneNumber.trim(),
+        backCccd,
+        frontCccd,
       };
 
       await createOrUpdateTenantSchema.parseAsync(value);
