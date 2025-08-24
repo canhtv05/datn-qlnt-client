@@ -257,6 +257,7 @@
     },
 
     "tenantStatus": {
+      "totalTenants": "Total",
       "renting": "Renting",
       "returned": "Returned",
       "waitContract": "Waiting for contract creation",
@@ -733,6 +734,53 @@
       "placeholderFloor": "Select floor",
       "description": "Description:",
       "placeholderDescription": "Enter description"
+    }
+  },
+  "tenant": {
+    "title": "Tenant",
+    "titleHistory": "Deleted Tenant History",
+    "search": "Search",
+    "errorFetch": "An error occurred while loading tenants.",
+    "errorFetchStatistics": "An error occurred while loading tenant statistics.",
+    "response": {
+      "customerCode": "Customer Code",
+      "actions": "Actions",
+      "fullName": "Full Name",
+      "pictureUrl": "Picture",
+      "gender": "Gender",
+      "dob": "Date of Birth",
+      "email": "Email",
+      "phoneNumber": "Phone Number",
+      "address": "Address",
+      "identityCardNumber": "Identity Card Number",
+      "tenantStatus": "Status",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At"
+    },
+    "filter": {
+      "tenantStatus": "-- Tenant Status --",
+      "gender": "-- Select Gender --",
+      "search": "Search"
+    },
+    "addOrUpdate": {
+      "fullName": "Full Name:",
+      "placeholderFullName": "John Doe",
+      "gender": "Gender:",
+      "dob": "Date of Birth:",
+      "phoneNumber": "Phone Number:",
+      "placeholderPhoneNumber": "0987654321",
+      "email": "Email:",
+      "placeholderEmail": "example@gmail.com",
+      "identityCardNumber": "Identity Card Number:",
+      "placeholderIdentityCardNumber": "123456789012",
+      "address": "Address:",
+      "placeholderAddress": "Enter address"
+    },
+    "detail": {
+      "personalInfo": "Personal Information",
+      "title": "View tenant details",
+      "subtitle": "Tenant information, contracts and contact",
+      "totalContract": "Total Contracts"
     }
   }
 }

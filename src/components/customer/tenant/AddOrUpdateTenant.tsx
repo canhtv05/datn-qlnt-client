@@ -15,7 +15,13 @@ interface AddOrUpdateTenantProps {
   onBlur: () => void;
 }
 
-const AddOrUpdateTenant = ({ value, handleChange, setValue, errors, onBlur }: AddOrUpdateTenantProps) => {
+const AddOrUpdateTenant = ({
+  value,
+  handleChange,
+  setValue,
+  errors,
+  onBlur,
+}: AddOrUpdateTenantProps) => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-3">
@@ -23,9 +29,9 @@ const AddOrUpdateTenant = ({ value, handleChange, setValue, errors, onBlur }: Ad
         <InputLabel
           id="fullName"
           name="fullName"
-          placeholder="Nhập họ và tên"
+          placeholder={t("tenant.addOrUpdate.fullName")}
           required
-          label="Nhập họ và tên:"
+          label={t("tenant.addOrUpdate.fullName")}
           value={value.fullName ?? ""}
           onChange={handleChange}
           errorText={errors.fullName}
@@ -33,13 +39,13 @@ const AddOrUpdateTenant = ({ value, handleChange, setValue, errors, onBlur }: Ad
         />
         <FieldsSelectLabel
           data={GENDER_OPTIONS(t)}
-          placeholder="-- Chọn giới tính --"
-          label="Giới tính:"
+          placeholder={t("tenant.filter.gender")}
+          label={t("tenant.addOrUpdate.gender")}
           id="gender"
           name="gender"
           value={value.gender ?? ""}
           onChange={(val) => setValue((prev) => ({ ...prev, gender: String(val) }))}
-          labelSelect="Giới tính"
+          labelSelect={t("tenant.addOrUpdate.gender")}
           showClear
           errorText={errors.gender}
           required
@@ -50,7 +56,7 @@ const AddOrUpdateTenant = ({ value, handleChange, setValue, errors, onBlur }: Ad
         <DatePickerLabel
           date={value?.dob ? new Date(value.dob) : undefined}
           setDate={(d) => setValue((prev) => ({ ...prev, dob: d.toISOString() }))}
-          label="Ngày sinh:"
+          label={t("tenant.addOrUpdate.dob")}
           errorText={errors?.dob}
           required
           fromYear={1950}
@@ -61,7 +67,7 @@ const AddOrUpdateTenant = ({ value, handleChange, setValue, errors, onBlur }: Ad
           name="phoneNumber"
           placeholder="0987654321"
           required
-          label="Số điện thoại:"
+          label={t("tenant.addOrUpdate.phoneNumber")}
           value={value.phoneNumber ?? ""}
           onChange={handleChange}
           errorText={errors.phoneNumber}
@@ -72,9 +78,9 @@ const AddOrUpdateTenant = ({ value, handleChange, setValue, errors, onBlur }: Ad
         <InputLabel
           id="email"
           name="email"
-          placeholder="Nhập email"
+          placeholder={t("tenant.addOrUpdate.email")}
           required
-          label="Nhập email:"
+          label={t("tenant.addOrUpdate.email")}
           value={value.email ?? ""}
           onChange={handleChange}
           errorText={errors.email}
@@ -83,9 +89,9 @@ const AddOrUpdateTenant = ({ value, handleChange, setValue, errors, onBlur }: Ad
         <InputLabel
           id="identityCardNumber"
           name="identityCardNumber"
-          placeholder="Nhập căn cước công dân"
+          placeholder={t("tenant.addOrUpdate.identityCardNumber")}
           required
-          label="Nhập căn cước công dân"
+          label={t("tenant.addOrUpdate.identityCardNumber")}
           value={value.identityCardNumber ?? ""}
           onChange={handleChange}
           errorText={errors.identityCardNumber}
@@ -97,8 +103,8 @@ const AddOrUpdateTenant = ({ value, handleChange, setValue, errors, onBlur }: Ad
         errorText={errors.address}
         id="address"
         name="address"
-        placeholder="Nhập địa chỉ"
-        label="Địa chỉ:"
+        placeholder={t("tenant.addOrUpdate.placeholderAddress")}
+        label={t("tenant.addOrUpdate.address")}
         value={value.address ?? ""}
         onChange={(e) => setValue((prev) => ({ ...prev, address: e.target.value }))}
       />

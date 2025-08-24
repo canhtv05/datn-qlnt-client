@@ -19,7 +19,12 @@ import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateTenant from "./AddOrUpdateTenant";
 import { useNavigate } from "react-router-dom";
-import { formatDate, genderEnumToString, handleExportExcel, tenantStatusEnumToString } from "@/lib/utils";
+import {
+  formatDate,
+  genderEnumToString,
+  handleExportExcel,
+  tenantStatusEnumToString,
+} from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
 const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: TenantResponse[] }) => {
@@ -56,12 +61,13 @@ const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Tena
 
   const addTenantMutation = useMutation({
     mutationKey: ["add-tenant"],
-    mutationFn: async (payload: ICreateAndUpdateTenant) => await httpRequest.post("/tenants", payload),
+    mutationFn: async (payload: ICreateAndUpdateTenant) =>
+      await httpRequest.post("/tenants", payload),
     onError: (error) => {
       handleMutationError(error);
     },
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setValue({
         address: "",
         dob: "",
@@ -118,7 +124,7 @@ const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Tena
       });
       queryClient.invalidateQueries({ queryKey: ["tenants-statistics"] });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       return true;
     } catch (error) {
       handleMutationError(error);
@@ -131,7 +137,7 @@ const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Tena
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveTenantsByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các khách thuê đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("common.confirmDialog.delete", { name: t("tenant.title") }),
     type: "warn",
   });
 
@@ -144,18 +150,18 @@ const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Tena
       } else if (btn.type === "download") {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
-          "Mã khách": d.customerCode,
-          "Họ tên": d.fullName,
-          "Hình ảnh": d.pictureUrl,
-          "Giới tính": genderEnumToString(d.gender, t),
-          "Ngày sinh": formatDate(d.dob),
+          [t("tenant.response.customerCode")]: d.customerCode,
+          [t("tenant.response.fullName")]: d.fullName,
+          [t("tenant.response.pictureUrl")]: d.pictureUrl,
+          [t("tenant.response.gender")]: genderEnumToString(d.gender, t),
+          [t("tenant.response.dob")]: formatDate(d.dob),
           Email: d.email,
-          "Số điện thoại": d.phoneNumber,
+          [t("tenant.response.phoneNumber")]: d.phoneNumber,
           // "Địa chỉ": d.address,
           // "Là đại diện": d.isRepresentative ? "Có" : "Không",
-          "Trạng thái": tenantStatusEnumToString(d.tenantStatus, t),
+          [t("tenant.response.tenantStatus")]: tenantStatusEnumToString(d.tenantStatus, t),
         }));
-        handleExportExcel(`Khách thuê`, exportData, data);
+        handleExportExcel(`t("tenant.title")`, exportData, data);
       }
     },
     [data, ids, navigate, openDialog, t]
@@ -169,14 +175,14 @@ const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Tena
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Khách thuê</h3>
+        <h3 className="font-semibold">{t("tenant.title")}</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS_HISTORY.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Khách thuê"
+                    title={t("tenant.title")}
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -184,7 +190,7 @@ const TenantButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Tena
                         </Button>
                       </TooltipTrigger>
                     }
-                    desc={Notice.ADD}
+                    desc={t(Notice.ADD)}
                     onConfirm={handleAddTenant}
                   >
                     <AddOrUpdateTenant

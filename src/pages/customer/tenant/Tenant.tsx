@@ -41,9 +41,14 @@ const Tenant = () => {
   const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Mã khách", accessorKey: "customerCode", isSort: true, hasHighlight: true },
     {
-      label: "Thao tác",
+      label: t("tenant.response.customerCode"),
+      accessorKey: "customerCode",
+      isSort: true,
+      hasHighlight: true,
+    },
+    {
+      label: t("tenant.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -67,7 +72,11 @@ const Tenant = () => {
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                  <TooltipContent
+                    className="text-white"
+                    style={{ background: btn.arrowColor }}
+                    arrow={false}
+                  >
                     <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
@@ -84,9 +93,9 @@ const Tenant = () => {
         );
       },
     },
-    { label: "Họ tên", accessorKey: "fullName", isSort: true },
+    { label: t("tenant.response.fullName"), accessorKey: "fullName", isSort: true },
     {
-      label: "Hình ảnh",
+      label: t("tenant.response.pictureUrl"),
       accessorKey: "pictureUrl",
       isCenter: true,
       render(row) {
@@ -98,17 +107,23 @@ const Tenant = () => {
         );
       },
     },
-    { label: "Giới tính", accessorKey: "gender", isSort: true, isCenter: true, hasBadge: true },
     {
-      label: "Ngày sinh",
+      label: t("tenant.response.gender"),
+      accessorKey: "gender",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: t("tenant.response.dob"),
       accessorKey: "dob",
       isSort: true,
       render: (row: TenantResponse) => {
         return <span>{formatDate(row.dob)}</span>;
       },
     },
-    { label: "Email", accessorKey: "email", isSort: true },
-    { label: "Số điện thoại", accessorKey: "phoneNumber", isSort: true },
+    { label: t("tenant.response.email"), accessorKey: "email", isSort: true },
+    { label: t("tenant.response.phoneNumber"), accessorKey: "phoneNumber", isSort: true },
     // { label: "Địa chỉ", accessorKey: "address", isHidden: true },
     // { label: "Số CMND/CCCD", accessorKey: "identityCardNumber", isHidden: true },
     // {
@@ -125,7 +140,7 @@ const Tenant = () => {
     //   },
     // },
     {
-      label: "Trạng thái",
+      label: t("tenant.response.tenantStatus"),
       accessorKey: "tenantStatus",
       isSort: true,
       hasBadge: true,
@@ -151,12 +166,12 @@ const Tenant = () => {
           setRowSelection={setRowSelection}
         />
         <Modal
-          title="Khách thuê"
+          title={t("tenant.title")}
           trigger={null}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
           onConfirm={handleUpdateFloor}
-          desc={Notice.UPDATE}
+          desc={t(Notice.UPDATE)}
         >
           <AddOrUpdateTenant
             onBlur={handleBlur}

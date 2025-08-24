@@ -256,6 +256,7 @@
     },
 
     "tenantStatus": {
+      "totalTenants": "Tổng",
       "renting": "Đang thuê",
       "returned": "Đã trả phòng",
       "waitContract": "Chờ tạo hợp đồng",
@@ -732,6 +733,53 @@
       "placeholderFloor": "Chọn tầng",
       "description": "Mô tả:",
       "placeholderDescription": "Nhập mô tả"
+    }
+  },
+  "tenant": {
+    "title": "Khách thuê",
+    "titleHistory": "Lịch sử khách thuê đã xóa",
+    "search": "Tìm kiếm",
+    "errorFetch": "Không lấy được dữ liệu khách thuê.",
+    "errorFetchStatistics": "Không lấy được dữ liệu thống kê khách thuê.",
+    "response": {
+      "customerCode": "Mã khách",
+      "actions": "Thao tác",
+      "fullName": "Họ tên",
+      "pictureUrl": "Hình ảnh",
+      "gender": "Giới tính",
+      "dob": "Ngày sinh",
+      "email": "Email",
+      "phoneNumber": "Số điện thoại",
+      "address": "Địa chỉ",
+      "identityCardNumber": "Số CMND/CCCD",
+      "tenantStatus": "Trạng thái",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật"
+    },
+    "filter": {
+      "tenantStatus": "-- Trạng thái khách thuê --",
+      "gender": "-- Chọn giới tính --",
+      "search": "Tìm kiếm"
+    },
+    "addOrUpdate": {
+      "fullName": "Nhập họ và tên:",
+      "placeholderFullName": "Nguyễn Văn A",
+      "gender": "Giới tính:",
+      "dob": "Ngày sinh:",
+      "phoneNumber": "Số điện thoại:",
+      "placeholderPhoneNumber": "0987654321",
+      "email": "Nhập email:",
+      "placeholderEmail": "example@gmail.com",
+      "identityCardNumber": "Nhập căn cước công dân:",
+      "placeholderIdentityCardNumber": "123456789012",
+      "address": "Địa chỉ:",
+      "placeholderAddress": "Nhập địa chỉ"
+    },
+    "detail": {
+      "personalInfo": "Thông tin cá nhân",
+      "title": "Xem chi tiết khách thuê",
+      "subtitle": "Thông tin người thuê, hợp đồng và liên hệ",
+      "totalContract": "Tổng hợp đồng"
     }
   }
 }

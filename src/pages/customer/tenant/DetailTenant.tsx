@@ -6,10 +6,12 @@ import { ApiResponse, TenantDetailResponse } from "@/types";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { useEffect } from "react";
 import Image from "@/components/Image";
+import { useTranslation } from "react-i18next";
 
 const NA = "N/A";
 
 const DetailTenant = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
 
   const { data, isError } = useQuery<ApiResponse<TenantDetailResponse>>({
@@ -26,16 +28,16 @@ const DetailTenant = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Không thể tải thông tin khách thuê. Vui lòng thử lại sau.");
+      toast.error(t("tenant.detail.totalContract"));
       return;
     }
-  }, [isError]);
+  }, [isError, t]);
 
   return (
     <div className="bg-background rounded-sm w-full max-h-[90vh] flex flex-col">
       <div className="px-6 py-4 border-b border-border bg-gradient-to-r from-primary/80 to-primary text-white rounded-t-sm">
-        <h3 className="text-lg font-semibold">Xem chi tiết khách thuê</h3>
-        <p className="text-xs mt-1">Thông tin người thuê, hợp đồng và liên hệ</p>
+        <h3 className="text-lg font-semibold">{t("tenant.detail.title")}</h3>
+        <p className="text-xs mt-1">{t("tenant.detail.subtitle")}</p>
       </div>
       <div className="overflow-y-auto">
         <div className="bg-background md:gap-10 flex justify-center 2xl:flex-row flex-col md:px-20 px-5 items-center py-5 rounded-b-sm">
@@ -48,25 +50,38 @@ const DetailTenant = () => {
           <main className="flex lg:flex-row flex-col lg:gap-1 gap-5 items-start md:justify-start justify-center h-full w-full flex-1">
             <div className="flex flex-col w-full justify-between h-full">
               <div className="flex items-center w-full gap-2 mt-5 md:mt-0">
-                <span className="uppercase text-[12px] whitespace-nowrap">Thông tin cá nhân</span>
+                <span className="uppercase text-[12px] whitespace-nowrap">
+                  {t("tenant.detail.personalInfo")}
+                </span>
                 <div className="flex-1 h-px bg-border mr-10" />
               </div>
               <h3 className="md:text-[24px] text-[16px] font-semibold text-primary md:max-w-[100%] max-w-[80%] overflow-hidden whitespace-nowrap text-ellipsis">
-                Họ tên: {tenant?.fullName ?? NA}
+                {t("tenant.response.fullName")}: {tenant?.fullName ?? NA}
               </h3>
-              <span className="text-sm font-medium">Mã: {tenant?.customerCode ?? NA}</span>
-              <span className="text-sm font-medium">Giới tính: {tenant?.gender ?? NA}</span>
               <span className="text-sm font-medium">
-                Ngày sinh: {tenant?.dob ? new Date(tenant?.dob).toLocaleDateString("vi-VN") : NA}
+                {t("tenant.response.customerCode")}: {tenant?.customerCode ?? NA}
               </span>
-              <span className="text-sm font-medium">SĐT: {tenant?.phoneNumber ?? NA}</span>
-              <span className="text-sm font-medium">CCCD/CMT: {tenant?.identityCardNumber ?? NA}</span>
-              <span className="text-sm font-medium break-words whitespace-normal">Email: {tenant?.email ?? NA}</span>
-              <span className="text-sm font-medium break-words whitespace-normal">
-                Địa chỉ: {tenant?.address ?? NA}
+              <span className="text-sm font-medium">
+                {t("tenant.response.gender")}: {tenant?.gender ?? NA}
+              </span>
+              <span className="text-sm font-medium">
+                {t("tenant.response.dob")}:{" "}
+                {tenant?.dob ? new Date(tenant?.dob).toLocaleDateString("vi-VN") : NA}
+              </span>
+              <span className="text-sm font-medium">
+                {t("tenant.response.phoneNumber")}: {tenant?.phoneNumber ?? NA}
+              </span>
+              <span className="text-sm font-medium">
+                {t("tenant.response.identityCardNumber")}: {tenant?.identityCardNumber ?? NA}
               </span>
               <span className="text-sm font-medium break-words whitespace-normal">
-                Tổng hợp đồng: {tenant?.totalContract ?? NA}
+                {t("tenant.response.email")}: {tenant?.email ?? NA}
+              </span>
+              <span className="text-sm font-medium break-words whitespace-normal">
+                {t("tenant.response.address")}: {tenant?.address ?? NA}
+              </span>
+              <span className="text-sm font-medium break-words whitespace-normal">
+                {t("tenant.detail.totalContract")}: {tenant?.totalContract ?? NA}
               </span>
             </div>
           </main>
