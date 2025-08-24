@@ -591,7 +591,7 @@
     "title": "Tài sản phòng",
     "titleAdd": "Thêm tài sản phòng",
     "titleUpdate": "Cập nhật tài sản phòng",
-    "titleRoomInfo": "Room Information",
+    "titleRoomInfo": "Thông tin phòng",
     "titleHistory": "Lịch sử xóa tài sản phòng",
     "response": {
       "active": "Hoạt động",
@@ -654,6 +654,46 @@
       "total": "Tổng",
       "active": "Hoạt động",
       "inactive": "Không hoạt động"
+    }
+  },
+  "service": {
+    "title": "Dịch vụ",
+    "titleHistory": "Lịch sử xóa dịch vụ",
+    "priceFrom": "Giá từ: 1000",
+    "priceTo": "Tới: 2000",
+    "search": "Tìm kiếm",
+    "errorFetch": "Có lỗi xảy ra khi tải dịch vụ",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê tầng",
+    "response": {
+      "name": "Tên dịch vụ",
+      "actions": "Thao tác",
+      "category": "Loại dịch vụ",
+      "unit": "Đơn vị",
+      "price": "Giá",
+      "calculation": "Áp dụng theo",
+      "status": "Trạng thái",
+      "description": "Mô tả",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật"
+    },
+    "filter": {
+      "category": "-- Loại dịch vụ --",
+      "calculation": "-- Tính toán dịch vụ --",
+      "status": "-- Trạng thái --",
+      "minPrice": "Giá từ",
+      "maxPrice": "Tới",
+      "search": "Tìm kiếm"
+    },
+    "addOrUpdate": {
+      "name": "Tên dịch vụ:",
+      "placeholderName": "Quét dọn",
+      "serviceCategory": "Loại dịch vụ",
+      "serviceCalculation": "Tính toán dịch vụ",
+      "price": "Giá (VNĐ):",
+      "placeholderPrice": "3000000",
+      "status": "Trạng thái",
+      "description": "Mô tả:",
+      "placeholderDescription": "Nhập mô tả"
     }
   }
 }

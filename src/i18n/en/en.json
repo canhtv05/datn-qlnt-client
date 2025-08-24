@@ -655,5 +655,46 @@
       "active": "Active",
       "inactive": "Inactive"
     }
+  },
+  "service": {
+    "title": "Service",
+    "titleHistory": "Deleted Service History",
+    "priceFrom": "Price from: 1000",
+    "priceTo": "To: 2000",
+    "search": "Search",
+    "errorFetch": "An error occurred while loading the service.",
+    "errorFetchStatistics": "An error occurred while loading floor statistics.",
+    "response": {
+      "name": "Service Name",
+      "actions": "Actions",
+      "category": "Category",
+      "unit": "Unit",
+      "price": "Price",
+      "calculation": "Calculation",
+      "status": "Status",
+      "description": "Description",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At"
+    },
+    "filter": {
+      "category": "-- Service Category --",
+      "calculation": "-- Service Calculation --",
+      "status": "-- Status --",
+      "minPrice": "From",
+      "maxPrice": "To",
+      "search": "Search"
+    },
+
+    "addOrUpdate": {
+      "name": "Service Name:",
+      "placeholderName": "Cleaning",
+      "serviceCategory": "Service Category",
+      "serviceCalculation": "Service Calculation",
+      "price": "Price (VND):",
+      "placeholderPrice": "3000000",
+      "status": "Status",
+      "description": "Description:",
+      "placeholderDescription": "Enter description"
+    }
   }
 }

@@ -38,12 +38,12 @@ const AssetType = () => {
 
   const columnConfigs: ColumnConfig[] = [
     {
-      label: "Tên dịch vụ",
+      label: t("service.response.name"),
       accessorKey: "name",
       isSort: true,
     },
     {
-      label: "Thao tác",
+      label: t("service.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -65,7 +65,11 @@ const AssetType = () => {
                     <btn.icon className="text-white" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                <TooltipContent
+                  className="text-white"
+                  style={{ background: btn.arrowColor }}
+                  arrow={false}
+                >
                   <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
@@ -82,50 +86,50 @@ const AssetType = () => {
       ),
     },
     {
-      label: "Loại dịch vụ",
+      label: t("service.response.category"),
       accessorKey: "serviceCategory",
       isSort: true,
       isCenter: true,
       hasBadge: true,
     },
     {
-      label: "Đơn vị",
+      label: t("service.response.unit"),
       accessorKey: "unit",
       isSort: false,
       isCenter: true,
     },
     {
-      label: "Giá",
+      label: t("service.response.price"),
       accessorKey: "price",
       isSort: true,
     },
     {
-      label: "Áp dụng theo",
+      label: t("service.response.calculation"),
       accessorKey: "serviceCalculation",
       isSort: true,
       isCenter: true,
       hasBadge: true,
     },
     {
-      label: "Trạng thái",
+      label: t("service.response.status"),
       accessorKey: "status",
       isSort: true,
       isCenter: true,
       hasBadge: true,
     },
     {
-      label: "Mô tả",
+      label: t("service.response.description"),
       accessorKey: "description",
       isSort: false,
     },
     {
-      label: "Ngày tạo",
+      label: t("service.response.createdAt"),
       accessorKey: "createdAt",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ngày cập nhật",
+      label: t("service.response.updatedAt"),
       accessorKey: "updatedAt",
       isSort: true,
       hasDate: true,
@@ -150,12 +154,12 @@ const AssetType = () => {
           setRowSelection={setRowSelection}
         />
         <Modal
-          title="Dịch vụ"
+          title={t("service.title")}
           trigger={null}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
           onConfirm={handleUpdateFloor}
-          desc={Notice.UPDATE}
+          desc={t(Notice.UPDATE)}
         >
           <AddOrUpdateService
             handleChange={handleChange}
