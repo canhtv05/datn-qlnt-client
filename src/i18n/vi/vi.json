@@ -586,5 +586,74 @@
       "placeholderStatus": "-- Chọn trạng thái --",
       "placeholderDescription": "Nhập mô tả chi tiết"
     }
+  },
+  "roomAsset": {
+    "title": "Tài sản phòng",
+    "titleAdd": "Thêm tài sản phòng",
+    "titleUpdate": "Cập nhật tài sản phòng",
+    "titleRoomInfo": "Room Information",
+    "titleHistory": "Lịch sử xóa tài sản phòng",
+    "response": {
+      "active": "Hoạt động",
+      "inactive": "Không hoạt động",
+      "roomAssetCode": "Mã tài sản phòng",
+      "actions": "Thao tác",
+      "roomName": "Tên phòng",
+      "assetName": "Tên tài sản",
+      "quantity": "Số lượng",
+      "remainingQuantity": "Còn lại",
+      "status": "Trạng thái",
+      "description": "Mô tả",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật"
+    },
+    "filter": {
+      "status": "-- Trạng thái --",
+      "roomName": "-- Phòng --",
+      "assetName": "-- Tài sản --"
+    },
+    "labelFormat": "Tên: {{name}} - Còn: {{remaining}} - Giá: {{price}}",
+    "errorFetch": "Có lỗi xảy ra khi tải tài sản phòng",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê tài sản phòng",
+    "onlyOneAsset": "Chỉ được chọn 1 tài sản nếu đã chọn nhiều phòng.",
+
+    "totalRoomAssets": "Tổng số tài sản phòng",
+    "roomAssetsAvailable": "Tài sản phòng còn lại",
+    "addOrUpdate": {
+      "nameAsset": "Tên tài sản:",
+      "assetType": "Loại tài sản:",
+      "assetBeLongTo": "Tài sản thuộc về:",
+      "assetStatus": "Trạng thái:",
+      "price": "Giá (VNĐ):",
+      "quantity": "Số lượng:",
+      "remainingQuantity": "Còn lại:",
+      "descriptionAsset": "Mô tả:",
+      "placeholderRoom": "-- Chọn phòng --",
+      "labelRoom": "Phòng:",
+      "placeholderAsset": "-- Chọn tài sản --",
+      "labelAsset": "Tài sản:",
+      "placeholderAssetBeLongTo": "-- Chọn tài sản thuộc về --",
+      "labelAssetBeLongTo": "Tài sản thuộc về:",
+      "placeholderName": "Nhập tên tài sản",
+      "placeholderPrice": "3000000",
+      "placeholderQuantity": "10",
+      "placeholderRemaining": "5",
+      "placeholderAssetType": "-- Chọn loại tài sản --",
+      "placeholderAssetStatus": "-- Chọn trạng thái --",
+      "placeholderDescription": "Nhập mô tả chi tiết",
+      "placeholderBuilding": "-- Chọn tòa nhà --",
+      "labelBuilding": "Tòa nhà:",
+      "placeholderSearch": "Tìm kiếm"
+    },
+    "bulkAddGuide": {
+      "title": "Có 2 lựa chọn:",
+      "option1": "Chọn nhiều phòng và 1 tài sản",
+      "option2": "Chọn nhiều tài sản và 1 phòng"
+    },
+    "stats": {
+      "total": "Tổng",
+      "active": "Hoạt động",
+      "inactive": "Không hoạt động"
+    }
   }
 }

@@ -586,5 +586,74 @@
       "placeholderStatus": "-- Select status --",
       "placeholderDescription": "Enter detailed description"
     }
+  },
+  "roomAsset": {
+    "title": "Room Asset",
+    "titleAdd": "Add Room Asset",
+    "titleUpdate": "Update Room Asset",
+    "titleRoomInfo": "Room Information",
+    "titleHistory": "Deleted Room Asset History",
+    "response": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "roomAssetCode": "Room Asset Code",
+      "actions": "Actions",
+      "roomName": "Room Name",
+      "assetName": "Asset Name",
+      "quantity": "Quantity",
+      "remainingQuantity": "Remaining",
+      "status": "Status",
+      "description": "Description",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At"
+    },
+    "filter": {
+      "status": "-- Status --",
+      "roomName": "-- Room --",
+      "assetName": "-- Asset --"
+    },
+    "labelFormat": "Name: {{name}} - Remaining: {{remaining}} - Price: {{price}}",
+    "errorFetch": "An error occurred while fetching room assets",
+    "errorFetchStatistics": "An error occurred while fetching room asset statistics",
+    "onlyOneAsset": "Only one asset can be selected if multiple rooms are chosen.",
+    "onlyOneRoom": "Only one room can be selected if multiple assets are chosen.",
+    "totalRoomAssets": "Total Room Assets",
+    "roomAssetsAvailable": "Available Room Assets",
+    "addOrUpdate": {
+      "nameAsset": "Asset Name:",
+      "assetType": "Asset Type:",
+      "assetBeLongTo": "Belongs To:",
+      "assetStatus": "Status:",
+      "price": "Price (VND):",
+      "quantity": "Quantity:",
+      "remainingQuantity": "Remaining:",
+      "descriptionAsset": "Description:",
+      "placeholderRoom": "-- Select room --",
+      "labelRoom": "Room:",
+      "placeholderAsset": "-- Select asset --",
+      "labelAsset": "Asset:",
+      "placeholderAssetBeLongTo": "-- Select asset belongs to --",
+      "labelAssetBeLongTo": "Asset belongs to:",
+      "placeholderName": "Enter asset name",
+      "placeholderPrice": "3000000",
+      "placeholderQuantity": "10",
+      "placeholderRemaining": "5",
+      "placeholderAssetType": "-- Select asset type --",
+      "placeholderAssetStatus": "-- Select status --",
+      "placeholderDescription": "Enter detailed description",
+      "placeholderBuilding": "-- Select building --",
+      "labelBuilding": "Building:",
+      "placeholderSearch": "Search"
+    },
+    "bulkAddGuide": {
+      "title": "There are 2 options:",
+      "option1": "Select multiple rooms and 1 asset",
+      "option2": "Select multiple assets and 1 room"
+    },
+    "stats": {
+      "total": "Total",
+      "active": "Active",
+      "inactive": "Inactive"
+    }
   }
 }

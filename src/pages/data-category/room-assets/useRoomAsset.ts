@@ -13,6 +13,7 @@ import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -21,6 +22,7 @@ interface AssetProps {
 }
 
 export const useRoomAsset = ({ roomId }: AssetProps) => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
@@ -136,7 +138,8 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
 
   const updateRoomAssetMutation = useMutation({
     mutationKey: ["update-room-assets"],
-    mutationFn: async (payload: IUpdateRoomAsset) => await httpRequest.put(`/asset-rooms/${idRef.current}`, payload),
+    mutationFn: async (payload: IUpdateRoomAsset) =>
+      await httpRequest.put(`/asset-rooms/${idRef.current}`, payload),
     onError: (error) => {
       handleMutationError(error);
     },
@@ -152,29 +155,34 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
     mutationFn: async (id: string) => await httpRequest.put(`/asset-rooms/toggle/${id}`),
   });
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>({
-    onConfirm: async ({ id, type }) => {
-      if (type === "delete") return await handleRemoveRoomAssetById(id);
-      if (type === "status") return await handleToggleStatusRoomAssetById(id);
-      return false;
-    },
-  });
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>(
+    {
+      onConfirm: async ({ id, type }) => {
+        if (type === "delete") return await handleRemoveRoomAssetById(id);
+        if (type === "status") return await handleToggleStatusRoomAssetById(id);
+        return false;
+      },
+    }
+  );
 
   const handleToggleStatusRoomAssetById = async (id: string): Promise<boolean> => {
     try {
       await toggleStatusRoomAssetMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
           });
           queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
         },
       });
       return true;
@@ -189,16 +197,19 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
       await removeRoomAssetMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
           });
           queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -213,16 +224,19 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
       await updateRoomAssetMutation.mutateAsync(value as IUpdateRoomAsset, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
           });
           queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
         },
       });
 
@@ -233,7 +247,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
       handleZodErrors(error);
       return false;
     }
-  }, [updateRoomAssetMutation, value, clearErrors, queryClient, handleZodErrors]);
+  }, [updateRoomAssetMutation, value, clearErrors, queryClient, handleZodErrors, t]);
 
   const handleActionClick = useCallback(
     (assetRooms: AssetResponse, action: "update" | "status" | "delete") => {
@@ -252,7 +266,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
           { id: assetRooms.id, type: action },
           {
             type: "warn",
-            desc: Notice.REMOVE,
+            desc: t(Notice.REMOVE),
           }
         );
       } else if (action === "status") {
@@ -260,12 +274,12 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
           { id: assetRooms.id, type: action },
           {
             type: "default",
-            desc: Notice.TOGGLE_STATUS,
+            desc: t(Notice.TOGGLE_STATUS),
           }
         );
       }
     },
-    [openDialog]
+    [openDialog, t]
   );
 
   const props = {
@@ -277,7 +291,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải tài sản phòng");
+      toast.error(t("roomAsset.errorFetch"));
     }
 
     // if (isStatisticsError) {

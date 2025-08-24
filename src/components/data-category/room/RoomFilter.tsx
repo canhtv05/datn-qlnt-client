@@ -100,7 +100,7 @@ const RoomFilter = ({ props, type }: { props: RoomFilterProps; type: "default" |
             placeholder={t("room.filter.status")}
             labelSelect={t("room.response.status")}
             data={[
-              { label: t("statusBadge.roomStatus.active"), value: RoomStatus.TRONG },
+              { label: t("statusBadge.roomStatus.empty"), value: RoomStatus.TRONG },
               {
                 label: t("statusBadge.roomStatus.renting"),
                 value: RoomStatus.DANG_THUE,
