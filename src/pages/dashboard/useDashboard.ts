@@ -1,3 +1,4 @@
+import useHighestRole from "@/hooks/useHighestRole";
 import { ApiResponse, NotificationFilter, NotificationResponse } from "@/types";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
@@ -7,6 +8,7 @@ import { useSearchParams } from "react-router-dom";
 
 export default function useDashBoard() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const highestRole = useHighestRole();
 
   const {
     query = "",
@@ -48,7 +50,9 @@ export default function useDashBoard() {
         if (value) params[key] = value;
       });
 
-      const res = await httpRequest.get(`/notifications`, {
+      const endpoint = highestRole === "USER" ? "/my-recipient" : "";
+
+      const res = await httpRequest.get(`/notifications${endpoint}`, {
         params: { page: pageParam, size: 15, ...filterValues },
       });
       return res.data;

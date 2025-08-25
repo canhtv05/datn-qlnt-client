@@ -79,12 +79,13 @@ export const useProfile = () => {
       setTmpImg(data.data.data.profilePicture ?? "");
 
       if (checkUser(data.data.data, false) && location.state.background.pathname === "/update-profile") {
-        const roles: RoleType[] = data.data.data?.roles.map((r) => r.name as RoleType) ?? [];
+        // const roles: RoleType[] = data.data.data?.roles.map((r) => r.name as RoleType) ?? [];
 
-        const highestRole = getHighestRole(roles);
+        // const highestRole = getHighestRole(roles);
 
-        const target = highestRole === "MANAGER" || highestRole === "ADMIN" ? "/dashboard" : "/room";
-        navigate(target, { replace: true, state: null });
+        // const target = highestRole === "MANAGER" || highestRole === "ADMIN" ? "/dashboard" : "/room";
+        // navigate(target, { replace: true, state: null });
+        navigate("/dashboard", { replace: true, state: null });
       }
       toast.success(t(Status.UPDATE_SUCCESS));
     },

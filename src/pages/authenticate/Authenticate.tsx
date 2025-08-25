@@ -10,8 +10,8 @@ import { useAuthStore } from "@/zustand/authStore";
 import { Status } from "@/enums";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { ApiResponse, UserResponse } from "@/types";
-import { RoleType } from "@/hooks/useHighestRole";
-import { checkUser, getHighestRole } from "@/lib/utils";
+// import { RoleType } from "@/hooks/useHighestRole";
+import { checkUser } from "@/lib/utils";
 import cookieUtil from "@/utils/cookieUtil";
 
 const Authenticate = () => {
@@ -47,19 +47,19 @@ const Authenticate = () => {
       setShowSuccessScreen(true);
       const timer = setTimeout(() => {
         setUser(data.data.data, true);
-        const roles: RoleType[] = data.data.data.roles.map((r) => r.name as RoleType);
+        // const roles: RoleType[] = data.data.data.roles.map((r) => r.name as RoleType);
 
-        const highestRole = getHighestRole(roles);
+        // const highestRole = getHighestRole(roles);
 
         if (checkUser(data.data.data, isLoading) === false) {
           navigate("/update-profile", { replace: true });
         }
 
-        if (highestRole === "USER") {
-          navigate("/room");
-        } else {
-          navigate("/dashboard");
-        }
+        // if (highestRole === "USER") {
+        //   navigate("/room");
+        // } else {
+        navigate("/dashboard");
+        // }
       }, 1000);
 
       return () => clearTimeout(timer);

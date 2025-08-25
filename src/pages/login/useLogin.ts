@@ -10,8 +10,8 @@ import cookieUtil from "@/utils/cookieUtil";
 import { useFormErrors } from "@/hooks/useFormErrors";
 import { handleMutationError } from "@/utils/handleMutationError";
 import configs from "@/configs";
-import { RoleType } from "@/hooks/useHighestRole";
-import { checkUser, getHighestRole } from "@/lib/utils";
+// import { RoleType } from "@/hooks/useHighestRole";
+import { checkUser } from "@/lib/utils";
 import axios from "axios";
 
 interface LoginValue {
@@ -59,19 +59,19 @@ export const useLogin = () => {
       };
       cookieUtil.setStorage(token);
 
-      const roles: RoleType[] = data.data.roles.map((r) => r.name as RoleType);
+      // const roles: RoleType[] = data.data.roles.map((r) => r.name as RoleType);
 
-      const highestRole = getHighestRole(roles);
+      // const highestRole = getHighestRole(roles);
 
       if (checkUser(data.data, false) === false) {
         navigate("/update-profile", { replace: true });
       }
 
-      if (highestRole === "USER") {
-        navigate("/room");
-      } else {
-        navigate("/dashboard");
-      }
+      // if (highestRole === "USER") {
+      //   navigate("/room");
+      // } else {
+      navigate("/dashboard");
+      // }
     },
     onError: (error) => {
       handleMutationError(error);

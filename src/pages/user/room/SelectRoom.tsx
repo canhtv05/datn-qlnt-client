@@ -32,7 +32,6 @@ const SelectRoom = () => {
     queryKey: ["room-by-tenant"],
     queryFn: async () => {
       const res = await httpRequest.get("/rooms/by-tenant");
-      console.log(res.data);
       return res.data;
     },
     retry: 1,
