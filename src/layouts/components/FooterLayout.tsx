@@ -1,6 +1,6 @@
-import RenderIf from "@/components/RenderIf";
+// import RenderIf from "@/components/RenderIf";
 import { Button } from "@/components/ui/button";
-import { useSidebar } from "@/components/ui/sidebar";
+// import { useSidebar } from "@/components/ui/sidebar";
 import { LucideIcon, MailPlus } from "lucide-react";
 
 const items: { label: string; icon: LucideIcon; style: "primary" | "orange" }[] = [
@@ -17,46 +17,46 @@ const items: { label: string; icon: LucideIcon; style: "primary" | "orange" }[] 
 ];
 
 const FooterLayout = () => {
-  const { isMobile } = useSidebar();
+  // const { isMobile } = useSidebar();
 
   return (
-    <RenderIf value={!isMobile}>
-      <footer className="py-3 px-4 flex justify-between border-t items-center">
-        <h1 className="text-[12px] text-primary">
-          <span className="text-primary">&copy; </span>
-          2025 TroHub
-        </h1>
-        <div className="flex gap-2 items-center">
-          {items.map((item, index) => (
-            <a href="https://zalo.me/0981635840">
-              <Button
-                key={index}
-                variant="outline"
-                size="sm"
-                className={`group hover:text-white ${
-                  item.style === "primary"
-                    ? "hover:shadow-primary dark:hover:bg-primary hover:bg-primary border-primary dark:border-primary"
-                    : "hover:shadow-[0_8px_25px_-8px_#ff9f43] hover:bg-[#ff9f43] border-[#ff9f43] dark:border-[#ff9f43] dark:hover:bg-[#ff9f43]"
-                } flex items-center gap-2`}
+    // <RenderIf value={!isMobile}>
+    <footer className="py-3 px-4 flex justify-between border-t items-center">
+      <h1 className="text-[12px] text-primary">
+        <span className="text-primary">&copy; </span>
+        2025 TroHub
+      </h1>
+      <div className="flex gap-2 items-center">
+        {items.map((item, index) => (
+          <a key={index} href={`https://zalo.me/0981635840`} target="_blank" rel="noopener noreferrer">
+            <Button
+              key={index}
+              variant="outline"
+              size="sm"
+              className={`group hover:text-white ${
+                item.style === "primary"
+                  ? "hover:shadow-primary dark:hover:bg-primary hover:bg-primary border-primary dark:border-primary"
+                  : "hover:shadow-[0_8px_25px_-8px_#ff9f43] hover:bg-[#ff9f43] border-[#ff9f43] dark:border-[#ff9f43] dark:hover:bg-[#ff9f43]"
+              } flex items-center gap-2`}
+            >
+              <item.icon
+                className={`group-hover:stroke-white ${
+                  item.style === "primary" ? "stroke-primary" : "stroke-[#ff9f43]"
+                }`}
+              />
+              <span
+                className={`text-[12px] group-hover:text-white ${
+                  item.style === "primary" ? "text-primary" : "text-[#ff9f43]"
+                }`}
               >
-                <item.icon
-                  className={`group-hover:stroke-white ${
-                    item.style === "primary" ? "stroke-primary" : "stroke-[#ff9f43]"
-                  }`}
-                />
-                <span
-                  className={`text-[12px] group-hover:text-white ${
-                    item.style === "primary" ? "text-primary" : "text-[#ff9f43]"
-                  }`}
-                >
-                  {item.label}
-                </span>
-              </Button>
-            </a>
-          ))}
-        </div>
-      </footer>
-    </RenderIf>
+                {item.label}
+              </span>
+            </Button>
+          </a>
+        ))}
+      </div>
+    </footer>
+    // </RenderIf>
   );
 };
 

@@ -8,7 +8,7 @@ import { RoleType } from "@/hooks/useHighestRole";
 import { useAuthStore } from "@/zustand/authStore";
 import { checkUser, getHighestRole } from "@/lib/utils";
 import RenderIf from "@/components/RenderIf";
-// import FooterLayout from "../components/FooterLayout";
+import FooterLayout from "../components/FooterLayout";
 
 const DefaultLayout = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
@@ -36,7 +36,7 @@ const DefaultLayout = ({ children }: { children: ReactNode }) => {
             </RenderIf>
             {children}
           </main>
-          {/* <FooterLayout /> */}
+          <FooterLayout />
         </SidebarInset>
       </div>
     </SidebarProvider>

@@ -82,6 +82,8 @@ const UserInvoice = lazy(() => import("@/pages/user/invoice"));
 const UserInvoicePayment = lazy(() => import("@/components/finance/invoice/InvoicePayment"));
 const PaymentCallbackVnPay = lazy(() => import("@/pages/payment-callback"));
 
+const NotFound = lazy(() => import("@/pages/not-found"));
+
 const publicRoutes: RouteType[] = [
   /* AUTH */
   {
@@ -403,6 +405,11 @@ const privateRoutes: RouteType[] = [
 ];
 
 const unprotectedRoutes: RouteType[] = [
+  {
+    path: "*",
+    component: NotFound,
+    layout: null,
+  },
   /*HOME là public */
   {
     path: configs.routes.home.home,
