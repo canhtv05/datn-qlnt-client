@@ -2,13 +2,13 @@ import { FC, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
-import agencyImg from "@/assets/imgs/admin.webp";
-import sketchImg from "@/assets/imgs/shadcn.webp";
-import candyImg from "@/assets/svg/login-v2.72cd8a26.svg";
-import img4 from "@/assets/imgs/Profile_avatar_placeholder_large.webp";
-import img5 from "@/assets/imgs/bed.webp";
+import p1 from "@/assets/imgs/p1.webp";
+import p2 from "@/assets/imgs/p2.webp";
+import p3 from "@/assets/imgs/p3.webp";
+import p4 from "@/assets/imgs/p4.webp";
+import p5 from "@/assets/imgs/p5.webp";
 
-const IMAGES = [candyImg, sketchImg, agencyImg, img4, img5];
+const IMAGES = [p1, p2, p3, p4, p5];
 
 const Slider: FC = () => {
   const [active, setActive] = useState<number | null>(null);
@@ -58,8 +58,7 @@ const Slider: FC = () => {
                   active === i ? "scale-100 opacity-100" : "scale-0 opacity-0"
                 }`}
                 style={{
-                  boxShadow:
-                    active === i ? "0 0 14px rgba(34,197,94,0.6)" : undefined,
+                  boxShadow: active === i ? "0 0 14px rgba(34,197,94,0.6)" : undefined,
                 }}
               >
                 Xem chi tiết

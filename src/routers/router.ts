@@ -106,6 +106,11 @@ const publicRoutes: RouteType[] = [
     component: Authenticate,
     layout: null,
   },
+  {
+    path: "*",
+    component: NotFound,
+    layout: null,
+  },
 ];
 
 const privateRoutes: RouteType[] = [
@@ -400,6 +405,11 @@ const privateRoutes: RouteType[] = [
     path: configs.routes.user.paymentCallback,
     component: PaymentCallbackVnPay,
     allowedRoles: ["USER"],
+    layout: null,
+  },
+  {
+    path: "*",
+    component: NotFound,
     layout: null,
   },
 ];

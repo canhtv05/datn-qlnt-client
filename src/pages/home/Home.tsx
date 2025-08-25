@@ -9,11 +9,11 @@ import MotionFadeIn from "@/components/ui/MotionFadeIn";
 
 const Home = () => {
   return (
-    <div className="overflow-x-hidden">
+    <div className="overflow-hidden">
       <Navbar />
       <HeroSection />
-        <Slider />
-        <FeaturesSection />
+      <Slider />
+      <FeaturesSection />
       <HowItWorks />
       <MotionFadeIn delay={0.4} y={100}>
         <CallToAction />

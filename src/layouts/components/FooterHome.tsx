@@ -16,8 +16,8 @@ const Footer = () => {
             <div>
               <Logo className="text-3xl mb-4" />
               <p className="text-base text-gray-700 leading-7 font-bold">
-                Nền tảng hỗ trợ quản lý nhà trọ toàn diện, giúp bạn theo dõi
-                khách thuê, hóa đơn, hợp đồng và nhiều hơn thế nữa.
+                Nền tảng hỗ trợ quản lý nhà trọ toàn diện, giúp bạn theo dõi khách thuê, hóa đơn, hợp đồng và nhiều hơn
+                thế nữa.
               </p>
             </div>
           </MotionFadeUp>
@@ -43,9 +43,7 @@ const Footer = () => {
           </MotionFadeUp>
           <MotionFadeUp delay={0.3}>
             <div>
-              <h4 className="text-lg font-bold text-green-600 mb-1">
-                Mạng xã hội
-              </h4>
+              <h4 className="text-lg font-bold text-green-600 mb-1">Mạng xã hội</h4>
               <div className="w-25 h-1 bg-green-600 mb-4 rounded"></div>
               <div className="flex gap-4 flex-wrap">
                 {[
@@ -59,13 +57,13 @@ const Footer = () => {
                     icon: <SiZalo />,
                     name: "Zalo",
                     color: "bg-[#0068ff]",
-                    link: "https://zalo.me/", 
+                    link: "https://zalo.me/",
                   },
                   {
                     icon: <TbBrandTiktok />,
                     name: "TikTok",
                     color: "bg-black",
-                    link: "https://www.tiktok.com/", 
+                    link: "https://www.tiktok.com/",
                   },
                   {
                     icon: <FaYoutube />,
@@ -90,9 +88,7 @@ const Footer = () => {
           </MotionFadeUp>
           <MotionFadeUp delay={0.4}>
             <div>
-              <h4 className="text-lg font-bold text-green-600 mb-1">
-                Liên kết
-              </h4>
+              <h4 className="text-lg font-bold text-green-600 mb-1">Liên kết</h4>
               <div className="w-16 h-1 bg-green-600 mb-4 rounded"></div>
               <ul className="space-y-3 text-base font-bold text-gray-700">
                 {[
@@ -103,10 +99,7 @@ const Footer = () => {
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-2">
                     <FaChevronRight className="text-green-600 text-sm" />
-                    <Link
-                      to={item.to}
-                      className="hover:text-green-600 transition-colors"
-                    >
+                    <Link to={item.to} className="hover:text-green-600 transition-colors">
                       {item.label}
                     </Link>
                   </li>
@@ -120,14 +113,11 @@ const Footer = () => {
         <div className="mt-10 border-t border-gray-200 pt-4 pb-6 text-sm text-gray-500 text-center px-4">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-2 max-w-7xl mx-auto">
             <span>
-              © {new Date().getFullYear()}{" "}
-              <span className="font-bold text-green-600">QLNhàTrọ</span>. All
-              rights reserved.
+              © {new Date().getFullYear()} <span className="font-bold text-green-600">QLNhàTrọ</span>. All rights
+              reserved.
             </span>
             <div className="flex gap-4 font-medium">
-              <Link to="/terms" className="hover:text-green-600">
-                Điều khoản
-              </Link>
+              <span className="hover:text-green-600">Điều khoản</span>
               <Link to="/policy" className="hover:text-green-600">
                 Chính sách
               </Link>
