@@ -76,6 +76,15 @@ export const formatDate = (date: Date | string): string => {
   }).format(d);
 };
 
+export const formatLocalDate = (date: Date | string): string => {
+  if (!date) return "";
+
+  const d = new Date(date);
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+
+  return d.toISOString().split("T")[0];
+};
+
 export const formatNumber = (number: number | string): string | number => {
   return number.toLocaleString(lang);
 };

@@ -502,6 +502,43 @@ export const createContractVehicleSchema = z.object({
   contractId: z.string().min(1, "Không có mã hợp đồng"),
 });
 
+export const extendContractSchema = z
+  .object({
+    newEndDate: z
+      .string()
+      .refine((val) => {
+        return !isNaN(Date.parse(val));
+      }, "Ngày gia hạn không hợp lệ")
+      .transform((val) => new Date(val)),
+    oldEndDate: z
+      .string()
+      .refine((val) => {
+        return !isNaN(Date.parse(val));
+      }, "Ngày hạn hết cũ không hợp lệ")
+      .transform((val) => new Date(val)),
+  })
+  .refine(
+    (data) => {
+      const { newEndDate, oldEndDate } = data;
+      const minEndDate = new Date(oldEndDate);
+      minEndDate.setMonth(minEndDate.getMonth() + 3);
+      return newEndDate >= minEndDate;
+    },
+    {
+      message: "Ngày gia hạn phải cách ngày kết thúc cũ ít nhất 3 tháng",
+      path: ["newEndDate"],
+    }
+  );
+
+export const noticeContractSchema = z.object({
+  newEndDate: z
+    .string()
+    .refine((val) => {
+      return !isNaN(Date.parse(val));
+    }, "Ngày báo trước không hợp lệ")
+    .transform((val) => new Date(val)),
+});
+
 /* SERVICE */
 export const createOrUpdateService = z.object({
   name: z.string().min(1, "Không được để trống tên dịch vụ"),

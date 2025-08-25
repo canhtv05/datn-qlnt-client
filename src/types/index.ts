@@ -1320,3 +1320,8 @@ export interface ContractVehicleFilter {
   vehicleType: string | VehicleType;
   vehicleStatus: string | VehicleStatus;
 }
+
+export interface ContractExtendAndTerminateRequest {
+  newEndDate: string | Date;
+  oldEndDate: string | Date;
+}
