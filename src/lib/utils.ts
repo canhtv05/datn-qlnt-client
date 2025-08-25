@@ -478,3 +478,55 @@ export const parseDate = (dateStr: string) => {
   const [day, month, year] = dateStr.split("/").map(Number);
   return new Date(year, month - 1, day);
 };
+
+export const genderToString = (gender: Gender | undefined) => {
+  switch (gender) {
+    case Gender.MALE:
+      return "Nam";
+    case Gender.FEMALE:
+      return "Nữ";
+    case Gender.OTHER:
+      return "Khác";
+    case Gender.UNKNOWN:
+    default:
+      return "N/A";
+  } 
+};
+
+export const tenantStatusToString = (status: TenantStatus | undefined) => {
+  switch (status) {
+    case TenantStatus.DANG_THUE:
+      return "Đang thuê";
+    case TenantStatus.DA_TRA_PHONG:
+      return "Đã trả phòng";
+    case TenantStatus.CHO_TAO_HOP_DONG:
+      return "Chờ tạo hợp đồng";
+    case TenantStatus.KHOA:
+      return "Khóa";
+    case TenantStatus.HUY_BO:
+      return "Hủy bỏ";
+    default:
+      return "N/A";
+  }
+
+};
+export const assetStatusToString = (status: AssetStatus | string) => {
+  switch (status) {
+    case AssetStatus.HU_HONG:
+      return "Hư hỏng";
+    case AssetStatus.CAN_BAO_TRI:
+      return "Cần bảo trì";
+    case AssetStatus.THAT_LAC:
+      return "Thất lạc";
+    case AssetStatus.DA_THANH_LY:
+      return "Đã thanh lý";
+    case AssetStatus.KHONG_SU_DUNG:
+      return "Không sử dụng";
+    case AssetStatus.HOAT_DONG:
+      return "Hoạt động";
+    case AssetStatus.HUY:
+      return "Hủy";
+    default:
+      return "N/A";
+  }
+};

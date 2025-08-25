@@ -25,7 +25,7 @@ const AuthLayout = lazy(() => import("@/layouts/AuthLayout"));
 /* MODALS */
 const Profile = lazy(() => import("@/pages/profile"));
 const DetailTenant = lazy(() => import("@/pages/customer/tenant/DetailTenant"));
-const RoomMembers = lazy(() => import("@/pages/user/members"));
+const RoomMembers = lazy(() => import("@/pages/user/room/SelectRoom"));
 const RoomDetail = lazy(() => import("@/pages/user/room-detail"));
 
 /* DASHBOARD */
@@ -81,7 +81,10 @@ const UserPaymentReceipt = lazy(() => import("@/pages/user/payment-receipt"));
 const UserInvoice = lazy(() => import("@/pages/user/invoice"));
 const UserInvoicePayment = lazy(() => import("@/components/finance/invoice/InvoicePayment"));
 const PaymentCallbackVnPay = lazy(() => import("@/pages/payment-callback"));
-
+const MemberDetail = lazy(() => import("@/pages/user/members/RoomMembers"));
+const AssetsDetail  = lazy(() => import("@/pages/user/Asset/Viewassets"));
+const ServiceDetail= lazy(() => import("@/pages/user/Service/ViewService"));
+const VehicleDetail= lazy(() => import("@/pages/user/Vehicle/ViewVehicle"));
 const publicRoutes: RouteType[] = [
   /* AUTH */
   {
@@ -399,6 +402,46 @@ const privateRoutes: RouteType[] = [
     component: PaymentCallbackVnPay,
     allowedRoles: ["USER"],
     layout: null,
+  },
+  {
+    path: configs.routes.user.members,
+    component: SelectRoom,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.membersId,
+    component: MemberDetail,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.asserts,
+    component: SelectRoom,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.assertsId,
+    component: AssetsDetail,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.service,
+    component: SelectRoom,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.serviceId,
+    component: ServiceDetail,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.vehicles,
+    component: SelectRoom,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.vehiclesId,
+    component: VehicleDetail,
+    allowedRoles: ["USER"],
   },
 ];
 

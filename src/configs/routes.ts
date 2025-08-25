@@ -85,6 +85,12 @@ const routes = {
     paymentCallback: "/payments/payment-callback",
     members: "/members",
     membersId: "/members/:id",
+    asserts: "/assets",
+    assertsId: "/assets/:id",
+    service: "/service",
+    serviceId: "/service/:id",
+    vehicles: "/vehicle",
+    vehiclesId: "/vehicle/:id",
   },
 };
 

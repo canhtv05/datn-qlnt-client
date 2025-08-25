@@ -522,6 +522,7 @@ export type RoomAssetResponse = {
 
 /* VEHICLE */
 export interface VehicleResponse extends AbstractResponse {
+  id: string;
   fullName: string;
   vehicleType: VehicleType;
   licensePlate: string;
@@ -580,6 +581,7 @@ export default interface TenantResponse {
   phoneNumber: string;
   tenantStatus: TenantStatus;
   contracts: ContractResponse[];
+  isRepresentative: boolean;
 }
 
 export interface TenantDetailResponse extends AbstractResponse {
