@@ -13,10 +13,12 @@ import { queryFilter } from "@/utils/queryFilter";
 import { useQuery } from "@tanstack/react-query";
 import { CircleCheck, Puzzle, XCircle } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useServiceRoom = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
@@ -101,7 +103,9 @@ export const useServiceRoom = () => {
     retry: 1,
   });
 
-  const { data: serviceRoomInit, isError: isErrorServiceRoom } = useQuery<ApiResponse<CreateRoomServiceInitResponse>>({
+  const { data: serviceRoomInit, isError: isErrorServiceRoom } = useQuery<
+    ApiResponse<CreateRoomServiceInitResponse>
+  >({
     queryKey: ["room-services-init", id],
     queryFn: async () => {
       const res = await httpRequest.get("/service-rooms/init", { params: { buildingId: id } });
@@ -111,7 +115,9 @@ export const useServiceRoom = () => {
     enabled: !!id,
   });
 
-  const { data: statistics, isError: isStatisticsError } = useQuery<ApiResponse<ServiceRoomStatistics>>({
+  const { data: statistics, isError: isStatisticsError } = useQuery<
+    ApiResponse<ServiceRoomStatistics>
+  >({
     queryKey: ["service-rooms-statistics"],
     queryFn: async () => {
       const res = await httpRequest.get(`/service-rooms/statistics/${id}`);
@@ -121,7 +127,9 @@ export const useServiceRoom = () => {
     enabled: !!id,
   });
 
-  const { data: buildingData, isError: isBuildingError } = useQuery<ApiResponse<IBuildingCardsResponse[]>>({
+  const { data: buildingData, isError: isBuildingError } = useQuery<
+    ApiResponse<IBuildingCardsResponse[]>
+  >({
     queryKey: ["buildings-cards"],
     queryFn: async () => {
       const res = await httpRequest.get("/buildings/cards");
@@ -176,17 +184,17 @@ export const useServiceRoom = () => {
   const dataServices: StatisticCardType[] = [
     {
       icon: Puzzle,
-      label: "Tổng",
+      label: t("serviceRoom.response.totalServices"),
       value: statistics?.data.total ?? 0,
     },
     {
       icon: CircleCheck,
-      label: "Hoạt động",
+      label: t("statusBadge.serviceStatus.active"),
       value: statistics?.data.active ?? 0,
     },
     {
       icon: XCircle,
-      label: "Không hoạt động",
+      label: t("statusBadge.serviceStatus.inactive"),
       value: statistics?.data.paused ?? 0,
     },
   ];
@@ -202,25 +210,25 @@ export const useServiceRoom = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải dịch vụ sản phòng");
+      toast.error(t("serviceRoom.errorFetch"));
     }
 
     if (isErrorServiceRoom) {
-      toast.error("Không lấy được dữ liệu phòng và dịch vụ");
+      toast.error(t("serviceRoom.errorFetchRoomAndService"));
     }
 
     if (isStatisticsError) {
-      toast.error("Không lấy được dữ liệu thống kê");
+      toast.error(t("serviceRoom.errorFetchStatistics"));
     }
 
     if (isBuildingError) {
-      toast.error("Không lấy được dữ liệu tòa nhà");
+      toast.error(t("building.errorFetch"));
     }
 
     if (isFloorsError) {
-      toast.error("Không lấy được dữ liệu tầng");
+      toast.error(t("floor.errorFetch"));
     }
-  }, [isBuildingError, isError, isErrorServiceRoom, isFloorsError, isStatisticsError]);
+  }, [isBuildingError, isError, isErrorServiceRoom, isFloorsError, isStatisticsError, t]);
 
   return {
     query: {

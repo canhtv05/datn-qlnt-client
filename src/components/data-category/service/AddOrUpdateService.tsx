@@ -4,6 +4,7 @@ import TextareaLabel from "@/components/TextareaLabel";
 import { ServiceCalculation, ServiceCategory, ServiceStatus } from "@/enums";
 import { ServiceCreationRequest, ServiceUpdateRequest } from "@/types";
 import { Dispatch } from "react";
+import { useTranslation } from "react-i18next";
 
 interface AddServiceProps {
   value: ServiceCreationRequest;
@@ -23,14 +24,21 @@ interface UpdateServiceProps {
 
 type AddOrUpdateServiceProps = AddServiceProps | UpdateServiceProps;
 
-const AddOrUpdateService = ({ value, handleChange, setValue, errors, type }: AddOrUpdateServiceProps) => {
+const AddOrUpdateService = ({
+  value,
+  handleChange,
+  setValue,
+  errors,
+  type,
+}: AddOrUpdateServiceProps) => {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-3">
       <InputLabel
         id="name"
         name="name"
-        placeholder="Quét dọn"
-        label="Tên dịch vụ:"
+        placeholder={t("service.addOrUpdate.placeholderName")}
+        label={t("service.addOrUpdate.name")}
         required
         value={value.name ?? ""}
         onChange={handleChange}
@@ -38,25 +46,26 @@ const AddOrUpdateService = ({ value, handleChange, setValue, errors, type }: Add
       />
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full items-end">
         <FieldsSelectLabel
-          label="Loại dịch vụ"
-          placeholder="-- Loại dịch vụ --"
-          labelSelect="Loại dịch vụ"
+          label={t("service.addOrUpdate.serviceCategory")}
+          placeholder={t("service.filter.category")}
+          labelSelect={t("service.addOrUpdate.serviceCategory")}
           data={[
-            { label: "An ninh", value: ServiceCategory.AN_NINH },
-            { label: "Bảo trì", value: ServiceCategory.BAO_TRI },
-            { label: "Điện", value: ServiceCategory.DIEN },
-            { label: "Giặt sấy", value: ServiceCategory.GIAT_SAY },
-            { label: "Gửi xe", value: ServiceCategory.GUI_XE },
-            { label: "Internet", value: ServiceCategory.INTERNET },
-            { label: "Nước", value: ServiceCategory.NUOC },
-            { label: "Thang máy", value: ServiceCategory.THANG_MAY },
-            { label: "Tiền phòng", value: ServiceCategory.TIEN_PHONG },
-            { label: "Vệ sinh", value: ServiceCategory.VE_SINH },
-            { label: "Khác", value: ServiceCategory.KHAC },
+            { label: t("statusBadge.serviceCategory.security"), value: ServiceCategory.AN_NINH },
+            { label: t("statusBadge.serviceCategory.maintenance"), value: ServiceCategory.BAO_TRI },
+            { label: t("statusBadge.serviceCategory.electric"), value: ServiceCategory.DIEN },
+            { label: t("statusBadge.serviceCategory.laundry"), value: ServiceCategory.GIAT_SAY },
+            { label: t("statusBadge.serviceCategory.parking"), value: ServiceCategory.GUI_XE },
+            { label: t("statusBadge.serviceCategory.internet"), value: ServiceCategory.INTERNET },
+            { label: t("statusBadge.serviceCategory.water"), value: ServiceCategory.NUOC },
+            { label: t("statusBadge.serviceCategory.elevator"), value: ServiceCategory.THANG_MAY },
+            { label: t("statusBadge.serviceCategory.rent"), value: ServiceCategory.TIEN_PHONG },
+            { label: t("statusBadge.serviceCategory.cleaning"), value: ServiceCategory.VE_SINH },
+            { label: t("statusBadge.serviceCategory.other"), value: ServiceCategory.KHAC },
           ]}
           value={value.serviceCategory ?? ""}
           onChange={(value) => {
-            if (type === "add") setValue((prev) => ({ ...prev, serviceCategory: value as ServiceCategory }));
+            if (type === "add")
+              setValue((prev) => ({ ...prev, serviceCategory: value as ServiceCategory }));
             else setValue((prev) => ({ ...prev, serviceCategory: value as ServiceCategory }));
           }}
           name="serviceCategory"
@@ -66,18 +75,31 @@ const AddOrUpdateService = ({ value, handleChange, setValue, errors, type }: Add
           errorText={errors.serviceCategory}
         />
         <FieldsSelectLabel
-          label="Tính toán dịch vụ"
-          placeholder="-- Tính toán dịch vụ --"
-          labelSelect="Tính toán dịch vụ"
+          label={t("service.addOrUpdate.serviceCalculation")}
+          placeholder={t("service.filter.calculation")}
+          labelSelect={t("service.addOrUpdate.serviceCalculation")}
           data={[
-            { label: "Tính theo người", value: ServiceCalculation.TINH_THEO_NGUOI },
-            { label: "Tính theo phòng", value: ServiceCalculation.TINH_THEO_PHONG },
-            { label: "TÍnh theo phương tiện", value: ServiceCalculation.TINH_THEO_PHUONG_TIEN },
-            { label: "Tính theo số", value: ServiceCalculation.TINH_THEO_SO },
+            {
+              label: t("statusBadge.serviceCalculation.byPerson"),
+              value: ServiceCalculation.TINH_THEO_NGUOI,
+            },
+            {
+              label: t("statusBadge.serviceCalculation.byRoom"),
+              value: ServiceCalculation.TINH_THEO_PHONG,
+            },
+            {
+              label: t("statusBadge.serviceCalculation.byVehicle"),
+              value: ServiceCalculation.TINH_THEO_PHUONG_TIEN,
+            },
+            {
+              label: t("statusBadge.serviceCalculation.byMeter"),
+              value: ServiceCalculation.TINH_THEO_SO,
+            },
           ]}
           value={value.serviceCalculation ?? ""}
           onChange={(value) => {
-            if (type === "add") setValue((prev) => ({ ...prev, serviceCalculation: value as ServiceCalculation }));
+            if (type === "add")
+              setValue((prev) => ({ ...prev, serviceCalculation: value as ServiceCalculation }));
             else setValue((prev) => ({ ...prev, serviceCalculation: value as ServiceCalculation }));
           }}
           name="serviceCalculation"
@@ -91,9 +113,9 @@ const AddOrUpdateService = ({ value, handleChange, setValue, errors, type }: Add
       <InputLabel
         id="price"
         name="price"
-        placeholder="3000000"
+        placeholder={t("service.addOrUpdate.placeholderPrice")}
         type="text"
-        label="Giá (VNĐ):"
+        label={t("service.addOrUpdate.price")}
         required
         value={value.price ?? ""}
         onChange={handleChange}
@@ -102,12 +124,12 @@ const AddOrUpdateService = ({ value, handleChange, setValue, errors, type }: Add
 
       {type === "update" && (
         <FieldsSelectLabel
-          label="Trạng thái"
-          placeholder="-- Trạng thái --"
-          labelSelect="Trạng thái"
+          label={t("service.addOrUpdate.status")}
+          placeholder={t("service.filter.status")}
+          labelSelect={t("service.addOrUpdate.status")}
           data={[
-            { label: "Hoạt động", value: ServiceStatus.HOAT_DONG },
-            { label: "Tạm khóa", value: ServiceStatus.TAM_KHOA },
+            { label: t("statusBadge.serviceStatus.active"), value: ServiceStatus.HOAT_DONG },
+            { label: t("statusBadge.serviceStatus.locked"), value: ServiceStatus.TAM_KHOA },
           ]}
           value={value.status ?? ""}
           onChange={(value) => setValue((prev) => ({ ...prev, status: value as ServiceStatus }))}
@@ -122,8 +144,8 @@ const AddOrUpdateService = ({ value, handleChange, setValue, errors, type }: Add
       <TextareaLabel
         id="description"
         name="description"
-        placeholder="Nhập mô tả"
-        label="Mô tả:"
+        placeholder={t("service.addOrUpdate.placeholderDescription")}
+        label={t("service.addOrUpdate.description")}
         value={value.description ?? ""}
         onChange={(e) => {
           if (type === "add") setValue((prev) => ({ ...prev, description: e.target.value }));

@@ -30,7 +30,7 @@ const DetailTenant = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Không thể tải thông tin khách thuê. Vui lòng thử lại sau.");
+      toast.error(t("tenant.detail.errorFetch"));
       setLoading(false);
       return;
     }
@@ -38,12 +38,12 @@ const DetailTenant = () => {
       setTenant(data.data);
       setLoading(false);
     }
-  }, [data, isError]);
+  }, [data, isError, t]);
 
   if (loading) {
     return (
       <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900 flex items-center justify-center">
-        <span className="text-gray-500 dark:text-gray-300">Đang tải thông tin khách thuê...</span>
+        <span className="text-gray-500 dark:text-gray-300">{t("common.loading")}</span>
       </div>
     );
   }
@@ -51,14 +51,14 @@ const DetailTenant = () => {
   if (!tenant) {
     return (
       <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900 flex items-center justify-center">
-        <span className="text-red-600 dark:text-red-400">Không tìm thấy thông tin khách thuê</span>
+        <span className="text-red-600 dark:text-red-400">{t("tenant.detail.errorFetch")}</span>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-background rounded-md transition-colors duration-300 p-6">
-      <h1 className="text-xl font-bold text-neutral-800 dark:text-neutral-100 mb-8">Chi tiết khách thuê</h1>
+      <h1 className="text-xl font-bold text-neutral-800 dark:text-neutral-100 mb-8">{t("tenant.detail.title")}</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Thông tin cá nhân */}
@@ -96,7 +96,9 @@ const DetailTenant = () => {
         <div className="lg:col-span-2 space-y-8">
           {/* CCCD */}
           <div className="bg-white dark:bg-input rounded-md shadow-lg p-6 transition-all hover:shadow-xl">
-            <h2 className="text-xl font-semibold mb-4 text-neutral-800 dark:text-neutral-100">Ảnh CCCD</h2>
+            <h2 className="text-xl font-semibold mb-4 text-neutral-800 dark:text-neutral-100">
+              {t("tenant.detail.identityCardNumber")}
+            </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[tenant.frontCCCD, tenant.backCCCD].map((src, index) => (
@@ -112,7 +114,7 @@ const DetailTenant = () => {
                   />
                 ) : (
                   <div className="absolute inset-0 bg-gray-100 flex items-center justify-center rounded-none">
-                    <span className="text-gray-400">Chưa có ảnh</span>
+                    <span className="text-gray-400">{t("common.noImage")}</span>
                   </div>
                 )}
               </div>
@@ -120,22 +122,24 @@ const DetailTenant = () => {
           </div>
           {/* Thông tin bổ sung */}
           <div className="bg-white rounded-md dark:bg-input shadow-lg p-6 transition-all hover:shadow-xl">
-            <h2 className="text-xl font-semibold mb-4 text-neutral-800 dark:text-neutral-100">Thông tin bổ sung</h2>
+            <h2 className="text-xl font-semibold mb-4 text-neutral-800 dark:text-neutral-100">
+              {t("tenant.detail.personalInfo")}
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <p className="text-gray-500 dark:text-gray-300">Giới tính</p>
+                <p className="text-gray-500 dark:text-gray-300">{t("tenant.response.gender")}</p>
                 <p className="text-neutral-800 dark:text-neutral-100">{genderEnumToString(tenant.gender, t)}</p>
               </div>
               <div>
-                <p className="text-gray-500 dark:text-gray-300">Địa chỉ</p>
+                <p className="text-gray-500 dark:text-gray-300">{t("tenant.response.address")}</p>
                 <p className="text-neutral-800 dark:text-neutral-100">{tenant.address ?? NA}</p>
               </div>
               <div>
-                <p className="text-gray-500 dark:text-gray-300">CCCD/CMT</p>
+                <p className="text-gray-500 dark:text-gray-300">{t("tenant.response.identityCardNumber")}</p>
                 <p className="text-neutral-800 dark:text-neutral-100">{tenant.identityCardNumber ?? NA}</p>
               </div>
               <div>
-                <p className="text-gray-500 dark:text-gray-300">Tổng hợp đồng</p>
+                <p className="text-gray-500 dark:text-gray-300">{t("tenant.detail.totalContract")}</p>
                 <p className="text-neutral-800 dark:text-neutral-100">{tenant.totalContract ?? NA}</p>
               </div>
             </div>

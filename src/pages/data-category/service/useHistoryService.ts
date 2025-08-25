@@ -7,6 +7,7 @@ import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isNumber } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -16,6 +17,7 @@ type BulkRemovePayload = {
 };
 
 export const useHistoryService = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
@@ -89,7 +91,10 @@ export const useHistoryService = () => {
       serviceCategory,
     ],
     queryFn: async () => {
-      const params: Record<string, string> = { page: parsedPage.toString(), size: parsedSize.toString() };
+      const params: Record<string, string> = {
+        page: parsedPage.toString(),
+        size: parsedSize.toString(),
+      };
       Object.entries(filterValues).forEach(([k, v]) => {
         if (v) params[k] = v;
       });
@@ -116,11 +121,12 @@ export const useHistoryService = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "services-cancel",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "services-cancel",
           });
           queryClient.invalidateQueries({ queryKey: ["service-statistics"] });
 
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -143,11 +149,12 @@ export const useHistoryService = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "services-cancel",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "services-cancel",
           });
           queryClient.invalidateQueries({ queryKey: ["service-statistics"] });
 
-          toast.success(Status.RESTORE_SUCCESS);
+          toast.success(t(Status.RESTORE_SUCCESS));
         },
       });
       return true;
@@ -157,7 +164,10 @@ export const useHistoryService = () => {
     }
   };
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "restore" | "remove" }>({
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{
+    id: string;
+    type: "restore" | "remove";
+  }>({
     onConfirm: async ({ id, type }) => {
       if (type === "remove") {
         return await handleRemoveServiceById(id);
@@ -167,16 +177,17 @@ export const useHistoryService = () => {
     },
   });
 
-  const { ConfirmDialog: ConfirmDialogRemoveAll, openDialog: openDialogAll } = useConfirmDialog<BulkRemovePayload>({
-    onConfirm: async ({ ids, type }) => {
-      if (!ids || !Object.values(ids).some(Boolean)) return false;
-      if (type === "remove") {
-        return await handleRemoveServiceByIds(ids);
-      } else {
-        return await handleRestoreServiceByIds(ids);
-      }
-    },
-  });
+  const { ConfirmDialog: ConfirmDialogRemoveAll, openDialog: openDialogAll } =
+    useConfirmDialog<BulkRemovePayload>({
+      onConfirm: async ({ ids, type }) => {
+        if (!ids || !Object.values(ids).some(Boolean)) return false;
+        if (type === "remove") {
+          return await handleRemoveServiceByIds(ids);
+        } else {
+          return await handleRestoreServiceByIds(ids);
+        }
+      },
+    });
 
   const handleRemoveServiceByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
@@ -191,11 +202,12 @@ export const useHistoryService = () => {
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "services-cancel",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "services-cancel",
       });
       queryClient.invalidateQueries({ queryKey: ["service-statistics"] });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       setRowSelection({});
       return true;
     } catch (error) {
@@ -217,11 +229,12 @@ export const useHistoryService = () => {
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "services-cancel",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "services-cancel",
       });
       queryClient.invalidateQueries({ queryKey: ["service-statistics"] });
 
-      toast.success(Status.RESTORE_SUCCESS);
+      toast.success(t(Status.RESTORE_SUCCESS));
       setRowSelection({});
       return true;
     } catch (error) {
@@ -238,7 +251,7 @@ export const useHistoryService = () => {
           { id: service.id, type: "remove" },
           {
             type: "warn",
-            desc: Notice.REMOVE,
+            desc: t(Notice.REMOVE),
           }
         );
       } else {
@@ -246,12 +259,12 @@ export const useHistoryService = () => {
           { id: service.id, type: "restore" },
           {
             type: "default",
-            desc: Notice.RESTORE,
+            desc: t(Notice.RESTORE),
           }
         );
       }
     },
-    [openDialog]
+    [openDialog, t]
   );
 
   const props = {
@@ -263,9 +276,9 @@ export const useHistoryService = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải dịch vụ");
+      toast.error(t("service.errorFetch"));
     }
-  }, [isError]);
+  }, [isError, t]);
 
   return {
     query: {

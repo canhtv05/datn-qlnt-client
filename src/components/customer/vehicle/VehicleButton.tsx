@@ -19,7 +19,12 @@ import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
 import AddOrUpdateVehicle from "./AddOrUpdateVehicle";
 import { useNavigate } from "react-router-dom";
-import { formatDate, handleExportExcel, vehicleStatusEnumToString, vehicleTypeEnumToString } from "@/lib/utils";
+import {
+  formatDate,
+  handleExportExcel,
+  vehicleStatusEnumToString,
+  vehicleTypeEnumToString,
+} from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
 const VehicleButton = ({
@@ -61,7 +66,7 @@ const VehicleButton = ({
       handleMutationError(error);
     },
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setValue({
         describe: "",
         licensePlate: "",
@@ -81,7 +86,8 @@ const VehicleButton = ({
 
   const handleAddFloor = useCallback(async () => {
     try {
-      const { describe, licensePlate, registrationDate, tenantId, vehicleStatus, vehicleType } = value;
+      const { describe, licensePlate, registrationDate, tenantId, vehicleStatus, vehicleType } =
+        value;
 
       await createVehicleSchema.parseAsync(value);
 
@@ -117,7 +123,7 @@ const VehicleButton = ({
       });
       queryClient.invalidateQueries({ queryKey: ["vehicles-statistics"] });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       return true;
     } catch (error) {
       handleMutationError(error);
@@ -130,7 +136,7 @@ const VehicleButton = ({
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveVehiclesByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu phương tiện đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("common.confirmDialog.delete", { name: t("vehicle.title") }),
     type: "warn",
   });
 
@@ -143,16 +149,16 @@ const VehicleButton = ({
       } else if (btn.type === "download") {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
-          "Chủ sở hữu": d.fullName,
-          "Loại phương tiện": vehicleTypeEnumToString(d.vehicleType, t),
-          "Biển số": d.licensePlate,
-          "Trạng thái": vehicleStatusEnumToString(d.vehicleStatus, t),
-          "Ngày đăng ký": formatDate(d.registrationDate),
-          "Mô tả": d.describe,
-          "Ngày tạo": formatDate(d.createdAt),
-          "Ngày cập nhật": formatDate(d.updatedAt),
+          [t("vehicle.response.owner")]: d.fullName,
+          [t("vehicle.response.vehicleType")]: vehicleTypeEnumToString(d.vehicleType, t),
+          [t("vehicle.response.licensePlate")]: d.licensePlate,
+          [t("vehicle.response.vehicleStatus")]: vehicleStatusEnumToString(d.vehicleStatus, t),
+          [t("vehicle.response.registrationDate")]: formatDate(d.registrationDate),
+          [t("vehicle.response.describe")]: d.describe,
+          [t("vehicle.response.createdAt")]: formatDate(d.createdAt),
+          [t("vehicle.response.updatedAt")]: formatDate(d.updatedAt),
         }));
-        handleExportExcel(`Phương tiện`, exportData, data);
+        handleExportExcel(`t("vehicle.title")`, exportData, data);
       }
     },
     [data, ids, navigate, openDialog, t]
@@ -166,14 +172,14 @@ const VehicleButton = ({
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Phương tiện</h3>
+        <h3 className="font-semibold">{t("vehicle.title")}</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS_HISTORY.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Phương tiện"
+                    title={t("vehicle.title")}
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -181,7 +187,7 @@ const VehicleButton = ({
                         </Button>
                       </TooltipTrigger>
                     }
-                    desc={Notice.ADD}
+                    desc={t(Notice.ADD)}
                     onConfirm={handleAddFloor}
                   >
                     <AddOrUpdateVehicle

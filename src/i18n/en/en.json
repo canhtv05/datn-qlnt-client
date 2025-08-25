@@ -39,7 +39,10 @@
       "delete": "This action will permanently delete the selected {{name}}. Are you sure you want to continue?"
     },
     "unknown": "Unknown",
-    "other": "Other"
+    "other": "Other",
+    "loading": "Loading...",
+    "noImage": "No image",
+    "noChange": "No change"
   },
   "actions": {
     "serviceActions": {
@@ -261,9 +264,10 @@
     },
 
     "tenantStatus": {
+      "totalTenants": "Total",
       "renting": "Renting",
       "returned": "Returned",
-      "waitContract": "Waiting for contract creation",
+      "waitContract": "Contract pending",
       "locked": "Locked",
       "cancelled": "Cancelled"
     },
@@ -274,6 +278,7 @@
     },
 
     "vehicleType": {
+      "total": "Total",
       "motorbike": "Motorbike",
       "car": "Car",
       "bicycle": "Bicycle",
@@ -589,6 +594,241 @@
       "placeholderRemainingQuantity": "10",
       "placeholderStatus": "-- Select status --",
       "placeholderDescription": "Enter detailed description"
+    }
+  },
+  "roomAsset": {
+    "title": "Room Asset",
+    "titleAdd": "Add Room Asset",
+    "titleUpdate": "Update Room Asset",
+    "titleRoomInfo": "Room Information",
+    "titleHistory": "Deleted Room Asset History",
+    "response": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "roomAssetCode": "Room Asset Code",
+      "actions": "Actions",
+      "roomName": "Room Name",
+      "assetName": "Asset Name",
+      "quantity": "Quantity",
+      "remainingQuantity": "Remaining",
+      "status": "Status",
+      "description": "Description",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At"
+    },
+    "filter": {
+      "status": "-- Status --",
+      "roomName": "-- Room --",
+      "assetName": "-- Asset --"
+    },
+    "labelFormat": "Name: {{name}} - Remaining: {{remaining}} - Price: {{price}}",
+    "errorFetch": "An error occurred while fetching room assets",
+    "errorFetchStatistics": "An error occurred while fetching room asset statistics",
+    "onlyOneAsset": "Only one asset can be selected if multiple rooms are chosen.",
+    "onlyOneRoom": "Only one room can be selected if multiple assets are chosen.",
+    "totalRoomAssets": "Total Room Assets",
+    "roomAssetsAvailable": "Available Room Assets",
+    "addOrUpdate": {
+      "nameAsset": "Asset Name:",
+      "assetType": "Asset Type:",
+      "assetBeLongTo": "Belongs To:",
+      "assetStatus": "Status:",
+      "price": "Price (VND):",
+      "quantity": "Quantity:",
+      "remainingQuantity": "Remaining:",
+      "descriptionAsset": "Description:",
+      "placeholderRoom": "-- Select room --",
+      "labelRoom": "Room:",
+      "placeholderAsset": "-- Select asset --",
+      "labelAsset": "Asset:",
+      "placeholderAssetBeLongTo": "-- Select asset belongs to --",
+      "labelAssetBeLongTo": "Asset belongs to:",
+      "placeholderName": "Enter asset name",
+      "placeholderPrice": "3000000",
+      "placeholderQuantity": "10",
+      "placeholderRemaining": "5",
+      "placeholderAssetType": "-- Select asset type --",
+      "placeholderAssetStatus": "-- Select status --",
+      "placeholderDescription": "Enter detailed description",
+      "placeholderBuilding": "-- Select building --",
+      "labelBuilding": "Building:",
+      "placeholderSearch": "Search"
+    },
+    "bulkAddGuide": {
+      "title": "There are 2 options:",
+      "option1": "Select multiple rooms and 1 asset",
+      "option2": "Select multiple assets and 1 room"
+    },
+    "stats": {
+      "total": "Total",
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "service": {
+    "title": "Service",
+    "titleHistory": "Deleted Service History",
+    "priceFrom": "Price from: 1000",
+    "priceTo": "To: 2000",
+    "search": "Search",
+    "errorFetch": "An error occurred while loading the service.",
+    "errorFetchStatistics": "An error occurred while loading floor statistics.",
+    "response": {
+      "name": "Service Name",
+      "actions": "Actions",
+      "category": "Category",
+      "unit": "Unit",
+      "price": "Price",
+      "calculation": "Calculation",
+      "status": "Status",
+      "description": "Description",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At"
+    },
+    "filter": {
+      "title": "-- Service --",
+      "category": "-- Service Category --",
+      "calculation": "-- Service Calculation --",
+      "status": "-- Status --",
+      "minPrice": "From",
+      "maxPrice": "To",
+      "search": "Search"
+    },
+
+    "addOrUpdate": {
+      "name": "Service Name:",
+      "placeholderName": "Cleaning",
+      "serviceCategory": "Service Category",
+      "serviceCalculation": "Service Calculation",
+      "price": "Price (VND):",
+      "placeholderPrice": "3000000",
+      "status": "Status",
+      "description": "Description:",
+      "placeholderDescription": "Enter description"
+    }
+  },
+  "serviceRoom": {
+    "title": "Room Service",
+    "titleAddOneServiceToOneRoom": "Add a service to a room",
+    "titleAddOneServiceToAllRoomsInBuilding": "Add a service to all rooms in a building",
+    "titleAddOneServiceToMultipleRooms": "Add a service to rooms",
+    "titleAddMultipleServicesToOneRoom": "Add multiple services to a room",
+    "search": "Search",
+    "detailTitle": "Room Service Details",
+    "errorFetch": "An error occurred while loading room services.",
+    "errorFetchStatistics": "An error occurred while loading room statistics.",
+    "errorFetchRoomAndService": "Failed to fetch room and service data.",
+    "response": {
+      "roomCode": "Room Code",
+      "actions": "Actions",
+      "totalServices": "Total Services",
+      "roomType": "Room Type",
+      "status": "Status",
+      "descriptionServiceRoom": "Description"
+    },
+    "filter": {
+      "roomType": "-- Room Type --",
+      "status": "-- Status --",
+      "search": "Search"
+    },
+    "addOrUpdate": {
+      "room": "Room:",
+      "placeholderRoom": "Select room",
+      "service": "Service:",
+      "placeholderService": "Select service",
+      "building": "Building:",
+      "placeholderBuilding": "Select building",
+      "floor": "Floor:",
+      "placeholderFloor": "Select floor",
+      "description": "Description:",
+      "placeholderDescription": "Enter description"
+    }
+  },
+  "tenant": {
+    "title": "Tenant",
+    "titleHistory": "Deleted Tenant History",
+    "search": "Search",
+    "errorFetch": "An error occurred while loading tenants.",
+    "errorFetchStatistics": "An error occurred while loading tenant statistics.",
+    "response": {
+      "customerCode": "Customer Code",
+      "actions": "Actions",
+      "fullName": "Full Name",
+      "pictureUrl": "Picture",
+      "gender": "Gender",
+      "dob": "Date of Birth",
+      "email": "Email",
+      "phoneNumber": "Phone Number",
+      "address": "Address",
+      "identityCardNumber": "Identity Card Number",
+      "tenantStatus": "Status",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At"
+    },
+    "filter": {
+      "tenantStatus": "-- Tenant Status --",
+      "gender": "-- Select Gender --",
+      "search": "Search"
+    },
+    "addOrUpdate": {
+      "fullName": "Full Name:",
+      "placeholderFullName": "John Doe",
+      "gender": "Gender:",
+      "dob": "Date of Birth:",
+      "phoneNumber": "Phone Number:",
+      "placeholderPhoneNumber": "0987654321",
+      "email": "Email:",
+      "placeholderEmail": "example@gmail.com",
+      "identityCardNumber": "Identity Card Number:",
+      "placeholderIdentityCardNumber": "123456789012",
+      "address": "Address:",
+      "placeholderAddress": "Enter address"
+    },
+    "detail": {
+      "personalInfo": "Personal Information",
+      "title": "View tenant details",
+      "subtitle": "Tenant information, contracts and contact",
+      "totalContract": "Total Contracts",
+      "identityCardNumber": "Identity Card Number"
+    }
+  },
+  "vehicle": {
+    "title": "Vehicle",
+    "titleHistory": "Deleted vehicle history",
+    "statistic": "Vehicle statistics",
+    "search": "License plate",
+    "errorFetch": "An error occurred while loading vehicles.",
+    "errorFetchStatistics": "An error occurred while loading vehicle statistics.",
+    "response": {
+      "owner": "Owner",
+      "actions": "Actions",
+      "vehicleType": "Vehicle type",
+      "licensePlate": "License plate",
+      "status": "Status",
+      "registrationDate": "Registration date",
+      "describe": "Description",
+      "createdAt": "Created at",
+      "updatedAt": "Updated at"
+    },
+    "filter": {
+      "placeholderType": "-- Vehicle type --",
+      "placeholderLicense": "License plate",
+      "labelType": "Vehicle type"
+    },
+    "addOrUpdate": {
+      "owner": "Owner",
+      "type": "Vehicle type",
+      "status": "Vehicle status",
+      "registrationDate": "Registration date",
+      "licensePlate": "License plate",
+      "licensePlatePlaceholder": "30A-123.45",
+      "describe": "Description",
+      "describePlaceholder": "Enter description"
+    },
+    "placeholder": {
+      "owner": "-- Select owner --",
+      "type": "-- Select vehicle type --",
+      "status": "-- Select vehicle status --"
     }
   }
 }

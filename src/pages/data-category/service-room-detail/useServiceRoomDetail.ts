@@ -1,14 +1,21 @@
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog } from "@/hooks";
-import { ApiResponse, ServiceLittleResponse, ServiceRoomDetailResponse, ServiceUpdateUnitPriceRequest } from "@/types";
+import {
+  ApiResponse,
+  ServiceLittleResponse,
+  ServiceRoomDetailResponse,
+  ServiceUpdateUnitPriceRequest,
+} from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useServiceRoomDetail = () => {
+  const { t } = useTranslation();
   const { roomId } = useParams();
   const [rowSelection, setRowSelection] = useState({});
   const idRef = useRef<string>("");
@@ -59,14 +66,16 @@ export const useServiceRoomDetail = () => {
       await toggleStatusServiceRoomMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms-detail",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms-detail",
           });
           queryClient.invalidateQueries({ queryKey: ["service-rooms-statistics"] });
 
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
         },
       });
       return true;
@@ -76,13 +85,15 @@ export const useServiceRoomDetail = () => {
     }
   };
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>({
-    onConfirm: async ({ id, type }) => {
-      if (type === "delete") return await handleRemoveServiceRoomById(id);
-      if (type === "status") return await handleToggleStatusServiceRoomById(id);
-      return false;
-    },
-  });
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>(
+    {
+      onConfirm: async ({ id, type }) => {
+        if (type === "delete") return await handleRemoveServiceRoomById(id);
+        if (type === "status") return await handleToggleStatusServiceRoomById(id);
+        return false;
+      },
+    }
+  );
 
   const { ConfirmDialog: ConfirmDialogRemoveAll, openDialog: openDialogAll } = useConfirmDialog<
     Record<string, boolean>
@@ -91,7 +102,7 @@ export const useServiceRoomDetail = () => {
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveServiceRoomTypeByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các dịch vụ phòng đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("common.confirmDialog.delete"),
     type: "warn",
   });
 
@@ -100,13 +111,15 @@ export const useServiceRoomDetail = () => {
       await removeServiceRoomMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms-detail",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms-detail",
           });
           queryClient.invalidateQueries({ queryKey: ["service-rooms-statistics"] });
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -180,14 +193,16 @@ export const useServiceRoomDetail = () => {
         { id: serviceRoom.id, type: action },
         {
           type: "warn",
-          desc: action === "delete" ? Notice.REMOVE : Notice.TOGGLE_STATUS,
+          desc: action === "delete" ? t(Notice.REMOVE) : t(Notice.TOGGLE_STATUS),
         }
       );
     },
-    [openDialog]
+    [openDialog, t]
   );
 
-  const handleRemoveServiceRoomTypeByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
+  const handleRemoveServiceRoomTypeByIds = async (
+    ids: Record<string, boolean>
+  ): Promise<boolean> => {
     try {
       const selectedIds = Object.entries(ids)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -197,14 +212,16 @@ export const useServiceRoomDetail = () => {
       await Promise.all(selectedIds.map((id) => removeServiceRoomMutation.mutateAsync(id)));
 
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms-detail",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms-detail",
       });
       queryClient.invalidateQueries({ queryKey: ["service-rooms-statistics"] });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       setRowSelection({});
       return true;
     } catch (error) {
@@ -215,9 +232,9 @@ export const useServiceRoomDetail = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải chi tiết dịch vụ trong phòng");
+      toast.error(t("serviceRoom.errorFetch"));
     }
-  }, [isError]);
+  }, [isError, t]);
 
   return {
     data,

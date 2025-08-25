@@ -28,12 +28,12 @@ const HistoryService = () => {
 
   const columnConfigs: ColumnConfig[] = [
     {
-      label: "Tên dịch vụ",
+      label: t("service.response.name"),
       accessorKey: "name",
       isSort: true,
     },
     {
-      label: "Thao tác",
+      label: t("service.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -80,50 +80,50 @@ const HistoryService = () => {
       },
     },
     {
-      label: "Loại dịch vụ",
+      label: t("service.response.category"),
       accessorKey: "serviceCategory",
       isSort: true,
       isCenter: true,
       hasBadge: true,
     },
     {
-      label: "Đơn vị",
+      label: t("service.response.unit"),
       accessorKey: "unit",
       isSort: false,
       isCenter: true,
     },
     {
-      label: "Giá",
+      label: t("service.response.price"),
       accessorKey: "price",
       isSort: true,
     },
     {
-      label: "Áp dụng theo",
+      label: t("service.response.calculation"),
       accessorKey: "serviceCalculation",
       isSort: true,
       isCenter: true,
       hasBadge: true,
     },
     {
-      label: "Trạng thái",
+      label: t("service.response.status"),
       accessorKey: "status",
       isSort: true,
       isCenter: true,
       hasBadge: true,
     },
     {
-      label: "Mô tả",
+      label: t("service.response.description"),
       accessorKey: "description",
       isSort: false,
     },
     {
-      label: "Ngày tạo",
+      label: t("service.response.createdAt"),
       accessorKey: "createdAt",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ngày cập nhật",
+      label: t("service.response.updatedAt"),
       accessorKey: "updatedAt",
       isSort: true,
       hasDate: true,
@@ -135,7 +135,7 @@ const HistoryService = () => {
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
         <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-5 py-3 justify-between items-center">
-            <h3 className="font-semibold">Lịch sử xóa dịch vụ</h3>
+            <h3 className="font-semibold">{t("service.titleHistory")}</h3>
             <div className="flex gap-2">
               {BUTTON_HISTORY.map((btn, idx) => (
                 <TooltipProvider key={idx}>
@@ -150,7 +150,9 @@ const HistoryService = () => {
                             openDialogAll(
                               { ids: rowSelection, type: "remove" },
                               {
-                                desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tầng đã chọn và không thể hoàn tác lại. Bạn có chắc chắn muốn tiếp tục?",
+                                desc: t("common.confirmDialog.delete", {
+                                  name: t("service.title"),
+                                }),
                                 type: "warn",
                               }
                             );
@@ -158,7 +160,7 @@ const HistoryService = () => {
                             openDialogAll(
                               { ids: rowSelection, type: "undo" },
                               {
-                                desc: Notice.RESTORES,
+                                desc: t(Notice.RESTORES),
                                 type: "default",
                               }
                             );
@@ -182,7 +184,9 @@ const HistoryService = () => {
                           fill: btn.arrowColor,
                           background: btn.arrowColor,
                         }}
-                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                        className={
+                          "size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
+                        }
                       />
                     </TooltipContent>
                   </Tooltip>

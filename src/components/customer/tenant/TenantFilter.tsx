@@ -16,7 +16,13 @@ export interface TenantFilterProps {
   onFilter: () => void;
 }
 
-const TenantFilter = ({ props, type }: { props: TenantFilterProps; type: "default" | "restore" }) => {
+const TenantFilter = ({
+  props,
+  type,
+}: {
+  props: TenantFilterProps;
+  type: "default" | "restore";
+}) => {
   const { t } = useTranslation();
   const { gender, query, tenantStatus } = props.filterValues;
   const setFilterValues = props.setFilterValues;
@@ -35,13 +41,16 @@ const TenantFilter = ({ props, type }: { props: TenantFilterProps; type: "defaul
       <div className={switchGrid3(type)}>
         <RenderIf value={type === "default"}>
           <FieldsSelectLabel
-            placeholder="-- Trạng thái khách thuê --"
-            labelSelect="Trạng thái khách thuê"
+            placeholder={t("tenant.filter.tenantStatus")}
+            labelSelect={t("tenant.response.tenantStatus")}
             data={[
-              { label: "Đang thuê", value: TenantStatus.DANG_THUE },
-              { label: "Đã trả phòng", value: TenantStatus.DA_TRA_PHONG },
-              { label: "Chờ tạo hợp đồng", value: TenantStatus.CHO_TAO_HOP_DONG },
-              { label: "Khóa", value: TenantStatus.KHOA },
+              { label: t("statusBadge.tenantStatus.renting"), value: TenantStatus.DANG_THUE },
+              { label: t("statusBadge.tenantStatus.returned"), value: TenantStatus.DA_TRA_PHONG },
+              {
+                label: t("statusBadge.tenantStatus.waitContract"),
+                value: TenantStatus.CHO_TAO_HOP_DONG,
+              },
+              { label: t("statusBadge.tenantStatus.locked"), value: TenantStatus.KHOA },
             ]}
             value={tenantStatus}
             onChange={(value) => handleChange("tenantStatus", String(value))}
@@ -50,8 +59,8 @@ const TenantFilter = ({ props, type }: { props: TenantFilterProps; type: "defaul
           />
         </RenderIf>
         <FieldsSelectLabel
-          placeholder="-- Chọn giới tính --"
-          labelSelect="Giới tính"
+          placeholder={t("tenant.filter.gender")}
+          labelSelect={t("tenant.response.gender")}
           data={GENDER_OPTIONS(t)}
           value={gender}
           onChange={(value) => handleChange("gender", String(value))}
@@ -62,7 +71,7 @@ const TenantFilter = ({ props, type }: { props: TenantFilterProps; type: "defaul
           type="text"
           id="query"
           name="query"
-          placeholder="Tìm kiếm"
+          placeholder={t("tenant.filter.search")}
           value={query}
           onChange={(e) => handleChange("query", e.target.value)}
         />

@@ -13,7 +13,16 @@ import RoomAssetButton from "@/components/data-category/room-assets/RoomAssetBut
 import { useTranslation } from "react-i18next";
 
 const RoomAsset = () => {
-  const { data, isLoading, statistics, ConfirmDialog, query, rowSelection, setRowSelection, props } = useRoomAssetAll();
+  const {
+    data,
+    isLoading,
+    statistics,
+    ConfirmDialog,
+    query,
+    rowSelection,
+    setRowSelection,
+    props,
+  } = useRoomAssetAll();
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -22,14 +31,14 @@ const RoomAsset = () => {
   const { t } = useTranslation();
   const columnConfigs: ColumnConfig[] = [
     {
-      label: "Mã phòng",
+      label: t("room.response.roomCode"),
       accessorKey: "roomCode",
       isSort: true,
       hasHighlight: true,
       isCenter: true,
     },
     {
-      label: "Thao tác",
+      label: t("roomAsset.response.actions"),
       accessorKey: "actions",
       isCenter: true,
       render: (row: RoomAssetAllResponse) => (
@@ -51,7 +60,11 @@ const RoomAsset = () => {
                     <btn.icon className="text-white" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                <TooltipContent
+                  className="text-white"
+                  style={{ background: btn.arrowColor }}
+                  arrow={false}
+                >
                   <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
@@ -68,26 +81,26 @@ const RoomAsset = () => {
       ),
     },
     {
-      label: "Số tài sản",
+      label: t("asset.totalAssets"),
       accessorKey: "totalAssets",
       isSort: true,
       isCenter: true,
     },
     {
-      label: "Loại phòng",
+      label: t("room.response.roomType"),
       accessorKey: "roomType",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
     {
-      label: "Trạng thái",
+      label: t("roomAsset.response.status"),
       accessorKey: "status",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
-    { label: "Mô tả", accessorKey: "description" },
+    { label: t("roomAsset.response.description"), accessorKey: "description" },
   ];
 
   const { roomId } = useParams();

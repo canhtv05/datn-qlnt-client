@@ -38,7 +38,10 @@
       "delete": "Thao tác này sẽ xóa vĩnh viễn dữ liệu các {{name}} đã chọn. Bạn có chắc chắn muốn tiếp tục?"
     },
     "unknown": "Không xác định",
-    "other": "Khác"
+    "other": "Khác",
+    "loading": "Tải tải dữ liệu...",
+    "noImage": "Chưa có ảnh",
+    "noChange": "Không có thay đổi nào"
   },
   "actions": {
     "serviceActions": {
@@ -260,6 +263,7 @@
     },
 
     "tenantStatus": {
+      "totalTenants": "Tổng",
       "renting": "Đang thuê",
       "returned": "Đã trả phòng",
       "waitContract": "Chờ tạo hợp đồng",
@@ -273,6 +277,7 @@
     },
 
     "vehicleType": {
+      "total": "Tổng",
       "motorbike": "Xe máy",
       "car": "Ô tô",
       "bicycle": "Xe đạp",
@@ -589,6 +594,241 @@
       "placeholderRemainingQuantity": "10",
       "placeholderStatus": "-- Chọn trạng thái --",
       "placeholderDescription": "Nhập mô tả chi tiết"
+    }
+  },
+  "roomAsset": {
+    "title": "Tài sản phòng",
+    "titleAdd": "Thêm tài sản phòng",
+    "titleUpdate": "Cập nhật tài sản phòng",
+    "titleRoomInfo": "Thông tin phòng",
+    "titleHistory": "Lịch sử xóa tài sản phòng",
+    "response": {
+      "active": "Hoạt động",
+      "inactive": "Không hoạt động",
+      "roomAssetCode": "Mã tài sản phòng",
+      "actions": "Thao tác",
+      "roomName": "Tên phòng",
+      "assetName": "Tên tài sản",
+      "quantity": "Số lượng",
+      "remainingQuantity": "Còn lại",
+      "status": "Trạng thái",
+      "description": "Mô tả",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật"
+    },
+    "filter": {
+      "status": "-- Trạng thái --",
+      "roomName": "-- Phòng --",
+      "assetName": "-- Tài sản --"
+    },
+    "labelFormat": "Tên: {{name}} - Còn: {{remaining}} - Giá: {{price}}",
+    "errorFetch": "Có lỗi xảy ra khi tải tài sản phòng",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê tài sản phòng",
+    "onlyOneAsset": "Chỉ được chọn 1 tài sản nếu đã chọn nhiều phòng.",
+
+    "totalRoomAssets": "Tổng số tài sản phòng",
+    "roomAssetsAvailable": "Tài sản phòng còn lại",
+    "addOrUpdate": {
+      "nameAsset": "Tên tài sản:",
+      "assetType": "Loại tài sản:",
+      "assetBeLongTo": "Tài sản thuộc về:",
+      "assetStatus": "Trạng thái:",
+      "price": "Giá (VNĐ):",
+      "quantity": "Số lượng:",
+      "remainingQuantity": "Còn lại:",
+      "descriptionAsset": "Mô tả:",
+      "placeholderRoom": "-- Chọn phòng --",
+      "labelRoom": "Phòng:",
+      "placeholderAsset": "-- Chọn tài sản --",
+      "labelAsset": "Tài sản:",
+      "placeholderAssetBeLongTo": "-- Chọn tài sản thuộc về --",
+      "labelAssetBeLongTo": "Tài sản thuộc về:",
+      "placeholderName": "Nhập tên tài sản",
+      "placeholderPrice": "3000000",
+      "placeholderQuantity": "10",
+      "placeholderRemaining": "5",
+      "placeholderAssetType": "-- Chọn loại tài sản --",
+      "placeholderAssetStatus": "-- Chọn trạng thái --",
+      "placeholderDescription": "Nhập mô tả chi tiết",
+      "placeholderBuilding": "-- Chọn tòa nhà --",
+      "labelBuilding": "Tòa nhà:",
+      "placeholderSearch": "Tìm kiếm"
+    },
+    "bulkAddGuide": {
+      "title": "Có 2 lựa chọn:",
+      "option1": "Chọn nhiều phòng và 1 tài sản",
+      "option2": "Chọn nhiều tài sản và 1 phòng"
+    },
+    "stats": {
+      "total": "Tổng",
+      "active": "Hoạt động",
+      "inactive": "Không hoạt động"
+    }
+  },
+  "service": {
+    "title": "Dịch vụ",
+    "titleHistory": "Lịch sử xóa dịch vụ",
+    "priceFrom": "Giá từ: 1000",
+    "priceTo": "Tới: 2000",
+    "search": "Tìm kiếm",
+    "errorFetch": "Có lỗi xảy ra khi tải dịch vụ",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê tầng",
+    "response": {
+      "name": "Tên dịch vụ",
+      "actions": "Thao tác",
+      "category": "Loại dịch vụ",
+      "unit": "Đơn vị",
+      "price": "Giá",
+      "calculation": "Áp dụng theo",
+      "status": "Trạng thái",
+      "description": "Mô tả",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật"
+    },
+    "filter": {
+      "title": "-- Dịch vụ --",
+      "category": "-- Loại dịch vụ --",
+      "calculation": "-- Tính toán dịch vụ --",
+      "status": "-- Trạng thái --",
+      "minPrice": "Giá từ",
+      "maxPrice": "Tới",
+      "search": "Tìm kiếm"
+    },
+    "addOrUpdate": {
+      "name": "Tên dịch vụ:",
+      "placeholderName": "Quét dọn",
+      "serviceCategory": "Loại dịch vụ",
+      "serviceCalculation": "Tính toán dịch vụ",
+      "price": "Giá (VNĐ):",
+      "placeholderPrice": "3000000",
+      "status": "Trạng thái",
+      "description": "Mô tả:",
+      "placeholderDescription": "Nhập mô tả"
+    }
+  },
+  "serviceRoom": {
+    "title": "Dịch vụ phòng",
+    "titleAddOneServiceToOneRoom": "Thêm 1 dịch vụ cho 1 phòng",
+    "titleAddOneServiceToAllRoomsInBuilding": "Thêm 1 dịch vụ cho tất cả các phòng trong 1 tòa nhà",
+    "titleAddOneServiceToMultipleRooms": "Thêm 1 dịch vụ vào các phòng",
+    "titleAddMultipleServicesToOneRoom": "Thêm các dịch vụ vào 1 phòng",
+    "search": "Tìm kiếm",
+    "detailTitle": "Chi tiết dịch vụ phòng",
+    "errorFetch": "Có lỗi xảy ra khi tải dịch vụ phòng.",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê phòng.",
+    "errorFetchRoomAndService": "Không lấy được dữ liệu phòng và dịch vụ.",
+    "response": {
+      "roomCode": "Mã phòng",
+      "actions": "Thao tác",
+      "totalServices": "Tổng dịch vụ",
+      "roomType": "Loại phòng",
+      "status": "Trạng thái",
+      "descriptionServiceRoom": "Mô tả"
+    },
+    "filter": {
+      "roomType": "-- Loại phòng --",
+      "status": "-- Trạng thái --",
+      "search": "Tìm kiếm"
+    },
+    "addOrUpdate": {
+      "room": "Phòng:",
+      "placeholderRoom": "Chọn phòng",
+      "service": "Dịch vụ:",
+      "placeholderService": "Chọn dịch vụ",
+      "building": "Tòa nhà:",
+      "placeholderBuilding": "Chọn tòa nhà",
+      "floor": "Tầng:",
+      "placeholderFloor": "Chọn tầng",
+      "description": "Mô tả:",
+      "placeholderDescription": "Nhập mô tả"
+    }
+  },
+  "tenant": {
+    "title": "Khách thuê",
+    "titleHistory": "Lịch sử khách thuê đã xóa",
+
+    "search": "Tìm kiếm",
+    "errorFetch": "Không lấy được dữ liệu khách thuê.",
+    "errorFetchStatistics": "Không lấy được dữ liệu thống kê khách thuê.",
+    "response": {
+      "customerCode": "Mã khách",
+      "actions": "Thao tác",
+      "fullName": "Họ tên",
+      "pictureUrl": "Hình ảnh",
+      "gender": "Giới tính",
+      "dob": "Ngày sinh",
+      "email": "Email",
+      "phoneNumber": "Số điện thoại",
+      "address": "Địa chỉ",
+      "identityCardNumber": "Số CMND/CCCD",
+      "tenantStatus": "Trạng thái",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật"
+    },
+    "filter": {
+      "tenantStatus": "-- Trạng thái khách thuê --",
+      "gender": "-- Chọn giới tính --",
+      "search": "Tìm kiếm"
+    },
+    "addOrUpdate": {
+      "fullName": "Nhập họ và tên:",
+      "placeholderFullName": "Nguyễn Văn A",
+      "gender": "Giới tính:",
+      "dob": "Ngày sinh:",
+      "phoneNumber": "Số điện thoại:",
+      "placeholderPhoneNumber": "0987654321",
+      "email": "Nhập email:",
+      "placeholderEmail": "example@gmail.com",
+      "identityCardNumber": "Nhập căn cước công dân:",
+      "placeholderIdentityCardNumber": "123456789012",
+      "address": "Địa chỉ:",
+      "placeholderAddress": "Nhập địa chỉ"
+    },
+    "detail": {
+      "personalInfo": "Thông tin cá nhân",
+      "title": "Xem chi tiết khách thuê",
+      "subtitle": "Thông tin người thuê, hợp đồng và liên hệ",
+      "totalContract": "Tổng hợp đồng",
+      "identityCardNumber": "Số CMND/CCCD"
+    }
+  },
+  "vehicle": {
+    "title": "Phương tiện",
+    "titleHistory": "Lịch sử phương tiện đã xóa",
+    "statistic": "Thống kê phương tiện",
+    "search": "Biển số xe",
+    "errorFetch": "Có lỗi xảy ra khi tải phương tiện.",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê phương tiện.",
+    "response": {
+      "owner": "Chủ sở hữu",
+      "actions": "Thao tác",
+      "vehicleType": "Loại phương tiện",
+      "licensePlate": "Biển số",
+      "status": "Trạng thái",
+      "registrationDate": "Ngày đăng ký",
+      "describe": "Mô tả",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật"
+    },
+    "filter": {
+      "placeholderType": "-- Loại phương tiện --",
+      "placeholderLicense": "Biển số xe",
+      "labelType": "Loại phương tiện"
+    },
+    "addOrUpdate": {
+      "owner": "Chủ xe",
+      "type": "Loại xe",
+      "status": "Trạng thái xe",
+      "registrationDate": "Ngày đăng ký",
+      "licensePlate": "Biển số xe",
+      "licensePlatePlaceholder": "30A-123.45",
+      "describe": "Mô tả",
+      "describePlaceholder": "Nhập mô tả"
+    },
+    "placeholder": {
+      "owner": "-- Chọn chủ xe --",
+      "type": "-- Chọn loại xe --",
+      "status": "-- Chọn trạng thái xe --"
     }
   }
 }

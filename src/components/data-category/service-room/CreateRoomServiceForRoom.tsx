@@ -2,6 +2,7 @@ import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSel
 import FieldsMultiSelectLabel from "@/components/ui/FieldsMultiSelectLabel";
 import { Option, ServiceRoomCreationForRoomRequest } from "@/types";
 import { Dispatch, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 
 interface CreateRoomServiceForRoomProps {
   value: ServiceRoomCreationForRoomRequest;
@@ -19,8 +20,12 @@ const CreateRoomServiceForRoom = ({
   roomOptions,
   serviceOptions,
 }: CreateRoomServiceForRoomProps) => {
+  const { t } = useTranslation();
   const handleChange = useCallback(
-    <K extends keyof ServiceRoomCreationForRoomRequest>(field: K, newValue: ServiceRoomCreationForRoomRequest[K]) => {
+    <K extends keyof ServiceRoomCreationForRoomRequest>(
+      field: K,
+      newValue: ServiceRoomCreationForRoomRequest[K]
+    ) => {
       setValue((prev) => ({ ...prev, [field]: newValue }));
     },
     [setValue]
@@ -33,27 +38,32 @@ const CreateRoomServiceForRoom = ({
     <div className="flex flex-col gap-3">
       <div className="grid md:grid-cols-1 grid-cols-1 gap-5 w-full mb-10">
         <FieldsSelectLabel
-          placeholder="-- Phòng --"
-          labelSelect="Phòng"
+          placeholder={t("roomAsset.filter.roomName")}
+          labelSelect={t("room.title")}
           data={roomOptions ?? []}
           value={value?.roomId ?? ""}
           onChange={(val) => {
-            setValue((prev: ServiceRoomCreationForRoomRequest) => ({ ...prev, roomId: String(val) }));
+            setValue((prev: ServiceRoomCreationForRoomRequest) => ({
+              ...prev,
+              roomId: String(val),
+            }));
           }}
           name="roomId"
           showClear
           errorText={errors?.roomId}
-          label="Phòng:"
+          label={t("room.title")}
           required
         />
 
         <FieldsMultiSelectLabel
           data={toSelectType(serviceOptions ?? [])}
-          placeholder="-- Chọn dịch vụ --"
-          label="Dịch vụ:"
+          placeholder={t("service.filter.title")}
+          label={t("service.title")}
           id="serviceIds"
           name="serviceIds"
-          value={toSelectType(serviceOptions ?? []).filter((opt) => value.serviceIds.includes(String(opt.value)))}
+          value={toSelectType(serviceOptions ?? []).filter((opt) =>
+            value.serviceIds.includes(String(opt.value))
+          )}
           onChange={(selected) =>
             handleChange(
               "serviceIds",

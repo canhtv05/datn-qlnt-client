@@ -15,10 +15,12 @@ import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BikeIcon, Building, CarIcon, MoreHorizontalIcon, RecycleIcon } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useVehicle = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
@@ -103,7 +105,8 @@ export const useVehicle = () => {
 
   const updateVehicleMutation = useMutation({
     mutationKey: ["update-vehicle"],
-    mutationFn: async (payload: IUpdateVehicle) => await httpRequest.put(`/vehicles/${idRef.current}`, payload),
+    mutationFn: async (payload: IUpdateVehicle) =>
+      await httpRequest.put(`/vehicles/${idRef.current}`, payload),
     onError: (error) => {
       handleMutationError(error);
     },
@@ -138,13 +141,15 @@ export const useVehicle = () => {
     }
   };
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>({
-    onConfirm: async ({ id, type }) => {
-      if (type === "delete") return await handleRemoveVehicleById(id);
-      if (type === "status") return await handleToggleStatusFloorById(id);
-      return false;
-    },
-  });
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>(
+    {
+      onConfirm: async ({ id, type }) => {
+        if (type === "delete") return await handleRemoveVehicleById(id);
+        if (type === "status") return await handleToggleStatusFloorById(id);
+        return false;
+      },
+    }
+  );
 
   const handleRemoveVehicleById = async (id: string): Promise<boolean> => {
     try {
@@ -212,15 +217,17 @@ export const useVehicle = () => {
           { id: floor.id, type: action },
           {
             type: "warn",
-            desc: action === "delete" ? Notice.REMOVE : Notice.TOGGLE_STATUS,
+            desc: action === "delete" ? t(Notice.REMOVE) : t(Notice.TOGGLE_STATUS),
           }
         );
       }
     },
-    [openDialog]
+    [openDialog, t]
   );
 
-  const { data: statistics, isError: errorStatistics } = useQuery<ApiResponse<VehicleStatisticsResponse>>({
+  const { data: statistics, isError: errorStatistics } = useQuery<
+    ApiResponse<VehicleStatisticsResponse>
+  >({
     queryKey: ["vehicle-statistics"],
     queryFn: async () => {
       const res = await httpRequest.get("/vehicles/statistics");
@@ -232,27 +239,27 @@ export const useVehicle = () => {
   const dataVehicles: StatisticCardType[] = [
     {
       icon: Building,
-      label: "Tổng phương tiện",
+      label: t("statusBadge.vehicleType.total"),
       value: statistics?.data.total ?? 0,
     },
     {
       icon: BikeIcon,
-      label: "Xe máy",
+      label: t("statusBadge.vehicleType.motorbike"),
       value: statistics?.data?.byType?.motorbike ?? 0,
     },
     {
       icon: CarIcon,
-      label: "Ô tô",
+      label: t("statusBadge.vehicleType.car"),
       value: statistics?.data?.byType?.car ?? 0,
     },
     {
       icon: RecycleIcon,
-      label: "Xe đạp",
+      label: t("statusBadge.vehicleType.bicycle"),
       value: statistics?.data?.byType?.bicycle ?? 0,
     },
     {
       icon: MoreHorizontalIcon,
-      label: "Khác",
+      label: t("statusBadge.vehicleType.other"),
       value: statistics?.data?.byType?.other ?? 0,
     },
   ];
@@ -267,16 +274,16 @@ export const useVehicle = () => {
   });
 
   useEffect(() => {
-    if (isErrorTenants) toast.error("Có lỗi xảy ra khi tải khách thuê");
+    if (isErrorTenants) toast.error(t("tenant.errorFetch"));
 
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải tầng");
+      toast.error(t("floor.errorFetch"));
     }
 
     if (errorStatistics) {
-      toast.error("Có lỗi xảy ra khi tải thống kê tầng");
+      toast.error(t("floor.errorFetchStatistics"));
     }
-  }, [isError, isErrorTenants, errorStatistics]);
+  }, [isError, isErrorTenants, errorStatistics, t]);
 
   const props = {
     filterValues,

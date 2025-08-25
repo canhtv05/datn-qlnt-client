@@ -106,16 +106,18 @@ const ServiceRoomButton = ({
 
   const addServiceRoomMutation = useMutation({
     mutationKey: ["add-service-room"],
-    mutationFn: async (payload: ServiceRoomCreationRequest) => await httpRequest.post("/service-rooms", payload),
+    mutationFn: async (payload: ServiceRoomCreationRequest) =>
+      await httpRequest.post("/service-rooms", payload),
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setValue({
         roomId: "",
         serviceId: "",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
       });
       queryClient.invalidateQueries({ queryKey: ["service-rooms-statistics"] });
     },
@@ -150,11 +152,12 @@ const ServiceRoomButton = ({
       await Promise.all(selectedIds.map((id) => removeServiceRoomMutation.mutateAsync(id)));
 
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
       });
       queryClient.invalidateQueries({ queryKey: ["service-rooms-statistics"] });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       return true;
     } catch (error) {
       handleMutationError(error);
@@ -167,7 +170,7 @@ const ServiceRoomButton = ({
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveAssetTypeByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các dịch vụ phòng đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("common.confirmDialog.delete", { name: t("serviceRoom.title") }),
     type: "warn",
   });
 
@@ -178,13 +181,13 @@ const ServiceRoomButton = ({
       } else if (btn.type === "download") {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
-          "Mã phòng": d.roomCode,
-          "Tổng dịch vụ": d.totalServices,
-          "Loại phòng": roomTypeEnumToString(d.roomType, t),
-          "Trạng thái": roomStatusEnumToString(d.status, t),
-          "Mô tả": d.description,
+          [t("serviceRoom.response.roomCode")]: d.roomCode,
+          [t("serviceRoom.response.totalServices")]: d.totalServices,
+          [t("serviceRoom.response.roomType")]: roomTypeEnumToString(d.roomType, t),
+          [t("serviceRoom.response.status")]: roomStatusEnumToString(d.status, t),
+          [t("serviceRoom.response.descriptionServiceRoom")]: d.description,
         }));
-        handleExportExcel(`Dịch vụ phòng`, exportData, data);
+        handleExportExcel(`t("serviceRoom.title")`, exportData, data);
       }
     },
     [data, ids, openDialog, t]
@@ -201,13 +204,14 @@ const ServiceRoomButton = ({
       await httpRequest.post("/service-rooms/by-building", payload),
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setValueForBuilding({
         buildingId: "",
         serviceId: "",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
       });
       queryClient.invalidateQueries({ queryKey: ["service-rooms-statistics"] });
     },
@@ -238,13 +242,14 @@ const ServiceRoomButton = ({
       await httpRequest.post("/service-rooms/by-service", payload),
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setValueForService({
         roomIds: [],
         serviceId: "",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
       });
       queryClient.invalidateQueries({ queryKey: ["service-rooms-statistics"] });
     },
@@ -267,7 +272,12 @@ const ServiceRoomButton = ({
       handleZodErrorsForService(error);
       return false;
     }
-  }, [addServiceRoomForServiceMutation, clearErrorsForService, handleZodErrorsForService, valueForService]);
+  }, [
+    addServiceRoomForServiceMutation,
+    clearErrorsForService,
+    handleZodErrorsForService,
+    valueForService,
+  ]);
 
   const addServiceRoomForRoomMutation = useMutation({
     mutationKey: ["add-service-room-for-room"],
@@ -275,13 +285,14 @@ const ServiceRoomButton = ({
       await httpRequest.post("/service-rooms/by-room", payload),
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setValueForRoom({
         serviceIds: [],
         roomId: "",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "service-rooms",
       });
       queryClient.invalidateQueries({ queryKey: ["service-rooms-statistics"] });
     },
@@ -309,14 +320,14 @@ const ServiceRoomButton = ({
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Dịch vụ phòng</h3>
+        <h3 className="font-semibold">{t("serviceRoom.title")}</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS_SERVICE_ROOM.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Thêm 1 dịch vụ cho 1 phòng"
+                    title={t("serviceRoom.titleAddOneServiceToOneRoom")}
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -324,7 +335,7 @@ const ServiceRoomButton = ({
                         </Button>
                       </TooltipTrigger>
                     }
-                    desc={Notice.ADD}
+                    desc={t(Notice.ADD)}
                     onConfirm={handleAddServiceRoom}
                   >
                     <CreateRoomService
@@ -339,7 +350,7 @@ const ServiceRoomButton = ({
                 </RenderIf>
                 <RenderIf value={btn.type === "building"}>
                   <Modal
-                    title="Thêm 1 dịch vụ cho tất cả các phòng trong 1 tòa nhà"
+                    title={t("serviceRoom.titleAddOneServiceToAllRoomsInBuilding")}
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -347,7 +358,7 @@ const ServiceRoomButton = ({
                         </Button>
                       </TooltipTrigger>
                     }
-                    desc={Notice.ADD}
+                    desc={t(Notice.ADD)}
                     onConfirm={handleAddServiceRoomForBuilding}
                   >
                     <CreateRoomServiceForBuilding
@@ -362,7 +373,7 @@ const ServiceRoomButton = ({
                 </RenderIf>
                 <RenderIf value={btn.type === "floor"}>
                   <Modal
-                    title="Thêm 1 dịch vụ vào các phòng"
+                    title={t("serviceRoom.titleAddOneServiceToMultipleRooms")}
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -370,7 +381,7 @@ const ServiceRoomButton = ({
                         </Button>
                       </TooltipTrigger>
                     }
-                    desc={Notice.ADD}
+                    desc={t(Notice.ADD)}
                     onConfirm={handleAddServiceRoomForService}
                   >
                     <CreateRoomServiceForService
@@ -385,7 +396,7 @@ const ServiceRoomButton = ({
                 </RenderIf>
                 <RenderIf value={btn.type === "undo"}>
                   <Modal
-                    title="Thêm các dịch vụ vào phòng cho 1 phòng"
+                    title={t("serviceRoom.titleAddMultipleServicesToOneRoom")}
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -393,7 +404,7 @@ const ServiceRoomButton = ({
                         </Button>
                       </TooltipTrigger>
                     }
-                    desc={Notice.ADD}
+                    desc={t(Notice.ADD)}
                     onConfirm={handleAddServiceRoomForRoom}
                   >
                     <CreateRoomServiceForRoom

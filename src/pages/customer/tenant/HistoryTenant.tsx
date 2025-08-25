@@ -29,9 +29,14 @@ const HistoryTenant = () => {
   const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Mã khách hàng", accessorKey: "customerCode", isSort: true, hasHighlight: true },
     {
-      label: "Thao tác",
+      label: t("tenant.response.customerCode"),
+      accessorKey: "customerCode",
+      isSort: true,
+      hasHighlight: true,
+    },
+    {
+      label: t("tenant.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -77,9 +82,9 @@ const HistoryTenant = () => {
         );
       },
     },
-    { label: "Họ tên", accessorKey: "fullName", isSort: true },
+    { label: t("tenant.response.fullName"), accessorKey: "fullName", isSort: true },
     {
-      label: "Hình ảnh",
+      label: t("tenant.response.pictureUrl"),
       accessorKey: "pictureUrl",
       isCenter: true,
       render(row) {
@@ -91,10 +96,20 @@ const HistoryTenant = () => {
         );
       },
     },
-    { label: "Giới tính", accessorKey: "gender", isSort: true, isCenter: true, hasBadge: true },
-    { label: "Ngày sinh", accessorKey: "dob", isSort: true },
-    { label: "Email", accessorKey: "email", isSort: true },
-    { label: "Số điện thoại", accessorKey: "phoneNumber", isSort: true },
+    {
+      label: t("tenant.response.gender"),
+      accessorKey: "gender",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: t("tenant.response.dob"),
+      accessorKey: "dob",
+      isSort: true,
+    },
+    { label: t("tenant.response.email"), accessorKey: "email", isSort: true },
+    { label: t("tenant.response.phoneNumber"), accessorKey: "phoneNumber", isSort: true },
     // { label: "Địa chỉ", accessorKey: "address", isHidden: true },
     // { label: "Số CMND/CCCD", accessorKey: "identityCardNumber", isHidden: true },
     // {
@@ -111,7 +126,7 @@ const HistoryTenant = () => {
     //   },
     // },
     {
-      label: "Trạng thái",
+      label: t("tenant.response.tenantStatus"),
       accessorKey: "tenantStatus",
       isSort: true,
       hasBadge: true,
@@ -124,7 +139,7 @@ const HistoryTenant = () => {
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
         <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-5 py-3 justify-between items-center">
-            <h3 className="font-semibold">Lịch sử xóa khách hàng</h3>
+            <h3 className="font-semibold">{t("tenant.titleHistory")}</h3>
             <div className="flex gap-2">
               {BUTTON_HISTORY.map((btn, idx) => (
                 <TooltipProvider key={idx}>
@@ -139,7 +154,7 @@ const HistoryTenant = () => {
                             openDialogAll(
                               { ids: rowSelection, type: "remove" },
                               {
-                                desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tòa nhà đã chọn và không thể hoàn tác lại. Bạn có chắc chắn muốn tiếp tục?",
+                                desc: t("common.confirmDialog.delete"),
                                 type: "warn",
                               }
                             );
@@ -147,7 +162,7 @@ const HistoryTenant = () => {
                             openDialogAll(
                               { ids: rowSelection, type: "undo" },
                               {
-                                desc: Notice.RESTORES,
+                                desc: t(Notice.RESTORES),
                                 type: "default",
                               }
                             );
@@ -171,7 +186,9 @@ const HistoryTenant = () => {
                           fill: btn.arrowColor,
                           background: btn.arrowColor,
                         }}
-                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                        className={
+                          "size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
+                        }
                       />
                     </TooltipContent>
                   </Tooltip>

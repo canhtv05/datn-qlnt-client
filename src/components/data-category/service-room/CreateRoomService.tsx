@@ -1,6 +1,7 @@
 import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import { ServiceRoomCreationRequest } from "@/types";
 import { Dispatch } from "react";
+import { useTranslation } from "react-i18next";
 
 interface CreateRoomServiceProps {
   value: ServiceRoomCreationRequest;
@@ -11,13 +12,20 @@ interface CreateRoomServiceProps {
   roomOptions: FieldsSelectLabelType[] | undefined;
 }
 
-const CreateRoomService = ({ value, setValue, errors, roomOptions, serviceOptions }: CreateRoomServiceProps) => {
+const CreateRoomService = ({
+  value,
+  setValue,
+  errors,
+  roomOptions,
+  serviceOptions,
+}: CreateRoomServiceProps) => {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-3">
       <div className="grid md:grid-cols-1 grid-cols-1 gap-5 w-full mb-2">
         <FieldsSelectLabel
-          placeholder="-- Phòng --"
-          labelSelect="Phòng"
+          placeholder={t("roomAsset.filter.roomName")}
+          labelSelect={t("room.title")}
           data={roomOptions ?? []}
           value={value?.roomId ?? ""}
           onChange={(val) => {
@@ -26,12 +34,12 @@ const CreateRoomService = ({ value, setValue, errors, roomOptions, serviceOption
           name="roomId"
           showClear
           errorText={errors?.roomId}
-          label="Phòng:"
+          label={t("room.title")}
           required
         />
         <FieldsSelectLabel
-          placeholder="-- Dịch vụ --"
-          labelSelect="Dịch vụ"
+          placeholder={t("service.filter.title")}
+          labelSelect={t("service.title")}
           data={serviceOptions ?? []}
           value={value?.serviceId ?? ""}
           onChange={(val) => {
@@ -40,7 +48,7 @@ const CreateRoomService = ({ value, setValue, errors, roomOptions, serviceOption
           name="serviceId"
           showClear
           errorText={errors?.serviceId}
-          label="Dịch vụ:"
+          label={t("service.title :")}
           required
         />
       </div>

@@ -4,6 +4,7 @@ import InputLabel from "@/components/InputLabel";
 import { RoomStatus, RoomType } from "@/enums";
 import { AssetRoomFilter } from "@/types";
 import { Dispatch, FormEvent, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface RoomFilterProps {
   filterValues: AssetRoomFilter;
@@ -13,6 +14,7 @@ export interface RoomFilterProps {
 }
 
 const RoomAssetFilter = ({ props }: { props: RoomFilterProps }) => {
+  const { t } = useTranslation();
   const { filterValues, setFilterValues, onClear, onFilter } = props;
   const { status, roomType, query } = filterValues;
 
@@ -26,16 +28,19 @@ const RoomAssetFilter = ({ props }: { props: RoomFilterProps }) => {
   };
 
   return (
-    <form className="bg-background p-5 flex flex-col gap-2 items-end rounded-t-sm" onSubmit={handleSubmit}>
+    <form
+      className="bg-background p-5 flex flex-col gap-2 items-end rounded-t-sm"
+      onSubmit={handleSubmit}
+    >
       <div className="grid grid-cols-3 gap-5 w-full items-end">
         <FieldsSelectLabel
-          placeholder="-- Loại phòng --"
-          labelSelect="Loại phòng"
+          placeholder={t("room.filter.roomType")}
+          labelSelect={t("room.response.roomType")}
           data={[
-            { label: "Cao cấp", value: RoomType.CAO_CAP },
-            { label: "Đơn", value: RoomType.DON },
-            { label: "Ghép", value: RoomType.GHEP },
-            { label: "Khác", value: RoomType.KHAC },
+            { label: t("statusBadge.roomType.vip"), value: RoomType.CAO_CAP },
+            { label: t("statusBadge.roomType.single"), value: RoomType.DON },
+            { label: t("statusBadge.roomType.shared"), value: RoomType.GHEP },
+            { label: t("statusBadge.roomType.other"), value: RoomType.KHAC },
           ]}
           value={roomType}
           onChange={(value) => handleChange("roomType", String(value))}
@@ -43,15 +48,27 @@ const RoomAssetFilter = ({ props }: { props: RoomFilterProps }) => {
           showClear
         />
         <FieldsSelectLabel
-          placeholder="-- Trạng thái --"
-          labelSelect="Trạng thái"
+          placeholder={t("roomAsset.filter.status")}
+          labelSelect={t("roomAsset.response.status")}
           data={[
-            { label: "Còn trống", value: RoomStatus.TRONG },
-            { label: "Đã thuê", value: RoomStatus.DANG_THUE },
-            { label: "Đặt cọc", value: RoomStatus.DA_DAT_COC },
-            { label: "Bảo trì", value: RoomStatus.DANG_BAO_TRI },
-            { label: "Chưa hoàn thiện", value: RoomStatus.CHUA_HOAN_THIEN },
-            { label: "Tạm khóa", value: RoomStatus.TAM_KHOA },
+            { label: t("statusBadge.roomStatus.empty"), value: RoomStatus.TRONG },
+            {
+              label: t("statusBadge.roomStatus.renting"),
+              value: RoomStatus.DANG_THUE,
+            },
+            { label: t("statusBadge.roomStatus.deposit"), value: RoomStatus.DA_DAT_COC },
+            {
+              label: t("statusBadge.roomStatus.maintain"),
+              value: RoomStatus.DANG_BAO_TRI,
+            },
+            {
+              label: t("statusBadge.roomStatus.unfinished"),
+              value: RoomStatus.CHUA_HOAN_THIEN,
+            },
+            {
+              label: t("statusBadge.roomStatus.locked"),
+              value: RoomStatus.TAM_KHOA,
+            },
           ]}
           value={status}
           onChange={(value) => handleChange("status", String(value))}
@@ -62,7 +79,7 @@ const RoomAssetFilter = ({ props }: { props: RoomFilterProps }) => {
           type="text"
           id="query"
           name="query"
-          placeholder="Tìm kiếm"
+          placeholder={t("roomAsset.addOrUpdate.placeholderSearch")}
           value={query}
           onChange={(e) => handleChange("query", e.target.value)}
         />

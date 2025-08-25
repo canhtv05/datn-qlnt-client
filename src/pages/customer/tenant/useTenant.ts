@@ -15,11 +15,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isEqual } from "lodash";
 import { UsersIcon, UserCheckIcon, UserXIcon, BanIcon, LockIcon, FileIcon } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useTenant = () => {
   const [originalValue, setOriginalValue] = useState<ICreateAndUpdateTenant | null>(null);
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
@@ -161,7 +163,7 @@ export const useTenant = () => {
           });
           queryClient.invalidateQueries({ queryKey: ["tenants-statistics"] });
 
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
         },
       });
       return true;
@@ -171,7 +173,10 @@ export const useTenant = () => {
     }
   };
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" | "view" }>({
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{
+    id: string;
+    type: "delete" | "status" | "view";
+  }>({
     onConfirm: async ({ id, type }) => {
       if (type === "delete") return await handleRemoveVehicleById(id);
       if (type === "status") return await handleToggleStatusFloorById(id);
@@ -188,7 +193,7 @@ export const useTenant = () => {
           });
           queryClient.invalidateQueries({ queryKey: ["tenants-statistics"] });
 
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -227,7 +232,7 @@ export const useTenant = () => {
       };
 
       if (isEqual(data, originalValue)) {
-        toast.error("Không có thay đổi nào");
+        toast.error(t("common.noChange"));
         return false;
       }
 
@@ -249,7 +254,7 @@ export const useTenant = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "tenants",
           });
           queryClient.invalidateQueries({ queryKey: ["tenants-statistics"] });
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
           setIsModalOpen(false);
         },
       });
@@ -259,7 +264,7 @@ export const useTenant = () => {
       handleZodErrors(error);
       return false;
     }
-  }, [value, originalValue, updateTenantMutation, clearErrors, queryClient, handleZodErrors]);
+  }, [value, originalValue, t, updateTenantMutation, clearErrors, queryClient, handleZodErrors]);
 
   const handleActionClick = useCallback(
     (tenant: TenantResponse, action: "update" | "delete" | "view") => {
@@ -284,14 +289,14 @@ export const useTenant = () => {
           { id: tenant.id, type: action },
           {
             type: "warn",
-            desc: action === "delete" ? Notice.REMOVE : Notice.TOGGLE_STATUS,
+            desc: action === "delete" ? t(Notice.REMOVE) : t(Notice.TOGGLE_STATUS),
           }
         );
       } else if (action === "view") {
         navigate(`/customers/tenants/${tenant.id}`);
       }
     },
-    [navigate, openDialog]
+    [navigate, openDialog, t]
   );
 
   const handleBlur = () => {
@@ -313,32 +318,32 @@ export const useTenant = () => {
   const dataStatisticsTenants: StatisticCardType[] = [
     {
       icon: UsersIcon,
-      label: "Tổng người thuê",
+      label: t("statusBadge.tenantStatus.totalTenants"),
       value: statistics?.data.totalTenants ?? 0,
     },
     {
       icon: UserCheckIcon,
-      label: "Đang thuê",
+      label: t("statusBadge.tenantStatus.renting"),
       value: statistics?.data.totalRentingTenants ?? 0,
     },
     {
       icon: UserXIcon,
-      label: "Đã trả phòng",
+      label: t("statusBadge.tenantStatus.returned"),
       value: statistics?.data.totalCheckedOutTenants ?? 0,
     },
     {
       icon: FileIcon,
-      label: "Chờ tạo hợp đồng",
+      label: t("statusBadge.tenantStatus.waitContract"),
       value: statistics?.data.totalWaitingTenants ?? 0,
     },
     {
       icon: BanIcon,
-      label: "Đã hủy",
+      label: t("statusBadge.tenantStatus.cancelled"),
       value: statistics?.data.totalCancelTenants ?? 0,
     },
     {
       icon: LockIcon,
-      label: "Bị khóa",
+      label: t("statusBadge.tenantStatus.locked"),
       value: statistics?.data.totalLockedTenants ?? 0,
     },
   ];
@@ -356,13 +361,13 @@ export const useTenant = () => {
     // if (isErrorTenants) toast.error("Có lỗi xảy ra khi tải khách thuê");
 
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải danh sách khách thuê");
+      toast.error(t("tenant.errorFetch"));
     }
 
     if (errorStatistics) {
-      toast.error("Có lỗi xảy ra khi tải thống kê khách thuê");
+      toast.error(t("tenant.errorFetchStatistics"));
     }
-  }, [isError, errorStatistics]);
+  }, [isError, errorStatistics, t]);
 
   const props = {
     filterValues,

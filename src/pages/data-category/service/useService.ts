@@ -17,10 +17,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isNumber } from "lodash";
 import { CircleCheck, Puzzle, XCircle } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useAssetType = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
@@ -88,7 +90,8 @@ export const useAssetType = () => {
     if (filterValues.maxPrice) params.set("maxPrice", filterValues.maxPrice.toString());
     if (filterValues.minPrice) params.set("minPrice", filterValues.minPrice.toString());
     if (filterValues.query) params.set("query", filterValues.query);
-    if (filterValues.serviceCalculation) params.set("serviceCalculation", filterValues.serviceCalculation);
+    if (filterValues.serviceCalculation)
+      params.set("serviceCalculation", filterValues.serviceCalculation);
     if (filterValues.serviceStatus) params.set("serviceStatus", filterValues.serviceStatus);
     if (filterValues.serviceCategory) params.set("serviceCategory", filterValues.serviceCategory);
     params.set("page", "1");
@@ -113,7 +116,17 @@ export const useAssetType = () => {
   ]);
 
   const { data, isLoading, isError } = useQuery<ApiResponse<ServiceResponse[]>>({
-    queryKey: ["service", page, size, minPrice, maxPrice, query, serviceCalculation, serviceStatus, serviceCalculation],
+    queryKey: [
+      "service",
+      page,
+      size,
+      minPrice,
+      maxPrice,
+      query,
+      serviceCalculation,
+      serviceStatus,
+      serviceCalculation,
+    ],
     queryFn: async () => {
       const params: Record<string, string> = {
         page: page.toString(),
@@ -172,7 +185,7 @@ export const useAssetType = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service",
           });
           queryClient.invalidateQueries({ queryKey: ["service-statistics"] });
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
         },
       });
       return true;
@@ -182,13 +195,15 @@ export const useAssetType = () => {
     }
   };
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>({
-    onConfirm: async ({ id, type }) => {
-      if (type === "delete") return await handleRemoveServicesById(id);
-      if (type === "status") return await handleToggleStatusServiceById(id);
-      return false;
-    },
-  });
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>(
+    {
+      onConfirm: async ({ id, type }) => {
+        if (type === "delete") return await handleRemoveServicesById(id);
+        if (type === "status") return await handleToggleStatusServiceById(id);
+        return false;
+      },
+    }
+  );
 
   const handleRemoveServicesById = async (id: string): Promise<boolean> => {
     try {
@@ -198,7 +213,7 @@ export const useAssetType = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service",
           });
           queryClient.invalidateQueries({ queryKey: ["service-statistics"] });
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -237,7 +252,7 @@ export const useAssetType = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service",
           });
           queryClient.invalidateQueries({ queryKey: ["service-statistics"] });
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
           setIsModalOpen(false);
         },
       });
@@ -247,7 +262,7 @@ export const useAssetType = () => {
       handleZodErrors(error);
       return false;
     }
-  }, [updateServiceMutation, clearErrors, handleZodErrors, queryClient, value]);
+  }, [value, updateServiceMutation, clearErrors, queryClient, t, handleZodErrors]);
 
   const handleActionClick = useCallback(
     (service: ServiceResponse, action: "update") => {
@@ -267,15 +282,17 @@ export const useAssetType = () => {
           { id: service.id, type: action },
           {
             type: "warn",
-            desc: action === "delete" ? Notice.REMOVE : Notice.TOGGLE_STATUS,
+            desc: action === "delete" ? t(Notice.REMOVE) : t(Notice.TOGGLE_STATUS),
           }
         );
       }
     },
-    [openDialog]
+    [openDialog, t]
   );
 
-  const { data: statistics, isError: isStatisticsError } = useQuery<ApiResponse<ServiceCountResponse>>({
+  const { data: statistics, isError: isStatisticsError } = useQuery<
+    ApiResponse<ServiceCountResponse>
+  >({
     queryKey: ["service-statistics"],
     queryFn: async () => {
       const res = await httpRequest.get("/services/statistics");
@@ -311,13 +328,13 @@ export const useAssetType = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải dịch vụ");
+      toast.error(t("service.errorFetch"));
     }
 
     if (isStatisticsError) {
-      toast.error("Có lỗi xảy ra khi tải thống kê dịch vụ");
+      toast.error(t("service.errorFetchStatistics"));
     }
-  }, [isError, isStatisticsError]);
+  }, [isError, isStatisticsError, t]);
 
   return {
     query: {

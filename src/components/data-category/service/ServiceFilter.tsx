@@ -6,6 +6,7 @@ import { ServiceCalculation, ServiceCategory, ServiceStatus } from "@/enums";
 import { switchGrid3 } from "@/lib/utils";
 import { ServiceFilter as Filter } from "@/types";
 import { Dispatch, FormEvent, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface ServiceFilterProps {
   filterValues: Filter;
@@ -14,8 +15,16 @@ export interface ServiceFilterProps {
   onFilter: () => void;
 }
 
-const ServiceFilter = ({ props, type }: { props: ServiceFilterProps; type: "default" | "restore" }) => {
-  const { maxPrice, minPrice, query, serviceStatus, serviceCalculation, serviceCategory } = props.filterValues;
+const ServiceFilter = ({
+  props,
+  type,
+}: {
+  props: ServiceFilterProps;
+  type: "default" | "restore";
+}) => {
+  const { t } = useTranslation();
+  const { maxPrice, minPrice, query, serviceStatus, serviceCalculation, serviceCategory } =
+    props.filterValues;
   const setFilterValues = props.setFilterValues;
 
   const handleChange = (key: keyof Filter, value: string) => {
@@ -31,20 +40,20 @@ const ServiceFilter = ({ props, type }: { props: ServiceFilterProps; type: "defa
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
       <div className={switchGrid3(type)}>
         <FieldsSelectLabel
-          placeholder="-- Loại dịch vụ --"
-          labelSelect="Loại dịch vụ"
+          placeholder={t("service.filter.category")}
+          labelSelect={t("service.addOrUpdate.serviceCategory")}
           data={[
-            { label: "An ninh", value: ServiceCategory.AN_NINH },
-            { label: "Bảo trì", value: ServiceCategory.BAO_TRI },
-            { label: "Điện", value: ServiceCategory.DIEN },
-            { label: "Giặt sấy", value: ServiceCategory.GIAT_SAY },
-            { label: "Gửi xe", value: ServiceCategory.GUI_XE },
-            { label: "Internet", value: ServiceCategory.INTERNET },
-            { label: "Nước", value: ServiceCategory.NUOC },
-            { label: "Thang máy", value: ServiceCategory.THANG_MAY },
-            { label: "Tiền phòng", value: ServiceCategory.TIEN_PHONG },
-            { label: "Vệ sinh", value: ServiceCategory.VE_SINH },
-            { label: "Khác", value: ServiceCategory.KHAC },
+            { label: t("statusBadge.serviceCategory.security"), value: ServiceCategory.AN_NINH },
+            { label: t("statusBadge.serviceCategory.maintenance"), value: ServiceCategory.BAO_TRI },
+            { label: t("statusBadge.serviceCategory.electric"), value: ServiceCategory.DIEN },
+            { label: t("statusBadge.serviceCategory.laundry"), value: ServiceCategory.GIAT_SAY },
+            { label: t("statusBadge.serviceCategory.parking"), value: ServiceCategory.GUI_XE },
+            { label: t("statusBadge.serviceCategory.internet"), value: ServiceCategory.INTERNET },
+            { label: t("statusBadge.serviceCategory.water"), value: ServiceCategory.NUOC },
+            { label: t("statusBadge.serviceCategory.elevator"), value: ServiceCategory.THANG_MAY },
+            { label: t("statusBadge.serviceCategory.rent"), value: ServiceCategory.TIEN_PHONG },
+            { label: t("statusBadge.serviceCategory.cleaning"), value: ServiceCategory.VE_SINH },
+            { label: t("statusBadge.serviceCategory.other"), value: ServiceCategory.KHAC },
           ]}
           value={serviceCategory ?? ""}
           onChange={(value) => handleChange("serviceCategory", String(value))}
@@ -52,13 +61,25 @@ const ServiceFilter = ({ props, type }: { props: ServiceFilterProps; type: "defa
           showClear
         />
         <FieldsSelectLabel
-          placeholder="-- Tính toán dịch vụ --"
-          labelSelect="Tính toán dịch vụ"
+          placeholder={t("service.filter.calculation")}
+          labelSelect={t("service.addOrUpdate.serviceCalculation")}
           data={[
-            { label: "Tính theo người", value: ServiceCalculation.TINH_THEO_NGUOI },
-            { label: "Tính theo phòng", value: ServiceCalculation.TINH_THEO_PHONG },
-            { label: "TÍnh theo phương tiện", value: ServiceCalculation.TINH_THEO_PHUONG_TIEN },
-            { label: "Tính theo số", value: ServiceCalculation.TINH_THEO_SO },
+            {
+              label: t("statusBadge.serviceCalculation.byPerson"),
+              value: ServiceCalculation.TINH_THEO_NGUOI,
+            },
+            {
+              label: t("statusBadge.serviceCalculation.byRoom"),
+              value: ServiceCalculation.TINH_THEO_PHONG,
+            },
+            {
+              label: t("statusBadge.serviceCalculation.byVehicle"),
+              value: ServiceCalculation.TINH_THEO_PHUONG_TIEN,
+            },
+            {
+              label: t("statusBadge.serviceCalculation.byMeter"),
+              value: ServiceCalculation.TINH_THEO_SO,
+            },
           ]}
           value={serviceCalculation ?? ""}
           onChange={(value) => handleChange("serviceCalculation", String(value))}
@@ -67,11 +88,11 @@ const ServiceFilter = ({ props, type }: { props: ServiceFilterProps; type: "defa
         />
         <RenderIf value={type === "default"}>
           <FieldsSelectLabel
-            placeholder="-- Trạng thái --"
-            labelSelect="Trạng thái"
+            placeholder={t("service.filter.status")}
+            labelSelect={t("service.addOrUpdate.status")}
             data={[
-              { label: "Hoạt động", value: ServiceStatus.HOAT_DONG },
-              { label: "Tạm khóa", value: ServiceStatus.TAM_KHOA },
+              { label: t("statusBadge.serviceStatus.active"), value: ServiceStatus.HOAT_DONG },
+              { label: t("statusBadge.serviceStatus.locked"), value: ServiceStatus.TAM_KHOA },
             ]}
             value={serviceStatus ?? ""}
             onChange={(value) => handleChange("serviceStatus", String(value))}
@@ -85,7 +106,7 @@ const ServiceFilter = ({ props, type }: { props: ServiceFilterProps; type: "defa
           type="text"
           id="minPrice"
           name="minPrice"
-          placeholder="Giá từ: 1000"
+          placeholder={t("service.filter.minPrice")}
           value={minPrice !== undefined ? String(minPrice) : ""}
           onChange={(e) => handleChange("minPrice", e.target.value)}
         />
@@ -93,7 +114,7 @@ const ServiceFilter = ({ props, type }: { props: ServiceFilterProps; type: "defa
           type="text"
           id="maxPrice"
           name="maxPrice"
-          placeholder="Tới: 2000"
+          placeholder={t("service.filter.maxPrice")}
           value={maxPrice !== undefined ? String(maxPrice) : ""}
           onChange={(e) => handleChange("maxPrice", e.target.value)}
         />
@@ -101,7 +122,7 @@ const ServiceFilter = ({ props, type }: { props: ServiceFilterProps; type: "defa
           type="text"
           id="query"
           name="query"
-          placeholder="Tìm kiếm"
+          placeholder={t("service.filter.search")}
           value={query ?? ""}
           onChange={(e) => handleChange("query", e.target.value)}
         />

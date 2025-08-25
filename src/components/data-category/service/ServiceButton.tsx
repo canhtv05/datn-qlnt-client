@@ -28,7 +28,13 @@ import {
 } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
-const ServiceButton = ({ ids, data }: { ids: Record<string, boolean>; data?: ServiceResponse[] }) => {
+const ServiceButton = ({
+  ids,
+  data,
+}: {
+  ids: Record<string, boolean>;
+  data?: ServiceResponse[];
+}) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [value, setValue] = useState<ServiceCreationRequest>({
@@ -53,10 +59,11 @@ const ServiceButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Ser
 
   const addServiceMutation = useMutation({
     mutationKey: ["add-service"],
-    mutationFn: async (payload: ServiceCreationRequest) => await httpRequest.post("/services", payload),
+    mutationFn: async (payload: ServiceCreationRequest) =>
+      await httpRequest.post("/services", payload),
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setValue({
         description: "",
         name: "",
@@ -109,7 +116,7 @@ const ServiceButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Ser
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "service",
       });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       return true;
     } catch (error) {
       handleMutationError(error);
@@ -122,7 +129,7 @@ const ServiceButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Ser
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveServicesByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các dịch vụ đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("common.confirmDialog.delete", { name: t("service.title") }),
     type: "warn",
   });
 
@@ -135,17 +142,23 @@ const ServiceButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Ser
       } else if (btn.type === "download") {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
-          "Tên dịch vụ": d.name,
-          "Loại dịch vụ": serviceCategoryEnumToString(d.serviceCategory, t),
-          "Đơn vị": d.unit,
-          Giá: formattedCurrency(d.price || 0),
-          "Áp dụng theo": serviceCalculationEnumToString(d.serviceCalculation, t),
-          "Trạng thái": serviceStatusEnumToString(d.status, t),
-          "Mô tả": d.description,
-          "Ngày tạo": formatDate(new Date(d.createdAt)),
-          "Ngày cập nhật": formatDate(new Date(d.updatedAt)),
+          [t("service.response.name")]: d.name,
+          [t("service.addOrUpdate.serviceCategory")]: serviceCategoryEnumToString(
+            d.serviceCategory,
+            t
+          ),
+          [t("service.response.unit")]: d.unit,
+          [t("service.response.price")]: formattedCurrency(d.price || 0),
+          [t("service.addOrUpdate.serviceCalculation")]: serviceCalculationEnumToString(
+            d.serviceCalculation,
+            t
+          ),
+          [t("service.response.status")]: serviceStatusEnumToString(d.status, t),
+          [t("service.response.description")]: d.description,
+          [t("service.response.createdAt")]: formatDate(new Date(d.createdAt)),
+          [t("service.response.updatedAt")]: formatDate(new Date(d.updatedAt)),
         }));
-        handleExportExcel(`Dịch vụ`, exportData, data);
+        handleExportExcel(`t("service.title")`, exportData, data);
       }
     },
     [data, ids, navigate, openDialog, t]
@@ -159,14 +172,14 @@ const ServiceButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Ser
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Dịch vụ</h3>
+        <h3 className="font-semibold">{t("service.title")}</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS_HISTORY.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Dịch vụ"
+                    title={t("service.title")}
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -174,7 +187,7 @@ const ServiceButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Ser
                         </Button>
                       </TooltipTrigger>
                     }
-                    desc={Notice.ADD}
+                    desc={t(Notice.ADD)}
                     onConfirm={handleAddService}
                   >
                     <AddOrUpdateService

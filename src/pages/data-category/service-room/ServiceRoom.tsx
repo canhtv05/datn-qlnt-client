@@ -31,9 +31,15 @@ const ServiceRoom = () => {
   const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Mã phòng", accessorKey: "roomCode", isSort: true, isCenter: true, hasHighlight: true },
     {
-      label: "Thao tác",
+      label: t("serviceRoom.response.roomCode"),
+      accessorKey: "roomCode",
+      isSort: true,
+      isCenter: true,
+      hasHighlight: true,
+    },
+    {
+      label: t("serviceRoom.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -49,15 +55,22 @@ const ServiceRoom = () => {
                       variant={btn.type}
                       className="cursor-pointer"
                       onClick={() => {
-                        navigate(`/service-management/room-services/detail/${row.id}?buildingId=${id}`, {
-                          replace: true,
-                        });
+                        navigate(
+                          `/service-management/room-services/detail/${row.id}?buildingId=${id}`,
+                          {
+                            replace: true,
+                          }
+                        );
                       }}
                     >
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                  <TooltipContent
+                    className="text-white"
+                    style={{ background: btn.arrowColor }}
+                    arrow={false}
+                  >
                     <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
@@ -74,10 +87,31 @@ const ServiceRoom = () => {
         );
       },
     },
-    { label: "Tổng dịch vụ", accessorKey: "totalServices", isSort: true, isCenter: true },
-    { label: "Loại phòng", accessorKey: "roomType", isSort: true, isCenter: true, hasBadge: true },
-    { label: "Trạng thái", accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
-    { label: "Mô tả", accessorKey: "descriptionServiceRoom", isSort: false },
+    {
+      label: t("serviceRoom.response.totalServices"),
+      accessorKey: "totalServices",
+      isSort: true,
+      isCenter: true,
+    },
+    {
+      label: t("serviceRoom.response.roomType"),
+      accessorKey: "roomType",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: t("serviceRoom.response.status"),
+      accessorKey: "status",
+      isSort: true,
+      hasBadge: true,
+      isCenter: true,
+    },
+    {
+      label: t("serviceRoom.response.descriptionServiceRoom"),
+      accessorKey: "descriptionServiceRoom",
+      isSort: false,
+    },
   ];
 
   return (

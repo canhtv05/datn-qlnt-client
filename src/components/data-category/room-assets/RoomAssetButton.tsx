@@ -23,7 +23,11 @@ import {
 } from "@/types";
 import { Notice, Status } from "@/enums";
 import { httpRequest } from "@/utils/httpRequest";
-import { addToAllRoomAssetSchema, roomAssetBulkSchema, roomAssetFormSchema } from "@/lib/validation";
+import {
+  addToAllRoomAssetSchema,
+  roomAssetBulkSchema,
+  roomAssetFormSchema,
+} from "@/lib/validation";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { Building, Layers } from "lucide-react";
 import { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
@@ -82,7 +86,9 @@ const RoomAssetButton = ({
 
   LOCAL_ACTION_BUTTONS.push(...ACTION_BUTTONS);
   if (type === "default") {
-    LOCAL_ACTION_BUTTONS = LOCAL_ACTION_BUTTONS.filter((b) => b.type !== "default" && b.type !== "delete");
+    LOCAL_ACTION_BUTTONS = LOCAL_ACTION_BUTTONS.filter(
+      (b) => b.type !== "default" && b.type !== "delete"
+    );
   }
 
   if (type === "asset") {
@@ -122,7 +128,10 @@ const RoomAssetButton = ({
   });
 
   const handleChange = useCallback(
-    <K extends keyof ICreateAndUpdateBulkRoomAsset>(field: K, newValue: ICreateAndUpdateBulkRoomAsset[K]) => {
+    <K extends keyof ICreateAndUpdateBulkRoomAsset>(
+      field: K,
+      newValue: ICreateAndUpdateBulkRoomAsset[K]
+    ) => {
       setValue((prev) => ({ ...prev, [field]: newValue }));
     },
     []
@@ -130,10 +139,11 @@ const RoomAssetButton = ({
 
   const addRoomAssetMutation = useMutation({
     mutationKey: ["add-room-asset"],
-    mutationFn: async (payload: RoomAssetFormValue) => await httpRequest.post("/asset-rooms", payload),
+    mutationFn: async (payload: RoomAssetFormValue) =>
+      await httpRequest.post("/asset-rooms", payload),
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setValue({
         assetBeLongTo: "PHONG",
         roomId: "",
@@ -147,10 +157,12 @@ const RoomAssetButton = ({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
       });
       queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
     },
@@ -176,7 +188,7 @@ const RoomAssetButton = ({
     },
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setBulkValue({
         roomId: "",
         assetId: "",
@@ -185,10 +197,12 @@ const RoomAssetButton = ({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
       });
       queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
     },
@@ -223,10 +237,11 @@ const RoomAssetButton = ({
 
   const addToAllRoomAssetMutation = useMutation({
     mutationKey: ["add-all-room-asset"],
-    mutationFn: async (payload: AllRoomAssetFormValue) => await httpRequest.post("/asset-rooms/by-building", payload),
+    mutationFn: async (payload: AllRoomAssetFormValue) =>
+      await httpRequest.post("/asset-rooms/by-building", payload),
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setAllRoomValue({
         assetId: "",
         buildingId: "",
@@ -235,10 +250,12 @@ const RoomAssetButton = ({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
       });
       queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
     },
@@ -296,13 +313,15 @@ const RoomAssetButton = ({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
       });
       queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
 
       return true;
     } catch (error) {
@@ -316,7 +335,7 @@ const RoomAssetButton = ({
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveRoomAsset(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tài sản phòng đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("common.confirmDialog.delete", { name: t("roomAsset.title") }),
     type: "warn",
   });
 
@@ -327,13 +346,13 @@ const RoomAssetButton = ({
       } else if (btn.type === "download") {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
-          "Mã phòng": d.roomCode,
-          "Số tài sản": d.totalAssets || 0,
-          "Loại phòng": roomTypeEnumToString(d.roomType, t),
-          "Trạng thái": roomStatusEnumToString(d.status, t),
-          "Mô tả": d.description,
+          [t("room.response.roomCode")]: d.roomCode,
+          [t("asset.response.totalAssets")]: d.totalAssets || 0,
+          [t("room.response.roomType")]: roomTypeEnumToString(d.roomType, t),
+          [t("roomAsset.response.status")]: roomStatusEnumToString(d.status, t),
+          [t("roomAsset.response.description")]: d.description,
         }));
-        handleExportExcel(`Tài sản phòng`, exportData, data);
+        handleExportExcel(`t("roomAsset.title")`, exportData, data);
       }
     },
     [data, ids, openDialog, t]
@@ -342,14 +361,18 @@ const RoomAssetButton = ({
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className={type !== "asset" ? "flex px-4 py-3 justify-between items-center" : ""}>
-        {type !== "asset" && <h3 className="font-semibold">Tài sản phòng</h3>}
+        {type !== "asset" && <h3 className="font-semibold">{t("roomAsset.title")}</h3>}
         <div className="flex gap-2">
           {LOCAL_ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
-                <RenderIf value={btn.type === "default" || btn.type === "bulkAdd" || btn.type === "addToAllRoom"}>
+                <RenderIf
+                  value={
+                    btn.type === "default" || btn.type === "bulkAdd" || btn.type === "addToAllRoom"
+                  }
+                >
                   <Modal
-                    title="Thêm tài sản phòng"
+                    title={t("roomAsset.titleAdd")}
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size="icon" variant={btn.type} className="cursor-pointer">
@@ -357,7 +380,7 @@ const RoomAssetButton = ({
                         </Button>
                       </TooltipTrigger>
                     }
-                    desc={Notice.ADD}
+                    desc={t(Notice.ADD)}
                     onConfirm={
                       btn.type === "bulkAdd"
                         ? handleBulkAddRoomAsset

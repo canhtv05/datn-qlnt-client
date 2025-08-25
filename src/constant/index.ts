@@ -1163,8 +1163,8 @@ export const ACTION_BUTTONS_SERVICE_ROOM: IBtnType[] = [
 export const formatNumberField = {
   price: (val: number) => `${formattedCurrency(val)}`,
   acreage: (val: number) => `${formatNumber(val)} m²`,
-  maximumPeople: (val: number) => `${val} người/phòng`,
-  asset: (val: number) => `${val} tài sản`,
+  maximumPeople: (val: number) => `${val}`,
+  asset: (val: number) => `${val}`,
 };
 
 export const GENDER_OPTIONS = (t: TFunction<"translate", undefined>) => {

@@ -39,9 +39,9 @@ const RoomAssetTable: React.FC<RoomAssetTableProps> = ({ roomId }) => {
   const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Tên tài sản", accessorKey: "assetName", isSort: true },
+    { label: t("roomAsset.response.assetName"), accessorKey: "assetName", isSort: true },
     {
-      label: "Thao tác",
+      label: t("roomAsset.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -88,11 +88,28 @@ const RoomAssetTable: React.FC<RoomAssetTableProps> = ({ roomId }) => {
         );
       },
     },
-    { label: "Tài sản thuộc về", accessorKey: "assetBeLongTo", isSort: true, isCenter: true, hasBadge: true },
-    { label: "Trạng thái", accessorKey: "assetStatus", isSort: true, hasBadge: true, isCenter: true },
-    { label: "Giá", accessorKey: "price", isSort: true },
-    { label: "Số lượng", accessorKey: "quantity", isSort: true, isCenter: true },
-    { label: "Mô tả", accessorKey: "description", isSort: false },
+    {
+      label: t("roomAsset.response.assetBeLongTo"),
+      accessorKey: "assetBeLongTo",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: t("roomAsset.response.assetStatus"),
+      accessorKey: "assetStatus",
+      isSort: true,
+      hasBadge: true,
+      isCenter: true,
+    },
+    { label: t("roomAsset.response.price"), accessorKey: "price", isSort: true },
+    {
+      label: t("roomAsset.response.quantity"),
+      accessorKey: "quantity",
+      isSort: true,
+      isCenter: true,
+    },
+    { label: t("roomAsset.response.description"), accessorKey: "description", isSort: false },
   ];
 
   return (
@@ -113,20 +130,22 @@ const RoomAssetTable: React.FC<RoomAssetTableProps> = ({ roomId }) => {
       <div className="px-5 py-2 mt-5 bg-background w-full">
         <div className="w-full">
           <h3 className="font-semibold rounded-sm p-2 bg-primary/50 text-sm text-white mb-2 pl-5 border-b-2">
-            Thông tin phòng
+            {t("roomAsset.titleRoomInfo")}
           </h3>
           <div className="px-5 flex border-primary/20 flex-col space-y-2 [&_>span]:text-sm [&_>strong]:text-sm border-b-2 border-r-2 border-l-2 -mt-3 rounded-b-sm">
             <strong className="mt-2">
-              - Mã phòng: <span>{data?.data?.roomCode}</span>
+              - {t("room.roomCode")}: <span>{data?.data?.roomCode}</span>
             </strong>
             <strong>
-              - Loại phòng: <span>{data?.data?.roomType && <StatusBadge status={data?.data?.roomType} />}</span>
+              - {t("room.roomType")}:{" "}
+              <span>{data?.data?.roomType && <StatusBadge status={data?.data?.roomType} />}</span>
             </strong>
             <strong>
-              - Trạng thái: <span>{data?.data?.status && <StatusBadge status={data?.data?.status} />}</span>
+              - {t("room.status")}:{" "}
+              <span>{data?.data?.status && <StatusBadge status={data?.data?.status} />}</span>
             </strong>
             <strong className="pb-2">
-              - Mô tả:{" "}
+              - {t("room.description")}:{" "}
               <p className="inline-block">
                 {data?.data?.description !== "" ? (
                   data?.data?.description
@@ -139,12 +158,12 @@ const RoomAssetTable: React.FC<RoomAssetTableProps> = ({ roomId }) => {
         </div>
       </div>
       <Modal
-        title="Cập nhật tài sản phòng"
+        title={t("roomAsset.titleUpdate")}
         trigger={null}
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         onConfirm={handleSaveRoomAsset}
-        desc={Notice.UPDATE}
+        desc={t(Notice.UPDATE)}
       >
         <AddOrUpdateRoomAsset
           value={value}

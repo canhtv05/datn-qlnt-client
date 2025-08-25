@@ -39,9 +39,9 @@ const Vehicle = () => {
   const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Chủ sở hữu", accessorKey: "fullName", isSort: true },
+    { label: t("vehicle.response.owner"), accessorKey: "fullName", isSort: true },
     {
-      label: "Thao tác",
+      label: t("vehicle.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -89,26 +89,26 @@ const Vehicle = () => {
       },
     },
     {
-      label: "Loại phương tiện",
+      label: t("vehicle.response.vehicleType"),
       accessorKey: "vehicleType",
       isSort: true,
       isCenter: true,
       hasBadge: true,
     },
     {
-      label: "Biển số",
+      label: t("vehicle.response.licensePlate"),
       accessorKey: "licensePlate",
       isSort: true,
     },
     {
-      label: "Trạng thái",
+      label: t("vehicle.response.status"),
       accessorKey: "vehicleStatus",
       isSort: true,
       isCenter: true,
       hasBadge: true,
     },
     {
-      label: "Ngày đăng ký",
+      label: t("vehicle.response.registrationDate"),
       accessorKey: "registrationDate",
       isSort: true,
       hasDate: true,
@@ -121,18 +121,18 @@ const Vehicle = () => {
       isCenter: true,
     },
     {
-      label: "Mô tả",
+      label: t("vehicle.response.describe"),
       accessorKey: "describe",
       isSort: false,
     },
     {
-      label: "Ngày tạo",
+      label: t("vehicle.response.createdAt"),
       accessorKey: "createdAt",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ngày cập nhật",
+      label: t("vehicle.response.updatedAt"),
       accessorKey: "updatedAt",
       isSort: true,
       hasDate: true,
@@ -157,12 +157,12 @@ const Vehicle = () => {
           setRowSelection={setRowSelection}
         />
         <Modal
-          title="Phương tiện"
+          title={t("vehicle.title")}
           trigger={null}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
           onConfirm={handleUpdateFloor}
-          desc={Notice.UPDATE}
+          desc={t(Notice.UPDATE)}
         >
           <AddOrUpdateVehicle
             tenants={tenants}
