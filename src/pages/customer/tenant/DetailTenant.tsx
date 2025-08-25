@@ -66,6 +66,9 @@ const DetailTenant = () => {
           <div className="relative mb-6">
             {/* <Image src={tenant.pictureUrl} alt="Tenant" className="w-full h-90 object-cover rounded-md" /> */}
             <Image src={tenant.pictureUrl} alt="Tenant" className="w-full h-auto object-cover rounded-md" />
+            <div className="mt-4 flex justify-center items-center">
+              <StatusBadge status={tenant.tenantStatus ?? "__EMPTY__"} />
+            </div>
           </div>
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
@@ -85,9 +88,6 @@ const DetailTenant = () => {
             <div className="flex items-center space-x-3">
               <BsEnvelope className="text-blue-600 dark:text-blue-400 w-5 h-5" />
               <span className="text-neutral-800 dark:text-neutral-100">{tenant.email ?? NA}</span>
-            </div>
-            <div className="mt-4">
-              <StatusBadge status={tenant.tenantStatus ?? "__EMPTY__"} />
             </div>
           </div>
         </div>

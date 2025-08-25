@@ -90,12 +90,12 @@ export default function OCRAlertBox({ overallScore, type, fields, side }: OCRAle
         <div className="mb-3">
           <div className="flex justify-between text-xs mb-1">
             <span className="font-medium text-black">Độ tin cậy:</span>
-            <span className="text-black">{isValid ? overallScore : 0}%</span>
+            <span className="text-black">{overallScore}%</span>
           </div>
           <div className="w-full h-2 rounded bg-gray-200 overflow-hidden">
             <div
               className={`h-2 rounded ${isValid ? "bg-green-500" : "bg-red-500"}`}
-              style={{ width: `${isValid ? overallScore : 0}%` }}
+              style={{ width: `${overallScore}%` }}
             />
           </div>
         </div>

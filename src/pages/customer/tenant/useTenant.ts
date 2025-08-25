@@ -12,12 +12,14 @@ import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { isEqual } from "lodash";
 import { UsersIcon, UserCheckIcon, UserXIcon, BanIcon, LockIcon, FileIcon } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useTenant = () => {
+  const [originalValue, setOriginalValue] = useState<ICreateAndUpdateTenant | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
@@ -116,7 +118,25 @@ export const useTenant = () => {
 
   const updateTenantMutation = useMutation({
     mutationKey: ["update-tenant"],
-    mutationFn: async (payload: ICreateAndUpdateTenant) => await httpRequest.put(`/tenants/${idRef.current}`, payload),
+    mutationFn: async (payload: ICreateAndUpdateTenant) => {
+      const formData = new FormData();
+      formData.append("fullName", payload.fullName.trim());
+      formData.append("dob", payload.dob);
+      formData.append("gender", payload.gender);
+      formData.append("identityCardNumber", payload.identityCardNumber.trim());
+      formData.append("phoneNumber", payload.phoneNumber.trim());
+      formData.append("email", payload.email.trim());
+      formData.append("address", payload.address.trim());
+
+      if (payload.frontCccd instanceof File) formData.append("frontCCCD", payload.frontCccd);
+      if (payload.backCccd instanceof File) formData.append("backCCCD", payload.backCccd);
+
+      return await httpRequest.put(`/tenants/${idRef.current}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    },
     onError: (error) => {
       handleMutationError(error);
     },
@@ -178,25 +198,41 @@ export const useTenant = () => {
     }
   };
 
-  const handleUpdateFloor = useCallback(async () => {
+  const handleUpdateTenant = useCallback(async () => {
     try {
       const { address, dob, email, fullName, gender, identityCardNumber, phoneNumber, backCccd, frontCccd } = value;
+      const date = new Date(dob);
+      const formatted = date.toISOString().split("T")[0];
 
-      await createOrUpdateTenantSchema.parseAsync(value);
+      const urlToFile = async (url: string, filename: string) => {
+        const res = await fetch(url);
+        const blob = await res.blob();
+        return new File([blob], filename, { type: blob.type });
+      };
+
+      const backFile = backCccd && typeof backCccd === "string" ? await urlToFile(backCccd, "back_cccd.jpg") : backCccd;
+      const frontFile =
+        frontCccd && typeof frontCccd === "string" ? await urlToFile(frontCccd, "front_cccd.jpg") : frontCccd;
 
       const data: ICreateAndUpdateTenant = {
         address: address.trim(),
-        dob,
+        dob: formatted,
         email: email.trim(),
         fullName: fullName.trim(),
         identityCardNumber: identityCardNumber.trim(),
         gender,
         phoneNumber: phoneNumber.trim(),
-        backCccd,
-        frontCccd,
+        backCccd: backFile,
+        frontCccd: frontFile,
       };
 
-      updateTenantMutation.mutate(data, {
+      if (isEqual(data, originalValue)) {
+        toast.error("Không có thay đổi nào");
+        return false;
+      }
+
+      await createOrUpdateTenantSchema.parseAsync(value);
+      await updateTenantMutation.mutateAsync(data, {
         onSuccess: () => {
           setValue({
             address: "",
@@ -223,24 +259,27 @@ export const useTenant = () => {
       handleZodErrors(error);
       return false;
     }
-  }, [updateTenantMutation, clearErrors, handleZodErrors, queryClient, value]);
+  }, [value, originalValue, updateTenantMutation, clearErrors, queryClient, handleZodErrors]);
 
   const handleActionClick = useCallback(
     (tenant: TenantResponse, action: "update" | "delete" | "view") => {
       idRef.current = tenant.id;
-      // if (action === "update") {
-      //   setValue({
-      //     address: tenant.address || "",
-      //     dob: tenant.dob || "",
-      //     email: tenant.email || "",
-      //     fullName: tenant.fullName || "",
-      //     gender: tenant.gender || "",
-      //     identityCardNumber: tenant.identityCardNumber || "",
-      //     phoneNumber: tenant.phoneNumber || "",
-      //   });
-      //   setIsModalOpen(true);
-      // } else
-      if (action === "delete") {
+      if (action === "update") {
+        const tenantData = {
+          address: tenant.address || "",
+          dob: tenant.dob || "",
+          email: tenant.email || "",
+          fullName: tenant.fullName || "",
+          gender: tenant.gender || "",
+          identityCardNumber: tenant.identityCardNumber,
+          phoneNumber: tenant.phoneNumber || "",
+          backCccd: tenant.backCCCD,
+          frontCccd: tenant.frontCCCD,
+        };
+        setValue(tenantData);
+        setOriginalValue(tenantData);
+        setIsModalOpen(true);
+      } else if (action === "delete") {
         openDialog(
           { id: tenant.id, type: action },
           {
@@ -351,7 +390,7 @@ export const useTenant = () => {
     isModalOpen,
     setIsModalOpen,
     handleChange,
-    handleUpdateFloor,
+    handleUpdateTenant,
     value,
     setValue,
     errors,

@@ -580,6 +580,8 @@ export default interface TenantResponse {
   phoneNumber: string;
   tenantStatus: TenantStatus;
   contracts: ContractResponse[];
+  identityCardNumber: string;
+  address: string;
 }
 
 export interface TenantDetailResponse extends AbstractResponse {
@@ -606,8 +608,8 @@ export interface ICreateAndUpdateTenant {
   phoneNumber: string;
   identityCardNumber: string;
   address: string;
-  frontCccd: File | null;
-  backCccd: File | null;
+  frontCccd: File | null | string;
+  backCccd: File | null | string;
 }
 
 export interface TenantFilterValues {

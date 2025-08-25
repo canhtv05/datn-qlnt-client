@@ -403,14 +403,14 @@ export const createOrUpdateTenantSchema = z.object({
   address: z.string().min(1, "Địa chỉ không được để trống"),
 
   frontCccd: z
-    .instanceof(File)
-    .nullable()
-    .refine((file) => !!file, "Bạn phải tải lên mặt trước CCCD"),
+    .union([z.instanceof(File), z.string()])
+    .refine((val) => !!val, "Bạn phải tải lên mặt trước CCCD")
+    .nullable(),
 
   backCccd: z
-    .instanceof(File)
-    .nullable()
-    .refine((file) => !!file, "Bạn phải tải lên mặt sau CCCD"),
+    .union([z.instanceof(File), z.string()])
+    .refine((val) => !!val, "Bạn phải tải lên mặt sau CCCD")
+    .nullable(),
 });
 
 /* VEHICLE */

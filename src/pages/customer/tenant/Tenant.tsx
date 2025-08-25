@@ -30,7 +30,7 @@ const Tenant = () => {
     isModalOpen,
     setIsModalOpen,
     handleChange,
-    handleUpdateFloor,
+    handleUpdateTenant,
     value,
     setValue,
     errors,
@@ -51,7 +51,7 @@ const Tenant = () => {
         const tenant: TenantResponse = row;
         return (
           <div className="flex gap-2">
-            {GET_BTNS(/*"update",*/ "delete" /*, "status"*/, "view").map((btn, index) => (
+            {GET_BTNS("update", "delete" /*, "status"*/, "view").map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -155,7 +155,7 @@ const Tenant = () => {
           trigger={null}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
-          onConfirm={handleUpdateFloor}
+          onConfirm={handleUpdateTenant}
           desc={Notice.UPDATE}
         >
           <AddOrUpdateTenant
