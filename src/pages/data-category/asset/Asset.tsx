@@ -37,9 +37,9 @@ const Asset = () => {
   const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Tên tài sản", accessorKey: "nameAsset", isSort: true },
+    { label: t("asset.response.nameAsset"), accessorKey: "nameAsset", isSort: true },
     {
-      label: "Thao tác",
+      label: t("asset.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -87,29 +87,52 @@ const Asset = () => {
         );
       },
     },
-    { label: "Loại tài sản", accessorKey: "assetType", isSort: true, isCenter: true, hasBadge: true },
-    { label: "Tài sản thuộc về", accessorKey: "assetBeLongTo", isSort: true, isCenter: true, hasBadge: true },
-    { label: "Trạng thái", accessorKey: "assetStatus", isSort: true, hasBadge: true, isCenter: true },
-    { label: "Giá", accessorKey: "price", isSort: true },
-    { label: "Số lượng", accessorKey: "quantity", isSort: true, isCenter: true },
-    { label: "Còn lại", accessorKey: "remainingQuantity", isSort: true, isCenter: true },
-    { label: "Mô tả", accessorKey: "descriptionAsset", isSort: false },
     {
-      label: "Ngày tạo",
+      label: t("asset.response.assetType"),
+      accessorKey: "assetType",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: t("asset.response.assetBeLongTo"),
+      accessorKey: "assetBeLongTo",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: t("asset.response.assetStatus"),
+      accessorKey: "assetStatus",
+      isSort: true,
+      hasBadge: true,
+      isCenter: true,
+    },
+    { label: t("asset.response.price"), accessorKey: "price", isSort: true },
+    { label: t("asset.response.quantity"), accessorKey: "quantity", isSort: true, isCenter: true },
+    {
+      label: t("asset.response.remainingQuantity"),
+      accessorKey: "remainingQuantity",
+      isSort: true,
+      isCenter: true,
+    },
+    { label: t("asset.response.descriptionAsset"), accessorKey: "descriptionAsset", isSort: false },
+    {
+      label: t("asset.response.createdAt"),
       accessorKey: "createdAt",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ngày cập nhật",
+      label: t("asset.response.updatedAt"),
       accessorKey: "updatedAt",
       isSort: true,
       hasDate: true,
     },
-    { label: "Mã phòng", accessorKey: "roomID", isHidden: true },
-    { label: "Mã tầng", accessorKey: "floorID", isHidden: true },
-    { label: "Mã tòa nhà", accessorKey: "buildingID", isHidden: true },
-    { label: "Mã khách thuê", accessorKey: "tenantId", isHidden: true },
+    { label: t("room.response.roomCode"), accessorKey: "roomID", isHidden: true },
+    { label: t("asset.response.floorCode"), accessorKey: "floorID", isHidden: true },
+    { label: t("building.response.buildingCode"), accessorKey: "buildingID", isHidden: true },
+    { label: t("tenant.response.tenantId"), accessorKey: "tenantId", isHidden: true },
   ];
 
   return (
@@ -130,12 +153,12 @@ const Asset = () => {
           setRowSelection={setRowSelection}
         />
         <Modal
-          title="Tài sản"
+          title={t("asset.title")}
           trigger={null}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
           onConfirm={handleUpdateFloor}
-          desc={Notice.UPDATE}
+          desc={t(Notice.UPDATE)}
         >
           <AddOrUpdateAsset
             handleChange={handleChange}

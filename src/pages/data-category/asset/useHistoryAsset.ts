@@ -6,6 +6,7 @@ import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -15,6 +16,7 @@ type BulkRemovePayload = {
 };
 
 export const useHistoryAsset = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
@@ -24,7 +26,15 @@ export const useHistoryAsset = () => {
     assetBeLongTo = "",
     assetStatus = AssetStatus.HUY,
     assetType = "",
-  } = queryFilter(searchParams, "page", "size", "nameAsset", "assetType", "assetBeLongTo", "assetStatus");
+  } = queryFilter(
+    searchParams,
+    "page",
+    "size",
+    "nameAsset",
+    "assetType",
+    "assetBeLongTo",
+    "assetStatus"
+  );
 
   const [rowSelection, setRowSelection] = useState({});
   const idRef = useRef<string>("");
@@ -98,12 +108,14 @@ export const useHistoryAsset = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets-cancel",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "assets-cancel",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
           });
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -126,12 +138,14 @@ export const useHistoryAsset = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets-cancel",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "assets-cancel",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
           });
-          toast.success(Status.RESTORE_SUCCESS);
+          toast.success(t(Status.RESTORE_SUCCESS));
         },
       });
       return true;
@@ -141,7 +155,10 @@ export const useHistoryAsset = () => {
     }
   };
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "restore" | "remove" }>({
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{
+    id: string;
+    type: "restore" | "remove";
+  }>({
     onConfirm: async ({ id, type }) => {
       if (type === "remove") {
         return await handleRemoveAssetById(id);
@@ -151,16 +168,17 @@ export const useHistoryAsset = () => {
     },
   });
 
-  const { ConfirmDialog: ConfirmDialogRemoveAll, openDialog: openDialogAll } = useConfirmDialog<BulkRemovePayload>({
-    onConfirm: async ({ ids, type }) => {
-      if (!ids || !Object.values(ids).some(Boolean)) return false;
-      if (type === "remove") {
-        return await handleRemoveAssetByIds(ids);
-      } else {
-        return await handleRestoreAssetByIds(ids);
-      }
-    },
-  });
+  const { ConfirmDialog: ConfirmDialogRemoveAll, openDialog: openDialogAll } =
+    useConfirmDialog<BulkRemovePayload>({
+      onConfirm: async ({ ids, type }) => {
+        if (!ids || !Object.values(ids).some(Boolean)) return false;
+        if (type === "remove") {
+          return await handleRemoveAssetByIds(ids);
+        } else {
+          return await handleRestoreAssetByIds(ids);
+        }
+      },
+    });
 
   const handleRemoveAssetByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
@@ -175,12 +193,14 @@ export const useHistoryAsset = () => {
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets-cancel",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "assets-cancel",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
       });
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       setRowSelection({});
       return true;
     } catch (error) {
@@ -202,12 +222,14 @@ export const useHistoryAsset = () => {
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets-cancel",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "assets-cancel",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
       });
-      toast.success(Status.RESTORE_SUCCESS);
+      toast.success(t(Status.RESTORE_SUCCESS));
       setRowSelection({});
       return true;
     } catch (error) {
@@ -224,7 +246,7 @@ export const useHistoryAsset = () => {
           { id: asset.id, type: "remove" },
           {
             type: "warn",
-            desc: Notice.REMOVE,
+            desc: t(Notice.REMOVE),
           }
         );
       } else {
@@ -232,12 +254,12 @@ export const useHistoryAsset = () => {
           { id: asset.id, type: "restore" },
           {
             type: "default",
-            desc: Notice.RESTORE,
+            desc: t(Notice.RESTORE),
           }
         );
       }
     },
-    [openDialog]
+    [openDialog, t]
   );
 
   const props = {
@@ -249,9 +271,9 @@ export const useHistoryAsset = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải tài sản");
+      toast.error(t("asset.errorFetch"));
     }
-  }, [isError]);
+  }, [isError, t]);
 
   return {
     query: {

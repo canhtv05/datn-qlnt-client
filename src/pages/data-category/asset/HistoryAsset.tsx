@@ -27,9 +27,9 @@ const HistoryBuilding = () => {
   const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Tên tài sản", accessorKey: "nameAsset", isSort: true },
+    { label: t("asset.response.nameAsset"), accessorKey: "nameAsset", isSort: true },
     {
-      label: "Thao tác",
+      label: t("asset.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -75,27 +75,45 @@ const HistoryBuilding = () => {
         );
       },
     },
-    { label: "Loại tài sản", accessorKey: "assetType", isSort: true, isCenter: true, hasBadge: true },
-    { label: "Tài sản thuộc về", accessorKey: "assetBeLongTo", isSort: true, isCenter: true, hasBadge: true },
-    { label: "Trạng thái", accessorKey: "assetStatus", isSort: true, hasBadge: true, isCenter: true },
-    { label: "Giá", accessorKey: "price", isSort: true },
-    { label: "Mô tả", accessorKey: "descriptionAsset", isSort: false },
     {
-      label: "Ngày tạo",
+      label: t("asset.response.assetType"),
+      accessorKey: "assetType",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: t("asset.response.assetBeLongTo"),
+      accessorKey: "assetBeLongTo",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: t("asset.response.assetStatus"),
+      accessorKey: "assetStatus",
+      isSort: true,
+      hasBadge: true,
+      isCenter: true,
+    },
+    { label: t("asset.response.price"), accessorKey: "price", isSort: true },
+    { label: t("asset.response.descriptionAsset"), accessorKey: "descriptionAsset", isSort: false },
+    {
+      label: t("asset.response.createdAt"),
       accessorKey: "createdAt",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ngày cập nhật",
+      label: t("asset.response.updatedAt"),
       accessorKey: "updatedAt",
       isSort: true,
       hasDate: true,
     },
-    { label: "Mã phòng", accessorKey: "roomID", isHidden: true },
-    { label: "Mã tầng", accessorKey: "floorID", isHidden: true },
-    { label: "Mã tòa nhà", accessorKey: "buildingID", isHidden: true },
-    { label: "Mã khách thuê", accessorKey: "tenantId", isHidden: true },
+    { label: t("room.response.roomCode"), accessorKey: "roomID", isHidden: true },
+    { label: t("asset.response.floorCode"), accessorKey: "floorID", isHidden: true },
+    { label: t("building.response.buildingCode"), accessorKey: "buildingID", isHidden: true },
+    { label: t("tenant.response.tenantId"), accessorKey: "tenantId", isHidden: true },
   ];
 
   return (
@@ -103,7 +121,7 @@ const HistoryBuilding = () => {
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
         <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-5 py-3 justify-between items-center">
-            <h3 className="font-semibold">Lịch sử xóa tài sản</h3>
+            <h3 className="font-semibold">{t("asset.titleHistory")}</h3>
             <div className="flex gap-2">
               {BUTTON_HISTORY.map((btn, idx) => (
                 <TooltipProvider key={idx}>
@@ -118,7 +136,7 @@ const HistoryBuilding = () => {
                             openDialogAll(
                               { ids: rowSelection, type: "remove" },
                               {
-                                desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tòa nhà đã chọn và không thể hoàn tác lại. Bạn có chắc chắn muốn tiếp tục?",
+                                desc: t("common.confirmDialog.delete", { name: t("asset.title") }),
                                 type: "warn",
                               }
                             );
@@ -126,7 +144,7 @@ const HistoryBuilding = () => {
                             openDialogAll(
                               { ids: rowSelection, type: "undo" },
                               {
-                                desc: Notice.RESTORES,
+                                desc: t(Notice.RESTORES),
                                 type: "default",
                               }
                             );
@@ -150,7 +168,9 @@ const HistoryBuilding = () => {
                           fill: btn.arrowColor,
                           background: btn.arrowColor,
                         }}
-                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                        className={
+                          "size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
+                        }
                       />
                     </TooltipContent>
                   </Tooltip>

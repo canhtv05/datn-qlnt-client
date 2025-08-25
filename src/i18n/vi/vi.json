@@ -455,6 +455,7 @@
     "response": {
       "active": "Hoạt động",
       "inactive": "Không hoạt động",
+      "floorCode": "Mã tầng",
       "nameFloor": "Tên tầng",
       "actions": "Thao tác",
       "maximumRoom": "Số phòng tối đa",
@@ -498,7 +499,11 @@
       "floorName": "Tên tầng",
       "buildingName": "Tên tòa nhà",
       "acreage": "Diện tích (m²)",
+      "minAcreage": "Min acreage:",
+      "maxAcreage": "Max acreage:",
       "price": "Giá (VNĐ)",
+      "minPrice": "Giá từ:",
+      "maxPrice": "Giá đến:",
       "maximumPeople": "Số người tối đa",
       "roomType": "Loại phòng",
       "status": "Trạng thái",
@@ -520,8 +525,7 @@
       "floorId": "Tầng:",
       "acreage": "Diện tích (m²):",
       "price": "Giá (VNĐ):",
-      "minPrice": "Giá từ:",
-      "maxPrice": "Giá đến:",
+
       "maximumPeople": "Số người tối đa:",
       "roomType": "Loại phòng:",
       "status": "Trạng thái:",
@@ -531,6 +535,58 @@
       "placeholderPrice": "3000000",
       "placeholderMaximumPeople": "4",
       "placeholderRoomType": "-- Chọn loại phòng --",
+      "placeholderStatus": "-- Chọn trạng thái --",
+      "placeholderDescription": "Nhập mô tả chi tiết"
+    }
+  },
+
+  "asset": {
+    "title": "Tài sản",
+    "titleHistory": "Lịch sử xóa tài sản",
+    "response": {
+      "active": "Hoạt động",
+      "inactive": "Không hoạt động",
+      "nameAsset": "Tên tài sản",
+      "actions": "Thao tác",
+      "assetType": "Loại tài sản",
+      "assetBeLongTo": "Tài sản thuộc về",
+      "assetStatus": "Trạng thái",
+      "price": "Giá (VNĐ)",
+      "quantity": "Số lượng",
+      "remainingQuantity": "Còn lại",
+      "descriptionAsset": "Mô tả",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật",
+      "roomID": "Mã phòng",
+      "floorID": "Mã tầng",
+      "buildingID": "Mã tòa nhà",
+      "tenantId": "Mã khách thuê"
+    },
+    "filter": {
+      "status": "-- Trạng thái --",
+      "assetType": "-- Loại tài sản --",
+      "assetBeLongTo": "-- Tài sản thuộc về --"
+    },
+    "errorFetch": "Có lỗi xảy ra khi tải tài sản",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê tài sản",
+    "noBuildingId": "Không tìm thấy mã tòa nhà",
+    "totalAssets": "Tổng số tài sản",
+    "assetsAvailable": "Tài sản còn lại",
+    "addOrUpdate": {
+      "nameAsset": "Tên tài sản:",
+      "assetType": "Loại tài sản:",
+      "assetBeLongTo": "Tài sản thuộc về:",
+      "price": "Giá trị (VND):",
+      "quantity": "Số lượng:",
+      "remainingQuantity": "Còn lại:",
+      "assetStatus": "Trạng thái:",
+      "descriptionAsset": "Mô tả:",
+      "placeholderNameAsset": "Nhập tên tài sản",
+      "placeholderAssetType": "-- Chọn loại tài sản --",
+      "placeholderAssetBeLongTo": "-- Chọn đối tượng sở hữu --",
+      "placeholderPrice": "3000000",
+      "placeholderQuantity": "10",
+      "placeholderRemainingQuantity": "10",
       "placeholderStatus": "-- Chọn trạng thái --",
       "placeholderDescription": "Nhập mô tả chi tiết"
     }
