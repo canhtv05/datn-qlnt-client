@@ -19,6 +19,8 @@ const UpdateInvoice = ({ value, setValue, errors }: UpdateInvoiceProps) => {
         label="Hạn thanh toán:"
         errorText={errors?.paymentDueDate}
         required
+        fromYear={new Date().getFullYear()}
+        toYear={new Date().getFullYear()}
       />
 
       <TextareaLabel

@@ -998,6 +998,8 @@ export interface MeterReadingFilter {
 
 // invoice
 export interface InvoiceCreationRequest {
+  month?: number;
+  year?: number;
   contractId: string;
   paymentDueDate: string;
   note: string;
@@ -1011,8 +1013,10 @@ export interface InvoiceBuildingCreationRequest {
 
 export interface InvoiceStatistics {
   total: number;
-  totalPaid: number;
   totalNotYetPaid: number;
+  totalWaitingForPayment: number;
+  totalPaid: number;
+  totalCannotBePaid: number;
   totalOverdue: number;
   totalCancelled: number;
 }
@@ -1076,11 +1080,12 @@ export interface InvoiceDetailsResponse {
 }
 export interface InvoiceItemResponse {
   id: string;
+  serviceRoomId?: string;
   serviceName: string;
   serviceCategory: ServiceCategory;
   serviceCalculation: ServiceCalculation;
-  oldIndex: number;
-  newIndex: number;
+  oldIndex?: number;
+  newIndex?: number;
   quantity: number;
   unit: string;
   unitPrice: number;

@@ -18,7 +18,7 @@ import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isNumber } from "lodash";
-import { AlarmClock, Ban, CheckCircle2, Clock3, ReceiptText } from "lucide-react";
+import { AlarmClock, Ban, CheckCircle2, Clock3, Hourglass, ReceiptText, XCircle } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -393,7 +393,6 @@ export const useInvoice = () => {
     errorFloorInitToAdd,
     errorInvoiceStatistics,
   ]);
-
   const dataInvoiceStatistics: StatisticCardType[] = [
     {
       icon: ReceiptText,
@@ -411,6 +410,16 @@ export const useInvoice = () => {
       value: invoiceStatistics?.data.totalNotYetPaid ?? 0,
     },
     {
+      icon: Hourglass,
+      label: "Chờ thanh toán",
+      value: invoiceStatistics?.data.totalWaitingForPayment ?? 0,
+    },
+    {
+      icon: XCircle,
+      label: "Không thể thanh toán",
+      value: invoiceStatistics?.data.totalCannotBePaid ?? 0,
+    },
+    {
       icon: AlarmClock,
       label: "Quá hạn",
       value: invoiceStatistics?.data.totalOverdue ?? 0,
@@ -421,6 +430,7 @@ export const useInvoice = () => {
       value: invoiceStatistics?.data.totalCancelled ?? 0,
     },
   ];
+
   return {
     query: {
       page: parsedPage,

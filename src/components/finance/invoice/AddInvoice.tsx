@@ -160,6 +160,8 @@ const AddInvoice = (props: AddInvoiceProps) => {
           label="Hạn thanh toán:"
           errorText={errors?.paymentDueDate}
           required
+          fromYear={new Date().getFullYear()}
+          toYear={new Date().getFullYear()}
         />
       </div>
 

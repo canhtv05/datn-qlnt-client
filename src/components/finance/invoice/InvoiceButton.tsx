@@ -57,6 +57,8 @@ const InvoiceButton = ({
     contractId: "",
     note: "",
     paymentDueDate: "",
+    month: undefined,
+    year: undefined,
   });
 
   const [valueBuilding, setValueBuilding] = useState<InvoiceBuildingCreationRequest>({
@@ -93,6 +95,8 @@ const InvoiceButton = ({
         contractId: "",
         note: "",
         paymentDueDate: "",
+        month: undefined,
+        year: undefined,
       });
       queryClient.invalidateQueries({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "invoices",
@@ -105,14 +109,13 @@ const InvoiceButton = ({
     try {
       const { contractId, note, paymentDueDate } = valueContract;
 
-      await createInvoiceForContractSchema.parseAsync(valueContract);
-
       const data: InvoiceCreationRequest = {
         contractId: contractId.trim(),
         note: note.trim(),
         paymentDueDate: format(paymentDueDate, "yyyy-MM-dd"),
       };
 
+      await createInvoiceForContractSchema.parseAsync(data);
       await addInvoiceForContractMutation.mutateAsync(data);
       clearErrors();
       return true;
