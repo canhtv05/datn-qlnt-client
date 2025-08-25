@@ -25,6 +25,7 @@ import {
 } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
+import { useNavigate } from "react-router-dom";
 
 export const useRoomOptions = (): Option[] => {
   const { data } = useQuery({
@@ -204,6 +205,7 @@ export const replacePlaceholders = (
 export const useContractMutation = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const addAndUpdateContentContractMutation = useMutation({
     mutationFn: async (payload: ICreateContract) => {
@@ -239,6 +241,7 @@ export const useContractMutation = () => {
         predicate: (q) => Array.isArray(q.queryKey) && q.queryKey[0] === "contracts",
       });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
+      navigate(`/customers/contracts`, { replace: true });
     },
     onError: handleMutationError,
   });

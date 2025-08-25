@@ -101,8 +101,29 @@ export const useNotification = () => {
 
   const updateNotificationMutation = useMutation({
     mutationKey: ["update-meter-notification"],
-    mutationFn: async (payload: NotificationCreationAndUpdateRequest) =>
-      await httpRequest.put(`/notifications/${idRef.current}`, payload),
+    mutationFn: async (payload: NotificationCreationAndUpdateRequest) => {
+      const formData = new FormData();
+      formData.append("title", payload.title);
+      formData.append("content", payload.content);
+      formData.append("notificationType", payload.notificationType);
+      formData.append("sendToAll", String(payload.sendToAll));
+
+      if (payload.users && payload.users.length > 0) {
+        payload.users.forEach((userId) => {
+          formData.append("users", userId);
+        });
+      }
+
+      if (payload.image instanceof File) {
+        formData.append("image", payload.image);
+      }
+
+      return await httpRequest.put(`/notifications/${idRef.current}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    },
     onError: (error) => {
       handleMutationError(error);
     },
