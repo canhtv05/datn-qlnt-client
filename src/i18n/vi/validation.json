@@ -1,0 +1,43 @@
+{
+  "number": {
+    "invalid": "Số không hợp lệ",
+    "invalidField": "{{field}} không hợp lệ",
+    "min": "{{field}} phải ≥ {{min}}",
+    "max": "{{field}} phải ≤ {{max}}"
+  },
+  "email": {
+    "invalid": "Email không hợp lệ"
+  },
+  "fullName": {
+    "min": "Họ tên phải có ít nhất 3 ký tự",
+    "wordMin": "Mỗi từ trong họ tên phải có ít nhất 3 ký tự"
+  },
+  "gender": {
+    "invalid": "Giới tính không hợp lệ"
+  },
+  "dob": {
+    "invalid": "Ngày sinh không hợp lệ",
+    "age": "Tuổi của bạn phải lớn hơn hoặc bằng 18"
+  },
+  "phone": {
+    "pattern": "Số điện thoại không hợp lệ, VD: 03xx, 05xx, 07xx, 08xx, 09xx",
+    "min": "Số điện thoại phải có ít nhất 10 chữ số",
+    "max": "Số điện thoại không được vượt quá 11 chữ số",
+    "onlyNumber": "Số điện thoại chỉ được chứa số"
+  },
+  "otp": {
+    "length": "OTP phải có 6 chữ số",
+    "invalid": "OTP phải là 6 chữ số"
+  },
+  "password": {
+    "min": "Mật khẩu phải có ít nhất 5 ký tự",
+    "lowercase": "Mật khẩu phải chứa chữ thường",
+    "uppercase": "Mật khẩu phải chứa chữ in hoa",
+    "number": "Mật khẩu phải chứa số",
+    "special": "Mật khẩu phải chứa ký tự đặc biệt",
+    "confirmMismatch": "Mật khẩu xác nhận không khớp"
+  },
+  "policy": {
+    "required": "Bạn cần đồng ý với chính sách bảo mật"
+  }
+}

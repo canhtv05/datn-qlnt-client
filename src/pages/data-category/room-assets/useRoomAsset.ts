@@ -138,8 +138,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
 
   const updateRoomAssetMutation = useMutation({
     mutationKey: ["update-room-assets"],
-    mutationFn: async (payload: IUpdateRoomAsset) =>
-      await httpRequest.put(`/asset-rooms/${idRef.current}`, payload),
+    mutationFn: async (payload: IUpdateRoomAsset) => await httpRequest.put(`/asset-rooms/${idRef.current}`, payload),
     onError: (error) => {
       handleMutationError(error);
     },
@@ -155,31 +154,26 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
     mutationFn: async (id: string) => await httpRequest.put(`/asset-rooms/toggle/${id}`),
   });
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>(
-    {
-      onConfirm: async ({ id, type }) => {
-        if (type === "delete") return await handleRemoveRoomAssetById(id);
-        if (type === "status") return await handleToggleStatusRoomAssetById(id);
-        return false;
-      },
-    }
-  );
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>({
+    onConfirm: async ({ id, type }) => {
+      if (type === "delete") return await handleRemoveRoomAssetById(id);
+      if (type === "status") return await handleToggleStatusRoomAssetById(id);
+      return false;
+    },
+  });
 
   const handleToggleStatusRoomAssetById = async (id: string): Promise<boolean> => {
     try {
       await toggleStatusRoomAssetMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) =>
-              Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
           });
           queryClient.invalidateQueries({
-            predicate: (query) =>
-              Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
           });
           queryClient.invalidateQueries({
-            predicate: (query) =>
-              Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
           });
           queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
           toast.success(t(Status.UPDATE_SUCCESS));
@@ -197,16 +191,13 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
       await removeRoomAssetMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) =>
-              Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
           });
           queryClient.invalidateQueries({
-            predicate: (query) =>
-              Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
           });
           queryClient.invalidateQueries({
-            predicate: (query) =>
-              Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
           });
           queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
           toast.success(t(Status.REMOVE_SUCCESS));
@@ -224,16 +215,13 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
       await updateRoomAssetMutation.mutateAsync(value as IUpdateRoomAsset, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) =>
-              Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-rooms",
           });
           queryClient.invalidateQueries({
-            predicate: (query) =>
-              Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-asset-all",
           });
           queryClient.invalidateQueries({
-            predicate: (query) =>
-              Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "room-statistics",
           });
           queryClient.invalidateQueries({ queryKey: ["assets-find-all"] });
           toast.success(t(Status.UPDATE_SUCCESS));
@@ -254,7 +242,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
       idRef.current = assetRooms.id;
       if (action === "update") {
         const data = {
-          assetName: assetRooms.nameAsset,
+          assetName: assetRooms.assetName,
           price: assetRooms.price,
           assetStatus: assetRooms.assetStatus,
           description: assetRooms.description,
@@ -297,7 +285,7 @@ export const useRoomAsset = ({ roomId }: AssetProps) => {
     // if (isStatisticsError) {
     //   toast.error("Có lỗi xảy ra khi tải thống kê");
     // }
-  }, [isError]);
+  }, [isError, t]);
 
   return {
     query: {

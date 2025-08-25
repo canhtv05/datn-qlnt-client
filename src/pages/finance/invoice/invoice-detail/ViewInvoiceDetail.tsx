@@ -173,7 +173,7 @@ const ViewInvoiceDetail = () => {
         >
           <RenderIf
             value={
-              paymentReceipt?.data?.paymentStatus !== PaymentStatus.TU_CHOI &&
+              paymentReceipt?.data?.paymentStatus === PaymentStatus.TU_CHOI &&
               paymentReceipt?.data?.paymentMethod === PaymentMethod.CHON_PHUONG_THUC
             }
           >

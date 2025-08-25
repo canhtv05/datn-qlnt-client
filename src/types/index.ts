@@ -409,6 +409,7 @@ export type IUpdateAsset = Omit<ICreateAsset, "buildingId"> & { assetStatus: Ass
 // export type IUpdateAsset = ICreateAsset;
 
 export interface AssetResponse extends AbstractResponse {
+  assetName: string;
   description: string;
   buildingName: string;
   nameAsset: string;
