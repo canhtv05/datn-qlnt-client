@@ -118,6 +118,8 @@ export default function CccdUpload({
     }
   }, [backImage]);
 
+  console.log(frontResult, backResult);
+
   useEffect(() => {
     if (Array.isArray(frontResult) && frontResult.length > 0) {
       const res = frontResult[0];
@@ -141,6 +143,33 @@ export default function CccdUpload({
       }));
     }
   }, [backResult, backImage, setValue]);
+
+  useEffect(() => {
+    if (frontResult?.length > 0 && backResult?.length > 0 && frontResult[0]?.id && backResult[0]?.mrz_details?.id) {
+      const frontId = frontResult[0]?.id;
+      const backId = backResult[0]?.mrz_details?.id;
+
+      if (frontId !== backId) {
+        setFrontImage(null);
+        setBackImage(null);
+
+        setValue((prev) => ({
+          ...prev,
+          frontCccd: null,
+          backCccd: null,
+          identityCardNumber: "",
+          fullName: "",
+          address: "",
+          dob: "",
+          gender: "",
+        }));
+
+        toast.error("Mặt trước và mặt sau CCCD không khớp!");
+        setFrontResult(null);
+        setBackResult(null);
+      }
+    }
+  }, [frontResult, backResult, setValue, setFrontImage, setBackImage]);
 
   const isFrontInvalid = touchedFront && !frontImage;
   const isBackInvalid = touchedBack && !backImage;
