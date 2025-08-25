@@ -28,9 +28,9 @@ const HistoryVehicle = () => {
   const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Chủ sở hữu", accessorKey: "fullName", isSort: true },
+    { label: t("vehicle.response.owner"), accessorKey: "fullName", isSort: true },
     {
-      label: "Thao tác",
+      label: t("vehicle.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -77,26 +77,26 @@ const HistoryVehicle = () => {
       },
     },
     {
-      label: "Loại phương tiện",
+      label: t("vehicle.response.vehicleType"),
       accessorKey: "vehicleType",
       isSort: true,
       isCenter: true,
       hasBadge: true,
     },
     {
-      label: "Biển số",
+      label: t("vehicle.response.licensePlate"),
       accessorKey: "licensePlate",
       isSort: true,
     },
     {
-      label: "Trạng thái",
+      label: t("vehicle.response.status"),
       accessorKey: "vehicleStatus",
       isSort: true,
       isCenter: true,
       hasBadge: true,
     },
     {
-      label: "Ngày đăng ký",
+      label: t("vehicle.response.registrationDate"),
       accessorKey: "registrationDate",
       isSort: true,
       hasDate: true,
@@ -109,18 +109,18 @@ const HistoryVehicle = () => {
       isCenter: true,
     },
     {
-      label: "Mô tả",
+      label: t("vehicle.response.describe"),
       accessorKey: "describe",
       isSort: false,
     },
     {
-      label: "Ngày tạo",
+      label: t("vehicle.response.createdAt"),
       accessorKey: "createdAt",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ngày cập nhật",
+      label: t("vehicle.response.updatedAt"),
       accessorKey: "updatedAt",
       isSort: true,
       hasDate: true,
@@ -132,7 +132,7 @@ const HistoryVehicle = () => {
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
         <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-5 py-3 justify-between items-center">
-            <h3 className="font-semibold">Lịch sử xóa khách hàng</h3>
+            <h3 className="font-semibold">{t("vehicle.titleHistory")}</h3>
             <div className="flex gap-2">
               {BUTTON_HISTORY.map((btn, idx) => (
                 <TooltipProvider key={idx}>
@@ -147,7 +147,7 @@ const HistoryVehicle = () => {
                             openDialogAll(
                               { ids: rowSelection, type: "remove" },
                               {
-                                desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tòa nhà đã chọn và không thể hoàn tác lại. Bạn có chắc chắn muốn tiếp tục?",
+                                desc: t("common.confirmDialog.delete"),
                                 type: "warn",
                               }
                             );
@@ -155,7 +155,7 @@ const HistoryVehicle = () => {
                             openDialogAll(
                               { ids: rowSelection, type: "undo" },
                               {
-                                desc: Notice.RESTORES,
+                                desc: t(Notice.RESTORES),
                                 type: "default",
                               }
                             );
@@ -179,7 +179,9 @@ const HistoryVehicle = () => {
                           fill: btn.arrowColor,
                           background: btn.arrowColor,
                         }}
-                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                        className={
+                          "size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
+                        }
                       />
                     </TooltipContent>
                   </Tooltip>

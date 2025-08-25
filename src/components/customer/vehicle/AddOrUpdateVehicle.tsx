@@ -6,6 +6,7 @@ import { VehicleStatus, VehicleType } from "@/enums";
 import { cn } from "@/lib/utils";
 import TenantResponse, { ApiResponse, ICreateVehicle, IUpdateVehicle } from "@/types";
 import { Dispatch, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 type AddVehicleProps = {
   type: "add";
@@ -27,37 +28,25 @@ type UpdateVehicleProps = {
 
 type AddOrUpdateVehicleProps = AddVehicleProps | UpdateVehicleProps;
 
-const vehicleType: FieldsSelectLabelType[] = [
-  {
-    label: "Xe máy",
-    value: VehicleType.XE_MAY,
-  },
-  {
-    label: "Ô tô",
-    value: VehicleType.O_TO,
-  },
-  {
-    label: "Xe đạp",
-    value: VehicleType.XE_DAP,
-  },
-  {
-    label: "Khác",
-    value: VehicleType.KHAC,
-  },
-];
-
-const vehicleStatus: FieldsSelectLabelType[] = [
-  {
-    label: "Sử dụng",
-    value: VehicleStatus.SU_DUNG,
-  },
-  {
-    label: "Không sử dụng",
-    value: VehicleStatus.TAM_KHOA,
-  },
-];
-
 const AddOrUpdateVehicle = (props: AddOrUpdateVehicleProps) => {
+  const { t } = useTranslation();
+  const vehicleType: FieldsSelectLabelType[] = [
+    { label: t("statusBadge.vehicleType.motorbike"), value: VehicleType.XE_MAY },
+    { label: t("statusBadge.vehicleType.car"), value: VehicleType.O_TO },
+    { label: t("statusBadge.vehicleType.bicycle"), value: VehicleType.XE_DAP },
+    { label: t("statusBadge.vehicleType.other"), value: VehicleType.KHAC },
+  ];
+
+  const vehicleStatus: FieldsSelectLabelType[] = [
+    {
+      label: t("statusBadge.vehicleStatus.active"),
+      value: VehicleStatus.SU_DUNG,
+    },
+    {
+      label: t("statusBadge.vehicleStatus.locked"),
+      value: VehicleStatus.TAM_KHOA,
+    },
+  ];
   const { handleChange, tenants, type, value, errors, setValue } = props;
 
   const tenantOptions = useMemo(() => {
@@ -83,8 +72,8 @@ const AddOrUpdateVehicle = (props: AddOrUpdateVehicleProps) => {
         <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
           <FieldsSelectLabel
             data={tenantOptions}
-            placeholder="-- Chọn chủ xe --"
-            label="Chủ xe:"
+            placeholder={t("vehicle.placeholder.owner")}
+            label={t("vehicle.addOrUpdate.owner")}
             id="tenantId"
             name="tenantId"
             value={value.tenantId ?? ""}
@@ -96,13 +85,13 @@ const AddOrUpdateVehicle = (props: AddOrUpdateVehicleProps) => {
           />
           <FieldsSelectLabel
             data={vehicleType}
-            placeholder="-- Chọn loại xe --"
-            label="Loại xe:"
+            placeholder={t("vehicle.placeholder.type")}
+            label={t("vehicle.addOrUpdate.vehicleType")}
             id="vehicleType"
             name="vehicleType"
             value={value.vehicleType ?? ""}
             onChange={(val) => setValue((prev) => ({ ...prev, vehicleType: val as VehicleType }))}
-            labelSelect="Loại xe"
+            labelSelect={t("vehicle.addOrUpdate.vehicleType")}
             showClear
             errorText={errors.vehicleType}
             required
@@ -120,8 +109,8 @@ const AddOrUpdateVehicle = (props: AddOrUpdateVehicleProps) => {
         {type === "update" && (
           <FieldsSelectLabel
             data={vehicleStatus}
-            placeholder="-- Trạng thái xe --"
-            label="Trạng thái xe:"
+            placeholder={t("vehicle.placeholder.status")}
+            label={t("vehicle.addOrUpdate.vehicleStatus")}
             id="vehicleStatus"
             name="vehicleStatus"
             value={value.vehicleStatus ?? ""}
@@ -131,7 +120,7 @@ const AddOrUpdateVehicle = (props: AddOrUpdateVehicleProps) => {
                 vehicleStatus: val as VehicleStatus,
               }));
             }}
-            labelSelect="Trạng thái xe"
+            labelSelect={t("vehicle.addOrUpdate.vehicleStatus")}
             showClear
             errorText={errors.vehicleStatus}
             required
@@ -142,7 +131,7 @@ const AddOrUpdateVehicle = (props: AddOrUpdateVehicleProps) => {
         <DatePickerLabel
           date={value?.registrationDate ? new Date(value?.registrationDate) : new Date()}
           setDate={(d) => setValue((prev) => ({ ...prev, registrationDate: d.toISOString() }))}
-          label="Ngày đăng ký:"
+          label={t("vehicle.addOrUpdate.registrationDate")}
           errorText={errors?.registrationDate}
         />
       )}
@@ -153,19 +142,21 @@ const AddOrUpdateVehicle = (props: AddOrUpdateVehicleProps) => {
           name="licensePlate"
           placeholder="30A-123.45"
           required
-          label="Biển số xe:"
+          label={t("vehicle.addOrUpdate.licensePlate")}
           value={value.licensePlate ?? ""}
           onChange={handleChange}
           errorText={errors.licensePlate}
-          disabled={value.vehicleType === VehicleType.XE_DAP || value.vehicleType === VehicleType.KHAC}
+          disabled={
+            value.vehicleType === VehicleType.XE_DAP || value.vehicleType === VehicleType.KHAC
+          }
         />
       )}
 
       <TextareaLabel
         id="describe"
         name="describe"
-        placeholder="Nhập mô tả"
-        label="Mô tả:"
+        placeholder={t("vehicle.addOrUpdate.describePlaceholder")}
+        label={t("vehicle.addOrUpdate.describe")}
         value={value.describe ?? ""}
         onChange={(e) => {
           if (props.type === "add") {

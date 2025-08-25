@@ -270,6 +270,7 @@
     },
 
     "vehicleType": {
+      "total": "Tổng",
       "motorbike": "Xe máy",
       "car": "Ô tô",
       "bicycle": "Xe đạp",
@@ -738,6 +739,7 @@
   "tenant": {
     "title": "Khách thuê",
     "titleHistory": "Lịch sử khách thuê đã xóa",
+
     "search": "Tìm kiếm",
     "errorFetch": "Không lấy được dữ liệu khách thuê.",
     "errorFetchStatistics": "Không lấy được dữ liệu thống kê khách thuê.",
@@ -780,6 +782,45 @@
       "title": "Xem chi tiết khách thuê",
       "subtitle": "Thông tin người thuê, hợp đồng và liên hệ",
       "totalContract": "Tổng hợp đồng"
+    }
+  },
+  "vehicle": {
+    "title": "Phương tiện",
+    "titleHistory": "Lịch sử phương tiện đã xóa",
+    "statistic": "Thống kê phương tiện",
+    "search": "Biển số xe",
+    "errorFetch": "Có lỗi xảy ra khi tải phương tiện.",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê phương tiện.",
+    "response": {
+      "owner": "Chủ sở hữu",
+      "actions": "Thao tác",
+      "vehicleType": "Loại phương tiện",
+      "licensePlate": "Biển số",
+      "status": "Trạng thái",
+      "registrationDate": "Ngày đăng ký",
+      "describe": "Mô tả",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật"
+    },
+    "filter": {
+      "placeholderType": "-- Loại phương tiện --",
+      "placeholderLicense": "Biển số xe",
+      "labelType": "Loại phương tiện"
+    },
+    "addOrUpdate": {
+      "owner": "Chủ xe",
+      "type": "Loại xe",
+      "status": "Trạng thái xe",
+      "registrationDate": "Ngày đăng ký",
+      "licensePlate": "Biển số xe",
+      "licensePlatePlaceholder": "30A-123.45",
+      "describe": "Mô tả",
+      "describePlaceholder": "Nhập mô tả"
+    },
+    "placeholder": {
+      "owner": "-- Chọn chủ xe --",
+      "type": "-- Chọn loại xe --",
+      "status": "-- Chọn trạng thái xe --"
     }
   }
 }
