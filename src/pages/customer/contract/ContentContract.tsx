@@ -6,7 +6,7 @@ import { usePrintPdf } from "@/hooks/usePrintPdf";
 import { ContractDetailResponse } from "@/types";
 import { httpRequest } from "@/utils/httpRequest";
 import { useQuery } from "@tanstack/react-query";
-import { Download } from "lucide-react";
+import { Download, File } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { saveAs } from "file-saver";
 import { asBlob } from "html-docx-js-typescript";
@@ -76,7 +76,7 @@ const ContentContract = () => {
           </Tooltip>
           <Tooltip content="Tải Docx">
             <Button size={"icon"} className="text-white cursor-pointer" onClick={handleDownloadDocx}>
-              <Download />
+              <File />
             </Button>
           </Tooltip>
         </div>

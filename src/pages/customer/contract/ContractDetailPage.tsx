@@ -229,13 +229,36 @@ const ContractDetailPage = () => {
               <p>Ngày tạo: {data?.createdAt ? formatDate(data?.createdAt) : ""}</p>
               <p>Cập nhật: {data?.updatedAt ? formatDate(data?.updatedAt) : ""}</p>
             </div>
-            <Tooltip content="Xem nội dung">
-              <Link to={`/customers/contracts/content/${contractId}`}>
-                <Button size={"icon"}>
-                  <Eye className="stroke-white" />
-                </Button>
-              </Link>
-            </Tooltip>
+            <div className="flex gap-3 ">
+              <Tooltip content="Gia hạn hợp đồng">
+                <Link to={`/customers/contracts/content/${contractId}`}>
+                  <Button size={"icon"}>
+                    <Eye className="stroke-white" />
+                  </Button>
+                </Link>
+              </Tooltip>{" "}
+              <Tooltip content="Kết thúc có báo trước">
+                <Link to={`/customers/contracts/content/${contractId}`}>
+                  <Button size={"icon"}>
+                    <Eye className="stroke-white" />
+                  </Button>
+                </Link>
+              </Tooltip>{" "}
+              <Tooltip content="Tự ý hủy bỏ">
+                <Link to={`/customers/contracts/content/${contractId}`}>
+                  <Button size={"icon"}>
+                    <Eye className="stroke-white" />
+                  </Button>
+                </Link>
+              </Tooltip>
+              <Tooltip content="Xem nội dung">
+                <Link to={`/customers/contracts/content/${contractId}`}>
+                  <Button size={"icon"}>
+                    <Eye className="stroke-white" />
+                  </Button>
+                </Link>
+              </Tooltip>
+            </div>
           </div>
         </div>
       </RenderIf>
