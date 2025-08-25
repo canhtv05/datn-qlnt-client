@@ -32,16 +32,16 @@ const paymentMethods: SelectPaymentMethod[] = [
     value: PaymentMethod.VNPAY,
     image: images.vnpay,
   },
-  {
-    label: "Thanh toán qua MOMO",
-    value: PaymentMethod.MOMO,
-    image: images.momo,
-  },
-  {
-    label: "Thanh toán qua ZALOPAY",
-    value: PaymentMethod.ZALOPAY,
-    image: images.zalopay,
-  },
+  // {
+  //   label: "Thanh toán qua MOMO",
+  //   value: PaymentMethod.MOMO,
+  //   image: images.momo,
+  // },
+  // {
+  //   label: "Thanh toán qua ZALOPAY",
+  //   value: PaymentMethod.ZALOPAY,
+  //   image: images.zalopay,
+  // },
 ];
 
 const SelectPaymentMethod = ({ selectPaymentMethod, setSelectPaymentMethod }: SelectPaymentMethodProps) => {

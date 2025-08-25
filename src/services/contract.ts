@@ -3,8 +3,9 @@ import {
   AssetLittleResponse,
   ContractDetailResponse,
   ICreateContract,
-  ServiceBasicResponse,
-  VehiclesBasicResponse,
+  ServiceLittleResponse,
+  TenantLittleResponse,
+  VehicleBasicResponse,
 } from "@/types";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -20,7 +21,7 @@ import {
   assetStatusEnumToString,
   contractStatusEnumToString,
   formattedCurrency,
-  serviceCategoryEnumToString,
+  serviceRoomStatusEnumToString,
   vehicleTypeEnumToString,
 } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
@@ -132,13 +133,11 @@ export const replacePlaceholders = (
       if (key === "tenants") {
         if (!value) result = checkValue(regex, result);
         else {
-          const items = (value as TenantBasicResponse[]).map(
+          const items = (value as TenantLittleResponse[]).map(
             (t) =>
               `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Họ và tên: ${
                 t.fullName || NA
-              } - Email: ${t.email || NA} - SDT: ${t.phoneNumber || NA}${
-                t.isRepresentative ? " - Đại diện" : ""
-              }</span>`
+              } - Email: ${t.email || NA} - SDT: ${t.phoneNumber || NA}${t.representative ? " - Đại diện" : ""}</span>`
           );
           result = result.replace(regex, createListHtml(items));
         }
@@ -160,20 +159,20 @@ export const replacePlaceholders = (
       } else if (key === "services") {
         if (!value) result = checkValue(regex, result);
         else {
-          const items = (value as ServiceBasicResponse[]).map(
+          const items = (value as ServiceLittleResponse[]).map(
             (s) =>
               `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Tên dịch vụ: ${
-                s.name || NA
-              } - Loại dịch vụ: ${serviceCategoryEnumToString(s.category, t) || NA} - Đơn vị: ${
+                s.serviceName || NA
+              } - Trạng thái: ${serviceRoomStatusEnumToString(s.serviceRoomStatus, t) || NA} - Đơn vị: ${
                 s.unit || NA
-              } - Mô tả: ${s.description || NA}</span>`
+              } Đơn giá: ${formattedCurrency(s.unitPrice) || NA} - Mô tả: ${s.description || NA}</span>`
           );
           result = result.replace(regex, createListHtml(items));
         }
       } else if (key === "vehicles") {
         if (!value) result = checkValue(regex, result);
         else {
-          const items = (value as VehiclesBasicResponse[]).map(
+          const items = (value as VehicleBasicResponse[]).map(
             (v) =>
               `<li><p><span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Loại phương tiện: ${
                 vehicleTypeEnumToString(v.vehicleType, t) || NA
@@ -194,7 +193,7 @@ export const replacePlaceholders = (
         if (!value) result = checkValue(regex, result);
         const contractStatus = value as ContractStatus;
         result = result.replace(regex, contractStatusEnumToString(contractStatus, t));
-      } else if (key === "roomPrice" || key === "deposit") {
+      } else if (key === "roomPrice" || key === "deposit" || key === "electricPrice" || key === "waterPrice") {
         result = result.replace(regex, formattedCurrency(value));
       } else result = result.replace(regex, String(value ?? ""));
     }

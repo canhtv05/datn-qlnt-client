@@ -369,7 +369,9 @@ const ContractDetailPage = () => {
             <div className="flex gap-3 ">
               <RenderIf
                 value={
-                  data?.status !== ContractStatus.TU_Y_HUY_BO && data?.status !== ContractStatus.KET_THUC_CO_BAO_TRUOC
+                  data?.status !== ContractStatus.TU_Y_HUY_BO &&
+                  data?.status !== ContractStatus.KET_THUC_CO_BAO_TRUOC &&
+                  data?.status !== ContractStatus.CHO_KICH_HOAT
                 }
               >
                 <TooltipProvider>
