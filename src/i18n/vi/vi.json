@@ -21,7 +21,9 @@
       "tenants": "Khách thuê",
       "active": "Kích hoạt",
       "vehicles": "Phương tiện",
-      "deposit1": "Hoàn trả tiền cọc"
+      "deposit1": "Hoàn trả tiền cọc",
+      "deposit2": "Gửi xác nhận chưa nhận đủ cọc",
+      "deposit3": "Gửi xác nhận đã nhận đủ cọc"
     },
     "noData": "Không có dữ liệu",
     "selectDateRange": "Chọn khoảng thời gian",
@@ -161,7 +163,11 @@
       "contracts": "Xem hợp đồng",
       "members": "Xem thành viên trong phòng",
       "electric": "Xem điện",
-      "water": "Xem nước"
+      "water": "Xem nước",
+      "assets": "Xem tài sản",
+      "services": "Xem dịch vụ",
+      "vehicles": "Xem phương tiện",
+      "deposits": "Xem tiền cọc"
     }
   },
   "dashboard": {

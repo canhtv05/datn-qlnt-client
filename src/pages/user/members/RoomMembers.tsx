@@ -1,16 +1,19 @@
-import DataTable from "@/components/DataTable";
-import Overlay from "@/components/Overlay";
-// import StatusBadge from "@/components/ui/StatusBadge";
-import TenantResponse, { ApiResponse, ColumnConfig } from "@/types";
-import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
-import { httpRequest } from "@/utils/httpRequest";
-import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { httpRequest } from "@/utils/httpRequest";
+
+import TenantResponse, { ApiResponse } from "@/types";
+import { UserCircle2, Phone, Mail, CalendarDays, Badge } from "lucide-react";
+import { genderToString, tenantStatusToString } from "@/lib/utils";
+const NA = "N/A";
+
 const RoomMembers = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
   const { data, isError, isLoading } = useQuery<ApiResponse<TenantResponse[]>>({
     queryKey: ["room-tenants-detail", id],
@@ -25,103 +28,83 @@ const RoomMembers = () => {
   useEffect(() => {
     if (isError) {
       toast.error("Không thể tải thành viên trong phòng. Vui lòng thử lại sau.");
-      return;
     }
   }, [isError]);
 
-  const columnConfigs: ColumnConfig[] = [
-    {
-      label: "Họ tên",
-      accessorKey: "fullName",
-      isSort: true,
-      hasHighlight: true,
-      isCenter: true,
-    },
-    // {
-    //   label: "Là đại diện",
-    //   accessorKey: "isRepresentative",
-    //   isCenter: true,
-    //   isSort: true,
-    //   render: (row: TenantResponse) => {
-    //     return row.isRepresentative ? (
-    //       <StatusBadge status={"isRepresentative=true"} />
-    //     ) : (
-    //       <StatusBadge status={"isRepresentative=false"} />
-    //     );
-    //   },
-    // },
-    {
-      label: "Giới tính",
-      accessorKey: "gender",
-      isSort: true,
-      isCenter: true,
-      hasBadge: true,
-    },
-    {
-      label: "Ngày sinh",
-      accessorKey: "dob",
-      isSort: true,
-      isCenter: true,
-      render: (row) => new Date(row.dob).toLocaleDateString("vi-VN") ?? "_",
-    },
-    {
-      label: "Số điện thoại",
-      accessorKey: "phoneNumber",
-      isSort: true,
-      isCenter: true,
-    },
-    {
-      label: "CCCD/CMT",
-      accessorKey: "identityCardNumber",
-      isSort: true,
-      isCenter: true,
-      isHidden: true,
-    },
-    {
-      label: "Email",
-      accessorKey: "email",
-      isSort: true,
-      isCenter: true,
-    },
-    {
-      label: "Địa chỉ",
-      accessorKey: "address",
-      isSort: true,
-      isHidden: true,
-    },
-    {
-      label: "Trạng thái",
-      accessorKey: "tenantStatus",
-      isSort: true,
-      hasBadge: true,
-      isCenter: true,
-    },
-  ];
-
   return (
-    <Overlay>
-      <div className="bg-background rounded-ms w-full pb-5 max-h-[90vh] overflow-hidden flex flex-col">
-        <div className="px-4 py-3 border-b border-border shrink-0">
-          <h3 className="font-semibold">Thành viên trong phòng</h3>
-        </div>
-
-        <div className="overflow-y-auto px-4 py-2 flex-1">
-          <DataTable<TenantResponse>
-            data={data?.data ?? []}
-            columns={buildColumnsFromConfig(columnConfigs, false)}
-            page={0}
-            size={0}
-            totalPages={0}
-            totalElements={data?.data.length || 0}
-            loading={isLoading}
-            rowSelection={{}}
-            setRowSelection={() => {}}
-            disablePagination
-            disableSelect
-          />
-        </div>
+    <div className="bg-background rounded-md w-full p-4 flex flex-col gap-4">
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="font-semibold text-lg">Thành viên trong phòng</h3>
       </div>
-    </Overlay>
+
+      {isLoading ? (
+        Array.from({ length: 5 }).map((_, idx) => <Skeleton key={idx} className="h-36 w-full rounded-md" />)
+      ) : !data?.data || data.data.length === 0 ? (
+        <div className="text-center py-10 text-gray-500">Không có thành viên nào trong phòng</div>
+      ) : (
+        data.data.map((member, idx) => (
+          <Card key={idx} className="rounded-md shadow hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <UserCircle2 className="w-5 h-5" /> {member.fullName || NA}{" "}
+                {member.isRepresentative && (
+                  <span className="text-xs text-white bg-blue-500 px-2 py-0.5 rounded">Đại diện</span>
+                )}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              {/* Cột trái: thông tin cơ bản */}
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <Badge className="w-4 h-4 text-muted-foreground" />
+                  <span className="font-medium text-muted-foreground">Giới tính:</span>
+                  <span className="font-bold">{genderToString(member.gender)}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CalendarDays className="w-4 h-4 text-muted-foreground" />
+                  <span className="font-medium text-muted-foreground">Ngày sinh:</span>
+                  <span className="font-bold">
+                    {member.dob ? new Date(member.dob).toLocaleDateString("vi-VN") : NA}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-muted-foreground" />
+                  <span className="font-medium text-muted-foreground">Số điện thoại:</span>
+                  <span className="font-bold">{member.phoneNumber || NA}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-muted-foreground" />
+                  <span className="font-medium text-muted-foreground">Email:</span>
+                  <span className="font-bold">{member.email || NA}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge className="w-4 h-4 text-muted-foreground" />
+                  <span className="font-medium text-muted-foreground">Trạng thái:</span>
+                  <span className="font-bold">{tenantStatusToString(member.tenantStatus)}</span>
+                </div>
+              </div>
+
+              {/* Cột phải: CCCD */}
+              <div className="flex flex-col gap-2">
+                <span className="font-medium text-muted-foreground">CCCD/CMT:</span>
+                <div className="flex gap-2 flex-wrap">
+                  {member.frontCCCD ? (
+                    <img src={member.frontCCCD} alt="Front CCCD" className="h-32 w-44 object-cover rounded-md border" />
+                  ) : (
+                    <span className="text-gray-400">Không có</span>
+                  )}
+                  {member.backCCCD ? (
+                    <img src={member.backCCCD} alt="Back CCCD" className="h-32 w-44 object-cover rounded-md border" />
+                  ) : (
+                    <span className="text-gray-400">Không có</span>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))
+      )}
+    </div>
   );
 };
 

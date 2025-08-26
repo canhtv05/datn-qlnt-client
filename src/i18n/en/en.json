@@ -22,7 +22,9 @@
       "tenants": "Tenants",
       "active": "Active",
       "vehicles": "Vehicles",
-      "deposit1": "Deposit refund"
+      "deposit1": "Deposit refund",
+      "deposit2": "Send confirmation of not receiving enough deposit",
+      "deposit3": "Send confirmation of receipt of full deposit"
     },
     "noData": "No data",
     "selectDateRange": "Select date range",
@@ -162,7 +164,11 @@
       "contracts": "View Contracts",
       "members": "View Room Members",
       "electric": "View Electricity",
-      "water": "View Water"
+      "water": "View Water",
+      "assets": "View Assets",
+      "services": "View Services",
+      "vehicles": "View Vehicles",
+      "deposits": "View Deposits"
     }
   },
   "dashboard": {

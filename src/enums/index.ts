@@ -306,7 +306,11 @@ export enum SidebarKey {
   RECEIPTS = "sidebar.user.receipts",
   INVOICES = "sidebar.user.invoices",
   USER_CONTRACTS = "sidebar.user.contracts",
+  USER_DEPOSITS = "sidebar.user.deposits",
   MEMBERS = "sidebar.user.members",
+  ASSETS_USER = "sidebar.user.assets",
+  SERVICES_USER = "sidebar.user.services",
+  VEHICLES_USER = "sidebar.user.vehicles",
   ELECTRIC = "sidebar.user.electric",
   WATER = "sidebar.user.water",
 }

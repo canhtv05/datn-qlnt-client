@@ -25,7 +25,7 @@ const AuthLayout = lazy(() => import("@/layouts/AuthLayout"));
 /* MODALS */
 const Profile = lazy(() => import("@/pages/profile"));
 const DetailTenant = lazy(() => import("@/pages/customer/tenant/DetailTenant"));
-const RoomMembers = lazy(() => import("@/pages/user/members"));
+const RoomMembers = lazy(() => import("@/pages/user/room/SelectRoom"));
 const RoomDetail = lazy(() => import("@/pages/user/room-detail"));
 
 /* DASHBOARD */
@@ -83,6 +83,15 @@ const UserInvoicePayment = lazy(() => import("@/components/finance/invoice/Invoi
 const PaymentCallbackVnPay = lazy(() => import("@/pages/payment-callback"));
 
 const NotFound = lazy(() => import("@/pages/not-found"));
+
+const MemberDetail = lazy(() => import("@/pages/user/members/RoomMembers"));
+const AssetsDetail = lazy(() => import("@/pages/user/Asset/Viewassets"));
+const ServiceDetail = lazy(() => import("@/pages/user/Service/ViewService"));
+const VehicleDetail = lazy(() => import("@/pages/user/Vehicle/ViewVehicle"));
+const ContractUser = lazy(() => import("@/pages/user/contract"));
+const ContentContractUser = lazy(() => import("@/pages/user/contract/ContentContract"));
+const ContractDetailPageUser = lazy(() => import("@/pages/user/contract/ContractDetailPage"));
+const DepositUser = lazy(() => import("@/pages/user/deposit"));
 
 const publicRoutes: RouteType[] = [
   /* AUTH */
@@ -411,6 +420,66 @@ const privateRoutes: RouteType[] = [
     path: "*",
     component: NotFound,
     layout: null,
+  },
+  {
+    path: configs.routes.user.members,
+    component: SelectRoom,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.membersId,
+    component: MemberDetail,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.asserts,
+    component: SelectRoom,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.assertsId,
+    component: AssetsDetail,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.service,
+    component: SelectRoom,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.serviceId,
+    component: ServiceDetail,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.vehicles,
+    component: SelectRoom,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.vehiclesId,
+    component: VehicleDetail,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.contract,
+    component: ContractUser,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.contractId,
+    component: ContractDetailPageUser,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.contractDetailContent,
+    component: ContentContractUser,
+    allowedRoles: ["USER"],
+  },
+  {
+    path: configs.routes.user.deposit,
+    component: DepositUser,
+    allowedRoles: ["USER"],
   },
 ];
 

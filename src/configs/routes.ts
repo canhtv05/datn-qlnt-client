@@ -83,8 +83,18 @@ const routes = {
     viewInvoice: "/invoices/view/:id",
     invoicePayment: "/invoices/payment/:id",
     paymentCallback: "/payments/payment-callback",
+    contract: "/contracts",
+    contractId: "/contracts/:contractId",
+    contractDetailContent: "/contracts/content/:contractId",
     members: "/members",
     membersId: "/members/:id",
+    asserts: "/assets",
+    assertsId: "/assets/:id",
+    service: "/service",
+    serviceId: "/service/:id",
+    vehicles: "/vehicle",
+    vehiclesId: "/vehicle/:id",
+    deposit: "/deposit",
   },
 };
 
