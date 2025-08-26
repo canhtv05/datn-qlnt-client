@@ -15,10 +15,12 @@ import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isNumber } from "lodash";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useMeterReading = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const { id } = useParams();
 
@@ -70,13 +72,32 @@ export const useMeterReading = () => {
     if (filterValues.month) params.set("month", String(filterValues.month));
     if (filterValues.roomId) params.set("roomId", filterValues.roomId);
     params.set("page", "1");
-    if (filterValues.buildingId || filterValues.meterType || filterValues.month || filterValues.roomId) {
+    if (
+      filterValues.buildingId ||
+      filterValues.meterType ||
+      filterValues.month ||
+      filterValues.roomId
+    ) {
       setSearchParams(params);
     }
-  }, [filterValues.buildingId, filterValues.meterType, filterValues.month, filterValues.roomId, setSearchParams]);
+  }, [
+    filterValues.buildingId,
+    filterValues.meterType,
+    filterValues.month,
+    filterValues.roomId,
+    setSearchParams,
+  ]);
 
   const { data, isLoading, isError } = useQuery<ApiResponse<MeterReadingResponse[]>>({
-    queryKey: ["meter-readings", parsedPage, parsedSize, activeBuildingId, month, roomId, meterType],
+    queryKey: [
+      "meter-readings",
+      parsedPage,
+      parsedSize,
+      activeBuildingId,
+      month,
+      roomId,
+      meterType,
+    ],
     queryFn: async () => {
       const params: Record<string, string> = {
         page: parsedPage.toString(),
@@ -128,9 +149,10 @@ export const useMeterReading = () => {
       await removeMeterReadingMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "meter-readings",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "meter-readings",
           });
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -155,9 +177,10 @@ export const useMeterReading = () => {
         onSuccess: () => {
           setValue({ descriptionMeterReading: "", newIndex: undefined });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "meter-readings",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "meter-readings",
           });
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
           setIsModalOpen(false);
         },
       });
@@ -168,7 +191,7 @@ export const useMeterReading = () => {
       handleZodErrors(error);
       return false;
     }
-  }, [updateMeterReadingMutation, clearErrors, handleZodErrors, queryClient, value]);
+  }, [value, updateMeterReadingMutation, clearErrors, queryClient, t, handleZodErrors]);
 
   const handleActionClick = useCallback(
     (meterReading: MeterReadingResponse, action: "update" | "delete") => {
@@ -180,16 +203,15 @@ export const useMeterReading = () => {
         });
         setIsModalOpen(true);
       } else {
-        openDialog(
-          { id: meterReading.id, type: action },
-          { type: "warn", desc: Notice.REMOVE }
-        );
+        openDialog({ id: meterReading.id, type: action }, { type: "warn", desc: t(Notice.REMOVE) });
       }
     },
-    [openDialog]
+    [openDialog, t]
   );
 
-  const { data: meterFindAll, isError: errorMeterFindAll } = useQuery<ApiResponse<MeterFindAllResponse>>({
+  const { data: meterFindAll, isError: errorMeterFindAll } = useQuery<
+    ApiResponse<MeterFindAllResponse>
+  >({
     queryKey: ["meters-find-all"],
     queryFn: async () => {
       const res = await httpRequest.get("/meters/find-all");
@@ -198,7 +220,9 @@ export const useMeterReading = () => {
     retry: 1,
   });
 
-  const { data: filterMeterInit, isError: errorFilterMeterInit } = useQuery<ApiResponse<MeterInitFilterResponse>>({
+  const { data: filterMeterInit, isError: errorFilterMeterInit } = useQuery<
+    ApiResponse<MeterInitFilterResponse>
+  >({
     queryKey: ["meters-filter-init"],
     queryFn: async () => {
       const res = await httpRequest.get(`/meters/init-filter/${id}`);
@@ -217,10 +241,10 @@ export const useMeterReading = () => {
   };
 
   useEffect(() => {
-    if (isError) toast.error("Có lỗi xảy ra khi tải ghi chỉ số");
-    if (errorMeterFindAll) toast.error("Có lỗi xảy ra khi tải công tơ");
-    if (errorFilterMeterInit) toast.error("Có lỗi xảy ra khi tải lọc ghi chỉ số");
-  }, [errorFilterMeterInit, errorMeterFindAll, isError]);
+    if (isError) toast.error(t("meterReading.errorFetch"));
+    if (errorMeterFindAll) toast.error(t("meter.errorFetch"));
+    if (errorFilterMeterInit) toast.error(t("meterReading.errorFetchStatistics"));
+  }, [errorFilterMeterInit, errorMeterFindAll, isError, t]);
 
   return {
     query: {

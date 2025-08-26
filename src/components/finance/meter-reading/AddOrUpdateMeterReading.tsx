@@ -1,8 +1,14 @@
 import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
-import { ApiResponse, MeterFindAllResponse, MeterReadingCreationRequest, MeterReadingUpdateRequest } from "@/types";
+import {
+  ApiResponse,
+  MeterFindAllResponse,
+  MeterReadingCreationRequest,
+  MeterReadingUpdateRequest,
+} from "@/types";
 import { ChangeEvent, Dispatch, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 interface AddMeterReadingProps {
   value: MeterReadingCreationRequest;
@@ -32,6 +38,7 @@ const AddOrUpdateMeterReading = ({
   errors,
   type,
 }: AddOrUpdateMeterReadingProps) => {
+  const { t } = useTranslation();
   const meterOptions = useMemo((): FieldsSelectLabelType[] => {
     return (
       meterInitReading?.data?.map((meter) => {
@@ -57,13 +64,13 @@ const AddOrUpdateMeterReading = ({
       {type === "add" && (
         <FieldsSelectLabel
           data={meterOptions}
-          placeholder="-- Chọn công tơ --"
-          label="Công tơ:"
+          placeholder={t("meterReading.placeholder.meter")}
+          label={t("meterReading.addOrUpdate.meter")}
           id="meterId"
           name="meterId"
           value={value.meterId ?? ""}
           onChange={(val) => setValue((prev) => ({ ...prev, meterId: val as string }))}
-          labelSelect="Công tơ"
+          labelSelect={t("meterReading.addOrUpdate.meter")}
           showClear
           errorText={errors.meterId}
           required
@@ -74,7 +81,7 @@ const AddOrUpdateMeterReading = ({
         name="newIndex"
         placeholder="100"
         type="number"
-        label="Chỉ số mới:"
+        label={t("meterReading.addOrUpdate.newIndex")}
         required
         value={value.newIndex ?? ""}
         onChange={handleChangeMeterReading}
@@ -90,7 +97,7 @@ const AddOrUpdateMeterReading = ({
             max={12}
             step={1}
             type="number"
-            label="Tháng:"
+            label={t("meterReading.addOrUpdate.month")}
             required
             value={value.month ?? ""}
             onChange={handleChangeMeterReading}
@@ -101,7 +108,7 @@ const AddOrUpdateMeterReading = ({
             name="year"
             placeholder={new Date().getFullYear() + ""}
             type="number"
-            label="Năm:"
+            label={t("meterReading.addOrUpdate.year")}
             required
             value={value.year ?? ""}
             onChange={handleChangeMeterReading}
@@ -112,11 +119,12 @@ const AddOrUpdateMeterReading = ({
       <TextareaLabel
         id="descriptionMeterReading"
         name="descriptionMeterReading"
-        placeholder="Nhập mô tả"
-        label="Mô tả:"
+        placeholder={t("meterReading.addOrUpdate.descriptionMeterReadingPlaceholder")}
+        label={t("meterReading.addOrUpdate.descriptionMeterReading")}
         value={value.descriptionMeterReading ?? ""}
         onChange={(e) => {
-          if (type === "add") setValue((prev) => ({ ...prev, descriptionMeterReading: e.target.value }));
+          if (type === "add")
+            setValue((prev) => ({ ...prev, descriptionMeterReading: e.target.value }));
           else setValue((prev) => ({ ...prev, descriptionMeterReading: e.target.value }));
         }}
         errorText={errors.descriptionMeterReading}

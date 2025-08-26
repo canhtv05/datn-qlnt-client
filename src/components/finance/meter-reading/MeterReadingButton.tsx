@@ -59,10 +59,11 @@ const MeterReadingButton = ({
 
   const addMeterReadingMutation = useMutation({
     mutationKey: ["add-meter-reading"],
-    mutationFn: async (payload: MeterReadingCreationRequest) => await httpRequest.post("/meter-readings", payload),
+    mutationFn: async (payload: MeterReadingCreationRequest) =>
+      await httpRequest.post("/meter-readings", payload),
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setValue({
         descriptionMeterReading: "",
         meterId: "",
@@ -110,10 +111,11 @@ const MeterReadingButton = ({
       await Promise.all(selectedIds.map((id) => removeMeterReadingMutation.mutateAsync(id)));
 
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "meter-readings",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "meter-readings",
       });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       return true;
     } catch (error) {
       handleMutationError(error);
@@ -126,7 +128,7 @@ const MeterReadingButton = ({
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveMeterReadingByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các ghi chỉ số đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("common.confirmDialog.delete", { name: t("meterReading.title") }),
     type: "warn",
   });
 
@@ -137,20 +139,20 @@ const MeterReadingButton = ({
       } else if (btn.type === "download") {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
-          "Mã công tơ": d.meterCode,
-          "Tên công tơ": d.meterName,
-          "Loại công tơ": meterTypeEnumToString(d.meterType, t),
-          "Chỉ số cũ": formatNumber(d.oldIndex),
-          "Chỉ số mới": formatNumber(d.newIndex),
-          "Số lượng": formatNumber(d.quantity),
-          Tháng: d.month,
-          Năm: d.year,
-          "Ngày ghi chỉ số": formatDate(d.readingDate),
-          "Mô tả": d.descriptionMeterReading,
-          "Ngày tạo": formatDate(d.createdAt),
-          "Ngày cập nhật": formatDate(d.updatedAt),
+          [t("meterReading.response.meterCode")]: d.meterCode,
+          [t("meterReading.response.meterName")]: d.meterName,
+          [t("meterReading.response.meterType")]: meterTypeEnumToString(d.meterType, t),
+          [t("meterReading.response.oldIndex")]: formatNumber(d.oldIndex),
+          [t("meterReading.response.newIndex")]: formatNumber(d.newIndex),
+          [t("meterReading.response.quantity")]: formatNumber(d.quantity),
+          [t("meterReading.response.month")]: d.month,
+          [t("meterReading.response.year")]: d.year,
+          [t("meterReading.response.readingDate")]: formatDate(d.readingDate),
+          [t("meterReading.response.descriptionMeterReading")]: d.descriptionMeterReading,
+          [t("meterReading.response.createdAt")]: formatDate(d.createdAt),
+          [t("meterReading.response.updatedAt")]: formatDate(d.updatedAt),
         }));
-        handleExportExcel(`Ghi chỉ số`, exportData, data);
+        handleExportExcel(t("meterReading.title"), exportData, data);
       }
     },
     [data, ids, openDialog, t]
@@ -164,14 +166,14 @@ const MeterReadingButton = ({
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Ghi chỉ số</h3>
+        <h3 className="font-semibold">{t("meterReading.title")}</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Ghi chỉ số"
+                    title={t("meterReading.title")}
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -179,7 +181,7 @@ const MeterReadingButton = ({
                         </Button>
                       </TooltipTrigger>
                     }
-                    desc={Notice.ADD}
+                    desc={t(Notice.ADD)}
                     onConfirm={handleMeterReadingType}
                   >
                     <AddOrUpdateMeterReading

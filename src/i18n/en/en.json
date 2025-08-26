@@ -969,5 +969,51 @@
       "room": "-- Select room --",
       "meterType": "-- Select meter type --"
     }
+  },
+  "meterReading": {
+    "title": "Meter Reading",
+    "titleHistory": "Deleted Meter Reading History",
+    "statistic": "Meter Reading Statistics",
+    "search": "Meter Code/Name",
+    "errorFetch": "An error occurred while fetching meter readings.",
+    "errorFetchStatistics": "An error occurred while fetching meter reading statistics.",
+    "roomId": "Room ID",
+    "meterId": "Meter ID",
+    "response": {
+      "meterCode": "Meter Code",
+      "meterName": "Meter Name",
+      "meterType": "Meter Type",
+      "oldIndex": "Old Index",
+      "newIndex": "New Index",
+      "quantity": "Quantity",
+      "month": "Month",
+      "year": "Year",
+      "readingDate": "Reading Date",
+      "descriptionMeterReading": "Description",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "roomCode": "Room",
+      "actions": "Actions"
+    },
+    "filter": {
+      "placeholderRoom": "-- Room --",
+      "placeholderType": "-- Meter Type --",
+      "labelRoom": "Room",
+      "labelType": "Meter Type",
+      "labelMonth": "Month",
+      "placeholderMonth": "Enter month (1-12)"
+    },
+    "addOrUpdate": {
+      "meter": "Meter",
+      "newIndex": "New Index",
+      "oldIndex": "Old Index",
+      "month": "Month",
+      "year": "Year",
+      "descriptionMeterReading": "Description",
+      "descriptionMeterReadingPlaceholder": "Enter description"
+    },
+    "placeholder": {
+      "meter": "-- Select meter --"
+    }
   }
 }

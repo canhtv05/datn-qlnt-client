@@ -970,5 +970,51 @@
       "room": "-- Chọn phòng --",
       "meterType": "-- Chọn loại công tơ --"
     }
+  },
+  "meterReading": {
+    "title": "Chỉ số công tơ",
+    "titleHistory": "Lịch sử chỉ số công tơ đã xóa",
+    "statistic": "Thống kê chỉ số công tơ",
+    "search": "Mã/Tên công tơ",
+    "errorFetch": "Có lỗi xảy ra khi tải chỉ số công tơ.",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê chỉ số công tơ.",
+    "roomId": "Mã phòng",
+    "meterId": "Mã công tơ",
+    "response": {
+      "meterCode": "Mã công tơ",
+      "meterName": "Tên công tơ",
+      "meterType": "Loại công tơ",
+      "oldIndex": "Chỉ số cũ",
+      "newIndex": "Chỉ số mới",
+      "quantity": "Số lượng",
+      "month": "Tháng",
+      "year": "Năm",
+      "readingDate": "Ngày ghi chỉ số",
+      "descriptionMeterReading": "Mô tả",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật",
+      "roomCode": "Phòng",
+      "actions": "Thao tác"
+    },
+    "filter": {
+      "placeholderRoom": "-- Phòng --",
+      "placeholderType": "-- Loại công tơ --",
+      "labelRoom": "Phòng",
+      "labelType": "Loại công tơ",
+      "labelMonth": "Tháng",
+      "placeholderMonth": "Nhập tháng (1-12)"
+    },
+    "addOrUpdate": {
+      "meter": "Công tơ",
+      "newIndex": "Chỉ số mới",
+      "oldIndex": "Chỉ số cũ",
+      "month": "Tháng",
+      "year": "Năm",
+      "descriptionMeterReading": "Mô tả",
+      "descriptionMeterReadingPlaceholder": "Nhập mô tả"
+    },
+    "placeholder": {
+      "meter": "-- Chọn công tơ --"
+    }
   }
 }
