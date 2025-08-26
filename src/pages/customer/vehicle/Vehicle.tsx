@@ -14,6 +14,7 @@ import AddOrUpdateVehicle from "@/components/customer/vehicle/AddOrUpdateVehicle
 import { GET_BTNS } from "@/constant";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { useTranslation } from "react-i18next";
+import { lang } from "@/lib/utils";
 
 const Vehicle = () => {
   const {
@@ -114,7 +115,7 @@ const Vehicle = () => {
       hasDate: true,
       render: (row: VehicleResponse) =>
         row.registrationDate ? (
-          new Date(row.registrationDate).toLocaleDateString("vi-VN")
+          new Date(row.registrationDate).toLocaleDateString(lang)
         ) : (
           <StatusBadge status={"__EMPTY__"} />
         ),

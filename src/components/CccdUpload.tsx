@@ -118,7 +118,7 @@ export default function CccdUpload({
     }
   }, [backImage]);
 
-  console.log(frontResult, backResult);
+  // console.log(frontResult, backResult);
 
   useEffect(() => {
     if (Array.isArray(frontResult) && frontResult.length > 0) {

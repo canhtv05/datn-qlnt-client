@@ -38,6 +38,7 @@ import { TFunction } from "i18next";
 import { Locale } from "date-fns";
 import { enUS, vi } from "date-fns/locale";
 import { Banknote, Droplets, Plug, Wrench } from "lucide-react";
+import configs from "@/configs";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -49,18 +50,27 @@ export const getHighestRole = (roles: RoleType[]): RoleType => {
   return roles.sort((a, b) => ROLE_PRIORITY.indexOf(b) - ROLE_PRIORITY.indexOf(a))[0];
 };
 
-export const setLang = (newLang: "vi-VN" | "en-US") => {
-  lang = newLang;
-};
-
-export let lang: "vi-VN" | "en-US" = "vi-VN";
+export const lang: "vi-VN" | "en-US" = (() => {
+  try {
+    const stored = localStorage.getItem(configs.storage.key);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (parsed.language === "vi") {
+        return "vi-VN";
+      } else if (parsed.language === "en") {
+        return "en-US";
+      }
+    }
+  } catch {
+    return "en-US";
+  }
+  return "en-US";
+})();
 
 export const formattedCurrency = (price: number): string => {
-  const currency = lang === "en-US" ? "USD" : "VND";
-
-  return new Intl.NumberFormat(lang, {
+  return new Intl.NumberFormat("vi-VN", {
     style: "currency",
-    currency,
+    currency: "VND",
     currencyDisplay: "symbol",
   }).format(price);
 };
@@ -431,18 +441,6 @@ export const checkUser = (user: UserResponse | null, isLoading: boolean): boolea
 
 export const handleExportExcel = (name: string, exportData?: Record<string, any>[], data?: Record<string, any>[]) => {
   if (!data?.length) return;
-
-  // Lấy keys từ object đầu tiên (tất cả cột có trong dữ liệu)
-  // const keys = Object.keys(data[0]);
-
-  // Tạo exportData bằng cách duyệt qua từng row
-  // const exportData = data.map((row) => {
-  //   const obj: Record<string, any> = {};
-  //   keys.forEach((key) => {
-  //     obj[key] = row[key as keyof typeof row];
-  //   });
-  //   return obj;
-  // });
 
   const finalExportData = exportData && exportData.length > 0 ? exportData : data.map((row) => ({ ...row }));
   if (!finalExportData.length) return;

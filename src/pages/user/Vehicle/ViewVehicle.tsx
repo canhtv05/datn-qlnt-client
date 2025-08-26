@@ -7,6 +7,7 @@ import { httpRequest } from "@/utils/httpRequest";
 import { ApiResponse, VehicleResponse } from "@/types";
 import { Car, Bike, Truck, FileText } from "lucide-react";
 import { VehicleStatus } from "@/enums";
+import { lang } from "@/lib/utils";
 
 const NA = "N/A";
 
@@ -71,7 +72,7 @@ const VehicleCards = () => {
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return NA;
     const date = new Date(dateStr);
-    return isNaN(date.getTime()) ? NA : date.toLocaleDateString("vi-VN");
+    return isNaN(date.getTime()) ? NA : date.toLocaleDateString(lang);
   };
 
   return (

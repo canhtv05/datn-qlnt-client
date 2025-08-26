@@ -27,7 +27,7 @@ const PieChart = ({ chartData, chartConfig }: { chartData: ChartDataType[]; char
   return (
     <Card className="flex flex-col h-full border-none bg-transparent shadow-none">
       <CardContent className="flex-1 pb-0">
-        <ChartContainer config={chartConfig} className="w-full h-[400px] mx-auto">
+        <ChartContainer config={chartConfig} className="w-full h-[400px] max-w-[400px] mx-auto">
           <Chart className="flex flex-row">
             <ChartLegend
               content={<ChartLegendContent nameKey="label" />}

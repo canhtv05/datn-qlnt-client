@@ -9,7 +9,7 @@ import { httpRequest } from "@/utils/httpRequest";
 
 import TenantResponse, { ApiResponse } from "@/types";
 import { UserCircle2, Phone, Mail, CalendarDays, Badge } from "lucide-react";
-import { genderToString, tenantStatusToString } from "@/lib/utils";
+import { genderToString, lang, tenantStatusToString } from "@/lib/utils";
 const NA = "N/A";
 
 const RoomMembers = () => {
@@ -63,9 +63,7 @@ const RoomMembers = () => {
                 <div className="flex items-center gap-2">
                   <CalendarDays className="w-4 h-4 text-muted-foreground" />
                   <span className="font-medium text-muted-foreground">Ngày sinh:</span>
-                  <span className="font-bold">
-                    {member.dob ? new Date(member.dob).toLocaleDateString("vi-VN") : NA}
-                  </span>
+                  <span className="font-bold">{member.dob ? new Date(member.dob).toLocaleDateString(lang) : NA}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-muted-foreground" />

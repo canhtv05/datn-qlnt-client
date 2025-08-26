@@ -45,7 +45,7 @@ export default function useRevenue() {
         if (v) params[k] = v;
       });
       const res = await httpRequest.get("/revenues/statistic", { params });
-      console.log(res.data);
+      // console.log(res.data);
       return res.data;
     },
     retry: 1,

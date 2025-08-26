@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import StatusBadge from "@/components/ui/StatusBadge";
-import { cn } from "@/lib/utils";
+import { cn, lang } from "@/lib/utils";
 import { ColumnConfig, CustomColumnDef } from "@/types";
 import { Row } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
@@ -63,9 +63,9 @@ export default function buildColumnsFromConfig<T extends object>(
       const raw = row.getValue(config.accessorKey);
       const price = parseFloat(String(raw ?? 0));
 
-      const formatted = new Intl.NumberFormat("vi-VN", {
+      const formatted = new Intl.NumberFormat(lang, {
         style: "currency",
-        currency: "VND",
+        currency: lang,
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       }).format(price);
@@ -104,7 +104,7 @@ export default function buildColumnsFromConfig<T extends object>(
 
     if (config.hasDate) {
       const dateValue = new Date(value);
-      const formatted = dateValue.toLocaleString("vi-VN");
+      const formatted = dateValue.toLocaleString(lang);
       return <div className={wrapperClass}>{formatted}</div>;
     }
 

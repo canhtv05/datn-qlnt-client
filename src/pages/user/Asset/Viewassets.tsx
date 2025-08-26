@@ -7,7 +7,7 @@ import { httpRequest } from "@/utils/httpRequest";
 
 import { ApiResponse, AssetRoomDetailResponse, AssetLittleResponse } from "@/types";
 import { Tag, DollarSign, FileText } from "lucide-react";
-import { assetStatusToString } from "@/lib/utils";
+import { assetStatusToString, formattedCurrency } from "@/lib/utils";
 
 const NA = "N/A";
 
@@ -73,7 +73,7 @@ const RoomAssets = () => {
               <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300">
                 <DollarSign className="w-4 h-4" />
                 <span className="font-medium text-gray-800 dark:text-gray-200">
-                  {asset.price ? asset.price.toLocaleString("vi-VN") + " đ" : NA}
+                  {formattedCurrency(asset.price ?? 0)}
                 </span>
               </div>
 

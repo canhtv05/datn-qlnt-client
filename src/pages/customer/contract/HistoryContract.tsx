@@ -10,6 +10,7 @@ import { Notice } from "@/enums";
 import StatusBadge from "@/components/ui/StatusBadge";
 import ContractFilter from "@/components/customer/contract/ContractFilter";
 import { useTranslation } from "react-i18next";
+import { formattedCurrency, lang } from "@/lib/utils";
 
 const HistoryContract = () => {
   const {
@@ -92,7 +93,7 @@ const HistoryContract = () => {
       accessorKey: "startDate",
       isSort: true,
       render: (row: ContractResponse) =>
-        new Date(row.startDate).toLocaleDateString("vi-VN", {
+        new Date(row.startDate).toLocaleDateString(lang, {
           day: "2-digit",
           month: "2-digit",
           year: "numeric",
@@ -103,7 +104,7 @@ const HistoryContract = () => {
       accessorKey: "endDate",
       isSort: true,
       render: (row: ContractResponse) =>
-        new Date(row.endDate).toLocaleDateString("vi-VN", {
+        new Date(row.endDate).toLocaleDateString(lang, {
           day: "2-digit",
           month: "2-digit",
           year: "numeric",
@@ -114,14 +115,14 @@ const HistoryContract = () => {
       accessorKey: "deposit",
       isSort: true,
       isCenter: true,
-      render: (row: ContractResponse) => `${row.deposit?.toLocaleString("vi-VN")} VNĐ`,
+      render: (row: ContractResponse) => `${formattedCurrency(row.deposit ?? 0)}`,
     },
     {
       label: "Tiền phòng",
       accessorKey: "roomPrice",
       isSort: true,
       isCenter: true,
-      render: (row: ContractResponse) => `${row.roomPrice?.toLocaleString("vi-VN")} VNĐ`,
+      render: (row: ContractResponse) => `${formattedCurrency(row.roomPrice ?? 0)}`,
     },
     {
       label: "Trạng thái",

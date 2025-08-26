@@ -1,6 +1,7 @@
 import axios from "axios";
 import cookieUtil from "./cookieUtil";
 import { refreshTokenRequest } from "@/services/auth";
+import { lang } from "@/lib/utils";
 
 export const httpRequest = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -29,6 +30,9 @@ httpRequest.interceptors.request.use(
     ];
     if (accessToken && !publicRoutes.some((route) => config.url?.includes(route))) {
       config.headers.Authorization = `Bearer ${accessToken}`;
+      const language = lang === "vi-VN" ? "vi" : "en";
+      console.log(language, lang);
+      config.headers["Accept-Language"] = language;
     }
     return config;
   },

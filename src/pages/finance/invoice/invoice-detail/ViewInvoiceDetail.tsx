@@ -3,7 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import StatusBadge from "@/components/ui/StatusBadge";
 import "@/assets/css/print.css";
 import { Button } from "@/components/ui/button";
-import { formattedCurrency } from "@/lib/utils";
+import { formattedCurrency, lang } from "@/lib/utils";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -74,12 +74,12 @@ const ViewInvoiceDetail = () => {
             </span>
             <span className="text-end">
               Ngày/Date:{" "}
-              <strong>{data?.data?.createdAt && new Date(data?.data?.createdAt).toLocaleDateString("vi-VN")}</strong>
+              <strong>{data?.data?.createdAt && new Date(data?.data?.createdAt).toLocaleDateString(lang)}</strong>
             </span>
             <span className="text-end">
               Hạn TT/Due date:{" "}
               <strong>
-                {data?.data?.paymentDueDate && new Date(data?.data?.paymentDueDate).toLocaleDateString("vi-VN")}
+                {data?.data?.paymentDueDate && new Date(data?.data?.paymentDueDate).toLocaleDateString(lang)}
               </strong>
             </span>
             <span className="flex gap-2 items-center justify-end">

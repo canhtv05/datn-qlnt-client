@@ -39,7 +39,7 @@ export default function useViewInvoiceDetail() {
     queryKey: ["invoice-detail"],
     queryFn: async () => {
       const res = await httpRequest.get(`/invoices/${id}`);
-      console.log(res.data);
+      // console.log(res.data);
       return res.data;
     },
   });
@@ -113,7 +113,7 @@ export default function useViewInvoiceDetail() {
         return true;
       }
       case PaymentMethod.VNPAY: {
-        console.log(paymentReceipt);
+        // console.log(paymentReceipt);
         if (!paymentReceipt) return false;
         const data: PaymentCreationURL = {
           amount: paymentReceipt?.data?.amount,

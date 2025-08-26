@@ -14,7 +14,7 @@ import useInvoiceDetail from "./useInvoiceDetail";
 import { ColumnConfig, InvoiceItemResponse } from "@/types";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { Info } from "lucide-react";
-import { formattedCurrency } from "@/lib/utils";
+import { formattedCurrency, lang } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
 const InvoiceDetail = () => {
@@ -298,9 +298,7 @@ const InvoiceDetail = () => {
               <strong>
                 - Hạn thanh toán:{" "}
                 <span>
-                  {data?.data?.paymentDueDate
-                    ? new Date(data?.data?.paymentDueDate).toLocaleDateString("vi-VN")
-                    : "..."}
+                  {data?.data?.paymentDueDate ? new Date(data?.data?.paymentDueDate).toLocaleDateString(lang) : "..."}
                 </span>
               </strong>
               <strong>
