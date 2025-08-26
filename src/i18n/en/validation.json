@@ -1,0 +1,43 @@
+{
+  "number": {
+    "invalid": "Invalid number",
+    "invalidField": "{{field}} is invalid",
+    "min": "{{field}} must be ≥ {{min}}",
+    "max": "{{field}} must be ≤ {{max}}"
+  },
+  "email": {
+    "invalid": "Invalid email address"
+  },
+  "fullName": {
+    "min": "Full name must be at least 3 characters",
+    "wordMin": "Each word in the full name must be at least 3 characters"
+  },
+  "gender": {
+    "invalid": "Invalid gender"
+  },
+  "dob": {
+    "invalid": "Invalid date of birth",
+    "age": "You must be at least 18 years old"
+  },
+  "phone": {
+    "pattern": "Invalid phone number, e.g., 03xx, 05xx, 07xx, 08xx, 09xx",
+    "min": "Phone number must be at least 10 digits",
+    "max": "Phone number cannot exceed 11 digits",
+    "onlyNumber": "Phone number can only contain digits"
+  },
+  "otp": {
+    "length": "OTP must be 6 digits",
+    "invalid": "OTP must be exactly 6 digits"
+  },
+  "password": {
+    "min": "Password must be at least 5 characters long",
+    "lowercase": "Password must contain a lowercase letter",
+    "uppercase": "Password must contain an uppercase letter",
+    "number": "Password must contain a number",
+    "special": "Password must contain a special character",
+    "confirmMismatch": "Password confirmation does not match"
+  },
+  "policy": {
+    "required": "You must agree to the privacy policy"
+  }
+}

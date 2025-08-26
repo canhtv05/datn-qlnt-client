@@ -23,7 +23,9 @@
       "tenants": "Khách thuê",
       "active": "Kích hoạt",
       "vehicles": "Phương tiện",
-      "deposit1": "Hoàn trả tiền cọc"
+      "deposit1": "Hoàn trả tiền cọc",
+      "deposit2": "Gửi xác nhận chưa nhận đủ cọc",
+      "deposit3": "Gửi xác nhận đã nhận đủ cọc"
     },
     "noData": "Không có dữ liệu",
     "selectDateRange": "Chọn khoảng thời gian",
@@ -163,7 +165,11 @@
       "contracts": "Xem hợp đồng",
       "members": "Xem thành viên trong phòng",
       "electric": "Xem điện",
-      "water": "Xem nước"
+      "water": "Xem nước",
+      "assets": "Xem tài sản",
+      "services": "Xem dịch vụ",
+      "vehicles": "Xem phương tiện",
+      "deposits": "Xem tiền cọc"
     }
   },
   "dashboard": {
@@ -918,6 +924,51 @@
       "vehicles": "Phương tiện",
       "createdAt": "Ngày tạo",
       "updatedAt": "Ngày cập nhật"
+    }
+  },
+  "meter": {
+    "title": "Công tơ",
+    "titleHistory": "Lịch sử công tơ đã xóa",
+    "statistic": "Thống kê công tơ",
+    "search": "Tên/Mã công tơ",
+    "errorFetch": "Có lỗi xảy ra khi tải công tơ.",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê công tơ.",
+    "roomId": "Mã phòng",
+    "serviceId": "Mã dịch vụ",
+    "response": {
+      "meterCode": "Mã công tơ",
+      "meterName": "Tên công tơ",
+      "serviceName": "Dịch vụ",
+      "meterType": "Loại công tơ",
+      "closestIndex": "Chỉ số gần nhất",
+      "roomCode": "Phòng",
+      "descriptionMeter": "Mô tả",
+      "manufactureDate": "Ngày sản xuất",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật",
+      "actions": "Thao tác"
+    },
+    "filter": {
+      "placeholderRoom": "-- Phòng --",
+      "placeholderType": "-- Loại công tơ --",
+      "labelRoom": "Phòng",
+      "labelType": "Loại công tơ"
+    },
+    "addOrUpdate": {
+      "service": "Dịch vụ",
+      "room": "Phòng",
+      "meterType": "Loại công tơ",
+      "meterName": "Tên công tơ",
+      "meterCode": "Mã công tơ",
+      "manufactureDate": "Ngày sản xuất",
+      "closestIndex": "Chỉ số gần nhất",
+      "descriptionMeter": "Mô tả",
+      "descriptionMeterPlaceholder": "Nhập mô tả"
+    },
+    "placeholder": {
+      "service": "-- Chọn dịch vụ --",
+      "room": "-- Chọn phòng --",
+      "meterType": "-- Chọn loại công tơ --"
     }
   }
 }

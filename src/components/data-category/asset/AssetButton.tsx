@@ -76,8 +76,7 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
         },
       });
       queryClient.invalidateQueries({
-        predicate: (query) =>
-          Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
       });
     },
   });
@@ -124,8 +123,7 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
       });
       queryClient.invalidateQueries({
-        predicate: (query) =>
-          Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
       });
 
       toast.success(t(Status.REMOVE_SUCCESS));
@@ -164,7 +162,7 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
           [t("asset.response.createdAt")]: formatDate(new Date(d.createdAt)),
           [t("asset.response.updatedAt")]: formatDate(new Date(d.updatedAt)),
         }));
-        handleExportExcel(`t("asset.title")${data?.[0].buildingName}`, exportData, data);
+        handleExportExcel(`${t("asset.title")}_${data?.[0].buildingName}`, exportData, data);
       }
     },
     [data, ids, navigate, openDialog, t]
@@ -175,9 +173,7 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
     mutationFn: async (id: string) => await httpRequest.put(`/assets/soft-delete/${id}`),
   });
 
-  const { data: buildingInitToAdd, isError: errorBuildingInitToAdd } = useQuery<
-    ApiResponse<IdAndName[]>
-  >({
+  const { data: buildingInitToAdd, isError: errorBuildingInitToAdd } = useQuery<ApiResponse<IdAndName[]>>({
     queryKey: ["buildingInitToAdd"],
     queryFn: async () => {
       const res = await httpRequest.get("/buildings/all");

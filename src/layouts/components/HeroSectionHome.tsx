@@ -9,15 +9,13 @@ import MotionFadeRight from "@/components/ui/MotionFadeRight";
 const HeroSection = () => {
   return (
     <section className="bg-gradient-to-br from-[#fff5e0] via-[#fbc888] to-[#f8a769] font-roboto min-h-screen pt-28 relative overflow-hidden z-0">
-      <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-10">
+      <div className="container mx-auto px-10 flex flex-col md:flex-row items-center justify-between gap-10">
         <div className="w-full md:w-1/2 relative z-10">
           <MotionFadeLeft delay={0.1}>
             <h1 className="text-[28px] md:text-[40px] font-bold leading-tight text-gray-900 mb-6">
               <div className="flex items-center gap-3 flex-wrap">
                 <Logo className="text-[36px]" />
-                <span className="text-green-700 font-extrabold text-[28px] md:text-[32px]">
-                  – Nền tảng hàng đầu
-                </span>
+                <span className="text-green-700 font-extrabold text-[28px] md:text-[32px]">– Nền tảng hàng đầu</span>
               </div>
               <div className="mt-2 text-green-700 font-extrabold text-[28px] md:text-[32px]">
                 Quản lý nhà trọ cho thuê
@@ -25,9 +23,7 @@ const HeroSection = () => {
             </h1>
           </MotionFadeLeft>
           <MotionFadeLeft delay={0.2}>
-            <p className="text-xl text-gray-800 font-medium mb-4">
-              Tương lai sẽ là đơn vị sử dụng nhiều nhất Việt Nam
-            </p>
+            <p className="text-xl text-gray-800 font-medium mb-4">Tương lai sẽ là đơn vị sử dụng nhiều nhất Việt Nam</p>
           </MotionFadeLeft>
 
           <ul className="space-y-3 text-gray-700 mb-8 text-left">
@@ -55,13 +51,9 @@ const HeroSection = () => {
             </Link>
           </MotionFadeLeft>
         </div>
-        <div className="w-full md:w-1/2 mt-10 md:mt-0 flex justify-center z-10">
+        <div className="w-full md:w-1/2 mt-10 md:mt-0 flex justify-center z-10 mb-10">
           <MotionFadeRight delay={0.4}>
-            <img
-              src={heroImage}
-              alt="Quản lý nhà trọ"
-              className="w-full max-w-xl md:max-w-2xl rounded-2xl shadow-xl"
-            />
+            <img src={heroImage} alt="Quản lý nhà trọ" className="w-full max-w-xl md:max-w-2xl rounded-2xl shadow-xl" />
           </MotionFadeRight>
         </div>
       </div>

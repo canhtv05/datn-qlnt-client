@@ -23,7 +23,9 @@
       "tenants": "Tenants",
       "active": "Active",
       "vehicles": "Vehicles",
-      "deposit1": "Deposit refund"
+      "deposit1": "Deposit refund",
+      "deposit2": "Send confirmation of not receiving enough deposit",
+      "deposit3": "Send confirmation of receipt of full deposit"
     },
     "noData": "No data",
     "selectDateRange": "Select date range",
@@ -163,7 +165,11 @@
       "contracts": "View Contracts",
       "members": "View Room Members",
       "electric": "View Electricity",
-      "water": "View Water"
+      "water": "View Water",
+      "assets": "View Assets",
+      "services": "View Services",
+      "vehicles": "View Vehicles",
+      "deposits": "View Deposits"
     }
   },
   "dashboard": {
@@ -917,6 +923,51 @@
       "vehicles": "Vehicles",
       "createdAt": "Created at",
       "updatedAt": "Updated at"
+    }
+  },
+  "meter": {
+    "title": "Meter",
+    "titleHistory": "Deleted meter history",
+    "statistic": "Meter statistics",
+    "search": "Name/Code",
+    "errorFetch": "An error occurred while fetching meters.",
+    "errorFetchStatistics": "An error occurred while fetching meter statistics.",
+    "roomId": "Room ID",
+    "serviceId": "Service ID",
+    "response": {
+      "meterCode": "Meter code",
+      "meterName": "Meter name",
+      "serviceName": "Service",
+      "meterType": "Meter type",
+      "closestIndex": "Closest index",
+      "roomCode": "Room",
+      "descriptionMeter": "Description",
+      "manufactureDate": "Manufacture date",
+      "createdAt": "Created at",
+      "updatedAt": "Updated at",
+      "actions": "Actions"
+    },
+    "filter": {
+      "placeholderRoom": "-- Room --",
+      "placeholderType": "-- Meter type --",
+      "labelRoom": "Room",
+      "labelType": "Meter type"
+    },
+    "addOrUpdate": {
+      "service": "Service",
+      "room": "Room",
+      "meterType": "Meter type",
+      "meterName": "Meter name",
+      "meterCode": "Meter code",
+      "manufactureDate": "Manufacture date",
+      "closestIndex": "Closest index",
+      "descriptionMeter": "Description",
+      "descriptionMeterPlaceholder": "Enter description"
+    },
+    "placeholder": {
+      "service": "-- Select service --",
+      "room": "-- Select room --",
+      "meterType": "-- Select meter type --"
     }
   }
 }

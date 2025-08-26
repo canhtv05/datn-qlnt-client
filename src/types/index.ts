@@ -409,6 +409,7 @@ export type IUpdateAsset = Omit<ICreateAsset, "buildingId"> & { assetStatus: Ass
 // export type IUpdateAsset = ICreateAsset;
 
 export interface AssetResponse extends AbstractResponse {
+  assetName: string;
   description: string;
   buildingName: string;
   nameAsset: string;
@@ -522,6 +523,7 @@ export type RoomAssetResponse = {
 
 /* VEHICLE */
 export interface VehicleResponse extends AbstractResponse {
+  id: string;
   fullName: string;
   vehicleType: VehicleType;
   licensePlate: string;
@@ -582,6 +584,7 @@ export default interface TenantResponse {
   contracts: ContractResponse[];
   identityCardNumber: string;
   address: string;
+  isRepresentative: boolean;
 }
 
 export interface TenantDetailResponse extends AbstractResponse {
@@ -1319,4 +1322,9 @@ export interface ContractVehicleFilter {
   query: string;
   vehicleType: string | VehicleType;
   vehicleStatus: string | VehicleStatus;
+}
+
+export interface ContractExtendAndTerminateRequest {
+  newEndDate: string | Date;
+  oldEndDate: string | Date;
 }

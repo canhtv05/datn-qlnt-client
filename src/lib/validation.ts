@@ -21,6 +21,9 @@ import {
 } from "@/enums";
 import { isNumber } from "lodash";
 import { z } from "zod/v4";
+import i18next from "i18next";
+
+const t = i18next.t;
 
 /*
   CHECK
@@ -65,15 +68,15 @@ const zSafeNumber = (fieldName: string, options?: { min?: number; max?: number }
       return undefined;
     },
     z
-      .number({ error: "Số không hợp lệ" })
+      .number({ error: t("validation:number.invalid") })
       .refine((val) => !isNaN(val), {
-        message: `${fieldName} không hợp lệ`,
+        message: t("validation:number.invalidField", { field: fieldName }),
       })
       .refine((val) => options?.min === undefined || val >= options.min!, {
-        message: `${fieldName} phải ≥ ${options?.min ?? 0}`,
+        message: t("validation:number.min", { field: fieldName, min: options?.min }),
       })
       .refine((val) => options?.max === undefined || val <= options.max!, {
-        message: `${fieldName} phải <= ${options?.max ?? 0}`,
+        message: t("validation:number.max", { field: fieldName, max: options?.max }),
       })
   );
 
@@ -83,7 +86,7 @@ const zSafeNumber = (fieldName: string, options?: { min?: number; max?: number }
   FORGOT PASSWORD
 */
 export const emailSchema = z.object({
-  email: z.email("Email không hợp lệ"),
+  email: z.email(t("validation:email.invalid")),
 });
 
 /*
@@ -93,22 +96,22 @@ export const forgotPassSchema = z
   .object({
     otp: z
       .string()
-      .min(6, "OTP phải có 6 chữ số")
-      .max(6, "OTP chỉ được 6 chữ số")
-      .regex(/^\d{6}$/, "OTP phải là 6 chữ số"),
+      .min(6, t("validation:otp.length"))
+      .max(6, t("validation:otp.length"))
+      .regex(/^\d{6}$/, t("validation:otp.invalid")),
 
     password: z
       .string()
-      .min(5, "Mật khẩu phải có ít nhất 5 ký tự")
-      .regex(/[a-z]/, "Mật khẩu phải chứa chữ thường")
-      .regex(/[A-Z]/, "Mật khẩu phải chứa chữ in hoa")
-      .regex(/\d/, "Mật khẩu phải chứa số")
-      .regex(/[^A-Za-z0-9]/, "Mật khẩu phải chứa ký tự đặc biệt"),
+      .min(5, t("validation:password.min"))
+      .regex(/[a-z]/, t("validation:password.lowercase"))
+      .regex(/[A-Z]/, t("validation:password.uppercase"))
+      .regex(/\d/, t("validation:password.number"))
+      .regex(/[^A-Za-z0-9]/, t("validation:password.special")),
 
     confirm: z.string(),
   })
   .refine((data) => data.password === data.confirm, {
-    message: "Mật khẩu xác nhận không khớp",
+    message: t("validation:password.confirmMismatch"),
     path: ["confirm"],
   });
 
@@ -117,68 +120,71 @@ export const forgotPassSchema = z
 */
 export const registerSchema = z
   .object({
-    email: z.email("Email không hợp lệ"),
+    email: z.string().email(t("validation:email.invalid")),
 
-    fullName: z.string().min(3, "Họ tên phải có ít nhất 3 ký tự").refine(isValidFullName, {
-      message: "Mỗi từ trong họ tên phải có ít nhất 3 ký tự",
-    }),
+    fullName: z
+      .string()
+      .min(3, t("validation:fullName.min"))
+      .refine(isValidFullName, {
+        message: t("validation:fullName.wordMin"),
+      }),
 
     dob: z
       .string()
-      .refine((val) => !isNaN(Date.parse(val)), "Ngày sinh không hợp lệ")
+      .refine((val) => !isNaN(Date.parse(val)), t("validation:dob.invalid"))
       .transform((val) => new Date(val))
-      .refine((date) => isValidDob(date), "Tuổi của bạn phải lớn hơn hoặc bằng 18"),
+      .refine((date) => isValidDob(date), t("validation:dob.age")),
 
     phoneNumber: z
       .string()
-      .min(9, "Số điện thoại phải có ít nhất 9 chữ số")
-      .max(15, "Số điện thoại không được vượt quá 15 chữ số")
-      .regex(/^[0-9]+$/, "Số điện thoại chỉ được chứa số"),
+      .min(9, t("validation:phone.min"))
+      .max(15, t("validation:phone.max"))
+      .regex(/^[0-9]+$/, t("validation:phone.onlyNumber")),
 
     password: z
       .string()
-      .min(5, "Mật khẩu phải có ít nhất 5 ký tự")
-      .regex(/[a-z]/, "Mật khẩu phải chứa chữ thường")
-      .regex(/[A-Z]/, "Mật khẩu phải chứa chữ in hoa")
-      .regex(/\d/, "Mật khẩu phải chứa số")
-      .regex(/[^A-Za-z0-9]/, "Mật khẩu phải chứa ký tự đặc biệt"),
+      .min(5, t("validation:password.min"))
+      .regex(/[a-z]/, t("validation:password.lowercase"))
+      .regex(/[A-Z]/, t("validation:password.uppercase"))
+      .regex(/\d/, t("validation:password.number"))
+      .regex(/[^A-Za-z0-9]/, t("validation:password.special")),
 
     confirm: z.string(),
+
     acceptPolicy: z.boolean().refine((val) => val === true, {
-      message: "Bạn cần đồng ý với chính sách bảo mật",
+      message: t("validation:policy.required"),
     }),
   })
   .refine((data) => data.password === data.confirm, {
-    message: "Mật khẩu xác nhận không khớp",
+    message: t("validation:password.confirmMismatch"),
     path: ["confirm"],
   });
 
 /*
   UPDATE USER
-*/
-export const updateUserSchema = z.object({
-  fullName: z
-    .string()
-    .min(3, "Họ tên phải có ít nhất 3 ký tự")
-    .refine(isValidFullName, "Mỗi từ trong họ tên phải có ít nhất 3 ký tự"),
+*/ export const updateUserSchema = z.object({
+  fullName: z.string().min(3, t("validation:fullName.min")).refine(isValidFullName, t("validation:fullName.wordMin")),
 
-  gender: z.enum([Gender.FEMALE, Gender.MALE, Gender.UNKNOWN], "Giới tính không hợp lệ"),
+  gender: z.enum([Gender.FEMALE, Gender.MALE, Gender.UNKNOWN], {
+    message: t("validation:gender.invalid"),
+  }),
 
   dob: z
     .string()
-    .refine((val) => !isNaN(Date.parse(val)), "Ngày sinh không hợp lệ")
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: t("validation:dob.invalid"),
+    })
     .transform((val) => new Date(val))
-    .refine((date) => isValidDob(date), "Tuổi của bạn phải lớn hơn hoặc bằng 18"),
+    .refine((date) => isValidDob(date), {
+      message: t("validation:dob.age"),
+    }),
 
   phoneNumber: z
     .string()
-    .refine(
-      (val) => /^(?:\+84|0)(3|5|7|8|9)[0-9]{8}$/.test(val),
-      "Số điện thoại không hợp lệ, VD: 03xx, 05xx, 07xx, 08xx, 09xx"
-    )
-    .refine(isValidPhoneNumber, "Số điện thoại chỉ chứa số")
-    .min(10, "Số điện thoại ít nhất là 10 số")
-    .max(11, "Số điện thoại tối đa là 11 số"),
+    .refine((val) => /^(?:\+84|0)(3|5|7|8|9)[0-9]{8}$/.test(val), t("validation:phone.pattern"))
+    .refine(isValidPhoneNumber, t("validation:phone.onlyNumber"))
+    .min(10, t("validation:phone.min"))
+    .max(11, t("validation:phone.max")),
 });
 
 /* BUILDINGS */
@@ -500,6 +506,43 @@ export const createContractTenantSchema = z.object({
 export const createContractVehicleSchema = z.object({
   vehicleId: z.string().min(1, "Vui lòng chọn phương tiện"),
   contractId: z.string().min(1, "Không có mã hợp đồng"),
+});
+
+export const extendContractSchema = z
+  .object({
+    newEndDate: z
+      .string()
+      .refine((val) => {
+        return !isNaN(Date.parse(val));
+      }, "Ngày gia hạn không hợp lệ")
+      .transform((val) => new Date(val)),
+    oldEndDate: z
+      .string()
+      .refine((val) => {
+        return !isNaN(Date.parse(val));
+      }, "Ngày hạn hết cũ không hợp lệ")
+      .transform((val) => new Date(val)),
+  })
+  .refine(
+    (data) => {
+      const { newEndDate, oldEndDate } = data;
+      const minEndDate = new Date(oldEndDate);
+      minEndDate.setMonth(minEndDate.getMonth() + 3);
+      return newEndDate >= minEndDate;
+    },
+    {
+      message: "Ngày gia hạn phải cách ngày kết thúc cũ ít nhất 3 tháng",
+      path: ["newEndDate"],
+    }
+  );
+
+export const noticeContractSchema = z.object({
+  newEndDate: z
+    .string()
+    .refine((val) => {
+      return !isNaN(Date.parse(val));
+    }, "Ngày báo trước không hợp lệ")
+    .transform((val) => new Date(val)),
 });
 
 /* SERVICE */

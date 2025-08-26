@@ -16,24 +16,49 @@ import { httpRequest } from "@/utils/httpRequest";
 import { createOrUpdateRoomSchema } from "@/lib/validation";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-    formatDate,
-    handleExportExcel,
-    roomStatusEnumToString,
-    roomTypeEnumToString,
-} from "@/lib/utils";
+import { formatDate, handleExportExcel, roomStatusEnumToString, roomTypeEnumToString } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
-const RoomButton = ({
-    ids,
-    data,
-}: {
-    ids: Record<string, boolean>;
-    data: RoomResponse[] | undefined;
-}) => {
-    const { t } = useTranslation();
-    const navigate = useNavigate();
-    const [value, setValue] = useState<RoomFormValue>({
+const RoomButton = ({ ids, data }: { ids: Record<string, boolean>; data: RoomResponse[] | undefined }) => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [value, setValue] = useState<RoomFormValue>({
+    floorId: "",
+    acreage: null,
+    price: null,
+    roomType: null,
+    maximumPeople: null,
+    description: "",
+    status: null,
+  });
+
+  const { id: buildingId } = useParams();
+  const { errors, clearErrors, handleZodErrors } = useFormErrors<RoomFormValue>();
+  const queryClient = useQueryClient();
+
+  const { data: floorListData } = useQuery<ApiResponse<FloorBasicResponse[]>>({
+    queryKey: ["floor-list", buildingId],
+    queryFn: async () => {
+      const res = await httpRequest.get("/floors/find-all", {
+        params: { buildingId },
+      });
+      return res.data;
+    },
+    enabled: !!buildingId,
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setValue((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const addRoomMutation = useMutation({
+    mutationKey: ["add-room"],
+    mutationFn: async (payload: RoomFormValue) => await httpRequest.post("/rooms", payload),
+    onError: handleMutationError,
+    onSuccess: () => {
+      toast.success(t(Status.ADD_SUCCESS));
+      setValue({
         floorId: "",
         acreage: null,
         price: null,
@@ -41,203 +66,154 @@ const RoomButton = ({
         maximumPeople: null,
         description: "",
         status: null,
-    });
+      });
+      queryClient.invalidateQueries({ queryKey: ["rooms"] });
+      queryClient.invalidateQueries({ queryKey: ["room-statistics"] });
+    },
+  });
 
-    const { id: buildingId } = useParams();
-    const { errors, clearErrors, handleZodErrors } = useFormErrors<RoomFormValue>();
-    const queryClient = useQueryClient();
+  const handleAddRoom = useCallback(async () => {
+    try {
+      const fullValue = {
+        ...value,
+        status: RoomStatus.TRONG,
+        buildingId,
+      };
+      await createOrUpdateRoomSchema.parseAsync(fullValue);
+      await addRoomMutation.mutateAsync(fullValue);
+      clearErrors();
+      return true;
+    } catch (error) {
+      handleZodErrors(error);
+      return false;
+    }
+  }, [value, buildingId, addRoomMutation, clearErrors, handleZodErrors]);
 
-    const { data: floorListData } = useQuery<ApiResponse<FloorBasicResponse[]>>({
-        queryKey: ["floor-list", buildingId],
-        queryFn: async () => {
-            const res = await httpRequest.get("/floors/find-all", {
-                params: { buildingId },
-            });
-            return res.data;
-        },
-        enabled: !!buildingId,
-    });
+  const removeRoomMutation = useMutation({
+    mutationKey: ["remove-room"],
+    mutationFn: async (id: string) => await httpRequest.put(`/rooms/soft-delete/${id}`),
+  });
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setValue((prev) => ({ ...prev, [name]: value }));
-    };
+  const handleRemoveRooms = async (ids: Record<string, boolean>): Promise<boolean> => {
+    try {
+      const selectedIds = Object.entries(ids)
+        .filter(([, isSelected]) => isSelected)
+        .map(([id]) => id);
 
-    const addRoomMutation = useMutation({
-        mutationKey: ["add-room"],
-        mutationFn: async (payload: RoomFormValue) => await httpRequest.post("/rooms", payload),
-        onError: handleMutationError,
-        onSuccess: () => {
-            toast.success(t(Status.ADD_SUCCESS));
-            setValue({
-                floorId: "",
-                acreage: null,
-                price: null,
-                roomType: null,
-                maximumPeople: null,
-                description: "",
-                status: null,
-            });
-            queryClient.invalidateQueries({ queryKey: ["rooms"] });
-            queryClient.invalidateQueries({ queryKey: ["room-statistics"] });
-        },
-    });
+      await Promise.all(selectedIds.map((id) => removeRoomMutation.mutateAsync(id)));
 
-    const handleAddRoom = useCallback(async () => {
-        try {
-            const fullValue = {
-                ...value,
-                status: RoomStatus.TRONG,
-                buildingId,
-            };
-            await createOrUpdateRoomSchema.parseAsync(fullValue);
-            await addRoomMutation.mutateAsync(fullValue);
-            clearErrors();
-            return true;
-        } catch (error) {
-            handleZodErrors(error);
-            return false;
-        }
-    }, [value, buildingId, addRoomMutation, clearErrors, handleZodErrors]);
+      toast.success(t(Status.REMOVE_SUCCESS));
+      queryClient.invalidateQueries({ queryKey: ["rooms"] });
+      queryClient.invalidateQueries({ queryKey: ["room-statistics"] });
 
-    const removeRoomMutation = useMutation({
-        mutationKey: ["remove-room"],
-        mutationFn: async (id: string) => await httpRequest.put(`/rooms/soft-delete/${id}`),
-    });
+      return true;
+    } catch (error) {
+      handleMutationError(error);
+      return false;
+    }
+  };
 
-    const handleRemoveRooms = async (ids: Record<string, boolean>): Promise<boolean> => {
-        try {
-            const selectedIds = Object.entries(ids)
-                .filter(([, isSelected]) => isSelected)
-                .map(([id]) => id);
+  const { ConfirmDialog, openDialog } = useConfirmDialog<Record<string, boolean>>({
+    onConfirm: async (ids?: Record<string, boolean>) => {
+      if (!ids || !Object.values(ids).some(Boolean)) return false;
+      return await handleRemoveRooms(ids);
+    },
+    desc: t("common.confirmDialog.delete", { name: t("room.title") }),
+    type: "warn",
+  });
 
-            await Promise.all(selectedIds.map((id) => removeRoomMutation.mutateAsync(id)));
+  const handleButton = useCallback(
+    (btn: IBtnType) => {
+      if (btn.type === "delete") {
+        openDialog(ids);
+      } else if (btn.type === "history") {
+        navigate(`/facilities/rooms/history`);
+      } else if (btn.type === "download") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
+          [t("room.response.roomCode")]: d.roomCode,
+          [t("room.response.acreage")]: `${d.acreage}m²`,
+          [t("room.response.maximumPeople")]: d.maximumPeople,
+          [t("room.response.roomType")]: roomTypeEnumToString(d.roomType, t),
+          [t("room.response.description")]: d.description,
+          [t("room.response.status")]: roomStatusEnumToString(d.status, t),
+          [t("room.response.createdAt")]: formatDate(new Date(d.createdAt)),
+          [t("room.response.updatedAt")]: formatDate(new Date(d.updatedAt)),
+        }));
+        handleExportExcel(`${t("room.title")}_${data?.[0]?.floor?.buildingName}`, exportData, data);
+      }
+    },
+    [data, ids, navigate, openDialog, t]
+  );
 
-            toast.success(t(Status.REMOVE_SUCCESS));
-            queryClient.invalidateQueries({ queryKey: ["rooms"] });
-            queryClient.invalidateQueries({ queryKey: ["room-statistics"] });
-
-            return true;
-        } catch (error) {
-            handleMutationError(error);
-            return false;
-        }
-    };
-
-    const { ConfirmDialog, openDialog } = useConfirmDialog<Record<string, boolean>>({
-        onConfirm: async (ids?: Record<string, boolean>) => {
-            if (!ids || !Object.values(ids).some(Boolean)) return false;
-            return await handleRemoveRooms(ids);
-        },
-        desc: t("common.confirmDialog.delete", { name: t("room.title") }),
-        type: "warn",
-    });
-
-    const handleButton = useCallback(
-        (btn: IBtnType) => {
-            if (btn.type === "delete") {
-                openDialog(ids);
-            } else if (btn.type === "history") {
-                navigate(`/facilities/rooms/history`);
-            } else if (btn.type === "download") {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
-                    [t("room.response.roomCode")]: d.roomCode,
-                    [t("room.response.acreage")]: `${d.acreage}m²`,
-                    [t("room.response.maximumPeople")]: d.maximumPeople,
-                    [t("room.response.roomType")]: roomTypeEnumToString(d.roomType, t),
-                    [t("room.response.description")]: d.description,
-                    [t("room.response.status")]: roomStatusEnumToString(d.status, t),
-                    [t("room.response.createdAt")]: formatDate(new Date(d.createdAt)),
-                    [t("room.response.updatedAt")]: formatDate(new Date(d.updatedAt)),
-                }));
-                handleExportExcel(
-                    `t("room.title"),${data?.[0]?.floor?.buildingName}`,
-                    exportData,
-                    data
-                );
-            }
-        },
-        [data, ids, navigate, openDialog, t]
-    );
-
-    return (
-        <div className="h-full bg-background rounded-t-sm">
-            <div className="flex px-4 py-3 justify-between items-center">
-                <h3 className="font-semibold">{t("room.title")}</h3>
-                <div className="flex gap-2">
-                    {ACTION_BUTTONS_HISTORY.map((btn, index) => (
-                        <TooltipProvider key={index}>
-                            <Tooltip>
-                                <RenderIf value={btn.type === "default"}>
-                                    <Modal
-                                        title={t("room.title")}
-                                        trigger={
-                                            <TooltipTrigger asChild>
-                                                <Button
-                                                    size="icon"
-                                                    variant={btn.type}
-                                                    className="cursor-pointer"
-                                                >
-                                                    <btn.icon className="text-white" />
-                                                </Button>
-                                            </TooltipTrigger>
-                                        }
-                                        desc={t(Notice.ADD)}
-                                        onConfirm={handleAddRoom}
-                                    >
-                                        <AddOrUpdateRoom
-                                            handleChange={handleChange}
-                                            value={value}
-                                            setValue={setValue}
-                                            errors={errors}
-                                            floorList={floorListData?.data || []}
-                                            type="add"
-                                        />
-                                    </Modal>
-                                </RenderIf>
-                                <RenderIf value={btn.type !== "default"}>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            className="cursor-pointer"
-                                            size="icon"
-                                            variant={btn.type}
-                                            onClick={() => handleButton(btn)}
-                                            disabled={
-                                                btn.type === "delete" &&
-                                                !Object.values(ids).some(Boolean)
-                                            }
-                                        >
-                                            <btn.icon className="text-white" />
-                                        </Button>
-                                    </TooltipTrigger>
-                                </RenderIf>
-                                <TooltipContent
-                                    className="text-white"
-                                    style={{
-                                        background: btn.arrowColor,
-                                    }}
-                                    arrow={false}
-                                >
-                                    <p>{t(btn.tooltipContent)}</p>
-                                    <TooltipPrimitive.Arrow
-                                        style={{
-                                            fill: btn.arrowColor,
-                                            background: btn.arrowColor,
-                                        }}
-                                        className={
-                                            "size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
-                                        }
-                                    />
-                                </TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-                    ))}
-                </div>
-            </div>
-            <ConfirmDialog />
+  return (
+    <div className="h-full bg-background rounded-t-sm">
+      <div className="flex px-4 py-3 justify-between items-center">
+        <h3 className="font-semibold">{t("room.title")}</h3>
+        <div className="flex gap-2">
+          {ACTION_BUTTONS_HISTORY.map((btn, index) => (
+            <TooltipProvider key={index}>
+              <Tooltip>
+                <RenderIf value={btn.type === "default"}>
+                  <Modal
+                    title={t("room.title")}
+                    trigger={
+                      <TooltipTrigger asChild>
+                        <Button size="icon" variant={btn.type} className="cursor-pointer">
+                          <btn.icon className="text-white" />
+                        </Button>
+                      </TooltipTrigger>
+                    }
+                    desc={t(Notice.ADD)}
+                    onConfirm={handleAddRoom}
+                  >
+                    <AddOrUpdateRoom
+                      handleChange={handleChange}
+                      value={value}
+                      setValue={setValue}
+                      errors={errors}
+                      floorList={floorListData?.data || []}
+                      type="add"
+                    />
+                  </Modal>
+                </RenderIf>
+                <RenderIf value={btn.type !== "default"}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      className="cursor-pointer"
+                      size="icon"
+                      variant={btn.type}
+                      onClick={() => handleButton(btn)}
+                      disabled={btn.type === "delete" && !Object.values(ids).some(Boolean)}
+                    >
+                      <btn.icon className="text-white" />
+                    </Button>
+                  </TooltipTrigger>
+                </RenderIf>
+                <TooltipContent
+                  className="text-white"
+                  style={{
+                    background: btn.arrowColor,
+                  }}
+                  arrow={false}
+                >
+                  <p>{t(btn.tooltipContent)}</p>
+                  <TooltipPrimitive.Arrow
+                    style={{
+                      fill: btn.arrowColor,
+                      background: btn.arrowColor,
+                    }}
+                    className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                  />
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ))}
         </div>
-    );
+      </div>
+      <ConfirmDialog />
+    </div>
+  );
 };
 
 export default RoomButton;

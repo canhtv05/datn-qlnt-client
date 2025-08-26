@@ -39,6 +39,7 @@ export default function useViewInvoiceDetail() {
     queryKey: ["invoice-detail"],
     queryFn: async () => {
       const res = await httpRequest.get(`/invoices/${id}`);
+      console.log(res.data);
       return res.data;
     },
   });
@@ -46,10 +47,10 @@ export default function useViewInvoiceDetail() {
   const { data: paymentReceipt } = useQuery<ApiResponse<PaymentReceiptResponse>>({
     queryKey: ["payment-receipt-detail"],
     queryFn: async () => {
-      const res = await httpRequest.get(`/payment-receipts/${data?.data?.invoiceId}`);
+      const res = await httpRequest.get(`/payment-receipts/${data?.data?.id}`);
       return res.data;
     },
-    enabled: !!data?.data?.invoiceId,
+    enabled: !!data?.data?.id,
     retry: 1,
   });
 
@@ -112,6 +113,7 @@ export default function useViewInvoiceDetail() {
         return true;
       }
       case PaymentMethod.VNPAY: {
+        console.log(paymentReceipt);
         if (!paymentReceipt) return false;
         const data: PaymentCreationURL = {
           amount: paymentReceipt?.data?.amount,
@@ -124,6 +126,7 @@ export default function useViewInvoiceDetail() {
             }
           },
         });
+
         return true;
       }
       default:

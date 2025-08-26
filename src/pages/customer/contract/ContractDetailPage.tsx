@@ -1,7 +1,9 @@
 import { Link, useParams } from "react-router-dom";
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import {
   AssetLittleResponse,
   ContractDetailResponse,
+  ContractExtendAndTerminateRequest,
   ServiceLittleResponse,
   TenantLittleResponse,
   VehicleBasicResponse,
@@ -10,12 +12,13 @@ import { httpRequest } from "@/utils/httpRequest";
 
 import "@/assets/css/print.css";
 import "ckeditor5/ckeditor5.css";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   assetBelongToEnumToString,
   assetStatusEnumToString,
   contractStatusEnumToString,
   formatDate,
+  formatLocalDate,
   formattedCurrency,
   genderEnumToString,
   serviceRoomStatusEnumToString,
@@ -24,12 +27,22 @@ import {
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "@/zustand/authStore";
 import { Button } from "@/components/ui/button";
-import { Eye } from "lucide-react";
+import { Ban, CalendarX, Eye, RotateCcw } from "lucide-react";
 import Tooltip from "@/components/ToolTip";
 import RenderIf from "@/components/RenderIf";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
+import { handleMutationError } from "@/utils/handleMutationError";
+import { useCallback, useState } from "react";
+import { useConfirmDialog, useFormErrors } from "@/hooks";
+import { extendContractSchema, noticeContractSchema } from "@/lib/validation";
+import Modal from "@/components/Modal";
+import ExtendOrNoticeContract from "./ExtendOrNoticeContract";
+import { TooltipContent, TooltipProvider, TooltipTrigger, Tooltip as TT } from "@/components/ui/tooltip";
+import { ContractStatus } from "@/enums";
 
 const ContractDetailPage = () => {
+  const queryClient = useQueryClient();
   const { contractId } = useParams();
   const { t } = useTranslation();
 
@@ -39,13 +52,136 @@ const ContractDetailPage = () => {
     enabled: !!contractId,
     retry: 1,
   });
-
   const { user } = useAuthStore((s) => s);
+
+  const [value, setValue] = useState<ContractExtendAndTerminateRequest>({
+    newEndDate: "",
+    oldEndDate: "",
+  });
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<ContractExtendAndTerminateRequest>();
+
+  const extendContractMutation = useMutation({
+    mutationFn: (payload: ContractExtendAndTerminateRequest) =>
+      httpRequest.post(`/contracts/extend/${data?.id || contractId}`, payload),
+    onSuccess: () => {
+      setValue({ newEndDate: "", oldEndDate: "" });
+      queryClient.invalidateQueries({ queryKey: ["contracts"] });
+      queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
+      queryClient.invalidateQueries({ queryKey: ["contract-detail"] });
+      toast.success("Gia hạn hợp đồng thành công");
+    },
+    onError: handleMutationError,
+  });
+
+  const handleExtendContract = useCallback(async () => {
+    try {
+      const { newEndDate, oldEndDate } = value;
+
+      const data: ContractExtendAndTerminateRequest = {
+        newEndDate: formatLocalDate(newEndDate),
+        oldEndDate,
+      };
+
+      await extendContractSchema.parseAsync(data);
+      await extendContractMutation.mutateAsync(data);
+      clearErrors();
+      return true;
+    } catch (error) {
+      handleZodErrors(error);
+      return false;
+    }
+  }, [value, extendContractMutation, clearErrors, handleZodErrors]);
+
+  const noticeContractMutation = useMutation({
+    mutationFn: (payload: ContractExtendAndTerminateRequest) =>
+      httpRequest.post(`/contracts/terminate-with-notice/${data?.id || contractId}`, payload),
+    onSuccess: () => {
+      setValue({ newEndDate: "", oldEndDate: "" });
+      queryClient.invalidateQueries({ queryKey: ["contracts"] });
+      queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
+      queryClient.invalidateQueries({ queryKey: ["contract-detail"] });
+      toast.success("Xác thực hợp đồng có báo trước thành công");
+    },
+    onError: handleMutationError,
+  });
+
+  const handleNoticeContract = useCallback(async () => {
+    try {
+      const { newEndDate, oldEndDate } = value;
+
+      const data: ContractExtendAndTerminateRequest = {
+        newEndDate: formatLocalDate(newEndDate),
+        oldEndDate,
+      };
+
+      await noticeContractSchema.parseAsync(data);
+      await noticeContractMutation.mutateAsync(data);
+      clearErrors();
+      return true;
+    } catch (error) {
+      handleZodErrors(error);
+      return false;
+    }
+  }, [value, noticeContractMutation, clearErrors, handleZodErrors]);
+
+  const cancelContractMutation = useMutation({
+    mutationFn: () => httpRequest.post(`/contracts/force-cancel/${data?.id || contractId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["contracts"] });
+      queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
+      queryClient.invalidateQueries({ queryKey: ["contract-detail"] });
+      toast.success("Xác thực hợp đồng tự ý hủy bỏ thành công");
+    },
+    onError: handleMutationError,
+  });
+
+  const handleCancelContract = useCallback(async () => {
+    await cancelContractMutation.mutateAsync();
+    return true;
+  }, [cancelContractMutation]);
+
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{ type: "extend" | "notice" | "cancel" }>({
+    onConfirm: async ({ type }) => {
+      if (type === "extend") {
+        return await handleExtendContract();
+      } else if (type === "notice") {
+        return await handleNoticeContract();
+      } else {
+        return await handleCancelContract();
+      }
+    },
+  });
+
+  const handleActionClick = useCallback(
+    async (type: "extend" | "notice" | "cancel") => {
+      const contract = data;
+      if (!contract) return await false;
+      if (type === "extend") {
+        setValue({
+          newEndDate: contract.endDate,
+          oldEndDate: contract.endDate,
+        });
+        openDialog({ type });
+        return await true;
+      } else if (type === "notice") {
+        setValue({
+          newEndDate: contract.endDate,
+          oldEndDate: contract.endDate,
+        });
+        openDialog({ type });
+        return await true;
+      } else {
+        openDialog({ type }, { desc: "Bạn có chắc chắn muốn xác nhận rằng hợp đồng tự ý hủy bỏ không?" });
+        return await true;
+      }
+    },
+    [data, openDialog]
+  );
 
   return (
     <div>
       <RenderIf value={isLoading}>
-        <div className="bg-background p-5 rounded-md space-y-5">
+        <div className="bg-white dark:bg-background p-5 rounded-md space-y-5">
           {Array.from({ length: 5 }).map((_, idx) => (
             <Skeleton
               style={{
@@ -57,10 +193,15 @@ const ContractDetailPage = () => {
           ))}
         </div>
       </RenderIf>
-      <RenderIf value={!isLoading}>
+      <RenderIf value={!isLoading && !!data}>
         <div className="p-6 space-y-6 bg-background rounded-md">
+<<<<<<< HEAD
           <div className="bg-input shadow rounded-2xl p-6">
             <h2 className="text-lg font-semibold mb-4">{t("contract.title")}</h2>
+=======
+          <div className="bg-white dark:bg-background shadow-lg rounded-2xl p-6">
+            <h2 className="text-lg font-semibold mb-4">Thông tin hợp đồng</h2>
+>>>>>>> origin/main
             <div className="grid grid-cols-2 text-sm">
               <p>
                 <span className="font-medium">{t("contract.contract.contractCode")}:</span>{" "}
@@ -71,8 +212,13 @@ const ContractDetailPage = () => {
                 {data?.roomCode}
               </p>
               <p>
+<<<<<<< HEAD
                 <span className="font-medium">{t("contract.contract.startDate")}:</span>{" "}
                 {data?.startDate ? formatDate(data?.startDate) : ""}
+=======
+                <span className="font-medium">Ngày bắt đầu:</span>{" "}
+                {data?.startDate ? formatLocalDate(data?.startDate) : ""}
+>>>>>>> origin/main
               </p>
               <p>
                 <span className="font-medium">{t("contract.contract.endDate")}:</span>{" "}
@@ -105,9 +251,14 @@ const ContractDetailPage = () => {
             </div>
           </div>
 
+<<<<<<< HEAD
           <div className="bg-input shadow rounded-2xl p-6">
             <h2 className="text-lg font-semibold mb-4">{t("contract.infoManagerAndMainTenant")}</h2>
 
+=======
+          <div className="bg-white dark:bg-background shadow-lg rounded-2xl p-6">
+            <h2 className="text-lg font-semibold mb-4">Thông tin quản lý & khách thuê chính</h2>
+>>>>>>> origin/main
             <div className="grid md:grid-cols-2 grid-cols-1 gap-4 text-sm">
               <div>
                 <p>
@@ -142,8 +293,13 @@ const ContractDetailPage = () => {
             </div>
           </div>
 
+<<<<<<< HEAD
           <div className="bg-input shadow rounded-2xl p-6">
             <h2 className="text-lg font-semibold mb-4">{t("contract.contract.tenants")}</h2>
+=======
+          <div className="bg-white dark:bg-background shadow-lg rounded-2xl p-6">
+            <h2 className="text-lg font-semibold mb-4">Khách thuê</h2>
+>>>>>>> origin/main
             <ul className="space-y-2 text-sm">
               {data?.tenants?.map((tn: TenantLittleResponse, i: number) => (
                 <li key={i} className="border-background border p-3 rounded-lg">
@@ -173,8 +329,13 @@ const ContractDetailPage = () => {
             </ul>
           </div>
 
+<<<<<<< HEAD
           <div className="bg-input shadow rounded-2xl p-6">
             <h2 className="text-lg font-semibold mb-4">{t("contract.contract.assets")}</h2>
+=======
+          <div className="bg-white dark:bg-background shadow-lg rounded-2xl p-6">
+            <h2 className="text-lg font-semibold mb-4">Tài sản</h2>
+>>>>>>> origin/main
             <ul className="space-y-2 text-sm">
               {data?.assets?.map((a: AssetLittleResponse, i: number) => (
                 <li key={i} className="border-background border p-3 rounded-lg">
@@ -207,8 +368,13 @@ const ContractDetailPage = () => {
             </ul>
           </div>
 
+<<<<<<< HEAD
           <div className="bg-input shadow rounded-2xl p-6">
             <h2 className="text-lg font-semibold mb-4">{t("contract.contract.services")}</h2>
+=======
+          <div className="bg-white dark:bg-background shadow-lg rounded-2xl p-6">
+            <h2 className="text-lg font-semibold mb-4">Dịch vụ</h2>
+>>>>>>> origin/main
             <ul className="space-y-2 text-sm">
               {data?.services?.map((s: ServiceLittleResponse, i: number) => (
                 <li key={i} className="border-background border p-3 rounded-lg">
@@ -233,8 +399,13 @@ const ContractDetailPage = () => {
             </ul>
           </div>
 
+<<<<<<< HEAD
           <div className="bg-input shadow rounded-2xl p-6">
             <h2 className="text-lg font-semibold mb-4">{t("contract.contract.vehicles")}</h2>
+=======
+          <div className="bg-white dark:bg-background shadow-lg rounded-2xl p-6">
+            <h2 className="text-lg font-semibold mb-4">Phương tiện</h2>
+>>>>>>> origin/main
             <ul className="space-y-2 text-sm">
               {data?.vehicles?.map((v: VehicleBasicResponse, i: number) => (
                 <li key={i} className="border-background border p-3 rounded-lg">
@@ -270,6 +441,7 @@ const ContractDetailPage = () => {
                 {data?.updatedAt ? formatDate(data?.updatedAt) : ""}
               </p>
             </div>
+<<<<<<< HEAD
             <Tooltip content={t("contract.viewContent")}>
               <Link to={`/customers/contracts/content/${contractId}`}>
                 <Button size={"icon"}>
@@ -277,8 +449,147 @@ const ContractDetailPage = () => {
                 </Button>
               </Link>
             </Tooltip>
+=======
+            <div className="flex gap-3 ">
+              <RenderIf
+                value={
+                  data?.status !== ContractStatus.TU_Y_HUY_BO &&
+                  data?.status !== ContractStatus.KET_THUC_CO_BAO_TRUOC &&
+                  data?.status !== ContractStatus.CHO_KICH_HOAT
+                }
+              >
+                <TooltipProvider>
+                  <TT>
+                    <Modal
+                      title={"Gia hạn hợp đồng"}
+                      trigger={
+                        <TooltipTrigger asChild>
+                          <Button
+                            size={"icon"}
+                            variant={"status"}
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setValue({
+                                newEndDate: data?.endDate || "",
+                                oldEndDate: data?.endDate || "",
+                              });
+                            }}
+                          >
+                            <RotateCcw className="stroke-white" />
+                          </Button>
+                        </TooltipTrigger>
+                      }
+                      desc={"Bạn có chắc chắn muốn gia hạn hợp đồng này không?"}
+                      onConfirm={handleExtendContract}
+                    >
+                      <ExtendOrNoticeContract errors={errors} setValue={setValue} value={value} />
+                    </Modal>
+                    <TooltipContent
+                      className="text-white"
+                      style={{
+                        background: "var(--color-sky-500)",
+                      }}
+                      arrow={false}
+                    >
+                      <p>Gia hạn hợp đồng</p>
+                      <TooltipPrimitive.Arrow
+                        style={{
+                          fill: "var(--color-sky-500)",
+                          background: "var(--color-sky-500)",
+                        }}
+                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                      />
+                    </TooltipContent>
+                  </TT>
+                </TooltipProvider>
+                <TooltipProvider>
+                  <TT>
+                    <Modal
+                      title={"Kết thúc có báo trước"}
+                      trigger={
+                        <TooltipTrigger asChild>
+                          <Button
+                            size={"icon"}
+                            variant={"cash"}
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setValue({
+                                newEndDate: data?.endDate || "",
+                                oldEndDate: data?.endDate || "",
+                              });
+                            }}
+                          >
+                            <CalendarX className="stroke-white" />
+                          </Button>
+                        </TooltipTrigger>
+                      }
+                      desc={"Bạn có chắc chắn muốn kết thúc hợp đồng này không?"}
+                      onConfirm={handleNoticeContract}
+                    >
+                      <ExtendOrNoticeContract errors={errors} setValue={setValue} value={value} />
+                    </Modal>
+                    <TooltipContent
+                      className="text-white"
+                      style={{
+                        background: "var(--color-amber-400)",
+                      }}
+                      arrow={false}
+                    >
+                      <p>Kết thúc có báo trước</p>
+                      <TooltipPrimitive.Arrow
+                        style={{
+                          fill: "var(--color-amber-400)",
+                          background: "var(--color-amber-400)",
+                        }}
+                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                      />
+                    </TooltipContent>
+                  </TT>
+                </TooltipProvider>
+                <TooltipProvider>
+                  <TT>
+                    <TooltipTrigger asChild>
+                      <Button
+                        size={"icon"}
+                        variant={"delete"}
+                        className="cursor-pointer"
+                        onClick={() => handleActionClick("cancel")}
+                      >
+                        <Ban className="stroke-white" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      className="text-white"
+                      style={{
+                        background: "var(--color-red-400)",
+                      }}
+                      arrow={false}
+                    >
+                      <p>Tự ý hủy bỏ</p>
+                      <TooltipPrimitive.Arrow
+                        style={{
+                          fill: "var(--color-red-400)",
+                          background: "var(--color-red-400)",
+                        }}
+                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                      />
+                    </TooltipContent>
+                  </TT>
+                </TooltipProvider>
+              </RenderIf>
+
+              <Tooltip content="Xem nội dung">
+                <Link to={`/customers/contracts/content/${contractId}`}>
+                  <Button size={"icon"}>
+                    <Eye className="stroke-white" />
+                  </Button>
+                </Link>
+              </Tooltip>
+            </div>
+>>>>>>> origin/main
           </div>
         </div>
+        <ConfirmDialog />
       </RenderIf>
     </div>
   );

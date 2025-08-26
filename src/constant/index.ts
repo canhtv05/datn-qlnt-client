@@ -229,26 +229,40 @@ export const sidebarItems = (
       url: "/contracts",
       icon: images.contract,
     },
-    // {
-    //   title: "Xem hóa đơn cũ",
-    //   url: "/invoices/history",
-    //   icon: images.history,
-    // },
+    {
+      title: t(SidebarKey.USER_DEPOSITS),
+      url: "/deposit",
+      icon: images.deposit,
+    },
     {
       title: t(SidebarKey.MEMBERS),
       url: "/members",
       icon: images.team,
     },
     {
-      title: t(SidebarKey.ELECTRIC),
-      url: "/electric",
-      icon: images.energy,
+      title: t(SidebarKey.ASSETS_USER),
+      // title: 'Xem tài sản có trong phòng',
+      url: "/assets",
+      icon: images.assets,
     },
     {
-      title: t(SidebarKey.WATER),
-      url: "/water",
-      icon: images.water,
+      title: t(SidebarKey.SERVICES_USER),
+      // title: 'Dịch vụ có trong phòng',
+      url: "/service",
+      icon: images.optimizing,
     },
+    {
+      title: t(SidebarKey.VEHICLES_USER),
+      // title: 'Phương tiện phòng',
+      url: "/vehicle",
+      icon: images.hatchback,
+    },
+    // {
+    //   // title: t(SidebarKey.WATER),
+    //   title: 'Các phòng chưa có dịch vụ',
+    //   url: "/service",
+    //   icon: images.water,
+    // },
   ];
 
   if (role === "MANAGER" || role === "ADMIN") return MANAGER;

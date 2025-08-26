@@ -4,11 +4,13 @@ import { initReactI18next } from "react-i18next";
 import keyStorage from "@/configs/storage";
 import translationEN from "../i18n/en/en.json";
 import translationVI from "../i18n/vi/vi.json";
+import validationVI from "../i18n/vi/validation.json";
+import validationEN from "../i18n/en/validation.json";
 
 // the translations
 const resources = {
-  en: { translation: translationEN },
-  vi: { translation: translationVI },
+  en: { translation: translationEN, validation: validationEN },
+  vi: { translation: translationVI, validation: validationVI },
 };
 
 const json = localStorage.getItem(keyStorage.key);
@@ -30,6 +32,8 @@ i18next.use(initReactI18next).init({
   interpolation: {
     escapeValue: false,
   },
+  ns: ["translation", "validation"],
+  defaultNS: "translation",
 });
 
 export default i18next;
