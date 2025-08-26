@@ -30,7 +30,7 @@ const RevenueFilter = ({ props }: { props: RevenueFilterProps }) => {
       <div className={switchGrid3("default")}>
         <FieldsSelectLabel
           placeholder={"-- Tháng --"}
-          labelSelect={"Tháng:"}
+          labelSelect={"Tháng"}
           label="Tháng"
           data={[
             { label: "1", value: 1 },
@@ -66,7 +66,7 @@ const RevenueFilter = ({ props }: { props: RevenueFilterProps }) => {
         <FieldsSelectLabel
           label="Tòa nhà"
           placeholder={"-- Tòa nhà --"}
-          labelSelect={"Tòa nhà:"}
+          labelSelect={"Tòa nhà"}
           data={props.buildingOptions ?? []}
           value={buildingId}
           onChange={(value) => {

@@ -1,13 +1,11 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { formattedCurrency } from "@/lib/utils";
+import { buildRevenueStatistical, chartData, formattedCurrency } from "@/lib/utils";
 import useRevenue from "./useRevenue";
 import RevenueFilter from "./RevenueFilter";
 import RenderIf from "@/components/RenderIf";
 import { RevenueStatisticResponse } from "@/types";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { TrendingUp } from "lucide-react";
-import { LabelList, Pie, PieChart } from "recharts";
+import { ChartConfig } from "@/components/ui/chart";
+import PieChart from "@/components/PieChart";
 
 const Revenue = () => {
   const { data, isLoading, props } = useRevenue();
@@ -25,26 +23,30 @@ const Revenue = () => {
     { key: "unreturnedDeposit", label: "Tiền cọc lời" },
   ];
 
-  const paidRoomFee = data?.data?.paidRoomFee ?? 0;
-  const paidWaterFee = data?.data?.paidWaterFee ?? 0;
-  const paidEnergyFee = data?.data?.paidEnergyFee ?? 0;
-  const paidServiceFee = data?.data?.paidServiceFee ?? 0;
-
-  const total = paidRoomFee + paidWaterFee + paidEnergyFee + paidServiceFee;
-
-  const chartData = [
-    { type: "room", label: "Phòng", value: paidRoomFee, fill: "var(--chart-1)" },
-    { type: "water", label: "Nước", value: paidWaterFee, fill: "var(--chart-2)" },
-    { type: "energy", label: "Điện", value: paidEnergyFee, fill: "var(--chart-3)" },
-    { type: "service", label: "Dịch vụ", value: paidServiceFee, fill: "var(--chart-4)" },
-  ];
-
   const chartConfig = {
-    value: { label: "Số tiền" },
-    room: { label: "Phòng", color: "var(--chart-1)" },
-    water: { label: "Nước", color: "var(--chart-2)" },
-    energy: { label: "Điện", color: "var(--chart-3)" },
-    service: { label: "Dịch vụ", color: "var(--chart-4)" },
+    visitors: {
+      label: "Visitors",
+    },
+    chrome: {
+      label: "Chrome",
+      color: "var(--chart-1)",
+    },
+    safari: {
+      label: "Safari",
+      color: "var(--chart-2)",
+    },
+    firefox: {
+      label: "Firefox",
+      color: "var(--chart-3)",
+    },
+    edge: {
+      label: "Edge",
+      color: "var(--chart-4)",
+    },
+    other: {
+      label: "Other",
+      color: "var(--chart-5)",
+    },
   } satisfies ChartConfig;
 
   return (
@@ -56,7 +58,7 @@ const Revenue = () => {
         </RenderIf>
 
         <RenderIf value={!isLoading && !!data?.data}>
-          <div className="p-5 flex flex-col gap-5 md:justify-around md:items-start items-stretch md:flex-row">
+          <div className="p-5 flex flex-col h-full gap-5 md:justify-around md:items-start items-stretch md:flex-row">
             <div className="flex-1 w-full">
               <strong className="block uppercase text-center w-full">Doanh thu tổng quan</strong>
               <div className="flex flex-col gap-y-4 mt-5">
@@ -71,19 +73,9 @@ const Revenue = () => {
               </div>
             </div>
 
-            <div className="flex-1 mt-5 md:mt-0 md:ml-10">
+            <div className="flex-1 flex flex-col items-center justify-between h-full mt-5 md:mt-0 md:ml-10">
               <strong className="block uppercase text-center w-full">Doanh thu chi tiết</strong>
-              <ChartContainer
-                config={chartConfig}
-                className="[&_.recharts-text]:fill-background mx-auto aspect-square max-h-[250px]"
-              >
-                <PieChart>
-                  <ChartTooltip content={<ChartTooltipContent nameKey="value" hideLabel />} />
-                  <Pie data={chartData} dataKey="value" nameKey="label">
-                    <LabelList dataKey="label" className="fill-background" stroke="none" fontSize={12} />
-                  </Pie>
-                </PieChart>
-              </ChartContainer>
+              <PieChart chartData={chartData(buildRevenueStatistical(data?.data))} chartConfig={chartConfig} />
             </div>
           </div>
         </RenderIf>

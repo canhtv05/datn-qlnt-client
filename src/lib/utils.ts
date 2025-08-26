@@ -27,7 +27,7 @@ import {
   VehicleType,
 } from "@/enums";
 import { RoleType } from "@/hooks/useHighestRole";
-import { UserResponse } from "@/types";
+import { RevenueStatisticResponse, StatisticalItemType, UserResponse } from "@/types";
 import { useEditorStore } from "@/zustand/editorStore";
 import { FindResultType } from "ckeditor5";
 import { clsx, type ClassValue } from "clsx";
@@ -37,6 +37,7 @@ import { saveAs } from "file-saver";
 import { TFunction } from "i18next";
 import { Locale } from "date-fns";
 import { enUS, vi } from "date-fns/locale";
+import { Banknote, Droplets, Plug, Wrench } from "lucide-react";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -499,7 +500,7 @@ export const genderToString = (gender: Gender | undefined) => {
     case Gender.UNKNOWN:
     default:
       return "N/A";
-  } 
+  }
 };
 
 export const tenantStatusToString = (status: TenantStatus | undefined) => {
@@ -517,7 +518,6 @@ export const tenantStatusToString = (status: TenantStatus | undefined) => {
     default:
       return "N/A";
   }
-
 };
 export const assetStatusToString = (status: AssetStatus | string) => {
   switch (status) {
@@ -538,4 +538,55 @@ export const assetStatusToString = (status: AssetStatus | string) => {
     default:
       return "N/A";
   }
+};
+
+export const chartData = (statistical: StatisticalItemType) => {
+  const children = statistical.children || [];
+
+  const colorVars = ["hsl(47 95% 53%)", "hsl(142 76% 36%)", "hsl(0 84% 60%)", "hsl(187 85% 53%)"];
+
+  return children.map((child, index) => ({
+    dataKey: child.label.toLowerCase().replace(/\s/g, "_"),
+    label: child.label,
+    count: Number(child.count ?? 0),
+    fill: colorVars[index] || "hsl(0 0% 80%)",
+  }));
+};
+
+export const buildRevenueStatistical = (data?: RevenueStatisticResponse): StatisticalItemType => {
+  const paidRoomFee = data?.paidRoomFee ?? 0;
+  const paidWaterFee = data?.paidWaterFee ?? 0;
+  const paidEnergyFee = data?.paidEnergyFee ?? 0;
+  const paidServiceFee = data?.paidServiceFee ?? 0;
+
+  return {
+    label: "Thống kê doanh thu",
+    type: "revenue",
+    children: [
+      {
+        label: "Tiền phòng",
+        count: paidRoomFee,
+        icon: Banknote,
+        classText: "text-blue-500",
+      },
+      {
+        label: "Tiền nước",
+        count: paidWaterFee,
+        icon: Droplets,
+        classText: "text-cyan-500",
+      },
+      {
+        label: "Tiền điện",
+        count: paidEnergyFee,
+        icon: Plug,
+        classText: "text-orange-500",
+      },
+      {
+        label: "Phí dịch vụ",
+        count: paidServiceFee,
+        icon: Wrench,
+        classText: "text-purple-500",
+      },
+    ],
+  };
 };

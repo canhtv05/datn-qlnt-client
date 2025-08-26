@@ -62,6 +62,27 @@ export interface IBtnType {
   hasConfirm: boolean;
 }
 
+export type ChartDataType = {
+  label: string;
+  count: number;
+  fill?: string;
+  dataKey?: string;
+  color?: string;
+};
+
+export type StatisticalChildType = {
+  label: string;
+  count: number;
+  icon: LucideIcon;
+  classText: string;
+};
+
+export type StatisticalItemType = {
+  label: string;
+  type: string;
+  children: StatisticalChildType[];
+};
+
 /* FILTER */
 export type FilterObject = Record<string, string>;
 
