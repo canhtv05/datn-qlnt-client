@@ -18,6 +18,7 @@ const routes = {
     roomMembers: "/room/members/:id",
   },
   dashboard: "/dashboard",
+  statistics: "/revenue-statistics",
   notification: "/notifications",
   facilities: {
     buildings: "/facilities/buildings",

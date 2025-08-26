@@ -409,6 +409,7 @@ export type IUpdateAsset = Omit<ICreateAsset, "buildingId"> & { assetStatus: Ass
 // export type IUpdateAsset = ICreateAsset;
 
 export interface AssetResponse extends AbstractResponse {
+  descriptionAsset: string;
   assetName: string;
   description: string;
   buildingName: string;
@@ -1327,4 +1328,28 @@ export interface ContractVehicleFilter {
 export interface ContractExtendAndTerminateRequest {
   newEndDate: string | Date;
   oldEndDate: string | Date;
+}
+
+/* REVENUE */
+export interface RevenueStatisticResponse {
+  buildingId: string;
+  buildingName: string;
+  year: number;
+  month: number;
+  expectedRevenue: number;
+  currentRevenue: number;
+  paidRoomFee: number;
+  paidEnergyFee: number;
+  paidWaterFee: number;
+  paidServiceFee: number;
+  compensationAmount: number;
+  damageAmount: number;
+  overdueAmount: number;
+  unreturnedDeposit: number;
+}
+
+export interface RevenueStatisticRequest {
+  month: number | undefined;
+  year: number | undefined;
+  buildingId: string;
 }

@@ -117,6 +117,9 @@
   },
   "sidebar": {
     "dashboard": { "label": "Quick Access", "title": "Dashboard" },
+    "statistics": {
+      "title": "Revenue statistics"
+    },
     "facilities": {
       "label": "Operations Management",
       "title": "Facilities",

@@ -30,6 +30,7 @@ const RoomDetail = lazy(() => import("@/pages/user/room-detail"));
 
 /* DASHBOARD */
 const DashBoard = lazy(() => import("@/pages/dashboard"));
+const Revenue = lazy(() => import("@/pages/revenue"));
 const Notification = lazy(() => import("@/pages/notification"));
 
 /* DATA CATEGORIES*/
@@ -133,6 +134,11 @@ const privateRoutes: RouteType[] = [
     path: configs.routes.dashboard,
     component: DashBoard,
     allowedRoles: ["ADMIN", "MANAGER", "USER"],
+  },
+  {
+    path: configs.routes.statistics,
+    component: Revenue,
+    allowedRoles: ["ADMIN", "MANAGER"],
   },
   {
     path: configs.routes.notification,

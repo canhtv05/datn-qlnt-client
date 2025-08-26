@@ -199,8 +199,7 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: Props
           name="assetBeLongTo"
           value={value.assetBeLongTo ?? ""}
           onChange={(val) => {
-            if (type === "add")
-              setValue((prev) => ({ ...prev, assetBeLongTo: val as AssetBeLongTo }));
+            if (type === "add") setValue((prev) => ({ ...prev, assetBeLongTo: val as AssetBeLongTo }));
             else setValue((prev) => ({ ...prev, assetBeLongTo: val as AssetBeLongTo }));
           }}
           labelSelect={t("asset.addOrUpdate.assetBeLongTo")}
@@ -297,8 +296,8 @@ const AddOrUpdateAsset = ({ value, handleChange, setValue, errors, type }: Props
       <TextareaLabel
         id="descriptionAsset"
         name="descriptionAsset"
-        placeholder={t("asset.addOrUpdate.descriptionAsset")}
-        label="Mô tả:"
+        placeholder={t("asset.addOrUpdate.placeholderDescription")}
+        label={t("asset.addOrUpdate.descriptionAsset")}
         value={value.descriptionAsset ?? ""}
         onChange={(e) => {
           if (type === "add") setValue((prev) => ({ ...prev, descriptionAsset: e.target.value }));

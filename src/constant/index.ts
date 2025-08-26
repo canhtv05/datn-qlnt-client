@@ -79,6 +79,11 @@ export const sidebarItems = (
       icon: images.bulletinBoard,
     },
     {
+      title: t(SidebarKey.STATISTICS_TITLE),
+      url: "/revenue-statistics",
+      icon: images.revenue,
+    },
+    {
       label: t(SidebarKey.FACILITIES_LABEL),
       title: t(SidebarKey.FACILITIES_TITLE),
       url: "/facilities",

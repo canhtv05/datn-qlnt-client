@@ -116,6 +116,9 @@
   },
   "sidebar": {
     "dashboard": { "label": "Theo dõi nhanh", "title": "Bảng tin" },
+    "statistics": {
+      "title": "Thống kê doanh thu"
+    },
     "facilities": {
       "label": "Quản lý vận hành",
       "title": "Cơ sở vật chất",
