@@ -546,10 +546,10 @@ export const chartData = (statistical: StatisticalItemType) => {
   const colorVars = ["hsl(47 95% 53%)", "hsl(142 76% 36%)", "hsl(0 84% 60%)", "hsl(187 85% 53%)"];
 
   return children.map((child, index) => ({
-    dataKey: child.label.toLowerCase().replace(/\s/g, "_"),
+    browser: child.label.toLowerCase(),
     label: child.label,
-    count: Number(child.count ?? 0),
-    fill: colorVars[index] || "hsl(0 0% 80%)",
+    count: child.count,
+    fill: colorVars[index] || "var(--color-other)",
   }));
 };
 
