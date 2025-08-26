@@ -37,7 +37,7 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       return true;
     } catch (error) {
       handleMutationError(error);
@@ -50,7 +50,7 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveContractsByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các hợp đồng đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("common.confirmDialog.delete", { name: t("contract.title") }),
     type: "warn",
   });
 
@@ -68,7 +68,7 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Hợp đồng</h3>
+        <h3 className="font-semibold">{t("contract.title")}</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS_HISTORY.map((btn, index) => (
             <TooltipProvider key={index}>
@@ -101,7 +101,11 @@ const ContractButton = ({ ids }: { ids: Record<string, boolean> }) => {
                     </Button>
                   </TooltipTrigger>
                 </RenderIf>
-                <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                <TooltipContent
+                  className="text-white"
+                  style={{ background: btn.arrowColor }}
+                  arrow={false}
+                >
                   <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{ fill: btn.arrowColor, background: btn.arrowColor }}

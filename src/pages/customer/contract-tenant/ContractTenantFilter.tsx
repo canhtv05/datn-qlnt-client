@@ -32,8 +32,8 @@ const ContractTenantFilter = ({ props }: { props: ContractTenantFilterProps }) =
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full items-end">
         <FieldsSelectLabel
           name="gender"
-          labelSelect="Giới tính"
-          placeholder="-- Giới tính --"
+          labelSelect={t("tenant.response.gender")}
+          placeholder={t("tenant.filter.gender")}
           data={GENDER_OPTIONS(t)}
           value={gender}
           onChange={(value) => handleChange("gender", String(value))}
@@ -42,7 +42,7 @@ const ContractTenantFilter = ({ props }: { props: ContractTenantFilterProps }) =
         <InputLabel
           id="query"
           name="query"
-          placeholder="Tìm kiếm"
+          placeholder={t("tenant.filter.search")}
           value={query}
           onChange={(e) => handleChange("query", e.target.value)}
         />

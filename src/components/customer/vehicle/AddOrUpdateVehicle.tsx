@@ -86,12 +86,12 @@ const AddOrUpdateVehicle = (props: AddOrUpdateVehicleProps) => {
           <FieldsSelectLabel
             data={vehicleType}
             placeholder={t("vehicle.placeholder.type")}
-            label={t("vehicle.addOrUpdate.vehicleType")}
+            label={t("vehicle.addOrUpdate.type")}
             id="vehicleType"
             name="vehicleType"
             value={value.vehicleType ?? ""}
             onChange={(val) => setValue((prev) => ({ ...prev, vehicleType: val as VehicleType }))}
-            labelSelect={t("vehicle.addOrUpdate.vehicleType")}
+            labelSelect={t("vehicle.addOrUpdate.type")}
             showClear
             errorText={errors.vehicleType}
             required
@@ -110,7 +110,7 @@ const AddOrUpdateVehicle = (props: AddOrUpdateVehicleProps) => {
           <FieldsSelectLabel
             data={vehicleStatus}
             placeholder={t("vehicle.placeholder.status")}
-            label={t("vehicle.addOrUpdate.vehicleStatus")}
+            label={t("vehicle.addOrUpdate.status")}
             id="vehicleStatus"
             name="vehicleStatus"
             value={value.vehicleStatus ?? ""}
@@ -120,7 +120,7 @@ const AddOrUpdateVehicle = (props: AddOrUpdateVehicleProps) => {
                 vehicleStatus: val as VehicleStatus,
               }));
             }}
-            labelSelect={t("vehicle.addOrUpdate.vehicleStatus")}
+            labelSelect={t("vehicle.addOrUpdate.status")}
             showClear
             errorText={errors.vehicleStatus}
             required

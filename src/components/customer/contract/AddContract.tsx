@@ -10,14 +10,21 @@ import Editor from "@/components/Editor";
 import DescriptionValueForContract from "./DescriptionValueForContract";
 import { Button } from "@/components/ui/button";
 import { contract_template } from "./contract_example";
-import { useContractMutation, useRoomOptions, useTenantOptions, useVehicleOptions } from "@/services/contract";
+import {
+  useContractMutation,
+  useRoomOptions,
+  useTenantOptions,
+  useVehicleOptions,
+} from "@/services/contract";
 import { createContractSchema } from "@/lib/validation";
 import { Switch } from "@/components/ui/switch";
 import DateRangePicker from "@/components/DateRangePicker";
 import { DateRange } from "react-day-picker";
 import { parseISO } from "date-fns";
+import { useTranslation } from "react-i18next";
 
 const AddContract = () => {
+  const { t } = useTranslation();
   const { addAndUpdateContentContractMutation } = useContractMutation();
   const roomOptions = useRoomOptions();
   const tenantOptions = useTenantOptions();
@@ -35,9 +42,12 @@ const AddContract = () => {
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateContract>();
 
-  const handleChange = useCallback(<K extends keyof ICreateContract>(field: K, newValue: ICreateContract[K]) => {
-    setValue((prev) => ({ ...prev, [field]: newValue }));
-  }, []);
+  const handleChange = useCallback(
+    <K extends keyof ICreateContract>(field: K, newValue: ICreateContract[K]) => {
+      setValue((prev) => ({ ...prev, [field]: newValue }));
+    },
+    []
+  );
 
   const handleNumberChange = (e: ChangeEvent<HTMLInputElement>, key: "deposit") => {
     const parsed = Number(e.target.value.trim());
@@ -91,18 +101,18 @@ const AddContract = () => {
     <div className="bg-background p-5 rounded-md">
       <div className="flex flex-col gap-6">
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold">Thêm hợp đồng</h3>
+          <h3 className="text-lg font-semibold">{t("contract.addOrUpdate.titleAdd")}</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FieldsSelectLabel
               data={roomOptions}
-              placeholder="-- Chọn phòng --"
-              label="Phòng:"
+              placeholder={t("contract.filter.placeholderRoom")}
+              label={t("contract.addOrUpdate.room")}
               id="roomId"
               name="roomId"
               value={value.roomId ?? ""}
               onChange={(val) => handleChange("roomId", val as string)}
-              labelSelect="Phòng"
+              labelSelect={t("contract.addOrUpdate.room")}
               showClear
               errorText={errors.roomId}
               required
@@ -112,7 +122,7 @@ const AddContract = () => {
               name="deposit"
               placeholder="1000000"
               type="number"
-              label="Tiền cọc:"
+              label={t("contract.addOrUpdate.deposit")}
               required
               value={value.deposit.toString()}
               onChange={(e) => handleNumberChange(e, "deposit")}
@@ -120,7 +130,7 @@ const AddContract = () => {
             />
           </div>
           <DateRangePicker
-            label="Chọn ngày hết hạn hơp đồng:"
+            label={t("contract.addOrUpdate.dateRange")}
             required
             value={dateRange()}
             onChange={handleChangeDate}
@@ -131,8 +141,8 @@ const AddContract = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FieldsMultiSelectLabel
               data={toSelectType(tenantOptions)}
-              placeholder="-- Chọn khách thuê --"
-              label="Khách thuê:"
+              placeholder={t("contract.filter.placeholderTenant")}
+              label={t("contract.addOrUpdate.tenants")}
               id="tenants"
               name="tenants"
               value={toSelectType(tenantOptions).filter((opt) =>
@@ -174,11 +184,13 @@ const AddContract = () => {
             />
             <FieldsMultiSelectLabel
               data={toSelectType(vehicleOptions)}
-              placeholder="-- Chọn phương tiện --"
-              label="Phương tiện:"
+              placeholder={t("contract.filter.placeholderVehicle")}
+              label={t("contract.addOrUpdate.vehicles")}
               id="vehicles"
               name="vehicles"
-              value={toSelectType(vehicleOptions).filter((opt) => value.vehicles.includes(String(opt.value)))}
+              value={toSelectType(vehicleOptions).filter((opt) =>
+                value.vehicles.includes(String(opt.value))
+              )}
               onChange={(selected) =>
                 handleChange(
                   "vehicles",
@@ -192,7 +204,7 @@ const AddContract = () => {
           <div className="flex gap-10 flex-col">
             <div>
               <span className="mb-1 text-label text-sm flex gap-1">
-                Nội dung hợp đồng
+                {t("contract.addOrUpdate.content")}
                 <span className="text-[10px] text-red-500">(*)</span>
               </span>
               <Editor
@@ -208,7 +220,7 @@ const AddContract = () => {
                 }
               >
                 <Button className="mt-5 w-full text-white" onClick={() => handleAddContract()}>
-                  Tạo hợp đồng
+                  {t("contract.addOrUpdate.buttonSubmit")}
                 </Button>
               </Editor>
             </div>

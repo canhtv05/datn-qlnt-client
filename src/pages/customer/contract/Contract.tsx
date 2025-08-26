@@ -74,13 +74,13 @@ const Contract = () => {
 
   const columnConfigs: ColumnConfig[] = [
     {
-      label: "Mã hợp đồng",
+      label: t("contract.response.contractCode"),
       accessorKey: "contractCode",
       isSort: true,
       hasHighlight: true,
     },
     {
-      label: "Thao tác",
+      label: t("contract.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -94,12 +94,21 @@ const Contract = () => {
                     size="icon"
                     variant={btn.type}
                     className="cursor-pointer"
-                    onClick={() => handleActionClick(row, btn.type as "update" | "delete" | "view" | "toggle" | "cash")}
+                    onClick={() =>
+                      handleActionClick(
+                        row,
+                        btn.type as "update" | "delete" | "view" | "toggle" | "cash"
+                      )
+                    }
                   >
                     <btn.icon className="text-white" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                <TooltipContent
+                  className="text-white"
+                  style={{ background: btn.arrowColor }}
+                  arrow={false}
+                >
                   <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
@@ -116,13 +125,13 @@ const Contract = () => {
       ),
     },
     {
-      label: "Phòng",
+      label: t("contract.response.room"),
       accessorKey: "roomCode",
       isSort: true,
       isCenter: true,
     },
     {
-      label: "Ngày bắt đầu",
+      label: t("contract.response.startDate"),
       accessorKey: "startDate",
       isSort: true,
       render: (row: ContractResponse) =>
@@ -134,7 +143,7 @@ const Contract = () => {
       isCenter: true,
     },
     {
-      label: "Ngày kết thúc",
+      label: t("contract.response.endDate"),
       accessorKey: "endDate",
       isSort: true,
       render: (row: ContractResponse) =>
@@ -146,21 +155,21 @@ const Contract = () => {
       isCenter: true,
     },
     {
-      label: "Tiền cọc",
+      label: t("contract.response.deposit"),
       accessorKey: "deposit",
       isSort: true,
       isCenter: true,
       render: (row: ContractResponse) => `${row.deposit?.toLocaleString("vi-VN")} VNĐ`,
     },
     {
-      label: "Tiền phòng",
+      label: t("contract.response.roomPrice"),
       accessorKey: "roomPrice",
       isSort: true,
       isCenter: true,
       render: (row: ContractResponse) => `${row.roomPrice?.toLocaleString("vi-VN")} VNĐ`,
     },
     {
-      label: "Trạng thái",
+      label: t("contract.response.actions"),
       accessorKey: "status",
       isSort: true,
       isCenter: true,
@@ -187,14 +196,19 @@ const Contract = () => {
           setRowSelection={setRowSelection}
         />
         <Modal
-          title="Hợp đồng"
+          title={t("contract.title")}
           trigger={null}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
           onConfirm={handleUpdateContract}
-          desc={Notice.UPDATE}
+          desc={t(Notice.UPDATE)}
         >
-          <UpdateContract value={value} errors={errors} handleChange={handleChange} setValue={setValue} />
+          <UpdateContract
+            value={value}
+            errors={errors}
+            handleChange={handleChange}
+            setValue={setValue}
+          />
         </Modal>
         <ConfirmDialog />
       </div>

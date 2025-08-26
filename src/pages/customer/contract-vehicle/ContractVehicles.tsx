@@ -33,11 +33,28 @@ const ContractVehicles = () => {
   const BTNS = [...GET_BTNS("delete")];
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Loại xe", accessorKey: "vehicleType", isSort: true, isCenter: true, hasBadge: true },
-    { label: "Biển số", accessorKey: "licensePlate", isSort: true, isCenter: true, hasHighlight: true },
-    { label: "Họ tên chủ xe", accessorKey: "fullName", isSort: true, isCenter: true },
     {
-      label: "Thao tác",
+      label: t("vehicle.response.vehicleType"),
+      accessorKey: "vehicleType",
+      isSort: true,
+      isCenter: true,
+      hasBadge: true,
+    },
+    {
+      label: t("vehicle.response.licensePlate"),
+      accessorKey: "licensePlate",
+      isSort: true,
+      isCenter: true,
+      hasHighlight: true,
+    },
+    {
+      label: t("vehicle.response.owner"),
+      accessorKey: "fullName",
+      isSort: true,
+      isCenter: true,
+    },
+    {
+      label: t("vehicle.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -60,7 +77,11 @@ const ContractVehicles = () => {
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                  <TooltipContent
+                    className="text-white"
+                    style={{ background: btn.arrowColor }}
+                    arrow={false}
+                  >
                     <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
@@ -78,41 +99,41 @@ const ContractVehicles = () => {
       },
     },
     {
-      label: "Trạng thái",
+      label: t("vehicle.response.status"),
       accessorKey: "vehicleStatus",
       isSort: true,
       isCenter: true,
       hasBadge: true,
     },
     {
-      label: "Ngày đăng ký",
+      label: t("vehicle.response.registrationDate"),
       accessorKey: "registrationDate",
       isSort: true,
       isCenter: true,
       render: (row: ContractVehicleResponse) => <span>{formatDate(row.registrationDate)}</span>,
     },
     {
-      label: "Ngày bắt đầu",
+      label: t("contract.response.startDate"),
       accessorKey: "startDate",
       isSort: true,
       isCenter: true,
       render: (row: ContractVehicleResponse) => <span>{formatDate(row.startDate)}</span>,
     },
     {
-      label: "Ngày kết thúc",
+      label: t("contract.response.endDate"),
       accessorKey: "endDate",
       isSort: true,
       isCenter: true,
       render: (row: ContractVehicleResponse) => <span>{formatDate(row.endDate)}</span>,
     },
     {
-      label: "Ngày tạo",
+      label: t("vehicle.response.createdAt"),
       accessorKey: "createdAt",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ngày cập nhật",
+      label: t("vehicle.response.updatedAt"),
       accessorKey: "updatedAt",
       isSort: true,
       hasDate: true,
@@ -124,12 +145,12 @@ const ContractVehicles = () => {
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
         <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-4 py-3 justify-between items-center">
-            <h3 className="font-semibold">Phương tiện hợp đồng</h3>
+            <h3 className="font-semibold">{t("contract.vehicles")}</h3>
             <div className="flex gap-2">
               <TooltipProvider>
                 <Tooltip>
                   <Modal
-                    title={`Thêm phương tiện`}
+                    title={t("contract.addVehicle")}
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={"default"} className="cursor-pointer">
@@ -140,7 +161,12 @@ const ContractVehicles = () => {
                     desc={t(Notice.ADD)}
                     onConfirm={handleAddContractVehicle}
                   >
-                    <AddContractVehicle errors={errors} setValue={setValue} value={value} data={data?.data ?? []} />
+                    <AddContractVehicle
+                      errors={errors}
+                      setValue={setValue}
+                      value={value}
+                      data={data?.data ?? []}
+                    />
                   </Modal>
                   <TooltipContent
                     className="text-white"
@@ -149,7 +175,7 @@ const ContractVehicles = () => {
                     }}
                     arrow={false}
                   >
-                    <p>Thêm mới</p>
+                    <p>t{"contract.addOrUpdate.titleAdd"}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: "var(--color-primary)",

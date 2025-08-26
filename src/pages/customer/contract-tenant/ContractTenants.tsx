@@ -36,7 +36,8 @@ const ContractTenants = () => {
 
   const changeBtn: IBtnType[] = [
     {
-      tooltipContent: "Đổi đại diện",
+      tooltipContent: t("contract.changeRepresentative"),
+
       icon: ArrowRightLeft,
       arrowColor: "var(--color-sky-500)",
       type: "status",
@@ -47,10 +48,16 @@ const ContractTenants = () => {
   const BTNS = [...GET_BTNS("delete"), ...changeBtn];
 
   const columnConfigs: ColumnConfig[] = [
-    { label: "Mã khách thuê", accessorKey: "customerCode", isSort: true, isCenter: true, hasHighlight: true },
+    {
+      label: t("asset.response.tenantId"),
+      accessorKey: "customerCode",
+      isSort: true,
+      isCenter: true,
+      hasHighlight: true,
+    },
     Array.isArray(data?.data) && data.data.length > 1
       ? {
-          label: "Thao tác",
+          label: t("contract.response.actions"),
           accessorKey: "actions",
           isSort: false,
           isCenter: true,
@@ -73,7 +80,11 @@ const ContractTenants = () => {
                           <btn.icon className="text-white" />
                         </Button>
                       </TooltipTrigger>
-                      <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                      <TooltipContent
+                        className="text-white"
+                        style={{ background: btn.arrowColor }}
+                        arrow={false}
+                      >
                         <p>{t(btn.tooltipContent)}</p>
                         <TooltipPrimitive.Arrow
                           style={{
@@ -91,13 +102,30 @@ const ContractTenants = () => {
           },
         }
       : undefined,
-    { label: "Họ tên", accessorKey: "fullName", isSort: true, isCenter: true },
-    { label: "Giới tính", accessorKey: "gender", isSort: true, hasBadge: true, isCenter: true },
-    { label: "SĐT", accessorKey: "phoneNumber", isSort: true, isCenter: true },
-    { label: "Email", accessorKey: "email", isSort: true, isCenter: true },
-    { label: "Đại diện", accessorKey: "representative", hasBadge: true, isSort: true, isCenter: true },
+    { label: t("tenant.response.fullName"), accessorKey: "fullName", isSort: true, isCenter: true },
     {
-      label: "Ngày bắt đầu",
+      label: t("tenant.response.gender"),
+      accessorKey: "gender",
+      isSort: true,
+      hasBadge: true,
+      isCenter: true,
+    },
+    {
+      label: t("tenant.response.phoneNumber"),
+      accessorKey: "phoneNumber",
+      isSort: true,
+      isCenter: true,
+    },
+    { label: "Email", accessorKey: "email", isSort: true, isCenter: true },
+    {
+      label: t("contract.contract.nameUser"),
+      accessorKey: "representative",
+      hasBadge: true,
+      isSort: true,
+      isCenter: true,
+    },
+    {
+      label: t("contract.contract.startDate"),
       accessorKey: "startDate",
       isSort: true,
       isCenter: true,
@@ -106,7 +134,7 @@ const ContractTenants = () => {
       },
     },
     {
-      label: "Ngày kết thúc",
+      label: t("contract.contract.endDate"),
       accessorKey: "endDate",
       isSort: true,
       isCenter: true,
@@ -121,12 +149,12 @@ const ContractTenants = () => {
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
         <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-4 py-3 justify-between items-center">
-            <h3 className="font-semibold">Khách thuê hợp đồng</h3>
+            <h3 className="font-semibold">{t("contract.title")}</h3>
             <div className="flex gap-2">
               <TooltipProvider>
                 <Tooltip>
                   <Modal
-                    title={`Thêm khách thuê`}
+                    title={t("contract.addTenant")}
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={"default"} className="cursor-pointer">
@@ -137,7 +165,12 @@ const ContractTenants = () => {
                     desc={t(Notice.ADD)}
                     onConfirm={handleAddContractTenant}
                   >
-                    <AddContractTenant errors={errors} setValue={setValue} value={value} data={data?.data ?? []} />
+                    <AddContractTenant
+                      errors={errors}
+                      setValue={setValue}
+                      value={value}
+                      data={data?.data ?? []}
+                    />
                   </Modal>
                   <TooltipContent
                     className="text-white"
@@ -146,7 +179,7 @@ const ContractTenants = () => {
                     }}
                     arrow={false}
                   >
-                    <p>Thêm mới</p>
+                    <p>{t("common.button.addNew")}</p>
                     <TooltipPrimitive.Arrow
                       style={{
                         fill: "var(--color-primary)",
@@ -176,13 +209,15 @@ const ContractTenants = () => {
                       }}
                       arrow={false}
                     >
-                      <p>Xóa</p>
+                      <p>{t("common.button.delete")}</p>
                       <TooltipPrimitive.Arrow
                         style={{
                           fill: "var(--color-red-400)",
                           background: "var(--color-red-400)",
                         }}
-                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                        className={
+                          "size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
+                        }
                       />
                     </TooltipContent>
                   </Tooltip>
@@ -194,7 +229,10 @@ const ContractTenants = () => {
         <ContractTenantFilter props={props} />
         <DataTable<ContractTenantDetailResponse>
           data={data?.data ?? []}
-          columns={buildColumnsFromConfig(columnConfigs, Array.isArray(data?.data) && data.data.length > 1)}
+          columns={buildColumnsFromConfig(
+            columnConfigs,
+            Array.isArray(data?.data) && data.data.length > 1
+          )}
           page={Number(page)}
           size={Number(size)}
           totalElements={data?.meta?.pagination?.total || 0}

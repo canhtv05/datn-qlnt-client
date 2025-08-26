@@ -1,5 +1,7 @@
 {
   "common": {
+    "autoCheck": "🤖 AI sẽ tự động kiểm tra",
+
     "button": {
       "search": "Tìm kiếm",
       "cancel": "Hủy",
@@ -288,6 +290,13 @@
       "active": "Đang sử dụng",
       "inactive": "Ngừng sử dụng",
       "locked": "Tạm khóa"
+    },
+
+    "statisticsContracts": {
+      "total": "Tổng",
+      "active": "Đang hoạt động",
+      "cancelled": "Đã huỷ",
+      "expired": "Hết hạn"
     },
 
     "contractStatus": {
@@ -707,7 +716,7 @@
     }
   },
   "serviceRoom": {
-    "title": "Dịch vụ phòng",
+    "service": "Dịch vụ phòng",
     "titleAddOneServiceToOneRoom": "Thêm 1 dịch vụ cho 1 phòng",
     "titleAddOneServiceToAllRoomsInBuilding": "Thêm 1 dịch vụ cho tất cả các phòng trong 1 tòa nhà",
     "titleAddOneServiceToMultipleRooms": "Thêm 1 dịch vụ vào các phòng",
@@ -829,6 +838,86 @@
       "owner": "-- Chọn chủ xe --",
       "type": "-- Chọn loại xe --",
       "status": "-- Chọn trạng thái xe --"
+    }
+  },
+  "contract": {
+    "title": "Thông tin hợp đồng",
+    "titleHistory": "Lịch sử hợp đồng đã xóa",
+    "search": "Tìm kiếm hợp đồng",
+    "errorFetch": "Không lấy được dữ liệu hợp đồng.",
+    "errorFetchStatistics": "Không lấy được dữ liệu thống kê hợp đồng.",
+    "value": "Giá trị",
+    "description": "Diễn giải",
+    "pdf": "Tải Pdf",
+    "docx": "Tải Docx",
+    "infoManagerAndMainTenant": "Thông tin quản lý & khách thuê chính",
+    "representative": "Người đại diện",
+    "viewContent": "Xem nội dung",
+    "activateSuccess": "Kích hoạt hợp đồng thành công",
+    "confirmActivate": "Bạn có muốn chắc chắn kích hoạt hợp đồng này không?",
+    "changeRepresentative": "Đổi đại diện",
+    "changeRepresentativeDesc": "Bạn có muốn đổi đại diện không?",
+    "addTenant": "Thêm khách thuê",
+    "vehicles": "Phương tiện hợp đồng",
+    "addVehicle": "Thêm phương tiện",
+    "noData": "Không có",
+    "filter": {
+      "placeholderRoom": "-- Chọn phòng --",
+      "placeholderTenant": "-- Chọn khách thuê --",
+      "placeholderVehicle": "-- Chọn phương tiện --",
+      "placeholderStatus": "-- Trạng thái --"
+    },
+
+    "response": {
+      "contractCode": "Mã hợp đồng",
+      "actions": "Thao tác",
+      "room": "Phòng",
+      "tenants": "Khách thuê",
+      "vehicles": "Phương tiện",
+      "deposit": "Tiền cọc",
+      "roomPrice": "Tiền phòng",
+      "startDate": "Ngày bắt đầu",
+      "endDate": "Ngày kết thúc",
+      "status": "Trạng thái",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật"
+    },
+
+    "addOrUpdate": {
+      "titleAdd": "Thêm hợp đồng",
+      "titleUpdate": "Cập nhật hợp đồng",
+      "room": "Phòng",
+      "deposit": "Tiền cọc",
+      "dateRange": "Ngày hiệu lực",
+      "tenants": "Khách thuê",
+      "vehicles": "Phương tiện",
+      "content": "Nội dung hợp đồng",
+      "buttonSubmit": "Lưu hợp đồng"
+    },
+    "contract": {
+      "contractCode": "Mã hợp đồng",
+      "roomCode": "Mã phòng",
+      "nameManager": "Tên quản lý",
+      "phoneNumberManager": "SĐT quản lý",
+      "nameUser": "Tên người thuê",
+      "emailUser": "Email người thuê",
+      "phoneNumberUser": "SĐT người thuê",
+      "identityCardUser": "CMND/CCCD",
+      "addressUser": "Địa chỉ người thuê",
+      "startDate": "Ngày bắt đầu",
+      "endDate": "Ngày kết thúc",
+      "deposit": "Tiền cọc",
+      "roomPrice": "Giá phòng",
+      "buildingAddress": "Địa chỉ tòa nhà",
+      "status": "Trạng thái",
+      "electricPrice": "Giá điện",
+      "waterPrice": "Giá nước",
+      "tenants": "Khách thuê",
+      "assets": "Tài sản",
+      "services": "Dịch vụ",
+      "vehicles": "Phương tiện",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật"
     }
   }
 }

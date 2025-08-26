@@ -1,5 +1,6 @@
 {
   "common": {
+    "autoCheck": "🤖 AI will automatically check",
     "button": {
       "search": "Search",
       "cancel": "Cancel",
@@ -289,6 +290,13 @@
       "active": "In use",
       "inactive": "Not in use",
       "locked": "Locked"
+    },
+
+    "statisticsContracts": {
+      "total": "Total",
+      "active": "Active",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
     },
 
     "contractStatus": {
@@ -829,6 +837,86 @@
       "owner": "-- Select owner --",
       "type": "-- Select vehicle type --",
       "status": "-- Select vehicle status --"
+    }
+  },
+  "contract": {
+    "title": "Contract Management",
+    "titleHistory": "Deleted Contract History",
+    "search": "Search contracts",
+    "errorFetch": "Failed to load contracts.",
+    "errorFetchStatistics": "Failed to load contract statistics.",
+    "value": "Value",
+    "description": "Description",
+    "pdf": "Download Pdf",
+    "docx": "Download Docx",
+    "infoManagerAndMainTenant": "Manager & Main Tenant Information",
+    "representative": "Representative",
+    "viewContent": "View content",
+    "activateSuccess": "Contract activated successfully",
+    "confirmActivate": "Are you sure you want to activate this contract?",
+    "changeRepresentative": "Change representative",
+    "changeRepresentativeDesc": "Do you want to change the representative?",
+    "addTenant": "Add tenant",
+    "vehicles": "Contract Vehicles",
+    "addVehicle": "Add Vehicle",
+    "noData": "N/A",
+    "filter": {
+      "placeholderRoom": "-- Select room --",
+      "placeholderTenant": "-- Select tenant --",
+      "placeholderVehicle": "-- Select vehicle --",
+      "placeholderStatus": "-- Status --"
+    },
+
+    "response": {
+      "contractCode": "Contract Code",
+      "actions": "Actions",
+      "room": "Room",
+      "tenants": "Tenants",
+      "vehicles": "Vehicles",
+      "deposit": "Deposit",
+      "roomPrice": "Room Price",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "status": "Status",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At"
+    },
+
+    "addOrUpdate": {
+      "titleAdd": "Add Contract",
+      "titleUpdate": "Update Contract",
+      "room": "Room",
+      "deposit": "Deposit",
+      "dateRange": "Effective Date",
+      "tenants": "Tenants",
+      "vehicles": "Vehicles",
+      "content": "Contract Content",
+      "buttonSubmit": "Save Contract"
+    },
+    "contract": {
+      "contractCode": "Contract code",
+      "roomCode": "Room code",
+      "nameManager": "Manager name",
+      "phoneNumberManager": "Manager phone",
+      "nameUser": "Tenant name",
+      "emailUser": "Tenant email",
+      "phoneNumberUser": "Tenant phone",
+      "identityCardUser": "ID card",
+      "addressUser": "Tenant address",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "deposit": "Deposit",
+      "roomPrice": "Room price",
+      "buildingAddress": "Building address",
+      "status": "Status",
+      "electricPrice": "Electric price",
+      "waterPrice": "Water price",
+      "tenants": "Tenants",
+      "assets": "Assets",
+      "services": "Services",
+      "vehicles": "Vehicles",
+      "createdAt": "Created at",
+      "updatedAt": "Updated at"
     }
   }
 }

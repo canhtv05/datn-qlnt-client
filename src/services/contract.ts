@@ -8,7 +8,13 @@ import {
 } from "@/types";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { RoomResponse, TenantBasicResponse, AssetResponse, ServiceResponse, VehicleResponse } from "@/types";
+import {
+  RoomResponse,
+  TenantBasicResponse,
+  AssetResponse,
+  ServiceResponse,
+  VehicleResponse,
+} from "@/types";
 import { Option } from "@/types";
 import { handlerRequest, httpRequest } from "@/utils/httpRequest";
 import { switchVehicleType } from "@/pages/customer/contract/useContract";
@@ -85,6 +91,7 @@ export const useServiceOptions = (): Option[] => {
 };
 
 export const useVehicleOptions = (): Option[] => {
+  const { t } = useTranslation();
   const { data } = useQuery({
     queryKey: ["vehicles-all"],
     queryFn: async () => (await httpRequest.get("/vehicles")).data,
@@ -92,13 +99,13 @@ export const useVehicleOptions = (): Option[] => {
 
   return (
     data?.data?.map((v: VehicleResponse) => ({
-      label: `${v.fullName} - ${switchVehicleType(v.vehicleType)}`,
+      label: `${v.fullName} - ${switchVehicleType(v.vehicleType, t)}`,
       value: v.id,
     })) || []
   );
 };
 
-const NA = "Không có";
+const NA = "contract.noData";
 
 const checkValue = (regex: RegExp, result: string) => {
   return result.replace(regex, NA);
@@ -137,7 +144,7 @@ export const replacePlaceholders = (
               `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Họ và tên: ${
                 t.fullName || NA
               } - Email: ${t.email || NA} - SDT: ${t.phoneNumber || NA}${
-                t.isRepresentative ? " - Đại diện" : ""
+                t.isRepresentative ? ` - ${"contract.representative"}` : ""
               }</span>`
           );
           result = result.replace(regex, createListHtml(items));
@@ -147,11 +154,15 @@ export const replacePlaceholders = (
         else {
           const items = (value as AssetLittleResponse[]).map(
             (a) =>
-              `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Tên tài sản: ${
+              `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">${"asset.response.nameAsset"}: ${
                 a.assetName || NA
-              } - Tài sản thuộc về: ${assetBelongToEnumToString(a.assetBeLongTo, t) || NA} - Số lượng: ${
+              } - ${"asset.addOrUpdate.assetBeLongTo"} ${
+                assetBelongToEnumToString(a.assetBeLongTo, t) || NA
+              } - ${"asset.response.quantity"}: ${
                 a.quantity || 0
-              } - Giá: ${formattedCurrency(a.price || 0)} - Trạng thái: ${
+              } - ${"asset.response.price"}: ${formattedCurrency(
+                a.price || 0
+              )} - ${"asset.response.descriptionAsset"}: ${
                 assetStatusEnumToString(a.assetStatus, t) || NA
               } - Mô tả: ${a.description || NA}</span>`
           );
@@ -162,11 +173,13 @@ export const replacePlaceholders = (
         else {
           const items = (value as ServiceBasicResponse[]).map(
             (s) =>
-              `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Tên dịch vụ: ${
+              `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">${"service.response.name"}: ${
                 s.name || NA
-              } - Loại dịch vụ: ${serviceCategoryEnumToString(s.category, t) || NA} - Đơn vị: ${
+              } - ${"service.response.category"}: ${
+                serviceCategoryEnumToString(s.category, t) || NA
+              } - ${"service.response.unit"}: ${
                 s.unit || NA
-              } - Mô tả: ${s.description || NA}</span>`
+              } - ${"service.response.description"}: ${s.description || NA}</span>`
           );
           result = result.replace(regex, createListHtml(items));
         }
@@ -177,7 +190,9 @@ export const replacePlaceholders = (
             (v) =>
               `<li><p><span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Loại phương tiện: ${
                 vehicleTypeEnumToString(v.vehicleType, t) || NA
-              } - Biển số: ${v.licensePlate || NA} - Mô tả: ${v.description || NA}</span></p></li>`
+              } - ${"vehicle.response.licensePlate"}: ${
+                v.licensePlate || NA
+              } - ${"vehicle.response.describe"}: ${v.description || NA}</span></p></li>`
           );
           result = result.replace(regex, createListHtml(items));
         }
@@ -212,7 +227,7 @@ export const useContractMutation = () => {
       const res = await httpRequest.post("/contracts", payload);
       const id = res?.data?.data?.id;
       if (!id) {
-        toast.error("Không lấy được mã hợp đồng");
+        toast.error(t("contract.errorFetch"));
         return;
       }
 
@@ -220,13 +235,13 @@ export const useContractMutation = () => {
         httpRequest.get(`/contracts/${id}`)
       );
       if (error) {
-        toast.error("Có lỗi xảy ra khi lấy hợp đồng");
+        toast.error(t("contract.errorFetch"));
         return;
       }
 
       const newContent = replacePlaceholders(res?.data?.data?.content, result?.data, t);
       if (!newContent) {
-        toast.error("Nội dung hợp đồng rỗng");
+        toast.error(t("contract.errorFetch"));
         return;
       }
 
@@ -235,7 +250,7 @@ export const useContractMutation = () => {
       return res.data;
     },
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
 
       queryClient.invalidateQueries({
         predicate: (q) => Array.isArray(q.queryKey) && q.queryKey[0] === "contracts",
