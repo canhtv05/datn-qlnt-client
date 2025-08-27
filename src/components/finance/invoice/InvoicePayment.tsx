@@ -2,9 +2,11 @@ import { PaymentMethod } from "@/enums";
 import { formattedCurrency } from "@/lib/utils";
 import useViewInvoiceDetail from "@/pages/finance/invoice/invoice-detail/useViewInvoiceDetail";
 import { CircleAlert } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 
 const InvoicePayment = () => {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const METHOD = searchParams.get("method") ?? "";
 
@@ -13,13 +15,18 @@ const InvoicePayment = () => {
   const { data } = useViewInvoiceDetail();
 
   if (!METHOD || !isValidMethod)
-    return <div className="px-4 py-2 bg-background rounded-sm">Phương thức thanh toán không hợp lệ</div>;
+    return (
+      <div className="px-4 py-2 bg-background rounded-sm">
+        {" "}
+        {t("invoice.payment.invalidMethod")}
+      </div>
+    );
   return (
     <div className="px-4 py-2 bg-background rounded-sm">
       <div className="flex flex-col">
-        <span className="border-b block w-full p-2 font-bold">Thanh toán bằng chuyển khoản</span>
+        <span className="border-b block w-full p-2 font-bold"> {t("invoice.payment.title")} </span>
         <span className="border-b block w-full p-2 font-bold">
-          Tổng tiền: {formattedCurrency(data?.data.totalAmount || 0)}
+          {t("invoice.payment.totalAmount")}: {formattedCurrency(data?.data.totalAmount || 0)}
         </span>
         <div className="flex lg:flex-row flex-col lg:items-start items-center">
           <img
@@ -30,49 +37,45 @@ const InvoicePayment = () => {
             className="bg-cover size-100 p-2 mt-2"
           />
           <div className="flex flex-col lg:mt-17 mt-0">
-            <span className="font-bold">Thực hiện theo hướng dẫn sau để thanh toán:</span>
+            <span className="font-bold"> {t("invoice.payment.guideTitle")}</span>
             <div className="space-y-1 m-3 flex flex-col">
               <span className="font-bold">
-                Bước 1:{" "}
-                <span className="font-normal text-sm">
-                  Mở ứng dụng <strong>Mobile Banking</strong> của ngân hàng
-                </span>
+                {t("invoice.payment.step1.title")}{" "}
+                <span className="font-normal text-sm">{t("invoice.payment.step1.desc")}</span>
               </span>
               <span className="font-bold">
-                Bước 2:{" "}
-                <span className="font-normal text-sm">
-                  Chọn <strong>"Thanh toán"</strong> và quét mã QR tại hướng dẫn này
-                </span>
+                {t("invoice.payment.step2.title")}{" "}
+                <span className="font-normal text-sm">{t("invoice.payment.step2.desc")}</span>{" "}
               </span>
+
               <span className="font-bold">
-                Bước 3:{" "}
-                <span className="font-normal text-sm">
-                  Nhập số tiền cần chuyển là{" "}
-                  <span className="text-primary">{formattedCurrency(data?.data.totalAmount || 0)}</span> và nội dụng
-                  chuyển tiền{" "}
-                  <span className="text-primary">
-                    {METHOD} - {data?.data?.note}
+                <span className="font-bold">
+                  {t("invoice.payment.step3.title")}{" "}
+                  <span className="font-normal text-sm">
+                    {t("invoice.payment.step3.desc", {
+                      amount: formattedCurrency(data?.data.totalAmount || 0),
+                      method: METHOD,
+                      note: data?.data?.note,
+                    })}
+                    <div>
+                      {t("invoice.payment.accountName")}:{" "}
+                      <span className="uppercase italic font-bold">TRAN VAN CANH</span>
+                    </div>
+                    <div>
+                      {t("invoice.payment.accountNumber")}:{" "}
+                      <span className="font-bold">00003837132</span>
+                    </div>
                   </span>
-                  <div>
-                    Tên: <span className="uppercase italic font-bold">TRAN VAN CANH</span>
-                  </div>
-                  <div>
-                    Số tài khoản: <span className="font-bold">00003837132</span>
-                  </div>
                 </span>
                 <span className="font-bold">
-                  Bước 4:{" "}
-                  <span className="font-normal text-sm">
-                    Hoàn thành các bước thanh toán theo hướng dẫn và đợi chủ nhà xử lý
-                  </span>
+                  {t("invoice.payment.step4.title")}{" "}
+                  <span className="font-normal text-sm">{t("invoice.payment.step4.desc")}</span>
                 </span>
               </span>
             </div>
             <div className="bg-red-200 items-start rounded-sm p-4 flex gap-2">
               <CircleAlert className="stroke-red-500 lg:size-auto size-10" />
-              <span className="text-sm">
-                Mã QR chỉ cung cấp cho thanh toán lần này, vui lòng không sao lưu sử dụng cho những lần thanh toán sau.
-              </span>
+              <span className="text-sm">{t("invoice.payment.warning")}</span>
             </div>
           </div>
         </div>

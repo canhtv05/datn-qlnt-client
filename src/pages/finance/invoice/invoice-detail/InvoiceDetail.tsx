@@ -50,7 +50,7 @@ const InvoiceDetail = () => {
     const actionColumn: ColumnConfig | null =
       invoiceStatus !== InvoiceStatus.DA_THANH_TOAN
         ? {
-            label: "Thao tác",
+            label: t("invoice.response.actions"),
             accessorKey: "actions",
             isSort: false,
             isCenter: true,
@@ -81,7 +81,11 @@ const InvoiceDetail = () => {
                               <btn.icon className="text-white" />
                             </Button>
                           </TooltipTrigger>
-                          <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                          <TooltipContent
+                            className="text-white"
+                            style={{ background: btn.arrowColor }}
+                            arrow={false}
+                          >
                             <p>{t(btn.tooltipContent)}</p>
                             <TooltipPrimitive.Arrow
                               style={{
@@ -102,61 +106,61 @@ const InvoiceDetail = () => {
 
     return [
       {
-        label: "Tên dịch vụ",
+        label: t("service.response.name"),
         accessorKey: "serviceName",
         isSort: true,
       },
       ...(actionColumn ? [actionColumn] : []),
       {
-        label: "Loại dịch vụ",
+        label: t("service.response.category"),
         accessorKey: "serviceCategory",
         isSort: true,
         hasBadge: true,
         isCenter: true,
       },
       {
-        label: "Cách tính",
+        label: t("service.response.calculation"),
         accessorKey: "serviceCalculation",
         isSort: true,
         hasBadge: true,
         isCenter: true,
       },
       {
-        label: "Chỉ số cũ",
+        label: t("meterReading.response.oldIndex"),
         accessorKey: "oldIndex",
         isCenter: true,
         isSort: true,
       },
       {
-        label: "Chỉ số mới",
+        label: t("meterReading.response.newIndex"),
         accessorKey: "newIndex",
         isCenter: true,
         isSort: true,
       },
       {
-        label: "Số lượng",
+        label: t("meterReading.response.quantity"),
         accessorKey: "quantity",
         isSort: true,
         isCenter: true,
       },
       {
-        label: "Đơn vị",
+        label: t("service.response.unit"),
         accessorKey: "unit",
         isCenter: true,
         isSort: false,
       },
       {
-        label: "Đơn giá",
+        label: t("service.response.price"),
         accessorKey: "unitPrice",
         isSort: true,
       },
       {
-        label: "Thành tiền",
+        label: t("invoice.response.totalAmount"),
         accessorKey: "amount",
         isSort: true,
       },
       {
-        label: "Mô tả",
+        label: t("service.response.description"),
         accessorKey: "description",
       },
     ];
@@ -167,84 +171,93 @@ const InvoiceDetail = () => {
   return (
     <div className="py-5 bg-background rounded-md flex flex-col shadow-lg">
       <div className="flex lg:flex-row flex-col justify-between items-center px-5">
-        <h3 className="font-semibold md:py-0 py-3 text-2xl md:text-[16px]">Hóa đơn chi tiết</h3>
+        <h3 className="font-semibold md:py-0 py-3 text-2xl md:text-[16px]">
+          {" "}
+          {t("invoice.detail.title")}
+        </h3>
         <div className="flex gap-2">
-          {CUSTOM_ACTION_BUTTONS.filter((b) => b.type !== "upload" && b.type !== "download").map((btn, index) => (
-            <TooltipProvider key={index}>
-              <Tooltip>
-                <RenderIf value={btn.type === "default"}>
-                  <Modal
-                    title="Thêm hóa đơn chi tiết"
-                    trigger={
-                      <TooltipTrigger asChild>
-                        <Button size={"icon"} variant={btn.type} className="cursor-pointer">
-                          <btn.icon className="text-white" />
-                        </Button>
-                      </TooltipTrigger>
-                    }
-                    desc={Notice.ADD}
-                    onConfirm={handleAddInvoiceDetail}
-                  >
-                    <AddItemInvoiceDetail
-                      errors={errorsCreation}
-                      handleChange={handleChange("creation")}
-                      serviceRooms={dataServiceRoom}
-                      setValue={setValueCreation}
-                      value={valueCreation}
-                    />
-                  </Modal>
-                </RenderIf>
-                <RenderIf value={btn.type === "delete"}>
-                  <TooltipTrigger asChild>
-                    <Button
-                      size={"icon"}
-                      variant={btn.type}
-                      className="cursor-pointer"
-                      onClick={() => handleButton(btn)}
-                      disabled={btn.type === "delete" && !Object.values(rowsSelection).some(Boolean)}
+          {CUSTOM_ACTION_BUTTONS.filter((b) => b.type !== "upload" && b.type !== "download").map(
+            (btn, index) => (
+              <TooltipProvider key={index}>
+                <Tooltip>
+                  <RenderIf value={btn.type === "default"}>
+                    <Modal
+                      title={t("invoice.detail.addTitle")}
+                      trigger={
+                        <TooltipTrigger asChild>
+                          <Button size={"icon"} variant={btn.type} className="cursor-pointer">
+                            <btn.icon className="text-white" />
+                          </Button>
+                        </TooltipTrigger>
+                      }
+                      desc={t(Notice.ADD)}
+                      onConfirm={handleAddInvoiceDetail}
                     >
-                      <btn.icon className="text-white" />
-                    </Button>
-                  </TooltipTrigger>
-                </RenderIf>
-                <RenderIf value={btn.type === "view"}>
-                  <TooltipTrigger asChild>
-                    <Button
-                      size={"icon"}
-                      variant={btn.type}
-                      className="cursor-pointer"
-                      onClick={() => navigate(`/finance/invoice/view/${id}`, { replace: true })}
-                    >
-                      <btn.icon className="text-white" />
-                    </Button>
-                  </TooltipTrigger>
-                </RenderIf>
-                <TooltipContent
-                  className="text-white"
-                  style={{
-                    background: btn.arrowColor,
-                  }}
-                  arrow={false}
-                >
-                  <p>{t(btn.tooltipContent)}</p>
-                  <TooltipPrimitive.Arrow
+                      <AddItemInvoiceDetail
+                        errors={errorsCreation}
+                        handleChange={handleChange("creation")}
+                        serviceRooms={dataServiceRoom}
+                        setValue={setValueCreation}
+                        value={valueCreation}
+                      />
+                    </Modal>
+                  </RenderIf>
+                  <RenderIf value={btn.type === "delete"}>
+                    <TooltipTrigger asChild>
+                      <Button
+                        size={"icon"}
+                        variant={btn.type}
+                        className="cursor-pointer"
+                        onClick={() => handleButton(btn)}
+                        disabled={
+                          btn.type === "delete" && !Object.values(rowsSelection).some(Boolean)
+                        }
+                      >
+                        <btn.icon className="text-white" />
+                      </Button>
+                    </TooltipTrigger>
+                  </RenderIf>
+                  <RenderIf value={btn.type === "view"}>
+                    <TooltipTrigger asChild>
+                      <Button
+                        size={"icon"}
+                        variant={btn.type}
+                        className="cursor-pointer"
+                        onClick={() => navigate(`/finance/invoice/view/${id}`, { replace: true })}
+                      >
+                        <btn.icon className="text-white" />
+                      </Button>
+                    </TooltipTrigger>
+                  </RenderIf>
+                  <TooltipContent
+                    className="text-white"
                     style={{
-                      fill: btn.arrowColor,
                       background: btn.arrowColor,
                     }}
-                    className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
-                  />
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          ))}
+                    arrow={false}
+                  >
+                    <p>{t(btn.tooltipContent)}</p>
+                    <TooltipPrimitive.Arrow
+                      style={{
+                        fill: btn.arrowColor,
+                        background: btn.arrowColor,
+                      }}
+                      className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                    />
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )
+          )}
           <ConfirmDialogAdd />
         </div>
       </div>
       <main className="mt-10">
         <DataTable<InvoiceItemResponse>
           data={data?.data?.items ?? []}
-          columns={buildColumnsFromConfig(columnConfigs(data?.data?.invoiceStatus || InvoiceStatus.CHUA_THANH_TOAN))}
+          columns={buildColumnsFromConfig(
+            columnConfigs(data?.data?.invoiceStatus || InvoiceStatus.CHUA_THANH_TOAN)
+          )}
           loading={isLoading}
           page={0}
           rowSelection={rowsSelection}
@@ -259,20 +272,20 @@ const InvoiceDetail = () => {
           {/* Thông tin khách thuê */}
           <div className="w-full flex flex-col flex-1">
             <h3 className="font-semibold rounded-sm p-2 bg-primary/50 text-sm text-white mb-2 pl-5 border-b-2">
-              Thông tin khách thuê
+              {t("invoice.detail.tenantInfo")}
             </h3>
             <div className="px-5 -mt-3 border-t-transparent py-3 border border-primary/20 flex-1 flex flex-col space-y-2 rounded-b-sm [&_>span]:text-sm [&_>strong]:text-sm">
               <strong>
-                - Mã phòng: <span>{data?.data?.roomCode}</span>
+                - {t("invoice.detail.roomCode")}: <span>{data?.data?.roomCode}</span>
               </strong>
               <strong>
-                - Tên tòa nhà: <span>{data?.data?.buildingName}</span>
+                - {t("invoice.detail.buildingName")}: <span>{data?.data?.buildingName}</span>
               </strong>
               <strong>
-                - Khách đại diện: <span>{data?.data?.tenantName}</span>
+                - {t("invoice.detail.tenantName")}: <span>{data?.data?.tenantName}</span>
               </strong>
               <strong>
-                - Số điện thoại: <span>{data?.data?.tenantPhone}</span>
+                - {t("invoice.detail.tenantPhone")}: <span>{data?.data?.tenantPhone}</span>
               </strong>
             </div>
           </div>
@@ -283,20 +296,28 @@ const InvoiceDetail = () => {
             </h3>
             <div className="px-5 -mt-3 border-t-transparent py-3 border border-primary/20 flex-1 flex flex-col space-y-2 rounded-b-sm [&_>span]:text-sm [&_>strong]:text-sm">
               <strong>
-                - Mã hóa đơn: <span>{data?.data?.invoiceCode}</span>
+                - {t("invoice.detail.invoiceInfo")}: <span>{data?.data?.invoiceCode}</span>
               </strong>
               <strong>
-                - Loại hóa đơn:{" "}
-                <span>{data?.data?.invoiceType && <StatusBadge status={data?.data?.invoiceType} />}</span>
+                - {t("invoice.detail.invoiceCode")}: <span>{data?.data?.invoiceCode}</span>
               </strong>
               <strong>
-                - Hóa đơn: <span>{`${data?.data?.month}/${data?.data?.year}`}</span>
+                - {t("invoice.detail.invoiceType")}:{" "}
+                <span>
+                  {data?.data?.invoiceType && <StatusBadge status={data?.data?.invoiceType} />}
+                </span>
               </strong>
               <strong>
-                - Tổng tiền: <span>{formattedCurrency(data?.data.totalAmount || 0)}</span>
+                - {t("invoice.detail.period")}:{" "}
+                <span>{`${data?.data?.month}/${data?.data?.year}`}</span>
               </strong>
               <strong>
-                - Hạn thanh toán:{" "}
+                - {t("invoice.detail.totalAmount")}:{" "}
+                <span>{formattedCurrency(data?.data.totalAmount || 0)}</span>
+              </strong>
+
+              <strong>
+                - {t("invoice.detail.paymentDueDate")}:
                 <span>
                   {data?.data?.paymentDueDate
                     ? new Date(data?.data?.paymentDueDate).toLocaleDateString("vi-VN")
@@ -304,8 +325,10 @@ const InvoiceDetail = () => {
                 </span>
               </strong>
               <strong>
-                - Trạng thái:{" "}
-                <span>{data?.data?.invoiceStatus && <StatusBadge status={data?.data?.invoiceStatus} />}</span>
+                - {t("invoice.detail.invoiceStatus")}
+                <span>
+                  {data?.data?.invoiceStatus && <StatusBadge status={data?.data?.invoiceStatus} />}
+                </span>
               </strong>
             </div>
           </div>
@@ -316,12 +339,12 @@ const InvoiceDetail = () => {
         </div>
       </main>
       <Modal
-        title="Cập nhật hóa đơn chi tiết"
+        title={t("invoice.detail.updateTitle")}
         trigger={null}
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         onConfirm={handleUpdateInvoiceItem}
-        desc={Notice.UPDATE}
+        desc={t(Notice.UPDATE)}
       >
         <UpdateItemInvoiceDetail
           errors={errorsUpdate}

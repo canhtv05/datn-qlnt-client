@@ -87,10 +87,11 @@ const InvoiceButton = ({
 
   const addInvoiceForContractMutation = useMutation({
     mutationKey: ["add-invoice"],
-    mutationFn: async (payload: InvoiceCreationRequest) => await httpRequest.post("/invoices/by-contract", payload),
+    mutationFn: async (payload: InvoiceCreationRequest) =>
+      await httpRequest.post("/invoices/by-contract", payload),
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setValueContract({
         contractId: "",
         note: "",
@@ -125,7 +126,9 @@ const InvoiceButton = ({
     }
   }, [addInvoiceForContractMutation, clearErrors, handleZodErrors, valueContract]);
 
-  const handleRemoveInvoiceForContractByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
+  const handleRemoveInvoiceForContractByIds = async (
+    ids: Record<string, boolean>
+  ): Promise<boolean> => {
     try {
       const selectedIds = Object.entries(ids)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -139,7 +142,7 @@ const InvoiceButton = ({
       });
       queryClient.invalidateQueries({ queryKey: ["invoice-statistics"] });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       return true;
     } catch (error) {
       handleMutationError(error);
@@ -152,7 +155,7 @@ const InvoiceButton = ({
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveInvoiceForContractByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu hóa đơn đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("common.confirmDialog.desc"),
     type: "warn",
   });
 
@@ -165,20 +168,20 @@ const InvoiceButton = ({
       } else if (btn.type === "download") {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
-          "Mã hóa đơn": d.invoiceCode,
-          "Tên tòa nhà": d.buildingName,
-          Phòng: d.roomCode,
-          "Khách thuê": d.tenantName,
-          Tháng: d.month,
-          Năm: d.year,
-          "Tổng tiền": formattedCurrency(d.totalAmount),
-          "Hạn thanh toán": formatDate(d.paymentDueDate),
-          "Loại hóa đơn": invoiceTypeEnumToString(d.invoiceType, t),
-          "Trạng thái": invoiceStatusEnumToString(d.invoiceStatus, t),
-          "Ghi chú": d.note,
-          "Ngày tạo": formatDate(d.createdAt),
+          [t("invoice.response.invoiceCode")]: d.invoiceCode,
+          [t("invoice.response.building")]: d.buildingName,
+          [t("invoice.response.room")]: d.roomCode,
+          [t("invoice.response.tenantName")]: d.tenantName,
+          [t("invoice.response.month")]: d.month,
+          [t("invoice.response.year")]: d.year,
+          [t("invoice.response.totalAmount")]: formattedCurrency(d.totalAmount),
+          [t("invoice.response.paymentDueDate")]: formatDate(d.paymentDueDate),
+          [t("invoice.response.invoiceType")]: invoiceTypeEnumToString(d.invoiceType, t),
+          [t("invoice.response.invoiceStatus")]: invoiceStatusEnumToString(d.invoiceStatus, t),
+          [t("invoice.response.note")]: d.note,
+          [t("invoice.response.createdAt")]: formatDate(d.createdAt),
         }));
-        handleExportExcel(`Hóa đơn`, exportData, data);
+        handleExportExcel(t("invoice.title"), exportData, data);
       }
     },
     [data, ids, navigate, openDialog, t]
@@ -195,7 +198,7 @@ const InvoiceButton = ({
       await httpRequest.post("/invoices/by-building", payload),
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setValueBuilding({
         buildingId: "",
         note: "",
@@ -310,14 +313,14 @@ const InvoiceButton = ({
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex md:flex-row flex-col px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold md:py-0 py-3 text-2xl md:text-[16px]">Hóa đơn</h3>
+        <h3 className="font-semibold md:py-0 py-3 text-2xl md:text-[16px]">{t("invoice.title")}</h3>
         <div className="flex gap-2">
           {ACTIONS_BUTTON_CUSTOM.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "contract"}>
                   <Modal
-                    title="Tạo hóa đơn hợp đồng"
+                    title={t("invoice.contract")}
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -325,7 +328,7 @@ const InvoiceButton = ({
                         </Button>
                       </TooltipTrigger>
                     }
-                    desc={Notice.ADD}
+                    desc={t(Notice.ADD)}
                     onConfirm={handleAddInvoiceForContract}
                   >
                     <AddInvoice
@@ -340,7 +343,7 @@ const InvoiceButton = ({
                 </RenderIf>
                 <RenderIf value={btn.type === "building"}>
                   <Modal
-                    title="Tạo hóa đơn tòa nhà"
+                    title={t("invoice.building")}
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -348,7 +351,7 @@ const InvoiceButton = ({
                         </Button>
                       </TooltipTrigger>
                     }
-                    desc={Notice.ADD}
+                    desc={t(Notice.ADD)}
                     onConfirm={handleAddInvoiceForBuilding}
                   >
                     <AddInvoice

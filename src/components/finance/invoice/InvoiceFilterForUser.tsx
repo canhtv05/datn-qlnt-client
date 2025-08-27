@@ -4,6 +4,7 @@ import InputLabel from "@/components/InputLabel";
 import { InvoiceStatus, InvoiceType } from "@/enums";
 import { InvoiceFilter as Filter } from "@/types";
 import { Dispatch, FormEvent, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface InvoiceFilterForUserProps {
   filterValues: Filter;
@@ -13,7 +14,9 @@ export interface InvoiceFilterForUserProps {
 }
 
 const InvoiceFilterForUser = ({ props }: { props: InvoiceFilterForUserProps }) => {
-  const { invoiceStatus, invoiceType, maxTotalAmount, minTotalAmount, month, query, year } = props.filterValues;
+  const { t } = useTranslation();
+  const { invoiceStatus, invoiceType, maxTotalAmount, minTotalAmount, month, query, year } =
+    props.filterValues;
   const setFilterValues = props.setFilterValues;
 
   const handleChange = (key: keyof Filter, value: string) => {
@@ -29,13 +32,16 @@ const InvoiceFilterForUser = ({ props }: { props: InvoiceFilterForUserProps }) =
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
       <div className="grid md:grid-cols-4 grid-cols-1 gap-5 w-full items-end">
         <FieldsSelectLabel
-          placeholder="-- Trạng thái hóa đơn --"
-          labelSelect="Trạng thái hóa đơn"
+          placeholder={t("invoice.filter.placeholderStatus")}
+          labelSelect={t("invoice.response.invoiceStatus")}
           data={[
-            { label: "Chưa thanh toán", value: InvoiceStatus.CHUA_THANH_TOAN },
-            { label: "Chờ thanh toán", value: InvoiceStatus.CHO_THANH_TOAN },
-            { label: "Đã thanh toán", value: InvoiceStatus.DA_THANH_TOAN },
-            { label: "Quá hạn", value: InvoiceStatus.QUA_HAN },
+            {
+              label: t("statusBadge.invoiceStatus.unpaid"),
+              value: InvoiceStatus.CHUA_THANH_TOAN,
+            },
+            { label: t("statusBadge.invoiceStatus.paid"), value: InvoiceStatus.DA_THANH_TOAN },
+            { label: t("statusBadge.invoiceStatus.restored"), value: InvoiceStatus.KHOI_PHUC },
+            { label: t("statusBadge.invoiceStatus.overdue"), value: InvoiceStatus.QUA_HAN },
           ]}
           value={invoiceStatus ?? ""}
           onChange={(value) => handleChange("invoiceStatus", String(value))}
@@ -44,11 +50,11 @@ const InvoiceFilterForUser = ({ props }: { props: InvoiceFilterForUserProps }) =
         />
 
         <FieldsSelectLabel
-          placeholder="-- Loại hóa đơn --"
-          labelSelect="Loại hóa đơn"
+          placeholder={t("invoice.filter.placeholderStatus")}
+          labelSelect={t("invoice.response.invoiceType")}
           data={[
-            { label: "Hàng tháng", value: InvoiceType.HANG_THANG },
-            { label: "Cuối cùng", value: InvoiceType.CUOI_CUNG },
+            { label: t("statusBadge.invoiceType.monthly"), value: InvoiceType.HANG_THANG },
+            { label: t("statusBadge.invoiceType.final"), value: InvoiceType.CUOI_CUNG },
           ]}
           value={invoiceType ?? ""}
           onChange={(value) => handleChange("invoiceType", String(value))}
@@ -59,7 +65,7 @@ const InvoiceFilterForUser = ({ props }: { props: InvoiceFilterForUserProps }) =
           type="number"
           id="month"
           name="month"
-          placeholder="Tháng"
+          placeholder={t("invoice.filter.placeholderMonth")}
           min={1}
           max={12}
           step={1}
@@ -70,7 +76,7 @@ const InvoiceFilterForUser = ({ props }: { props: InvoiceFilterForUserProps }) =
           type="number"
           id="year"
           name="year"
-          placeholder="Năm"
+          placeholder={t("invoice.filter.placeholderYear")}
           value={year ?? undefined}
           onChange={(e) => handleChange("year", e.target.value)}
         />
@@ -80,7 +86,7 @@ const InvoiceFilterForUser = ({ props }: { props: InvoiceFilterForUserProps }) =
           type="number"
           id="minTotalAmount"
           name="minTotalAmount"
-          placeholder="Giá từ: 100000"
+          placeholder={t("invoice.filter.placeholderMinTotalAmount")}
           value={minTotalAmount}
           onChange={(e) => handleChange("minTotalAmount", e.target.value)}
         />
@@ -88,7 +94,7 @@ const InvoiceFilterForUser = ({ props }: { props: InvoiceFilterForUserProps }) =
           type="number"
           id="maxTotalAmount"
           name="maxTotalAmount"
-          placeholder="Giá đến: 200000"
+          placeholder={t("invoice.filter.placeholderMaxTotalAmount")}
           value={maxTotalAmount}
           onChange={(e) => handleChange("maxTotalAmount", e.target.value)}
         />
@@ -96,7 +102,7 @@ const InvoiceFilterForUser = ({ props }: { props: InvoiceFilterForUserProps }) =
           type="text"
           id="query"
           name="query"
-          placeholder="Tìm kiếm"
+          placeholder={t("invoice.filter.placeholderQuery")}
           value={query}
           onChange={(e) => handleChange("query", e.target.value)}
         />

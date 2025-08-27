@@ -7,6 +7,7 @@ import { PaymentReceiptFilter as Filter } from "@/types";
 import { parseISO } from "date-fns";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 import { DateRange } from "react-day-picker";
+import { useTranslation } from "react-i18next";
 
 export interface PaymentReceiptFilterProps {
   filterValues: Filter;
@@ -16,7 +17,9 @@ export interface PaymentReceiptFilterProps {
 }
 
 const PaymentReceiptFilter = ({ props }: { props: PaymentReceiptFilterProps }) => {
-  const { fromAmount, fromDate, paymentMethod, paymentStatus, query, toAmount, toDate } = props.filterValues;
+  const { t } = useTranslation();
+  const { fromAmount, fromDate, paymentMethod, paymentStatus, query, toAmount, toDate } =
+    props.filterValues;
   const setFilterValues = props.setFilterValues;
 
   const handleChange = (key: keyof Filter, value: string) => {
@@ -48,15 +51,18 @@ const PaymentReceiptFilter = ({ props }: { props: PaymentReceiptFilterProps }) =
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
       <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end">
         <FieldsSelectLabel
-          placeholder="-- Phương thức thanh toán --"
-          labelSelect="Phương thức thanh toán"
+          placeholder={t("paymentReceipt.filter.placeholderPaymentMethod")}
+          labelSelect={t("paymentReceipt.filter.labelPaymentMethod")}
           data={[
-            { label: "Chuyển khoản", value: PaymentMethod.CHUYEN_KHOAN },
-            { label: "Tiền mặt", value: PaymentMethod.TIEN_MAT },
-            { label: "MOMO", value: PaymentMethod.MOMO },
-            { label: "VNPAY", value: PaymentMethod.VNPAY },
-            { label: "ZALOPAY", value: PaymentMethod.ZALOPAY },
-            { label: "Chọn phương thức", value: PaymentMethod.CHON_PHUONG_THUC },
+            { label: t("statusBadge.paymentMethod.transfer"), value: PaymentMethod.CHUYEN_KHOAN },
+            { label: t("statusBadge.paymentMethod.cash"), value: PaymentMethod.TIEN_MAT },
+            { label: t("statusBadge.paymentMethod.momo"), value: PaymentMethod.MOMO },
+            { label: t("statusBadge.paymentMethod.vnpay"), value: PaymentMethod.VNPAY },
+            { label: t("statusBadge.paymentMethod.zalopay"), value: PaymentMethod.ZALOPAY },
+            {
+              label: t("statusBadge.paymentMethod.transfer"),
+              value: PaymentMethod.CHON_PHUONG_THUC,
+            },
           ]}
           value={paymentMethod ?? ""}
           onChange={(value) => handleChange("paymentMethod", String(value))}
@@ -64,14 +70,14 @@ const PaymentReceiptFilter = ({ props }: { props: PaymentReceiptFilterProps }) =
           showClear
         />
         <FieldsSelectLabel
-          placeholder="-- Trạng thái thanh toán --"
-          labelSelect="Trạng thái thanh toán"
+          placeholder={t("paymentReceipt.filter.placeholderPaymentStatus")}
+          labelSelect={t("paymentReceipt.filter.labelPaymentStatus")}
           data={[
-            { label: "Chờ thanh toán", value: PaymentStatus.CHO_THANH_TOAN },
-            { label: "Chờ xác nhận", value: PaymentStatus.CHO_XAC_NHAN },
-            { label: "Đã thanh toán", value: PaymentStatus.DA_THANH_TOAN },
-            { label: "Từ chối", value: PaymentStatus.TU_CHOI },
-            { label: "Hủy", value: PaymentStatus.HUY },
+            { label: t("statusBadge.paymentStatus.pending"), value: PaymentStatus.CHO_THANH_TOAN },
+            { label: t("statusBadge.paymentStatus.confirming"), value: PaymentStatus.CHO_XAC_NHAN },
+            { label: t("statusBadge.paymentStatus.paid"), value: PaymentStatus.DA_THANH_TOAN },
+            { label: t("statusBadge.paymentStatus.rejected"), value: PaymentStatus.TU_CHOI },
+            { label: t("statusBadge.paymentStatus.cancelled"), value: PaymentStatus.HUY },
           ]}
           value={paymentStatus ?? ""}
           onChange={(value) => handleChange("paymentStatus", String(value))}
@@ -85,7 +91,7 @@ const PaymentReceiptFilter = ({ props }: { props: PaymentReceiptFilterProps }) =
           type="number"
           id="fromAmount"
           name="fromAmount"
-          placeholder="Giá từ"
+          placeholder={t("paymentReceipt.filter.placeholderFromAmount")}
           value={fromAmount ?? ""}
           onChange={(e) => handleChange("fromAmount", e.target.value)}
         />
@@ -93,7 +99,7 @@ const PaymentReceiptFilter = ({ props }: { props: PaymentReceiptFilterProps }) =
           type="number"
           id="toAmount"
           name="toAmount"
-          placeholder="Giá đến"
+          placeholder={t("paymentReceipt.filter.placeholderToAmount")}
           value={toAmount ?? ""}
           onChange={(e) => handleChange("toAmount", e.target.value)}
         />
@@ -101,7 +107,7 @@ const PaymentReceiptFilter = ({ props }: { props: PaymentReceiptFilterProps }) =
           type="text"
           id="query"
           name="query"
-          placeholder="Tìm kiếm"
+          placeholder={t("paymentReceipt.filter.placeholderQuery")}
           value={query ?? ""}
           onChange={(e) => handleChange("query", e.target.value)}
         />

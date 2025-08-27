@@ -1,15 +1,22 @@
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog } from "@/hooks";
-import { ApiResponse, PaginatedResponse, PaymentReceiptFilter, PaymentReceiptResponse } from "@/types";
+import {
+  ApiResponse,
+  PaginatedResponse,
+  PaymentReceiptFilter,
+  PaymentReceiptResponse,
+} from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const usePaymentReceipt = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
@@ -97,7 +104,9 @@ export const usePaymentReceipt = () => {
     setSearchParams,
   ]);
 
-  const { data, isLoading, isError } = useQuery<ApiResponse<PaginatedResponse<PaymentReceiptResponse[]>>>({
+  const { data, isLoading, isError } = useQuery<
+    ApiResponse<PaginatedResponse<PaymentReceiptResponse[]>>
+  >({
     queryKey: [
       "payment-receipts",
       page,
@@ -149,7 +158,8 @@ export const usePaymentReceipt = () => {
       await removePaymentReceiptMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "payment-receipts",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "payment-receipts",
           });
           toast.success(Status.REMOVE_SUCCESS);
         },
@@ -163,7 +173,8 @@ export const usePaymentReceipt = () => {
 
   const confirmCashPaymentMutation = useMutation({
     mutationKey: ["confirm-cash-payment"],
-    mutationFn: async (id: string) => await httpRequest.patch(`/payment-receipts/payment-confirm/${id}`),
+    mutationFn: async (id: string) =>
+      await httpRequest.patch(`/payment-receipts/payment-confirm/${id}`),
     onError: handleMutationError,
     onSuccess: () => {
       toast.success(Status.UPDATE_SUCCESS);
@@ -206,11 +217,11 @@ export const usePaymentReceipt = () => {
           { id: paymentReceipt.id, type: action },
           {
             type: "warn",
-            desc: Notice.REMOVE,
+            desc: t(Notice.REMOVE),
           }
         );
     },
-    [handleConfirmCashPaymentMutation, navigate, openDialog]
+    [handleConfirmCashPaymentMutation, navigate, openDialog, t]
   );
 
   const props = {
@@ -222,9 +233,9 @@ export const usePaymentReceipt = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải phiếu thanh toán");
+      toast.error(t("paymentReceipt.errorFetch"));
     }
-  }, [isError]);
+  }, [isError, t]);
 
   return {
     query: {

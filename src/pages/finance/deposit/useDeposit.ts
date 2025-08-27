@@ -82,7 +82,10 @@ export const useDeposit = () => {
     mutationFn: async (id: string) => await httpRequest.post(`/deposits/confirm-refund/${id}`),
   });
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "deposit1" }>({
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{
+    id: string;
+    type: "delete" | "deposit1";
+  }>({
     onConfirm: async ({ id, type }) => {
       if (type === "delete") return await handleRemoveDepositById(id);
       else handleRefundDepositById(id);
@@ -116,7 +119,7 @@ export const useDeposit = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "deposits",
           });
           // queryClient.invalidateQueries({ queryKey: ["meter-statistics"] });
-          toast.success("Trả cọc khách hàng thành công");
+          toast.success(t("deposit.successRefund"));
         },
       });
       return true;
@@ -158,9 +161,9 @@ export const useDeposit = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải tiền cọc");
+      toast.error(t("deposit.errorFetch"));
     }
-  }, [isError]);
+  }, [isError, t]);
 
   return {
     query: {

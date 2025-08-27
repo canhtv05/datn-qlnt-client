@@ -18,12 +18,22 @@ import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isNumber } from "lodash";
-import { AlarmClock, Ban, CheckCircle2, Clock3, Hourglass, ReceiptText, XCircle } from "lucide-react";
+import {
+  AlarmClock,
+  Ban,
+  CheckCircle2,
+  Clock3,
+  Hourglass,
+  ReceiptText,
+  XCircle,
+} from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useInvoice = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
@@ -101,8 +111,10 @@ export const useInvoice = () => {
     if (filterValues.floor) params.set("floor", filterValues.floor);
     if (filterValues.invoiceStatus) params.set("invoiceStatus", filterValues.invoiceStatus);
     if (filterValues.invoiceType) params.set("invoiceType", filterValues.invoiceType);
-    if (filterValues.maxTotalAmount) params.set("maxTotalAmount", filterValues.maxTotalAmount.toString());
-    if (filterValues.minTotalAmount) params.set("minTotalAmount", filterValues.minTotalAmount.toString());
+    if (filterValues.maxTotalAmount)
+      params.set("maxTotalAmount", filterValues.maxTotalAmount.toString());
+    if (filterValues.minTotalAmount)
+      params.set("minTotalAmount", filterValues.minTotalAmount.toString());
     if (filterValues.month) params.set("month", filterValues.month.toString());
     if (filterValues.year) params.set("year", filterValues.year.toString());
     if (filterValues.query) params.set("query", filterValues.query);
@@ -185,7 +197,8 @@ export const useInvoice = () => {
 
   const updateInvoiceMutation = useMutation({
     mutationKey: ["update-invoice"],
-    mutationFn: async (payload: InvoiceUpdateRequest) => await httpRequest.put(`/invoices/${idRef.current}`, payload),
+    mutationFn: async (payload: InvoiceUpdateRequest) =>
+      await httpRequest.put(`/invoices/${idRef.current}`, payload),
     onError: (error) => {
       handleMutationError(error);
     },
@@ -210,7 +223,7 @@ export const useInvoice = () => {
           });
           queryClient.invalidateQueries({ queryKey: ["invoice-statistics"] });
 
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
         },
       });
       return true;
@@ -220,7 +233,10 @@ export const useInvoice = () => {
     }
   };
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" | "view" }>({
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{
+    id: string;
+    type: "delete" | "status" | "view";
+  }>({
     onConfirm: async ({ id, type }) => {
       if (type === "delete") return await handleRemoveInvoiceById(id);
       if (type === "status") return await handleToggleStatusInvoiceById(id);
@@ -237,7 +253,7 @@ export const useInvoice = () => {
           });
           queryClient.invalidateQueries({ queryKey: ["invoice-statistics"] });
 
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -269,7 +285,7 @@ export const useInvoice = () => {
           });
           queryClient.invalidateQueries({ queryKey: ["invoice-statistics"] });
 
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
           setIsModalOpen(false);
         },
       });
@@ -279,7 +295,7 @@ export const useInvoice = () => {
       handleZodErrors(error);
       return false;
     }
-  }, [updateInvoiceMutation, clearErrors, handleZodErrors, queryClient, value]);
+  }, [updateInvoiceMutation, t, clearErrors, handleZodErrors, queryClient, value]);
 
   const handleActionClick = useCallback(
     (invoice: InvoiceResponse, action: "update" | "delete" | "status" | "view") => {
@@ -295,7 +311,7 @@ export const useInvoice = () => {
           { id: invoice.id, type: action },
           {
             type: "warn",
-            desc: action === "delete" ? Notice.REMOVE : Notice.TOGGLE_STATUS,
+            desc: action === "delete" ? t(Notice.REMOVE) : t(Notice.TOGGLE_STATUS),
           }
         );
       } else {
@@ -305,10 +321,12 @@ export const useInvoice = () => {
         cookieUtil.setStorage({ roomId: invoice.roomId });
       }
     },
-    [navigate, openDialog]
+    [navigate, openDialog, t]
   );
 
-  const { data: contractInitToAdd, isError: errorContractInitToAdd } = useQuery<ApiResponse<ContractResponse[]>>({
+  const { data: contractInitToAdd, isError: errorContractInitToAdd } = useQuery<
+    ApiResponse<ContractResponse[]>
+  >({
     queryKey: ["contractFilter"],
     queryFn: async () => {
       const res = await httpRequest.get("/contracts/all");
@@ -317,7 +335,9 @@ export const useInvoice = () => {
     retry: false,
   });
 
-  const { data: buildingInitToAdd, isError: errorBuildingInitToAdd } = useQuery<ApiResponse<IdAndName[]>>({
+  const { data: buildingInitToAdd, isError: errorBuildingInitToAdd } = useQuery<
+    ApiResponse<IdAndName[]>
+  >({
     queryKey: ["buildingInitToAdd"],
     queryFn: async () => {
       const res = await httpRequest.get("/buildings/all");
@@ -326,16 +346,20 @@ export const useInvoice = () => {
     retry: false,
   });
 
-  const { data: floorInitToAdd, isError: errorFloorInitToAdd } = useQuery<ApiResponse<IdAndName[]>>({
-    queryKey: ["floorInitToAdd"],
-    queryFn: async () => {
-      const res = await httpRequest.get("/floors/all");
-      return res.data;
-    },
-    retry: false,
-  });
+  const { data: floorInitToAdd, isError: errorFloorInitToAdd } = useQuery<ApiResponse<IdAndName[]>>(
+    {
+      queryKey: ["floorInitToAdd"],
+      queryFn: async () => {
+        const res = await httpRequest.get("/floors/all");
+        return res.data;
+      },
+      retry: false,
+    }
+  );
 
-  const { data: buildingFilter, isError: errorBuildingFilter } = useQuery<ApiResponse<BuildingSelectResponse[]>>({
+  const { data: buildingFilter, isError: errorBuildingFilter } = useQuery<
+    ApiResponse<BuildingSelectResponse[]>
+  >({
     queryKey: ["buildingFilter"],
     queryFn: async () => {
       const res = await httpRequest.get("/buildings/init");
@@ -344,7 +368,9 @@ export const useInvoice = () => {
     retry: false,
   });
 
-  const { data: invoiceStatistics, isError: errorInvoiceStatistics } = useQuery<ApiResponse<InvoiceStatistics>>({
+  const { data: invoiceStatistics, isError: errorInvoiceStatistics } = useQuery<
+    ApiResponse<InvoiceStatistics>
+  >({
     queryKey: ["invoice-statistics"],
     queryFn: async () => {
       const res = await httpRequest.get("/invoices/statistics");
@@ -363,27 +389,27 @@ export const useInvoice = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải hóa đơn");
+      toast.error(t("invoice.errorFetch"));
     }
 
     if (errorContractInitToAdd) {
-      toast.error("Có lỗi xảy ra khi tải hợp đồng");
+      toast.error(t("service.errorFetch"));
     }
 
     if (errorBuildingInitToAdd) {
-      toast.error("Có lỗi xảy ra khi tải tòa nhà");
+      toast.error(t("building.errorFetch"));
     }
 
     if (errorFloorInitToAdd) {
-      toast.error("Có lỗi xảy ra khi tải tầng nhà");
+      toast.error(t("floor.errorFetch"));
     }
 
     if (errorBuildingFilter) {
-      toast.error("Có lỗi xảy ra khi tải lọc tòa nhà");
+      toast.error(t("building.errorFetch"));
     }
 
     if (errorInvoiceStatistics) {
-      toast.error("Có lỗi xảy ra khi tải thống kê hóa đơn");
+      toast.error(t("invoice.errorFetchStatistics"));
     }
   }, [
     errorBuildingFilter,
@@ -392,41 +418,42 @@ export const useInvoice = () => {
     errorBuildingInitToAdd,
     errorFloorInitToAdd,
     errorInvoiceStatistics,
+    t,
   ]);
   const dataInvoiceStatistics: StatisticCardType[] = [
     {
       icon: ReceiptText,
-      label: "Tổng hoá đơn",
+      label: t("statusBadge.invoiceStatus.total"),
       value: invoiceStatistics?.data.total ?? 0,
     },
     {
       icon: CheckCircle2,
-      label: "Đã thanh toán",
+      label: t("statusBadge.invoiceStatus.paid"),
       value: invoiceStatistics?.data.totalPaid ?? 0,
     },
     {
       icon: Clock3,
-      label: "Chưa thanh toán",
+      label: t("statusBadge.invoiceStatus.unpaid"),
       value: invoiceStatistics?.data.totalNotYetPaid ?? 0,
     },
     {
       icon: Hourglass,
-      label: "Chờ thanh toán",
+      label: t("statusBadge.invoiceStatus.waitingPayment"),
       value: invoiceStatistics?.data.totalWaitingForPayment ?? 0,
     },
     {
       icon: XCircle,
-      label: "Không thể thanh toán",
+      label: t("statusBadge.invoiceStatus.cannotBePaid"),
       value: invoiceStatistics?.data.totalCannotBePaid ?? 0,
     },
     {
       icon: AlarmClock,
-      label: "Quá hạn",
+      label: t("statusBadge.invoiceStatus.overdue"),
       value: invoiceStatistics?.data.totalOverdue ?? 0,
     },
     {
       icon: Ban,
-      label: "Đã huỷ",
+      label: t("statusBadge.invoiceStatus.cancelled"),
       value: invoiceStatistics?.data.totalCancelled ?? 0,
     },
   ];

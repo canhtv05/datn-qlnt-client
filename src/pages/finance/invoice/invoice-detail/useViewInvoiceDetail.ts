@@ -18,8 +18,10 @@ import cookieUtil from "@/utils/cookieUtil";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { rejectPaymentReceiptSchema } from "@/lib/validation";
 import { PaymentMethod } from "@/enums";
+import { useTranslation } from "react-i18next";
 
 export default function useViewInvoiceDetail() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const role = useHighestRole();
   const navigate = useNavigate();
@@ -57,11 +59,13 @@ export default function useViewInvoiceDetail() {
   const confirmTransferPaymentMutation = useMutation({
     mutationKey: ["confirm-transfer-payment"],
     mutationFn: async (id: string) =>
-      await httpRequest.patch(`/payment-receipts/confirm/${id}`, { paymentMethod: selectPaymentMethod }),
+      await httpRequest.patch(`/payment-receipts/confirm/${id}`, {
+        paymentMethod: selectPaymentMethod,
+      }),
     onError: handleMutationError,
     onSuccess: () => {
       toast.success(
-        switchDesc(selectPaymentMethod as PaymentMethod, "Xác nhận thanh toán bằng phương thức", "thành công")
+        switchDesc(selectPaymentMethod as PaymentMethod, t("invoice.Payment"), t("invoice.success"))
       );
       queryClient.invalidateQueries({
         predicate: (prev) => {
@@ -106,7 +110,11 @@ export default function useViewInvoiceDetail() {
           handleConfirmTransferPayment();
         } else {
           toast.success(
-            switchDesc(selectPaymentMethod as PaymentMethod, "Xác nhận thanh toán bằng phương thức", "thành công")
+            switchDesc(
+              selectPaymentMethod as PaymentMethod,
+              t("invoice.Payment"),
+              t("invoice.success")
+            )
           );
         }
         setSelectPaymentMethod(PaymentMethod.TIEN_MAT);
@@ -139,30 +147,34 @@ export default function useViewInvoiceDetail() {
     navigate,
     paymentReceipt,
     selectPaymentMethod,
+    t,
   ]);
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi xem chi tiết hóa đơn");
+      toast.error(t("invoice.error.fetchInvoice"));
     }
-  }, [isError]);
+  }, [isError, t]);
 
   useEffect(() => {
     if (role === "USER" && !cookieUtil.getStorage()?.paymentReceiptId) {
-      toast.error("Không có mã phiếu thanh toán");
+      toast.error(t("invoice.error.noInvoiceId"));
       navigate("/invoices", { replace: true });
     }
-  }, [role, navigate]);
+  }, [role, navigate, t]);
 
   const rejectPaymentMutation = useMutation({
     mutationKey: ["reject-payment"],
-    mutationFn: async (id: string) => await httpRequest.patch(`/payment-receipts/reject/${id}`, { reason }),
+    mutationFn: async (id: string) =>
+      await httpRequest.patch(`/payment-receipts/reject/${id}`, { reason }),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "invoice-detail",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "invoice-detail",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "payment-receipt-detail",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "payment-receipt-detail",
       });
       queryClient.invalidateQueries({
         predicate: (prev) => {
@@ -171,7 +183,7 @@ export default function useViewInvoiceDetail() {
       });
       queryClient.invalidateQueries({ queryKey: ["unread-all"] });
 
-      toast.success("Từ chối toán thành công");
+      toast.success(t("invoice.rejectSuccess"));
     },
     onError: handleMutationError,
   });
@@ -191,8 +203,8 @@ export default function useViewInvoiceDetail() {
 
   const switchDesc = (
     type: PaymentMethod,
-    descFirst = "Bạn có chắc chắn muốn thanh toán bằng phương thức",
-    descLast = "không?"
+    descFirst = t("invoice.Payment"),
+    descLast = t("invoice.last")
   ) => {
     const descFn = (string: string) => {
       return `${descFirst} ${string} ${descLast}`;
@@ -200,22 +212,22 @@ export default function useViewInvoiceDetail() {
 
     switch (type) {
       case PaymentMethod.CHUYEN_KHOAN: {
-        return descFn("chuyển khoản");
+        return descFn(t("statusBadge.paymentMethod.transfer"));
       }
       case PaymentMethod.TIEN_MAT: {
-        return descFn("tiền mặt");
+        return descFn(t("statusBadge.paymentMethod.cash"));
       }
       case PaymentMethod.VNPAY: {
-        return descFn("VNPAY");
+        return descFn(t("statusBadge.paymentMethod.vnpay"));
       }
       case PaymentMethod.ZALOPAY: {
-        return descFn("ZALOPAY");
+        return descFn(t("statusBadge.paymentMethod.zalopay"));
       }
       case PaymentMethod.MOMO: {
-        return descFn("MOMO");
+        return descFn(t("statusBadge.paymentMethod.momo"));
       }
       default:
-        return descFn("chọn phương thức");
+        return descFn(t("statusBadge.paymentMethod.choose"));
     }
   };
 

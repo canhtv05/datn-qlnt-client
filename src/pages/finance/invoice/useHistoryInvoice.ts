@@ -1,6 +1,12 @@
 import { InvoiceStatus, Notice, Status } from "@/enums";
 import { useConfirmDialog } from "@/hooks";
-import { ApiResponse, InvoiceResponse, IBtnType, InvoiceFilter, BuildingSelectResponse } from "@/types";
+import {
+  ApiResponse,
+  InvoiceResponse,
+  IBtnType,
+  InvoiceFilter,
+  BuildingSelectResponse,
+} from "@/types";
 import cookieUtil from "@/utils/cookieUtil";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
@@ -8,6 +14,7 @@ import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isNumber } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -17,6 +24,7 @@ type BulkRemovePayload = {
 };
 
 export const useHistoryInvoice = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
@@ -106,7 +114,10 @@ export const useHistoryInvoice = () => {
       year,
     ],
     queryFn: async () => {
-      const params: Record<string, string> = { page: parsedPage.toString(), size: parsedSize.toString() };
+      const params: Record<string, string> = {
+        page: parsedPage.toString(),
+        size: parsedSize.toString(),
+      };
       Object.entries(filterValues).forEach(([k, v]) => {
         if (v) params[k] = v;
       });
@@ -133,11 +144,12 @@ export const useHistoryInvoice = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "invoices",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "invoices-cancel",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "invoices-cancel",
           });
           queryClient.invalidateQueries({ queryKey: ["invoice-statistics"] });
 
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -160,11 +172,12 @@ export const useHistoryInvoice = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "invoices",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "invoices-cancel",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "invoices-cancel",
           });
           queryClient.invalidateQueries({ queryKey: ["invoice-statistics"] });
 
-          toast.success(Status.RESTORE_SUCCESS);
+          toast.success(t(Status.RESTORE_SUCCESS));
         },
       });
       return true;
@@ -174,7 +187,10 @@ export const useHistoryInvoice = () => {
     }
   };
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "restore" | "remove" | "view" }>({
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{
+    id: string;
+    type: "restore" | "remove" | "view";
+  }>({
     onConfirm: async ({ id, type }) => {
       if (type === "remove") {
         return await handleRemoveInvoiceById(id);
@@ -184,16 +200,17 @@ export const useHistoryInvoice = () => {
     },
   });
 
-  const { ConfirmDialog: ConfirmDialogRemoveAll, openDialog: openDialogAll } = useConfirmDialog<BulkRemovePayload>({
-    onConfirm: async ({ ids, type }) => {
-      if (!ids || !Object.values(ids).some(Boolean)) return false;
-      if (type === "remove") {
-        return await handleRemoveInvoiceByIds(ids);
-      } else {
-        return await handleRestoreInvoiceByIds(ids);
-      }
-    },
-  });
+  const { ConfirmDialog: ConfirmDialogRemoveAll, openDialog: openDialogAll } =
+    useConfirmDialog<BulkRemovePayload>({
+      onConfirm: async ({ ids, type }) => {
+        if (!ids || !Object.values(ids).some(Boolean)) return false;
+        if (type === "remove") {
+          return await handleRemoveInvoiceByIds(ids);
+        } else {
+          return await handleRestoreInvoiceByIds(ids);
+        }
+      },
+    });
 
   const handleRemoveInvoiceByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
@@ -208,11 +225,12 @@ export const useHistoryInvoice = () => {
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "invoices",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "invoices-cancel",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "invoices-cancel",
       });
       queryClient.invalidateQueries({ queryKey: ["invoice-statistics"] });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       setRowSelection({});
       return true;
     } catch (error) {
@@ -234,11 +252,12 @@ export const useHistoryInvoice = () => {
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "invoices",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "invoices-cancel",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "invoices-cancel",
       });
       queryClient.invalidateQueries({ queryKey: ["invoice-statistics"] });
 
-      toast.success(Status.RESTORE_SUCCESS);
+      toast.success(t(Status.RESTORE_SUCCESS));
       setRowSelection({});
       return true;
     } catch (error) {
@@ -255,7 +274,7 @@ export const useHistoryInvoice = () => {
           { id: invoice.id, type: "remove" },
           {
             type: "warn",
-            desc: Notice.REMOVE,
+            desc: t(Notice.REMOVE),
           }
         );
       } else if (type === "view") {
@@ -268,15 +287,17 @@ export const useHistoryInvoice = () => {
           { id: invoice.id, type: "restore" },
           {
             type: "default",
-            desc: Notice.RESTORE,
+            desc: t(Notice.RESTORE),
           }
         );
       }
     },
-    [navigate, openDialog]
+    [navigate, openDialog, t]
   );
 
-  const { data: buildingFilter, isError: errorBuildingFilter } = useQuery<ApiResponse<BuildingSelectResponse[]>>({
+  const { data: buildingFilter, isError: errorBuildingFilter } = useQuery<
+    ApiResponse<BuildingSelectResponse[]>
+  >({
     queryKey: ["buildingFilter"],
     queryFn: async () => {
       const res = await httpRequest.get("/buildings/init");
@@ -295,13 +316,13 @@ export const useHistoryInvoice = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải dịch vụ");
+      toast.error(t("service.errorFetch"));
     }
 
     if (errorBuildingFilter) {
-      toast.error("Có lỗi xảy ra khi tải lọc tòa nhà");
+      toast.error(t("building.errorFetch"));
     }
-  }, [errorBuildingFilter, isError]);
+  }, [errorBuildingFilter, isError, t]);
 
   return {
     query: {

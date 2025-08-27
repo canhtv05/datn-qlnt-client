@@ -2,6 +2,7 @@ import images from "@/assets/imgs";
 import { PaymentMethod } from "@/enums";
 import { cn } from "@/lib/utils";
 import { Dispatch, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 
 interface SelectPaymentMethodProps {
   selectPaymentMethod: PaymentMethod | string;
@@ -15,36 +16,39 @@ interface SelectPaymentMethod {
   image2?: string;
 }
 
-const paymentMethods: SelectPaymentMethod[] = [
-  {
-    label: "Ứng dụng quét mã",
-    value: PaymentMethod.CHUYEN_KHOAN,
-    image: images.vnpayScan,
-    image2: images.vnpayQR,
-  },
-  {
-    label: "Tiền mặt",
-    value: PaymentMethod.TIEN_MAT,
-    image: images.paymentCash,
-  },
-  {
-    label: "Thanh toán qua VNPAY",
-    value: PaymentMethod.VNPAY,
-    image: images.vnpay,
-  },
-  // {
-  //   label: "Thanh toán qua MOMO",
-  //   value: PaymentMethod.MOMO,
-  //   image: images.momo,
-  // },
-  // {
-  //   label: "Thanh toán qua ZALOPAY",
-  //   value: PaymentMethod.ZALOPAY,
-  //   image: images.zalopay,
-  // },
-];
-
-const SelectPaymentMethod = ({ selectPaymentMethod, setSelectPaymentMethod }: SelectPaymentMethodProps) => {
+const SelectPaymentMethod = ({
+  selectPaymentMethod,
+  setSelectPaymentMethod,
+}: SelectPaymentMethodProps) => {
+  const { t } = useTranslation();
+  const paymentMethods: SelectPaymentMethod[] = [
+    {
+      label: t("statusBadge.paymentMethod.transfer"),
+      value: PaymentMethod.CHUYEN_KHOAN,
+      image: images.vnpayScan,
+      image2: images.vnpayQR,
+    },
+    {
+      label: t("statusBadge.paymentMethod.cash"),
+      value: PaymentMethod.TIEN_MAT,
+      image: images.paymentCash,
+    },
+    {
+      label: t("statusBadge.paymentMethod.vnpay"),
+      value: PaymentMethod.VNPAY,
+      image: images.vnpay,
+    },
+    // {
+    //   label: "Thanh toán qua MOMO",
+    //   value: PaymentMethod.MOMO,
+    //   image: images.momo,
+    // },
+    // {
+    //   label: "Thanh toán qua ZALOPAY",
+    //   value: PaymentMethod.ZALOPAY,
+    //   image: images.zalopay,
+    // },
+  ];
   return paymentMethods.map((p, idx) => (
     <div
       className={cn(
@@ -57,7 +61,9 @@ const SelectPaymentMethod = ({ selectPaymentMethod, setSelectPaymentMethod }: Se
       <div className="flex px-5 gap-7">
         <img src={p.image} alt="img payment method" className="size-10" />
         <div className="flex items-center gap-3">
-          <span className={`${selectPaymentMethod === p.value ? "text-white" : "text-primary"}`}>{p.label}</span>
+          <span className={`${selectPaymentMethod === p.value ? "text-white" : "text-primary"}`}>
+            {p.label}
+          </span>
           {p.image2 && <img src={p.image2} alt="img payment method" className="size-10" />}
         </div>
       </div>
