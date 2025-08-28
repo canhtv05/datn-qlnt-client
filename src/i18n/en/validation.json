@@ -39,5 +39,346 @@
   },
   "policy": {
     "required": "You must agree to the privacy policy"
+  },
+
+  "_comment_1": "=== BUILDINGS ===",
+  "address": {
+    "required": "Address is required"
+  },
+  "buildingName": {
+    "required": "Building name is required"
+  },
+  "actualNumberOfFloors": {
+    "label": "Actual number of floors"
+  },
+  "numberOfFloorsForRent": {
+    "label": "Number of floors for rent",
+    "notGreater": "Number of floors for rent cannot exceed actual number of floors"
+  },
+  "buildingType": {
+    "invalid": "Invalid building type"
+  },
+
+  
+  "_comment_2": "=== ROOMS ===",
+  "maximumRoom": {
+    "label": "Maximum rooms",
+    "range": "Maximum rooms must be between 1 and 99"
+  },
+  "floorType": {
+    "invalid": "Invalid floor type"
+  },
+  "nameFloor": {
+    "required": "Floor name is required"
+  },
+
+  "_comment_3": "=== ASSET TYPES ===",
+  "nameAssetType": {
+    "required": "Asset type name is required"
+  },
+  "assetGroup": {
+    "invalid": "Invalid asset group"
+  },
+  "descriptionAssetType": {
+    "required": "Description is required"
+  },
+
+  "_comment_4": "===  ROOM ASSETS ===",
+  "assetBeLongTo": {
+    "required": "'Belongs to' field is required"
+  },
+  "roomId": {
+    "required": "Room is required",
+    "bulkRequired": "Please select at least one room."
+  },
+  "assetId": {
+    "required": "Asset is required",
+    "bulkRequired": "Please select at least one asset.",
+    "requiredWhenBelongToRoom": "Asset ID is required when it belongs to a room"
+  },
+  "quantity": {
+    "label": "Quantity"
+  },
+  "assetName": {
+    "required": "Asset name is required"
+  },
+  "assetRoomSelection": {
+    "invalidCombination": "Only allowed to select (multiple rooms + 1 asset) or (1 room + multiple assets)."
+  },
+  "buildingId": {
+    "required": "Building is required"
+  },
+
+
+  "_comment_5": "===  ROOM ===",
+  "floorId": {
+    "required": "Please select a floor"
+  },
+  "acreage": {
+    "label": "Acreage",
+    "min": "Acreage must be ≥ 1"
+  },
+  "price": {
+    "label": "Price",
+    "nonNegative": "Price must be a non-negative number"
+  },
+  "maximumPeople": {
+    "label": "Maximum people",
+    "min": "Maximum people must be ≥ 1"
+  },
+  "roomType": {
+    "invalid": "Invalid room type"
+  },
+  "roomStatus": {
+    "invalid": "Invalid room status"
+  },
+  "room": {
+    "invalidData": "Invalid data for acreage or maximum people"
+  },
+
+  "_comment_6": "===  ASSET ===",
+  "nameAsset": {
+    "required": "Asset name is required"
+  },
+  "assetType": {
+    "invalid": "Invalid asset type"
+  },
+  "assetBeLongTo1": {
+    "invalid": "Invalid asset owner"
+  },
+  "assetStatus": {
+    "invalid": "Invalid asset status"
+  },
+
+  "_comment_7": "===  TENANT ===",
+  "identityCardNumber": {
+    "invalid": "Identity card number must be 12 digits"
+  },
+  "frontCccd": {
+    "required": "You must upload the front side of the ID card"
+  },
+  "backCccd": {
+    "required": "You must upload the back side of the ID card"
+  },
+
+  "_comment_8": "===  VEHICLE ===",
+  "tenantId": {
+    "required": "Please select a tenant"
+  },
+  "vehicleType": {
+    "invalid": "Invalid vehicle type"
+  },
+  "licensePlate": {
+    "required": "License plate cannot be empty"
+  },
+  "vehicleStatus": {
+    "invalid": "Invalid vehicle status"
+  },
+  "registrationDate": {
+    "invalid": "Invalid registration date"
+  },
+
+  "_comment_9": "===  CONTRACT ===",
+  "startDate": {
+    "invalid": "Invalid start date"
+  },
+  "endDate": {
+    "invalid": "Invalid end date",
+    "minRange": "End date must be at least 3 months after start date"
+  },
+  "deposit": {
+    "number": "Deposit must be a number",
+    "min": "Deposit must be greater than 0"
+  },
+  "roomId1": {
+    "required": "Please select a room"
+  },
+  "tenants": {
+    "min": "At least one tenant is required"
+  },
+  "content": {
+    "required": "Contract content cannot be empty"
+  },
+  "contractId": {
+    "required": "Contract ID is required"
+  },
+  "vehicleId": {
+    "required": "Please select a vehicle"
+  },
+  "newEndDate": {
+    "invalid": "Invalid extension date",
+    "minRange": "Extension date must be at least 3 months after old end date"
+  },
+  "oldEndDate": {
+    "invalid": "Invalid old end date"
+  },
+  "noticeDate": {
+    "invalid": "Invalid notice date"
+  },
+  
+  "_comment_10": "===  SERVICE ===",
+  "service": {
+    "name": {
+      "required": "Service name is required"
+    },
+    "category": {
+      "invalid": "Invalid service category"
+    },
+    "price": {
+      "label": "Price",
+      "nonNegative": "Price cannot be negative"
+    },
+    "calculation": {
+      "invalid": "Invalid service calculation"
+    }
+  },
+
+  "_comment_11": "===  DEFAULT SERVICE ===",
+  "defaultService": {
+    "appliesTo": {
+      "invalid": "Invalid default service applies to"
+    },
+    "price": {
+      "label": "Price",
+      "nonNegative": "Price cannot be negative"
+    },
+    "status": {
+      "invalid": "Invalid default service status"
+    },
+    "startApplying": {
+      "invalid": "Invalid start applying date"
+    },
+    "building": {
+      "required": "Please select a building"
+    },
+    "floor": {
+      "required": "Please select a floor"
+    },
+    "service": {
+      "required": "Please select a service"
+    }
+  },
+
+  "_comment_12": "===   SERVICE ROOM ===",
+  "serviceRoom": {
+    "room": {
+      "required": "Please select a room",
+      "min": "At least one room is required"
+    },
+    "building": {
+      "required": "Please select a building"
+    },
+    "service": {
+      "required": "Please select a service",
+      "min": "At least one service is required"
+    },
+    "price": {
+      "label": "New unit price"
+    },
+    "status": {
+      "invalid": "Invalid room service status"
+    }
+  },
+  "_comment_13": "===   METER ===",
+  "meter": {
+    "room": {
+      "required": "Please select a room"
+    },
+    "service": {
+      "required": "Please select a service"
+    },
+    "type": {
+      "invalid": "Invalid meter type"
+    },
+    "name": {
+      "required": "Meter name is required"
+    },
+    "code": {
+      "required": "Meter code is required"
+    },
+    "manufactureDate": {
+      "invalid": "Invalid manufacture date",
+      "future": "Manufacture date cannot be in the future"
+    },
+    "closestIndex": {
+      "label": "Closest index"
+    }
+  },
+  "_comment_14": "===   METER READING ===",
+  "meterReading": {
+    "newIndex": {
+      "label": "New index",
+      "negative": "New index cannot be negative"
+    },
+    "meter": {
+      "required": "Please select a meter"
+    },
+    "year": {
+      "label": "Year"
+    },
+    "month": {
+      "label": "Month"
+    }
+  },
+  "_comment_15": "===   invoice ===",
+  "invoice": {
+    "paymentDueDate": {
+      "future": "Payment due date must be in the future"
+    },
+    "contract": {
+      "required": "Please select a contract"
+    },
+    "building": {
+      "required": "Please select a building"
+    },
+    "floor": {
+      "required": "Please select a floor"
+    },
+    "invoiceId": {
+      "required": "Invoice ID cannot be empty"
+    },
+    "invoiceItemType": {
+      "invalid": "Invalid invoice item type"
+    },
+    "newIndex": {
+      "min": "New index must be ≥ 1",
+      "requiredForElectricOrWater": "New index is required for electricity or water"
+    },
+    "quantity": {
+      "min": "Quantity must be ≥ 1",
+      "requiredForCompensation": "Quantity is required for compensation type"
+    },
+    "unitPrice": {
+      "min": "Unit price must be ≥ 1",
+      "requiredForCompensation": "Unit price is required for compensation type"
+    },
+    "serviceRoom": {
+      "requiredForService": "Service room is required for service type"
+    }
+  },
+  "_comment_16": "===   PAYMENT RECEIPT ===",
+  "rejectPaymentReceipt": {
+    "reason": {
+      "required": "Reason cannot be empty",
+      "maxLength": "Reason cannot exceed 255 characters"
+    }
+  },
+  "_comment_17": "===   NOTIFICATION ===",
+  "notification": {
+    "title": {
+      "required": "Title is required"
+    },
+    "content": {
+      "required": "Content is required"
+    },
+    "notificationType": {
+      "invalid": "Invalid notification type"
+    },
+    "sendToAll": {
+      "required": "Please select"
+    },
+    "users": {
+      "requiredWhenNotAll": "Please select at least one user when not sending to all"
+    }
   }
 }
