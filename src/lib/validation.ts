@@ -190,15 +190,20 @@ export const registerSchema = z
 /* BUILDINGS */
 export const createOrUpdateBuildingSchema = z
   .object({
-    address: z.string().min(1, "Địa chỉ không được để trống"),
-    buildingName: z.string().min(1, "Tên tòa nhà không được để trống"),
+    address: z.string().min(1, t("validation:address.required")),
+    buildingName: z.string().min(1, t("validation:buildingName.required")),
 
-    actualNumberOfFloors: zSafeNumber("Số tầng thực tế", { min: 1 }),
-    numberOfFloorsForRent: zSafeNumber("Số tầng cho thuê", { min: 1 }),
+    actualNumberOfFloors: zSafeNumber(t("validation:actualNumberOfFloors.label"), { min: 1 }),
+    numberOfFloorsForRent: zSafeNumber(t("validation:numberOfFloorsForRent.label"), { min: 1 }),
 
     buildingType: z.enum(
-      [BuildingType.CAN_HO_DICH_VU, BuildingType.CHUNG_CU_MINI, BuildingType.KHAC, BuildingType.NHA_TRO],
-      { message: "Loại tòa nhà không hợp lệ" }
+      [
+        BuildingType.CAN_HO_DICH_VU,
+        BuildingType.CHUNG_CU_MINI,
+        BuildingType.KHAC,
+        BuildingType.NHA_TRO,
+      ],
+      { message: t("validation:buildingType.invalid") }
     ),
 
     description: z.string().optional(),
@@ -209,46 +214,76 @@ export const createOrUpdateBuildingSchema = z
       typeof data.numberOfFloorsForRent === "number" &&
       data.actualNumberOfFloors >= data.numberOfFloorsForRent,
     {
-      message: "Số tầng cho thuê không được lớn hơn số tầng thực tế",
+      message: t("validation:numberOfFloorsForRent.notGreater"),
       path: ["numberOfFloorsForRent"],
     }
   );
-
 /* FLOOR */
 export const createFloorSchema = z.object({
-  maximumRoom: zSafeNumber("Số phòng tối đa", { min: 1 })
+  maximumRoom: zSafeNumber(t("validation:maximumRoom.label"), { min: 1 })
     .transform((val) => Number(val))
-    .refine((val) => val >= 1 && val <= 99, "Số phòng tối đa từ 1 -> 99"),
+    .refine(
+      (val) => val >= 1 && val <= 99,
+      t("validation:maximumRoom.range")
+    ),
 
-  floorType: z.enum([FloorType.CHO_THUE, FloorType.DE_O, FloorType.KHAC, FloorType.KHO, FloorType.KHONG_CHO_THUE], {
-    message: "Loại tầng không hợp lệ",
-  }),
+  floorType: z.enum(
+    [FloorType.CHO_THUE, FloorType.DE_O, FloorType.KHAC, FloorType.KHO, FloorType.KHONG_CHO_THUE],
+    { message: t("validation:floorType.invalid") }
+  ),
 
-  descriptionFloor: z.string(),
+  descriptionFloor: z.string().optional(),
 });
 
 export const updateFloorSchema = createFloorSchema.extend({
-  nameFloor: z.string().min(1, "Tên tầng không được để trống"),
+  nameFloor: z.string().min(1, t("validation:nameFloor.required")),
 });
+
 
 /* ASSET TYPE */
 export const createOrUpdateAssetTypeSchema = z.object({
-  nameAssetType: z.string().min(1, "Tên loại tài sản không được để trống"),
-  assetGroup: z.enum([AssetGroup.CA_NHAN, AssetGroup.DIEN, AssetGroup.GIA_DUNG, AssetGroup.KHAC, AssetGroup.NOI_THAT], {
-    message: "Nhóm tài sản không hợp lệ",
-  }),
-  discriptionAssetType: z.string().min(1, "Mô tả không được để trống"),
+  nameAssetType: z
+    .string()
+    .min(1, t("validation:nameAssetType.required")),
+
+  assetGroup: z.enum(
+    [
+      AssetGroup.CA_NHAN,
+      AssetGroup.DIEN,
+      AssetGroup.GIA_DUNG,
+      AssetGroup.KHAC,
+      AssetGroup.NOI_THAT,
+    ],
+    { message: t("validation:assetGroup.invalid") }
+  ),
+
+  descriptionAssetType: z
+    .string()
+    .min(1, t("validation:descriptionAssetType.required")),
 });
+
 
 /* ROOM ASSET */
 export const roomAssetFormSchema = z
   .object({
-    assetBeLongTo: z.string().min(1, { message: "Trường 'Thuộc về' không được để trống" }),
-    roomId: z.string().min(1, { message: "Phòng không được để trống" }),
+    assetBeLongTo: z
+      .string()
+      .min(1, { message: t("validation:assetBeLongTo.required") }),
+
+    roomId: z
+      .string()
+      .min(1, { message: t("validation:roomId.required") }),
+
     assetId: z.string(),
-    quantity: zSafeNumber("Số lượng", { min: 1 }),
-    assetName: z.string().min(1, { message: "Tên tài sản không được để trống" }),
-    price: zSafeNumber("Giá", { min: 1 }),
+
+    quantity: zSafeNumber(t("validation:quantity.label"), { min: 1 }),
+
+    assetName: z
+      .string()
+      .min(1, { message: t("validation:assetName.required") }),
+
+    price: zSafeNumber(t("validation:price.label"), { min: 1 }),
+
     description: z.string().nullable(),
   })
   .superRefine((val, ctx) => {
@@ -256,7 +291,7 @@ export const roomAssetFormSchema = z
       ctx.addIssue({
         path: ["assetId"],
         code: z.ZodIssueCode.custom,
-        message: "Mã tài sản không được để trống khi thuộc về phòng",
+        message: t("validation:assetId.requiredWhenBelongToRoom"),
       });
     }
   });
@@ -269,7 +304,7 @@ export const roomAssetBulkSchema = z
         return Array.isArray(val) && val.length > 0 && val.every((v) => v.trim() !== "");
       },
       {
-        message: "Vui lòng chọn ít nhất một phòng.",
+        message: t("validation:roomId.bulkRequired"),
       }
     ),
     assetId: z.union([z.string(), z.array(z.string())]).refine(
@@ -278,7 +313,7 @@ export const roomAssetBulkSchema = z
         return Array.isArray(val) && val.length > 0 && val.every((v) => v.trim() !== "");
       },
       {
-        message: "Vui lòng chọn ít nhất một tài sản.",
+        message: t("validation:assetId.bulkRequired"),
       }
     ),
   })
@@ -290,38 +325,41 @@ export const roomAssetBulkSchema = z
       return (assetCount >= 2 && roomCount === 1) || (roomCount >= 2 && assetCount === 1);
     },
     {
-      message: "Chỉ cho phép chọn (nhiều phòng + 1 tài sản) hoặc (1 phòng + nhiều tài sản).",
+      message: t("validation:assetRoomSelection.invalidCombination"),
       path: ["assetId"],
     }
   );
 
 export const addToAllRoomAssetSchema = z.object({
-  assetId: z.string().min(1, "Tài sản không được để trống"),
-  buildingId: z.string().min(1, "Tòa nhà không được để trống"),
+  assetId: z.string().min(1, t("validation:assetId.required")),
+  buildingId: z.string().min(1, t("validation:buildingId.required")),
 });
 
 /* ROOM */
 export const createOrUpdateRoomSchema = z
   .object({
-    floorId: z.string().min(1, { message: "Vui lòng chọn tầng" }),
+    floorId: z.string().min(1, { message: t("validation:floorId.required") }),
 
-    acreage: zSafeNumber("Diện tích").refine((val) => val >= 1, {
-      message: "Diện tích phải ≥ 1",
+    acreage: zSafeNumber(t("validation:acreage.label")).refine((val) => val >= 1, {
+      message: t("validation:acreage.min"),
     }),
 
-    price: z.union([zSafeNumber("Giá"), z.literal(null)]).refine((val) => val === null || val >= 0, {
-      message: "Giá phải là số không âm",
-    }),
-
-    maximumPeople: z
-      .union([zSafeNumber("Số người tối đa"), z.literal(null)])
-      .refine((val) => val === null || val >= 1, {
-        message: "Số người tối đa phải ≥ 1",
+    price: z
+      .union([zSafeNumber(t("validation:price.label")), z.literal(null)])
+      .refine((val) => val === null || val >= 0, {
+        message: t("validation:price.nonNegative"),
       }),
 
-    roomType: z.enum([RoomType.GHEP, RoomType.DON, RoomType.KHAC, RoomType.CAO_CAP], {
-      message: "Loại phòng không hợp lệ",
-    }),
+    maximumPeople: z
+      .union([zSafeNumber(t("validation:maximumPeople.label")), z.literal(null)])
+      .refine((val) => val === null || val >= 1, {
+        message: t("validation:maximumPeople.min"),
+      }),
+
+    roomType: z.enum(
+      [RoomType.GHEP, RoomType.DON, RoomType.KHAC, RoomType.CAO_CAP],
+      { message: t("validation:roomType.invalid") }
+    ),
 
     status: z.enum(
       [
@@ -333,35 +371,47 @@ export const createOrUpdateRoomSchema = z
         RoomStatus.HUY_HOAT_DONG,
         RoomStatus.TAM_KHOA,
       ],
-      { message: "Trạng thái phòng không hợp lệ" }
+      { message: t("validation:roomStatus.invalid") }
     ),
 
     description: z.string().optional().nullable(),
   })
   .refine(
     (data) =>
-      typeof data.acreage === "number" && (data.maximumPeople === null || typeof data.maximumPeople === "number"),
+      typeof data.acreage === "number" &&
+      (data.maximumPeople === null || typeof data.maximumPeople === "number"),
     {
-      message: "Dữ liệu diện tích hoặc số người tối đa không hợp lệ",
+      message: t("validation:room.invalidData"),
       path: ["maximumPeople"],
     }
   );
 
 /* ASSET */
 export const baseAssetSchema = z.object({
-  nameAsset: z.string().min(1, "Tên tài sản không được để trống"),
+  nameAsset: z.string().min(1, t("validation:nameAsset.required")),
+
   assetType: z.enum(
-    [AssetType.AN_NINH, AssetType.DIEN, AssetType.GIA_DUNG, AssetType.KHAC, AssetType.NOI_THAT, AssetType.VE_SINH],
-    {
-      message: "Loại tài sản không hợp lệ",
-    }
+    [
+      AssetType.AN_NINH,
+      AssetType.DIEN,
+      AssetType.GIA_DUNG,
+      AssetType.KHAC,
+      AssetType.NOI_THAT,
+      AssetType.VE_SINH,
+    ],
+    { message: t("validation:assetType.invalid") }
   ),
-  assetBeLongTo: z.enum([AssetBeLongTo.CA_NHAN, AssetBeLongTo.CHUNG, AssetBeLongTo.PHONG], {
-    message: "Tài sản thuộc về không hợp lệ",
-  }),
+
+  assetBeLongTo: z.enum(
+    [AssetBeLongTo.CA_NHAN, AssetBeLongTo.CHUNG, AssetBeLongTo.PHONG],
+    { message: t("validation:assetBeLongTo2.invalid") }
+  ),
+
   descriptionAsset: z.string().optional(),
-  price: zSafeNumber("Giá", { min: 0 }),
-  quantity: zSafeNumber("Số lượng", { min: 1 }),
+
+  price: zSafeNumber(t("validation:price.label"), { min: 0 }),
+
+  quantity: zSafeNumber(t("validation:quantity.label"), { min: 1 }),
 });
 
 export const creationAssetSchema = baseAssetSchema.extend({
@@ -379,98 +429,116 @@ export const updateAssetSchema = baseAssetSchema.extend({
       AssetStatus.KHONG_SU_DUNG,
       AssetStatus.THAT_LAC,
     ],
-    { message: "Trạng thái tài sản không hợp lệ" }
+    { message: t("validation:assetStatus.invalid") }
   ),
 });
 
+
 /* TENANT */
 export const createOrUpdateTenantSchema = z.object({
-  email: z.email("Email không hợp lệ"),
+  email: z.string().email(t("validation:email.invalid")),
 
-  fullName: z.string().min(3, "Họ tên phải có ít nhất 3 ký tự").refine(isValidFullName, {
-    message: "Mỗi từ trong họ tên phải có ít nhất 3 ký tự",
-  }),
+  fullName: z
+    .string()
+    .min(3, t("validation:fullName.min"))
+    .refine(isValidFullName, { message: t("validation:fullName.wordMin") }),
 
   dob: z
     .string()
-    .refine((val) => !isNaN(Date.parse(val)), "Ngày sinh không hợp lệ")
+    .refine((val) => !isNaN(Date.parse(val)), t("validation:dob.invalid"))
     .transform((val) => new Date(val))
-    .refine((date) => isValidDob(date), "Tuổi của khách phải lớn hơn hoặc bằng 18"),
+    .refine((date) => isValidDob(date), t("validation:dob.age")),
+
   phoneNumber: z
     .string()
-    .min(9, "Số điện thoại phải có ít nhất 9 chữ số")
-    .max(15, "Số điện thoại không được vượt quá 15 chữ số")
-    .regex(/^[0-9]+$/, "Số điện thoại chỉ được chứa số"),
+    .min(9, t("validation:phone.min"))
+    .max(11, t("validation:phone.max"))
+    .regex(/^[0-9]+$/, t("validation:phone.onlyNumber"))
+    .regex(/^(03|05|07|08|09)\d{8}$/, {
+      message: t("validation:phone.pattern"),}),
 
-  gender: z.enum([Gender.FEMALE, Gender.MALE, Gender.UNKNOWN], "Giới tính không hợp lệ"),
+  gender: z.enum([Gender.FEMALE, Gender.MALE, Gender.UNKNOWN], {
+    message: t("validation:gender.invalid"),
+  }),
 
-  identityCardNumber: z.string().regex(/^\d{12}$/, "Căn cước công dân phải 12 chữ số"),
+  identityCardNumber: z
+    .string()
+    .regex(/^\d{12}$/, t("validation:identityCardNumber.invalid")),
 
-  address: z.string().min(1, "Địa chỉ không được để trống"),
+  address: z.string().min(1, t("validation:address.required")),
 
   frontCccd: z
     .union([z.instanceof(File), z.string()])
-    .refine((val) => !!val, "Bạn phải tải lên mặt trước CCCD")
+    .refine((val) => !!val, t("validation:frontCccd.required"))
     .nullable(),
 
   backCccd: z
     .union([z.instanceof(File), z.string()])
-    .refine((val) => !!val, "Bạn phải tải lên mặt sau CCCD")
+    .refine((val) => !!val, t("validation:backCccd.required"))
     .nullable(),
 });
 
 /* VEHICLE */
 export const createVehicleSchema = z
   .object({
-    tenantId: z.string().min(1, "Vui lòng chọn khách thuê"),
-    vehicleType: z.enum([VehicleType.KHAC, VehicleType.O_TO, VehicleType.XE_DAP, VehicleType.XE_MAY], {
-      message: "Loại phương tiện không hợp lệ",
-    }),
+    tenantId: z.string().min(1, t("validation:tenantId.required")),
+
+    vehicleType: z.enum(
+      [VehicleType.KHAC, VehicleType.O_TO, VehicleType.XE_DAP, VehicleType.XE_MAY],
+      { message: t("validation:vehicleType.invalid") }
+    ),
+
     licensePlate: z.string(),
-    vehicleStatus: z.enum([VehicleStatus.TAM_KHOA, VehicleStatus.SU_DUNG], {
-      message: "Trạng thái phương tiện không hợp lệ",
-    }),
+
+    vehicleStatus: z.enum(
+      [VehicleStatus.TAM_KHOA, VehicleStatus.SU_DUNG],
+      { message: t("validation:vehicleStatus.invalid") }
+    ),
+
     registrationDate: z
       .string()
-      .refine((val) => !isNaN(Date.parse(val)), "Ngày đăng ký không hợp lệ")
+      .refine((val) => !isNaN(Date.parse(val)), t("validation:registrationDate.invalid"))
       .transform((val) => new Date(val)),
+
     describe: z.string().optional(),
   })
   .refine(
     (data) => {
       if (data.vehicleType === VehicleType.XE_DAP || data.vehicleType === VehicleType.KHAC) {
-        return true; // Skip license plate validation for these types
+        return true;
       }
       return data.licensePlate.trim().length > 0;
     },
     {
-      message: "Biển số xe không được để trống",
+      message: t("validation:licensePlate.required"),
       path: ["licensePlate"],
     }
   );
 
 export const updateVehicleSchema = z.object({
-  vehicleStatus: z.enum([VehicleStatus.TAM_KHOA, VehicleStatus.SU_DUNG], {
-    message: "Trạng thái phương tiện không hợp lệ",
-  }),
+  vehicleStatus: z.enum(
+    [VehicleStatus.TAM_KHOA, VehicleStatus.SU_DUNG],
+    { message: t("validation:vehicleStatus.invalid") }
+  ),
   describe: z.string(),
 });
+
 /*CONTRACT*/
 export const updateContractSchema = z
   .object({
     startDate: z
       .string()
-      .refine((val) => {
-        return !isNaN(Date.parse(val));
-      }, "Ngày kết thúc không hợp lệ")
+      .refine((val) => !isNaN(Date.parse(val)), t("validation:startDate.invalid"))
       .transform((val) => new Date(val)),
+
     endDate: z
       .string()
-      .refine((val) => {
-        return !isNaN(Date.parse(val));
-      }, "Ngày kết thúc không hợp lệ")
+      .refine((val) => !isNaN(Date.parse(val)), t("validation:endDate.invalid"))
       .transform((val) => new Date(val)),
-    deposit: z.number({ message: "Tiền cọc phải là số" }).min(1, "Tiền cọc phải lớn hơn 0"),
+
+    deposit: z
+      .number({ message: t("validation:deposit.number") })
+      .min(1, t("validation:deposit.min")),
   })
   .refine(
     (data) => {
@@ -480,47 +548,44 @@ export const updateContractSchema = z
       return endDate >= minEndDate;
     },
     {
-      message: "Ngày kết thúc phải cách ngày bắt đầu ít nhất 3 tháng",
+      message: t("validation:endDate.minRange"),
       path: ["endDate"],
     }
   );
 
 export const createContractSchema = updateContractSchema.extend({
-  roomId: z.string().min(1, "Vui lòng chọn phòng"),
+  roomId: z.string().min(1, t("validation:roomId1.required")),
   tenants: z
     .array(
       z.object({
-        tenantId: z.string().min(1, "Thiếu tenantId"),
+        tenantId: z.string().min(1, t("validation:tenantId.required")),
         representative: z.boolean(),
       })
     )
-    .min(1, "Phải có ít nhất một khách thuê"),
-  content: z.string().min(1, "Không được để trống hợp đồng"),
+    .min(1, t("validation:tenants.min")),
+  content: z.string().min(1, t("validation:content.required")),
 });
 
 export const createContractTenantSchema = z.object({
-  tenantId: z.string().min(1, "Vui lòng chọn khách"),
-  contractId: z.string().min(1, "Không có mã hợp đồng"),
+  tenantId: z.string().min(1, t("validation:tenantId.required")),
+  contractId: z.string().min(1, t("validation:contractId.required")),
 });
 
 export const createContractVehicleSchema = z.object({
-  vehicleId: z.string().min(1, "Vui lòng chọn phương tiện"),
-  contractId: z.string().min(1, "Không có mã hợp đồng"),
+  vehicleId: z.string().min(1, t("validation:vehicleId.required")),
+  contractId: z.string().min(1, t("validation:contractId.required")),
 });
 
 export const extendContractSchema = z
   .object({
     newEndDate: z
       .string()
-      .refine((val) => {
-        return !isNaN(Date.parse(val));
-      }, "Ngày gia hạn không hợp lệ")
+      .refine((val) => !isNaN(Date.parse(val)), t("validation:newEndDate.invalid"))
       .transform((val) => new Date(val)),
+
     oldEndDate: z
       .string()
-      .refine((val) => {
-        return !isNaN(Date.parse(val));
-      }, "Ngày hạn hết cũ không hợp lệ")
+      .refine((val) => !isNaN(Date.parse(val)), t("validation:oldEndDate.invalid"))
       .transform((val) => new Date(val)),
   })
   .refine(
@@ -531,7 +596,7 @@ export const extendContractSchema = z
       return newEndDate >= minEndDate;
     },
     {
-      message: "Ngày gia hạn phải cách ngày kết thúc cũ ít nhất 3 tháng",
+      message: t("validation:newEndDate.minRange"),
       path: ["newEndDate"],
     }
   );
@@ -539,15 +604,15 @@ export const extendContractSchema = z
 export const noticeContractSchema = z.object({
   newEndDate: z
     .string()
-    .refine((val) => {
-      return !isNaN(Date.parse(val));
-    }, "Ngày báo trước không hợp lệ")
+    .refine((val) => !isNaN(Date.parse(val)), t("validation:noticeDate.invalid"))
     .transform((val) => new Date(val)),
 });
 
+
 /* SERVICE */
 export const createOrUpdateService = z.object({
-  name: z.string().min(1, "Không được để trống tên dịch vụ"),
+  name: z.string().min(1, t("validation:service.name.required")),
+
   serviceCategory: z.enum(
     [
       ServiceCategory.AN_NINH,
@@ -563,10 +628,15 @@ export const createOrUpdateService = z.object({
       ServiceCategory.VE_SINH,
     ],
     {
-      message: "Loại dịch vụ không hợp lệ",
+      message: t("validation:service.category.invalid"),
     }
   ),
-  price: zSafeNumber("Giá").refine((val) => val >= 0.0, "Giá không được âm"),
+
+  price: zSafeNumber(t("validation:service.price.label")).refine(
+    (val) => val >= 0.0,
+    t("validation:service.price.nonNegative")
+  ),
+
   serviceCalculation: z.enum(
     [
       ServiceCalculation.TINH_THEO_NGUOI,
@@ -575,124 +645,161 @@ export const createOrUpdateService = z.object({
       ServiceCalculation.TINH_THEO_SO,
     ],
     {
-      message: "Tính toán dịch vụ không hợp lệ",
+      message: t("validation:service.calculation.invalid"),
     }
   ),
+
   description: z.string().optional(),
 });
-
 /* DEFAULT SERVICE */
 export const updateDefaultServiceSchema = z.object({
-  defaultServiceAppliesTo: z.enum([DefaultServiceAppliesTo.HOP_DONG, DefaultServiceAppliesTo.PHONG], {
-    message: "Dịch vụ mặc định áp dụng không hợp lệ",
-  }),
-  pricesApply: zSafeNumber("Giá").refine((val) => val >= 0.0, "Giá không được âm"),
-  defaultServiceStatus: z.enum(
-    [DefaultServiceStatus.HOAT_DONG, DefaultServiceStatus.TAM_DUNG, DefaultServiceStatus.HUY_BO],
-    "Trạng thái dịch vụ mặc định không hợp lệ"
+  defaultServiceAppliesTo: z.enum(
+    [DefaultServiceAppliesTo.HOP_DONG, DefaultServiceAppliesTo.PHONG],
+    {
+      message: t("validation:defaultService.appliesTo.invalid"),
+    }
   ),
+
+  pricesApply: zSafeNumber(t("validation:defaultService.price.label")).refine(
+    (val) => val >= 0.0,
+    t("validation:defaultService.price.nonNegative")
+  ),
+
+  defaultServiceStatus: z.enum(
+    [
+      DefaultServiceStatus.HOAT_DONG,
+      DefaultServiceStatus.TAM_DUNG,
+      DefaultServiceStatus.HUY_BO,
+    ],
+    {
+      message: t("validation:defaultService.status.invalid"),
+    }
+  ),
+
   description: z.string().optional(),
 });
 
 export const creationDefaultServiceSchema = updateDefaultServiceSchema.extend({
   startApplying: z
     .string()
-    .refine((val) => {
-      return !isNaN(Date.parse(val));
-    }, "Ngày bắt đầu áp dụng không hợp lệ")
+    .refine(
+      (val) => !isNaN(Date.parse(val)),
+      t("validation:defaultService.startApplying.invalid")
+    )
     .transform((val) => new Date(val)),
-  buildingId: z.string().min(1, "Vui lòng chọn tòa nhà"),
-  floorId: z.string().min(1, "Vui lòng chọn tầng"),
-  serviceId: z.string().min(1, "Vui lòng chọn dịch vụ"),
+
+  buildingId: z.string().min(1, t("validation:defaultService.building.required")),
+  floorId: z.string().min(1, t("validation:defaultService.floor.required")),
+  serviceId: z.string().min(1, t("validation:defaultService.service.required")),
 });
+
 
 /* SERVICE ROOM */
 export const createServiceRoomSchema = z.object({
-  roomId: z.string().min(1, "Vui lòng chọn phòng"),
-  serviceId: z.string().min(1, "Vui lòng chọn dịch vụ"),
+  roomId: z.string().min(1, t("validation:serviceRoom.room.required")),
+  serviceId: z.string().min(1, t("validation:serviceRoom.service.required")),
 });
 
 export const createServiceRoomForBuildingSchema = z.object({
-  buildingId: z.string().min(1, "Vui lòng chọn tòa nhà"),
-  serviceId: z.string().min(1, "Vui lòng chọn dịch vụ"),
+  buildingId: z.string().min(1, t("validation:serviceRoom.building.required")),
+  serviceId: z.string().min(1, t("validation:serviceRoom.service.required")),
 });
 
 export const createServiceRoomForServiceSchema = z.object({
-  roomIds: z.array(z.string()).min(1, "Phải có ít nhất một phòng"),
-  serviceId: z.string().min(1, "Vui lòng chọn dịch vụ"),
+  roomIds: z.array(z.string()).min(1, t("validation:serviceRoom.room.min")),
+  serviceId: z.string().min(1, t("validation:serviceRoom.service.required")),
 });
 
 export const createServiceRoomForRoomSchema = z.object({
-  serviceIds: z.array(z.string()).min(1, "Phải có ít nhất một dịch vụ"),
-  roomId: z.string().min(1, "Vui lòng chọn dịch vụ"),
+  serviceIds: z.array(z.string()).min(1, t("validation:serviceRoom.service.min")),
+  roomId: z.string().min(1, t("validation:serviceRoom.room.required")),
 });
 
 export const updateServicePriceInBuildingSchema = z.object({
-  newUnitPrice: zSafeNumber("Đơn giá mới", { min: 0 }),
+  newUnitPrice: zSafeNumber(t("validation:serviceRoom.price.label"), { min: 0 }),
 });
 
 export const updateServiceRoomSchema = createServiceRoomSchema.extend({
-  serviceRoomStatus: z.enum([ServiceRoomStatus.DANG_SU_DUNG, ServiceRoomStatus.DA_HUY, ServiceRoomStatus.TAM_DUNG], {
-    message: "Dịch vụ phòng không hợp lệ",
-  }),
+  serviceRoomStatus: z.enum(
+    [
+      ServiceRoomStatus.DANG_SU_DUNG,
+      ServiceRoomStatus.DA_HUY,
+      ServiceRoomStatus.TAM_DUNG,
+    ],
+    {
+      message: t("validation:serviceRoom.status.invalid"),
+    }
+  ),
 });
+
 
 /* METER */
 export const createOrUpdateMeterSchema = z.object({
-  roomId: z.string().min(1, "Vui lòng chọn phòng"),
-  serviceId: z.string().min(1, "Vui lòng chọn dịch vụ"),
-  meterType: z.enum([MeterType.DIEN, MeterType.NUOC], "Loại công tơ không hợp lệ"),
-  meterName: z.string().min(1, "Tên công tơ không được để trống"),
-  meterCode: z.string().min(1, "Mã công tơ không được để trống"),
+  roomId: z.string().min(1, t("validation:meter.room.required")),
+  serviceId: z.string().min(1, t("validation:meter.service.required")),
+  meterType: z.enum([MeterType.DIEN, MeterType.NUOC], {
+    message: t("validation:meter.type.invalid"),
+  }),
+  meterName: z.string().min(1, t("validation:meter.name.required")),
+  meterCode: z.string().min(1, t("validation:meter.code.required")),
   manufactureDate: z
     .string()
     .refine((val) => {
       return !isNaN(Date.parse(val));
-    }, "Ngày sản xuất không hợp lệ")
+    }, t("validation:meter.manufactureDate.invalid"))
     .transform((val) => new Date(val))
-    .refine((val) => {
-      const date = new Date();
-      return val <= date;
-    }, "Ngày sản xuất không được ở trong tương lai"),
-  closestIndex: zSafeNumber("Chỉ số gần nhất", { min: 0 }),
+    .refine(
+      (val) => {
+        const date = new Date();
+        return val <= date;
+      },
+      t("validation:meter.manufactureDate.future")
+    ),
+  closestIndex: zSafeNumber(t("validation:meter.closestIndex.label"), { min: 0 }),
   descriptionMeter: z.string().optional(),
 });
-
 /* METER READING */
 export const updateMeterReadingSchema = z.object({
-  newIndex: zSafeNumber("Chỉ số cũ").refine((val) => val >= 0, "Chỉ số mới không được âm"),
+  newIndex: zSafeNumber(t("validation:meterReading.newIndex.label"))
+    .refine((val) => val >= 0, t("validation:meterReading.newIndex.negative")),
   descriptionMeterReading: z.string().optional(),
 });
 
 export const createMeterReadingSchema = updateMeterReadingSchema.extend({
-  meterId: z.string().min(1, "Vui lòng chọn công tơ"),
-  year: zSafeNumber("Năm", { min: new Date().getFullYear() }),
-  month: zSafeNumber("Tháng", { min: 1, max: 12 }),
+  meterId: z.string().min(1, t("validation:meterReading.meter.required")),
+  year: zSafeNumber(t("validation:meterReading.year.label"), {
+    min: new Date().getFullYear(),
+  }),
+  month: zSafeNumber(t("validation:meterReading.month.label"), {
+    min: 1,
+    max: 12,
+  }),
 });
+
 
 // invoice
 export const createInvoiceSchema = z.object({
   paymentDueDate: z.coerce.date().refine((date) => date > new Date(), {
-    message: "Ngày đến hạn phải ở tương lai",
+    message: t("validation:invoice.paymentDueDate.future"),
   }),
   note: z.string().optional(),
 });
 
 export const createInvoiceForContractSchema = createInvoiceSchema.extend({
-  contractId: z.string().min(1, "Vui lòng chọn hợp đồng"),
+  contractId: z.string().min(1, t("validation:invoice.contract.required")),
 });
 
 export const createInvoiceForBuildingSchema = createInvoiceSchema.extend({
-  buildingId: z.string().min(1, "Vui lòng chọn tòa nhà"),
+  buildingId: z.string().min(1, t("validation:invoice.building.required")),
 });
 
 export const createInvoiceForFloorSchema = createInvoiceSchema.extend({
-  floorId: z.string().min(1, "Vui lòng chọn tầng nhà"),
+  floorId: z.string().min(1, t("validation:invoice.floor.required")),
 });
 
 export const updateInvoiceSchema = z.object({
   paymentDueDate: z.coerce.date().refine((val) => val > new Date(), {
-    message: "Ngày đến hạn phải ơi tương lai",
+    message: t("validation:invoice.paymentDueDate.future"),
   }),
   note: z.string().optional(),
 });
@@ -702,25 +809,25 @@ export const invoiceDetailUpdateSchema = z.object({
 
   newIndex: z.preprocess(
     (val) => (val === "" || val === null || val === undefined ? undefined : Number(val)),
-    z.number().min(1, { message: "Chỉ số mới phải ≥ 1" }).optional()
+    z.number().min(1, { message: t("validation:invoice.newIndex.min") }).optional()
   ),
   quantity: z.preprocess(
     (val) => (val === "" || val === null || val === undefined ? undefined : Number(val)),
-    z.number().min(1, { message: "Số lượng phải ≥ 1" }).optional()
+    z.number().min(1, { message: t("validation:invoice.quantity.min") }).optional()
   ),
   unitPrice: z.preprocess(
     (val) => (val === "" || val === null || val === undefined ? undefined : Number(val)),
-    z.number().min(1, { message: "Đơn giá phải ≥ 1" }).optional()
+    z.number().min(1, { message: t("validation:invoice.unitPrice.min") }).optional()
   ),
   serviceName: z.string().optional(),
 });
 
 export const invoiceDetailCreationSchema = invoiceDetailUpdateSchema
   .extend({
-    invoiceId: z.string().min(1, "Mã hóa đơn không được để trống"),
+    invoiceId: z.string().min(1, t("validation:invoice.invoiceId.required")),
     invoiceItemType: z.enum(
       [InvoiceItemType.DIEN, InvoiceItemType.NUOC, InvoiceItemType.DEN_BU, InvoiceItemType.DICH_VU],
-      "Loại mục hóa đơn không hợp lệ"
+      { message: t("validation:invoice.invoiceItemType.invalid") }
     ),
     serviceRoomId: z.string().optional(),
   })
@@ -728,61 +835,55 @@ export const invoiceDetailCreationSchema = invoiceDetailUpdateSchema
     (data) => {
       const { invoiceItemType, quantity } = data;
       if (invoiceItemType !== InvoiceItemType.DEN_BU) return true;
-      if (!isNumber(quantity) || quantity < 1) return true;
-      return quantity !== undefined || quantity !== null;
+      return quantity !== undefined && quantity !== null && isNumber(quantity) && quantity >= 1;
     },
-    { message: "Số lượng là bắt buộc với loại ĐỀN BÙ", path: ["quantity"] }
+    { message: t("validation:invoice.quantity.requiredForCompensation"), path: ["quantity"] }
   )
   .refine(
     (data) => {
       const { invoiceItemType, unitPrice } = data;
       if (invoiceItemType !== InvoiceItemType.DEN_BU) return true;
-      if (!isNumber(unitPrice) || unitPrice < 1) return true;
-      return unitPrice !== undefined || unitPrice !== null;
+      return unitPrice !== undefined && unitPrice !== null && isNumber(unitPrice) && unitPrice >= 1;
     },
-    {
-      message: "Đơn giá là bắt buộc với loại đền bù",
-      path: ["unitPrice"],
-    }
+    { message: t("validation:invoice.unitPrice.requiredForCompensation"), path: ["unitPrice"] }
   )
   .refine(
     (data) => {
       const { invoiceItemType, newIndex } = data;
       if (invoiceItemType !== InvoiceItemType.DIEN && invoiceItemType !== InvoiceItemType.NUOC) return true;
-      if (!isNumber(newIndex) || newIndex < 1) return true;
-      return newIndex !== null || newIndex !== undefined;
+      return newIndex !== undefined && newIndex !== null && isNumber(newIndex) && newIndex >= 1;
     },
-    {
-      message: "Chỉ số mới là bắt buộc với điện hoặc nước",
-      path: ["newIndex"],
-    }
+    { message: t("validation:invoice.newIndex.requiredForElectricOrWater"), path: ["newIndex"] }
   )
   .refine(
     (data) => {
       if (data.invoiceItemType !== InvoiceItemType.DICH_VU) return true;
       return !!data.serviceRoomId;
     },
-    {
-      message: "Dịch vụ bắt buộc phải chọn phòng",
-      path: ["serviceRoomId"],
-    }
+    { message: t("validation:invoice.serviceRoom.requiredForService"), path: ["serviceRoomId"] }
   );
+
 
 /* PAYMENT RECEIPT */
 export const rejectPaymentReceiptSchema = z.object({
-  reason: z.string().min(1, "Không được để trống lý do"),
+  reason: z
+    .string()
+    .min(1, t("validation:rejectPaymentReceipt.reason.required"))
+    .max(255, t("validation:rejectPaymentReceipt.reason.maxLength")),
 });
 
 /* NOTIFICATION */
 export const createOrUpdateNotificationSchema = z
   .object({
-    title: z.string().min(1, "Vui lòng nhập tiêu đề"),
-    content: z.string().min(1, "Vui lòng nhập nội dung"),
+    title: z.string().min(1, t("validation:notification.title.required")),
+    content: z.string().min(1, t("validation:notification.content.required")),
     notificationType: z.enum(
       [NotificationType.CHUNG, NotificationType.HE_THONG, NotificationType.KHAC],
-      "Loại thông báo không hợp lệ"
+      {
+        message: t("validation:notification.notificationType.invalid"),
+      }
     ),
-    sendToAll: z.boolean({ message: "Vui lòng chọn" }),
+    sendToAll: z.boolean({ message: t("validation:notification.sendToAll.required") }),
     users: z.array(z.string()).optional(),
   })
   .refine(
@@ -790,10 +891,12 @@ export const createOrUpdateNotificationSchema = z
       const { sendToAll, users } = data;
       if (sendToAll === false) {
         return Array.isArray(users) && users?.length > 0;
-      } else return true;
+      }
+      return true;
     },
     {
-      message: "Vui lòng chọn 1 người dùng khi chọn gửi cho tất cả",
+      message: t("validation:notification.users.requiredWhenNotAll"),
       path: ["users"],
     }
   );
+
