@@ -1,16 +1,23 @@
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
 import { createContractVehicleSchema } from "@/lib/validation";
-import { AddVehicleToContractRequest, ApiResponse, ContractVehicleFilter, ContractVehicleResponse } from "@/types";
+import {
+  AddVehicleToContractRequest,
+  ApiResponse,
+  ContractVehicleFilter,
+  ContractVehicleResponse,
+} from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useContractVehicles = () => {
+  const { t } = useTranslation();
   const { contractId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -90,7 +97,7 @@ export const useContractVehicles = () => {
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveContractVehicleByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các phương tiện đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("common.confirmDialog.delete"),
     type: "warn",
   });
 
@@ -99,12 +106,14 @@ export const useContractVehicles = () => {
       await removeContractVehicleMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contract-vehicles",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "contract-vehicles",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "contracts",
           });
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -123,14 +132,16 @@ export const useContractVehicles = () => {
         },
         {
           type: "warn",
-          desc: Notice.REMOVE,
+          desc: t(Notice.REMOVE),
         }
       );
     },
-    [openDialog]
+    [openDialog, t]
   );
 
-  const handleRemoveContractVehicleByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
+  const handleRemoveContractVehicleByIds = async (
+    ids: Record<string, boolean>
+  ): Promise<boolean> => {
     try {
       const selectedIds = Object.entries(ids)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -140,12 +151,13 @@ export const useContractVehicles = () => {
       await Promise.all(selectedIds.map((id) => removeContractVehicleMutation.mutateAsync(id)));
 
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contract-vehicles",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "contract-vehicles",
       });
       queryClient.invalidateQueries({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts",
       });
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       setRowSelection({});
       return true;
     } catch (error) {
@@ -161,16 +173,18 @@ export const useContractVehicles = () => {
 
   const addContractVehicleMutation = useMutation({
     mutationKey: ["add-contract-vehicle"],
-    mutationFn: async (payload: AddVehicleToContractRequest) => await httpRequest.post("/contract-vehicles", payload),
+    mutationFn: async (payload: AddVehicleToContractRequest) =>
+      await httpRequest.post("/contract-vehicles", payload),
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setValue({
         contractId: contractId ?? "",
         vehicleId: "",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contract-vehicles",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "contract-vehicles",
       });
       queryClient.invalidateQueries({
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts",
@@ -198,9 +212,9 @@ export const useContractVehicles = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải hợp đồng phương tiện");
+      toast.error(t("contract.errorFetch"));
     }
-  }, [isError]);
+  }, [isError, t]);
 
   return {
     data,

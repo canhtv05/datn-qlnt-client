@@ -4,6 +4,7 @@ import InputLabel from "@/components/InputLabel";
 import { DepositStatus } from "@/enums";
 import { DepositFilter as Filter } from "@/types";
 import { Dispatch, FormEvent, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface DepositFilterProps {
   filterValues: Filter;
@@ -13,6 +14,7 @@ export interface DepositFilterProps {
 }
 
 const DepositFilter = ({ props }: { props: DepositFilterProps }) => {
+  const { t } = useTranslation();
   const { query, depositStatus } = props.filterValues;
   const setFilterValues = props.setFilterValues;
 
@@ -29,14 +31,17 @@ const DepositFilter = ({ props }: { props: DepositFilterProps }) => {
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full items-end">
         <FieldsSelectLabel
-          placeholder="-- Trạng thái cọc --"
-          labelSelect="Trạng thái cọc"
+          placeholder={t("deposit.filter.placeholderStatus")}
+          labelSelect={t("deposit.filter.labelStatus")}
           data={[
-            { label: "Chờ xác nhận", value: DepositStatus.CHO_XAC_NHAN },
-            { label: "Chưa nhận cọc", value: DepositStatus.CHUA_NHAN_COC },
-            { label: "Đã đặt cọc", value: DepositStatus.DA_DAT_COC },
-            { label: "Đã hoàn trả", value: DepositStatus.DA_HOAN_TRA },
-            { label: "Không trả cọc", value: DepositStatus.KHONG_TRA_COC },
+            { label: t("statusBadge.depositStatus.pending"), value: DepositStatus.CHO_XAC_NHAN },
+            {
+              label: t("statusBadge.depositStatus.notReceived"),
+              value: DepositStatus.CHUA_NHAN_COC,
+            },
+            { label: t("statusBadge.depositStatus.common"), value: DepositStatus.DA_DAT_COC },
+            { label: t("statusBadge.depositStatus.refunded"), value: DepositStatus.DA_HOAN_TRA },
+            { label: t("statusBadge.depositStatus.nonRefund"), value: DepositStatus.KHONG_TRA_COC },
           ]}
           value={depositStatus}
           onChange={(value) => handleChange("depositStatus", String(value))}
@@ -48,7 +53,7 @@ const DepositFilter = ({ props }: { props: DepositFilterProps }) => {
           type="text"
           id="query"
           name="query"
-          placeholder="Tìm kiếm"
+          placeholder={t("deposit.filter.placeholderSearch")}
           value={query}
           onChange={(e) => handleChange("query", e.target.value)}
         />

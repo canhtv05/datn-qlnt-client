@@ -20,7 +20,6 @@ import useHighestRole from "@/hooks/useHighestRole";
 import SystemNotification from "@/components/system/SystemNotification";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import images from "@/assets/imgs";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 import { switchRole } from "@/lib/utils";
@@ -31,7 +30,7 @@ const HeaderLayout = () => {
   const { theme, toggleTheme } = useTheme();
   const user = useAuthStore((state) => state.user);
   const { t } = useTranslation();
-  const { dataStorage, setStorage } = useLocalStorage();
+  const { setStorage } = useLocalStorage();
 
   const { handleLogout } = useLogout();
   const { ConfirmDialog, openDialog } = useConfirmDialog({
@@ -40,29 +39,20 @@ const HeaderLayout = () => {
     desc: t("profile.confirmLogout"),
   });
 
-  const lang = dataStorage().language;
-
-  const [language, setLanguage] = useState<"vi" | "en">(lang === "vi" || lang === "en" ? lang : "en");
   const highestRole = useHighestRole();
+  const currentLang = i18next.language as "vi" | "en";
 
   const handleToggleLang = () => {
-    setLanguage((prev) => {
-      if (prev === "vi") {
-        setStorage({ language: "en" });
-        i18next.changeLanguage("en");
-        return "en";
-      } else {
-        setStorage({ language: "vi" });
-        i18next.changeLanguage("vi");
-        return "vi";
-      }
-    });
+    const newLang = currentLang === "vi" ? "en" : "vi";
+    setStorage({ language: newLang });
+    i18next.changeLanguage(newLang);
+    window.location.reload();
   };
 
   return (
     <header className="flex items-center">
       <div className="p-2 cursor-pointer" onClick={handleToggleLang}>
-        <img src={language === "en" ? images.uk : images.vietnam} alt="vietnam" className="size-5 block" />
+        <img src={i18next.language === "en" ? images.uk : images.vietnam} alt="lang-flag" className="size-5 block" />
       </div>
       <Button onClick={toggleTheme} className="shadow-none cursor-pointer">
         <RenderIf value={theme === "dark"}>

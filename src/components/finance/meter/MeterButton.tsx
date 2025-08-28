@@ -66,10 +66,11 @@ const MeterButton = ({
 
   const addMeterMutation = useMutation({
     mutationKey: ["add-meter"],
-    mutationFn: async (payload: MeterCreationAndUpdatedRequest) => await httpRequest.post("/meters", payload),
+    mutationFn: async (payload: MeterCreationAndUpdatedRequest) =>
+      await httpRequest.post("/meters", payload),
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setValue({
         descriptionMeter: "",
         closestIndex: undefined,
@@ -91,8 +92,16 @@ const MeterButton = ({
 
   const handleMeterType = useCallback(async () => {
     try {
-      const { descriptionMeter, closestIndex, manufactureDate, meterCode, meterName, meterType, roomId, serviceId } =
-        value;
+      const {
+        descriptionMeter,
+        closestIndex,
+        manufactureDate,
+        meterCode,
+        meterName,
+        meterType,
+        roomId,
+        serviceId,
+      } = value;
 
       const data: MeterCreationAndUpdatedRequest = {
         descriptionMeter: descriptionMeter.trim(),
@@ -128,7 +137,7 @@ const MeterButton = ({
       });
       // queryClient.invalidateQueries({ queryKey: ["meter-statistics"] });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       return true;
     } catch (error) {
       handleMutationError(error);
@@ -141,7 +150,7 @@ const MeterButton = ({
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveAssetTypeByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các loại công tơ đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("common.confirmDialog.delete", { name: t("meter.title") }),
     type: "warn",
   });
 
@@ -157,18 +166,19 @@ const MeterButton = ({
       } else if (btn.type === "download") {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const exportData: Record<string, any>[] | undefined = data?.data?.map((d) => ({
-          "Mã công tơ": d.meterCode,
-          "Tên công tơ": d.meterName,
-          "Tên dịch vụ": d.serviceName,
-          "Loại công tơ": meterTypeEnumToString(d.meterType, t),
-          "Chỉ số gần nhất": formatNumber(d.closestIndex),
-          Phòng: d.roomCode,
-          "Mô tả": d.descriptionMeter,
-          "Ngày sản xuất": formatDate(d.manufactureDate),
-          "Ngày tạo": formatDate(d.createdAt),
-          "Ngày cập nhật": formatDate(d.updatedAt),
+          [t("meter.response.meterCode")]: d.meterCode,
+          [t("meter.response.meterName")]: d.meterName,
+          [t("meter.response.serviceName")]: d.serviceName,
+          [t("meter.response.meterType")]: meterTypeEnumToString(d.meterType, t),
+          [t("meter.response.closestIndex")]: formatNumber(d.closestIndex),
+          [t("meter.response.room")]: d.roomCode,
+          [t("meter.response.describe")]: d.descriptionMeter,
+          [t("meter.response.manufactureDate")]: formatDate(d.manufactureDate),
+          [t("meter.response.createdAt")]: formatDate(d.createdAt),
+          [t("meter.response.updatedAt")]: formatDate(d.updatedAt),
         }));
-        handleExportExcel(`Công tơ`, exportData, data?.data);
+
+        handleExportExcel(t("meter.title"), exportData, data?.data);
       }
     },
     [id, openDialog, ids, navigate, data?.data, t]
@@ -194,14 +204,14 @@ const MeterButton = ({
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Công tơ</h3>
+        <h3 className="font-semibold">{t("meter.title")}</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS_CUSTOM.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Công tơ"
+                    title={t("meter.title")}
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -209,7 +219,7 @@ const MeterButton = ({
                         </Button>
                       </TooltipTrigger>
                     }
-                    desc={Notice.ADD}
+                    desc={t(Notice.ADD)}
                     onConfirm={handleMeterType}
                   >
                     <AddOrUpdateMeter

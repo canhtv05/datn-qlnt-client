@@ -1,5 +1,7 @@
 {
   "common": {
+    "autoCheck": "🤖 AI sẽ tự động kiểm tra",
+
     "button": {
       "search": "Tìm kiếm",
       "cancel": "Hủy",
@@ -300,6 +302,13 @@
       "locked": "Tạm khóa"
     },
 
+    "statisticsContracts": {
+      "total": "Tổng",
+      "active": "Đang hoạt động",
+      "cancelled": "Đã huỷ",
+      "expired": "Hết hạn"
+    },
+
     "contractStatus": {
       "valid": "Hiệu lực",
       "expiring": "Sắp hết hạn",
@@ -350,12 +359,14 @@
     },
 
     "invoiceStatus": {
+      "total": "Tổng",
       "unpaid": "Chưa thanh toán",
       "restored": "Khôi phục",
       "paid": "Đã thanh toán",
       "overdue": "Quá hạn",
       "cancelled": "Đã hủy",
       "waitingPayment": "Chờ thanh toán",
+      "cannotBePaid": "Không thể thanh toán",
       "restore": "Khôi phục"
     },
 
@@ -540,7 +551,6 @@
       "floorId": "Tầng:",
       "acreage": "Diện tích (m²):",
       "price": "Giá (VNĐ):",
-
       "maximumPeople": "Số người tối đa:",
       "roomType": "Loại phòng:",
       "status": "Trạng thái:",
@@ -554,7 +564,6 @@
       "placeholderDescription": "Nhập mô tả chi tiết"
     }
   },
-
   "asset": {
     "title": "Tài sản",
     "titleHistory": "Lịch sử xóa tài sản",
@@ -635,7 +644,6 @@
     "errorFetch": "Có lỗi xảy ra khi tải tài sản phòng",
     "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê tài sản phòng",
     "onlyOneAsset": "Chỉ được chọn 1 tài sản nếu đã chọn nhiều phòng.",
-
     "totalRoomAssets": "Tổng số tài sản phòng",
     "roomAssetsAvailable": "Tài sản phòng còn lại",
     "addOrUpdate": {
@@ -717,7 +725,7 @@
     }
   },
   "serviceRoom": {
-    "title": "Dịch vụ phòng",
+    "service": "Dịch vụ phòng",
     "titleAddOneServiceToOneRoom": "Thêm 1 dịch vụ cho 1 phòng",
     "titleAddOneServiceToAllRoomsInBuilding": "Thêm 1 dịch vụ cho tất cả các phòng trong 1 tòa nhà",
     "titleAddOneServiceToMultipleRooms": "Thêm 1 dịch vụ vào các phòng",
@@ -839,6 +847,434 @@
       "owner": "-- Chọn chủ xe --",
       "type": "-- Chọn loại xe --",
       "status": "-- Chọn trạng thái xe --"
+    }
+  },
+  "contract": {
+    "title": "Thông tin hợp đồng",
+    "titleHistory": "Lịch sử hợp đồng đã xóa",
+    "search": "Tìm kiếm hợp đồng",
+    "errorFetch": "Không lấy được dữ liệu hợp đồng.",
+    "errorFetchStatistics": "Không lấy được dữ liệu thống kê hợp đồng.",
+    "value": "Giá trị",
+    "description": "Diễn giải",
+    "pdf": "Tải Pdf",
+    "docx": "Tải Docx",
+    "infoManagerAndMainTenant": "Thông tin quản lý & khách thuê chính",
+    "representative": "Người đại diện",
+    "viewContent": "Xem nội dung",
+    "activateSuccess": "Kích hoạt hợp đồng thành công",
+    "confirmActivate": "Bạn có muốn chắc chắn kích hoạt hợp đồng này không?",
+    "changeRepresentative": "Đổi đại diện",
+    "changeRepresentativeDesc": "Bạn có muốn đổi đại diện không?",
+    "addTenant": "Thêm khách thuê",
+    "vehicles": "Phương tiện hợp đồng",
+    "addVehicle": "Thêm phương tiện",
+    "noData": "Không có",
+    "filter": {
+      "placeholderRoom": "-- Chọn phòng --",
+      "placeholderTenant": "-- Chọn khách thuê --",
+      "placeholderVehicle": "-- Chọn phương tiện --",
+      "placeholderStatus": "-- Trạng thái --"
+    },
+    "response": {
+      "contractCode": "Mã hợp đồng",
+      "actions": "Thao tác",
+      "room": "Phòng",
+      "tenants": "Khách thuê",
+      "vehicles": "Phương tiện",
+      "deposit": "Tiền cọc",
+      "roomPrice": "Tiền phòng",
+      "startDate": "Ngày bắt đầu",
+      "endDate": "Ngày kết thúc",
+      "status": "Trạng thái",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật"
+    },
+    "addOrUpdate": {
+      "titleAdd": "Thêm hợp đồng",
+      "titleUpdate": "Cập nhật hợp đồng",
+      "room": "Phòng",
+      "deposit": "Tiền cọc",
+      "dateRange": "Ngày hiệu lực",
+      "tenants": "Khách thuê",
+      "vehicles": "Phương tiện",
+      "content": "Nội dung hợp đồng",
+      "buttonSubmit": "Lưu hợp đồng"
+    },
+    "contract": {
+      "contractCode": "Mã hợp đồng",
+      "roomCode": "Mã phòng",
+      "nameManager": "Tên quản lý",
+      "phoneNumberManager": "SĐT quản lý",
+      "nameUser": "Tên người thuê",
+      "emailUser": "Email người thuê",
+      "phoneNumberUser": "SĐT người thuê",
+      "identityCardUser": "CMND/CCCD",
+      "addressUser": "Địa chỉ người thuê",
+      "startDate": "Ngày bắt đầu",
+      "endDate": "Ngày kết thúc",
+      "deposit": "Tiền cọc",
+      "roomPrice": "Giá phòng",
+      "buildingAddress": "Địa chỉ tòa nhà",
+      "status": "Trạng thái",
+      "electricPrice": "Giá điện",
+      "waterPrice": "Giá nước",
+      "tenants": "Khách thuê",
+      "assets": "Tài sản",
+      "services": "Dịch vụ",
+      "vehicles": "Phương tiện",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật"
+    }
+  },
+  "meter": {
+    "title": "Công tơ",
+    "titleHistory": "Lịch sử công tơ đã xóa",
+    "statistic": "Thống kê công tơ",
+    "search": "Tên/Mã công tơ",
+    "errorFetch": "Có lỗi xảy ra khi tải công tơ.",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê công tơ.",
+    "roomId": "Mã phòng",
+    "serviceId": "Mã dịch vụ",
+    "response": {
+      "meterCode": "Mã công tơ",
+      "meterName": "Tên công tơ",
+      "serviceName": "Dịch vụ",
+      "meterType": "Loại công tơ",
+      "closestIndex": "Chỉ số gần nhất",
+      "roomCode": "Phòng",
+      "descriptionMeter": "Mô tả",
+      "manufactureDate": "Ngày sản xuất",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật",
+      "actions": "Thao tác"
+    },
+    "filter": {
+      "placeholderRoom": "-- Phòng --",
+      "placeholderType": "-- Loại công tơ --",
+      "labelRoom": "Phòng",
+      "labelType": "Loại công tơ"
+    },
+    "addOrUpdate": {
+      "service": "Dịch vụ",
+      "room": "Phòng",
+      "meterType": "Loại công tơ",
+      "meterName": "Tên công tơ",
+      "meterCode": "Mã công tơ",
+      "manufactureDate": "Ngày sản xuất",
+      "closestIndex": "Chỉ số gần nhất",
+      "descriptionMeter": "Mô tả",
+      "descriptionMeterPlaceholder": "Nhập mô tả"
+    },
+    "placeholder": {
+      "service": "-- Chọn dịch vụ --",
+      "room": "-- Chọn phòng --",
+      "meterType": "-- Chọn loại công tơ --"
+    }
+  },
+  "meterReading": {
+    "title": "Chỉ số công tơ",
+    "titleHistory": "Lịch sử chỉ số công tơ đã xóa",
+    "statistic": "Thống kê chỉ số công tơ",
+    "search": "Mã/Tên công tơ",
+    "errorFetch": "Có lỗi xảy ra khi tải chỉ số công tơ.",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê chỉ số công tơ.",
+    "roomId": "Mã phòng",
+    "meterId": "Mã công tơ",
+    "response": {
+      "meterCode": "Mã công tơ",
+      "meterName": "Tên công tơ",
+      "meterType": "Loại công tơ",
+      "oldIndex": "Chỉ số cũ",
+      "newIndex": "Chỉ số mới",
+      "quantity": "Số lượng",
+      "month": "Tháng",
+      "year": "Năm",
+      "readingDate": "Ngày ghi chỉ số",
+      "descriptionMeterReading": "Mô tả",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật",
+      "roomCode": "Phòng",
+      "actions": "Thao tác"
+    },
+    "filter": {
+      "placeholderRoom": "-- Phòng --",
+      "placeholderType": "-- Loại công tơ --",
+      "labelRoom": "Phòng",
+      "labelType": "Loại công tơ",
+      "labelMonth": "Tháng",
+      "placeholderMonth": "Nhập tháng (1-12)"
+    },
+    "addOrUpdate": {
+      "meter": "Công tơ",
+      "newIndex": "Chỉ số mới",
+      "oldIndex": "Chỉ số cũ",
+      "month": "Tháng",
+      "year": "Năm",
+      "descriptionMeterReading": "Mô tả",
+      "descriptionMeterReadingPlaceholder": "Nhập mô tả"
+    },
+    "placeholder": {
+      "meter": "-- Chọn công tơ --"
+    }
+  },
+  "paymentReceipt": {
+    "title": "Phiếu thanh toán",
+    "titleHistory": "Lịch sử phiếu thanh toán đã xóa",
+    "statistic": "Thống kê phiếu thanh toán",
+    "search": "Mã phiếu/Mã hóa đơn",
+    "errorFetch": "Có lỗi xảy ra khi tải phiếu thanh toán.",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê phiếu thanh toán.",
+    "invoiceId": "Mã hóa đơn",
+    "response": {
+      "receiptCode": "Mã phiếu",
+      "invoiceCode": "Mã hóa đơn",
+      "amount": "Số tiền",
+      "paymentMethod": "Phương thức thanh toán",
+      "paymentStatus": "Trạng thái thanh toán",
+      "collectedBy": "Người thu",
+      "paymentDate": "Ngày thanh toán",
+      "note": "Ghi chú",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật",
+      "actions": "Thao tác",
+      "invoiceId": "ID hóa đơn"
+    },
+    "filter": {
+      "labelPaymentMethod": "Phương thức thanh toán",
+      "labelPaymentStatus": "Trạng thái thanh toán",
+      "labelFromAmount": "Giá từ",
+      "labelToAmount": "Giá đến",
+      "labelQuery": "Tìm kiếm",
+      "placeholderPaymentMethod": "-- Phương thức thanh toán --",
+      "placeholderPaymentStatus": "-- Trạng thái thanh toán --",
+      "placeholderFromAmount": "Giá từ",
+      "placeholderToAmount": "Giá đến",
+      "placeholderQuery": "Tìm kiếm"
+    },
+    "dialog": {
+      "delete": {
+        "desc": "Thao tác này sẽ xóa vĩnh viễn dữ liệu các phiếu thanh toán đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+        "success": "Xóa phiếu thanh toán thành công"
+      },
+      "sendNotice": {
+        "desc": "Thao tác này sẽ tạo phiếu thanh toán. Bạn có chắc chắn muốn tiếp tục không?",
+        "success": "Tạo phiếu thanh toán thành công"
+      }
+    },
+    "export": {
+      "fileName": "Phiếu thanh toán",
+      "headers": {
+        "receiptCode": "Mã phiếu",
+        "invoiceCode": "Mã hóa đơn",
+        "amount": "Số tiền",
+        "paymentMethod": "Phương thức thanh toán",
+        "paymentStatus": "Trạng thái thanh toán",
+        "collectedBy": "Người thu",
+        "paymentDate": "Ngày thanh toán",
+        "note": "Ghi chú",
+        "createdAt": "Ngày tạo",
+        "updatedAt": "Ngày cập nhật"
+      }
+    }
+  },
+  "deposit": {
+    "title": "Tiền cọc",
+    "titleHistory": "Lịch sử tiền cọc đã xóa",
+    "statistic": "Thống kê tiền cọc",
+    "search": "Mã hợp đồng/Mã phòng/Người đặt cọc",
+    "errorFetch": "Có lỗi xảy ra khi tải tiền cọc.",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê tiền cọc.",
+    "successRefund": "Trả cọc khách hàng thành công",
+    "response": {
+      "id": "Mã đặt cọc",
+      "contractCode": "Mã hợp đồng",
+      "roomCode": "Mã phòng",
+      "depositor": "Người đặt cọc",
+      "depositRecipient": "Người nhận cọc",
+      "depositAmount": "Số tiền cọc",
+      "depositStatus": "Trạng thái cọc",
+      "depositDate": "Ngày đặt cọc",
+      "depositRefundDate": "Ngày hoàn trả",
+      "securityDepositReturnDate": "Ngày trả lại tiền đặt cọc",
+      "note": "Ghi chú",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật",
+      "actions": "Thao tác",
+      "contractId": "ID hợp đồng"
+    },
+    "filter": {
+      "placeholderStatus": "-- Trạng thái cọc --",
+      "labelStatus": "Trạng thái cọc",
+      "placeholderSearch": "Tìm kiếm"
+    }
+  },
+  "invoice": {
+    "title": "Hóa đơn",
+    "titleHistory": "Lịch sử hóa đơn đã xóa",
+    "statistic": "Thống kê hóa đơn",
+    "search": "Mã/Tên hóa đơn",
+    "errorFetch": "Có lỗi xảy ra khi tải hóa đơn.",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê hóa đơn.",
+    "contract": "Tạo hóa đơn hợp đồng",
+    "building": "Tạo hóa đơn tòa nhà",
+    "updateTitle": "Cập nhật hóa đơn",
+    "rejectSuccess": "Từ chối thanh toán thành công",
+    "Payment": "Xác nhận thanh toán bằng phương thức",
+    "success": "thành công",
+    "last": "không?",
+    "response": {
+      "invoiceCode": "Mã hóa đơn",
+      "building": "Tòa nhà",
+      "floor": "Tầng",
+      "room": "Phòng",
+      "contract": "Hợp đồng",
+      "invoiceType": "Loại hóa đơn",
+      "invoiceStatus": "Trạng thái hóa đơn",
+      "tenantName": "Khách thuê",
+      "month": "Tháng",
+      "year": "Năm",
+      "totalAmount": "Tổng tiền",
+      "paymentDueDate": "Hạn thanh toán",
+      "note": "Ghi chú",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật",
+      "actions": "Thao tác"
+    },
+    "filter": {
+      "placeholderBuilding": "-- Tòa nhà --",
+      "placeholderFloor": "-- Tầng --",
+      "placeholderStatus": "-- Trạng thái hóa đơn --",
+      "placeholderType": "-- Loại hóa đơn --",
+      "labelMonth": "Tháng",
+      "labelYear": "Năm",
+      "placeholderMonth": "Nhập tháng (1-12)",
+      "placeholderYear": "Nhập năm",
+      "placeholderQuery": "Tìm kiếm",
+      "placeholderMinTotalAmount": "Giá từ",
+      "placeholderMaxTotalAmount": "Giá đến"
+    },
+    "addOrUpdate": {
+      "building": "Tòa nhà",
+      "floor": "Tầng",
+      "contract": "Hợp đồng",
+      "invoiceType": "Loại hóa đơn",
+      "invoiceStatus": "Trạng thái hóa đơn",
+      "paymentDueDate": "Hạn thanh toán",
+      "note": "Ghi chú",
+      "notePlaceholder": "Nhập ghi chú",
+      "placeholderItemType": "-- Chọn loại mặt hàng hóa đơn --",
+      "labelItemType": "Loại mặt hàng hóa đơn:",
+      "placeholderServiceRoom": "-- Chọn dịch vụ phòng --",
+      "labelServiceRoom": "Dịch vụ phòng:",
+      "newIndex": "Chỉ số mới:",
+      "quantity": "Số lượng:",
+      "unitPrice": "Đơn giá:",
+      "placeholderDescription": "Nhập mô tả",
+      "labelDescription": "Mô tả:"
+    },
+    "add": {
+      "placeholderContract": "-- Chọn hợp đồng --",
+      "labelContract": "Hợp đồng:",
+      "placeholderBuilding": "-- Chọn tòa nhà --",
+      "labelBuilding": "Tòa nhà:",
+      "placeholderFloor": "-- Chọn tầng nhà --",
+      "labelFloor": "Tầng nhà:",
+      "labelPaymentDueDate": "Hạn thanh toán:",
+      "placeholderNote": "Nhập ghi chú",
+      "labelNote": "Ghi chú:"
+    },
+    "payment": {
+      "invalidMethod": "Phương thức thanh toán không hợp lệ",
+      "title": "Thanh toán bằng chuyển khoản",
+      "totalAmount": "Tổng tiền",
+      "guideTitle": "Thực hiện theo hướng dẫn sau để thanh toán:",
+      "step1": {
+        "title": "Bước 1:",
+        "desc": "Mở ứng dụng Mobile Banking của ngân hàng"
+      },
+      "step2": {
+        "title": "Bước 2:",
+        "desc": "Chọn \"Thanh toán\" và quét mã QR tại hướng dẫn này"
+      },
+      "step3": {
+        "title": "Bước 3:",
+        "desc": "Nhập số tiền cần chuyển là {{amount}} và nội dung chuyển tiền {{method}} - {{note}}"
+      },
+      "step4": {
+        "title": "Bước 4:",
+        "desc": "Hoàn thành các bước thanh toán theo hướng dẫn và đợi chủ nhà xử lý"
+      },
+      "accountName": "Tên",
+      "accountNumber": "Số tài khoản",
+      "warning": "Mã QR chỉ cung cấp cho thanh toán lần này, vui lòng không sao lưu sử dụng cho những lần thanh toán sau."
+    },
+    "detail": {
+      "title": "Hóa đơn chi tiết",
+      "addTitle": "Thêm hóa đơn chi tiết",
+      "updateTitle": "Cập nhật hóa đơn chi tiết",
+
+      "tenantInfo": "Thông tin khách thuê",
+      "roomCode": "Phòng",
+      "buildingName": "Tên tòa nhà",
+      "tenantName": "Khách đại diện",
+      "tenantPhone": "Số điện thoại",
+
+      "invoiceInfo": "Thông tin hóa đơn",
+      "invoiceCode": "Mã hóa đơn",
+      "invoiceType": "Loại hóa đơn",
+      "period": "Hóa đơn",
+      "totalAmount": "Tổng tiền",
+      "paymentDueDate": "Hạn thanh toán",
+      "invoiceStatus": "Trạng thái",
+
+      "loading": "Đang tải chi tiết hóa đơn...",
+      "download": "Tải hóa đơn",
+      "customer": "Khách hàng",
+      "date": "Ngày",
+      "dueDate": "Hạn thanh toán",
+      "note": "Ghi chú",
+      "inWords": "Bằng chữ",
+      "free": "Miễn phí",
+      "invoiceFor": "Hóa đơn cho",
+
+      "table": {
+        "index": "STT",
+        "serviceName": "Tên dịch vụ",
+        "serviceCategory": "Loại dịch vụ",
+        "serviceCalculation": "Dịch vụ tính theo",
+        "unit": "Đơn vị",
+        "oldIndex": "Chỉ số đầu",
+        "newIndex": "Chỉ số cuối",
+        "quantity": "Số lượng",
+        "unitPrice": "Đơn giá",
+        "amount": "Thành tiền"
+      },
+
+      "modal": {
+        "rejectTitle": "Lý do từ chối thanh toán",
+        "rejectLabel": "Lý do từ chối thanh toán:",
+        "rejectPlaceholder": "Nhập lý do",
+        "paymentTitle": "Chọn phương thức thanh toán"
+      },
+
+      "button": {
+        "reject": "Từ chối thanh toán",
+        "confirmPayment": "Thanh toán"
+      },
+
+      "toast": {
+        "missingInvoice": "Không có mã hóa đơn",
+        "loadError": "Có lỗi xảy ra khi tải hóa đơn chi tiết",
+        "rejectSuccess": "Từ chối thanh toán thành công"
+      }
+    },
+
+    "error": {
+      "noInvoiceId": "Không có mã hóa đơn",
+      "noRoomId": "Không có mã phòng, vui lòng thử lại",
+      "fetchInvoice": "Có lỗi xảy ra khi tải hóa đơn chi tiết",
+      "fetchServiceRoom": "Có lỗi xảy ra khi tải dịch vụ phòng"
     }
   }
 }

@@ -11,6 +11,7 @@ import { Gender, Status } from "@/enums";
 import { toast } from "sonner";
 import RenderIf from "./RenderIf";
 import { COLOR_CLASS } from "@/constant";
+import { useTranslation } from "react-i18next";
 
 interface CccdUploadProps {
   frontImage: File | string | null;
@@ -25,7 +26,15 @@ const NA = "N/A";
 const API_KEY = import.meta.env.VITE_API_KEY_FPT_AI;
 const API_URL = "https://api.fpt.ai/vision/idr/vnm";
 
-const ImagePreview = ({ url, onRemove, loading }: { url: string; onRemove: () => void; loading?: boolean }) => (
+const ImagePreview = ({
+  url,
+  onRemove,
+  loading,
+}: {
+  url: string;
+  onRemove: () => void;
+  loading?: boolean;
+}) => (
   <div className="relative w-full aspect-video rounded-md border border-border overflow-hidden flex items-center justify-center">
     <button type="button" className="absolute top-2 right-2 cursor-pointer z-10" onClick={onRemove}>
       <XCircleIcon className="h-5 w-5 fill-primary text-white" />
@@ -84,7 +93,8 @@ export default function CccdUpload({
       if (side === "front") setFrontResult(res.data.data);
       if (side === "back") setBackResult(res.data.data);
     } catch (err) {
-      if (axios.isAxiosError(err)) toast.error(OCR_ERROR_MAP[err?.response?.data?.errorCode] || Status.ERROR);
+      if (axios.isAxiosError(err))
+        toast.error(OCR_ERROR_MAP[err?.response?.data?.errorCode] || Status.ERROR);
       else toast.error(Status.ERROR);
     } finally {
       if (side === "front") setLoadingFront(false);
@@ -145,7 +155,12 @@ export default function CccdUpload({
   }, [backResult, backImage, setValue]);
 
   useEffect(() => {
-    if (frontResult?.length > 0 && backResult?.length > 0 && frontResult[0]?.id && backResult[0]?.mrz_details?.id) {
+    if (
+      frontResult?.length > 0 &&
+      backResult?.length > 0 &&
+      frontResult[0]?.id &&
+      backResult[0]?.mrz_details?.id
+    ) {
       const frontId = frontResult[0]?.id;
       const backId = backResult[0]?.mrz_details?.id;
 
@@ -173,7 +188,7 @@ export default function CccdUpload({
 
   const isFrontInvalid = touchedFront && !frontImage;
   const isBackInvalid = touchedBack && !backImage;
-
+  const { t } = useTranslation();
   const renderDropzone = (
     loading: boolean,
     setImage: (file: File | null) => void,
@@ -217,10 +232,14 @@ export default function CccdUpload({
         <div className="flex flex-col gap-2 w-full md:w-1/2">
           <span className="text-sm text-center">
             Mặt trước <span className="text-[10px] text-red-500">(*)</span>
-            <span className="block">🤖 AI sẽ tự động kiểm tra</span>
+            <span className="block">{t("common.autoCheck")}</span>
           </span>
           {frontUrl ? (
-            <ImagePreview url={frontUrl} onRemove={() => setFrontImage(null)} loading={loadingFront} />
+            <ImagePreview
+              url={frontUrl}
+              onRemove={() => setFrontImage(null)}
+              loading={loadingFront}
+            />
           ) : (
             renderDropzone(loadingFront, setFrontImage, setTouchedFront)
           )}
@@ -233,7 +252,9 @@ export default function CccdUpload({
             />
           )}
           <RenderIf value={isFrontInvalid}>
-            <span className="text-[12px] text-red-500 font-light text-left">Thông tin bắt buộc</span>
+            <span className="text-[12px] text-red-500 font-light text-left">
+              Thông tin bắt buộc
+            </span>
           </RenderIf>
           <span className="text-[12px] text-red-500 font-light text-left">{errors.frontCccd}</span>
         </div>
@@ -242,7 +263,7 @@ export default function CccdUpload({
         <div className="flex flex-col gap-2 w-full md:w-1/2">
           <span className="text-sm text-center">
             Mặt sau <span className="text-[10px] text-red-500">(*)</span>
-            <span className="block">🤖 AI sẽ tự động kiểm tra</span>
+            <span className="block">{t("common.autoCheck")}</span>
           </span>
           {backUrl ? (
             <ImagePreview url={backUrl} onRemove={() => setBackImage(null)} loading={loadingBack} />
@@ -258,7 +279,9 @@ export default function CccdUpload({
             />
           )}
           <RenderIf value={isBackInvalid}>
-            <span className="text-[12px] text-red-500 font-light text-left">Thông tin bắt buộc</span>
+            <span className="text-[12px] text-red-500 font-light text-left">
+              Thông tin bắt buộc
+            </span>
           </RenderIf>
           <span className="text-[12px] text-red-500 font-light text-left">{errors.backCccd}</span>
         </div>

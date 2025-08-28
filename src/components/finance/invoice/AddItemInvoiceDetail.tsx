@@ -4,6 +4,7 @@ import TextareaLabel from "@/components/TextareaLabel";
 import { InvoiceItemType } from "@/enums";
 import { ApiResponse, IdNameAndType, InvoiceDetailCreationRequest } from "@/types";
 import { Dispatch, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 interface AddItemInvoiceDetailProps {
   value: InvoiceDetailCreationRequest;
@@ -13,10 +14,19 @@ interface AddItemInvoiceDetailProps {
   serviceRooms: ApiResponse<IdNameAndType[]> | undefined;
 }
 
-const AddItemInvoiceDetail = ({ value, handleChange, setValue, errors, serviceRooms }: AddItemInvoiceDetailProps) => {
+const AddItemInvoiceDetail = ({
+  value,
+  handleChange,
+  setValue,
+  errors,
+  serviceRooms,
+}: AddItemInvoiceDetailProps) => {
+  const { t } = useTranslation();
   const DEN_BU = value.invoiceItemType === InvoiceItemType.DEN_BU;
   const DICH_VU = value.invoiceItemType === InvoiceItemType.DICH_VU;
-  const DIEN_NUOC = value.invoiceItemType === InvoiceItemType.DIEN || value.invoiceItemType === InvoiceItemType.NUOC;
+  const DIEN_NUOC =
+    value.invoiceItemType === InvoiceItemType.DIEN ||
+    value.invoiceItemType === InvoiceItemType.NUOC;
 
   const serviceRoomsOptions = useMemo((): FieldsSelectLabelType[] => {
     const selectType = value.invoiceItemType;
@@ -44,8 +54,8 @@ const AddItemInvoiceDetail = ({ value, handleChange, setValue, errors, serviceRo
         <InputLabel
           id="serviceName"
           name="serviceName"
-          placeholder="Tên dịch vụ"
-          label="Tên dịch vụ:"
+          placeholder={t("service.response.name")}
+          label={t("service.addOrUpdate.name")}
           value={value.serviceName ?? ""}
           onChange={handleChange}
           errorText={errors.serviceName}
@@ -54,13 +64,16 @@ const AddItemInvoiceDetail = ({ value, handleChange, setValue, errors, serviceRo
 
         <FieldsSelectLabel
           data={[
-            { label: "Đền bù", value: InvoiceItemType.DEN_BU },
-            { label: "Dịch vụ", value: InvoiceItemType.DICH_VU },
-            { label: "Điện", value: InvoiceItemType.DIEN },
-            { label: "Nước", value: InvoiceItemType.NUOC },
+            { label: t("statusBadge.invoiceItemType.compensation"), value: InvoiceItemType.DEN_BU },
+            {
+              label: t("statusBadge.invoiceItemType.service"),
+              value: InvoiceItemType.DICH_VU,
+            },
+            { label: t("statusBadge.invoiceItemType.electric"), value: InvoiceItemType.DIEN },
+            { label: t("statusBadge.invoiceItemType.water"), value: InvoiceItemType.NUOC },
           ]}
-          placeholder="-- Chọn loại mặt hàng hóa đơn --"
-          label="Loại mặt hàng hóa đơn:"
+          placeholder={t("invoice.addOrUpdate.placeholderItemType")}
+          label={t("invoice.addOrUpdate.labelItemType")}
           id="invoiceItemType"
           name="invoiceItemType"
           value={value.invoiceItemType ?? ""}
@@ -74,7 +87,7 @@ const AddItemInvoiceDetail = ({ value, handleChange, setValue, errors, serviceRo
               unitPrice: undefined,
             }))
           }
-          labelSelect="Loại mặt hàng hóa đơn"
+          labelSelect={t("invoice.addOrUpdate.labelItemType")}
           showClear
           errorText={errors.invoiceItemType}
           required
@@ -82,13 +95,13 @@ const AddItemInvoiceDetail = ({ value, handleChange, setValue, errors, serviceRo
 
         <FieldsSelectLabel
           data={serviceRoomsOptions}
-          placeholder="-- Chọn dịch vụ phòng --"
-          label="Dịch vụ phòng:"
+          placeholder={t("invoice.addOrUpdate.placeholderServiceRoom")}
+          label={t("invoice.addOrUpdate.labelServiceRoom")}
           id="serviceRoomId"
           name="serviceRoomId"
           value={value.serviceRoomId ?? ""}
           onChange={(val) => setValue((prev) => ({ ...prev, serviceRoomId: val as string }))}
-          labelSelect="Dịch vụ phòng"
+          labelSelect={t("invoice.addOrUpdate.labelServiceRoom")}
           showClear
           errorText={errors.serviceRoomId}
           disabled={DEN_BU}
@@ -101,7 +114,7 @@ const AddItemInvoiceDetail = ({ value, handleChange, setValue, errors, serviceRo
           name="newIndex"
           placeholder="100"
           type="number"
-          label="Chỉ số mới:"
+          label={t("invoice.addOrUpdate.newIndex")}
           required={!DEN_BU}
           value={value.newIndex ?? ""}
           onChange={handleChange}
@@ -114,7 +127,7 @@ const AddItemInvoiceDetail = ({ value, handleChange, setValue, errors, serviceRo
           name="quantity"
           placeholder="100"
           type="number"
-          label="Số lượng:"
+          label={t("invoice.addOrUpdate.quantity")}
           required
           value={value.quantity ?? ""}
           onChange={handleChange}
@@ -127,7 +140,7 @@ const AddItemInvoiceDetail = ({ value, handleChange, setValue, errors, serviceRo
           name="unitPrice"
           placeholder="100"
           type="number"
-          label="Đơn giá:"
+          label={t("invoice.addOrUpdate.unitPrice")}
           required
           value={value.unitPrice ?? ""}
           onChange={handleChange}
@@ -138,8 +151,8 @@ const AddItemInvoiceDetail = ({ value, handleChange, setValue, errors, serviceRo
       <TextareaLabel
         id="description"
         name="description"
-        placeholder="Nhập mô tả"
-        label="Mô tả:"
+        placeholder={t("invoice.addOrUpdate.placeholderDescription")}
+        label={t("invoice.addOrUpdate.labelDescription")}
         value={value.description ?? ""}
         disabled={DICH_VU}
         onChange={(e) => setValue((prev) => ({ ...prev, description: e.target.value }))}

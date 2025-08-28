@@ -32,8 +32,8 @@ const ContractVehicleFilter = ({ props }: { props: ContractTenantFilterProps }) 
       <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end">
         <FieldsSelectLabel
           name="vehicleStatus"
-          labelSelect="Trạng thái"
-          placeholder="-- Trạng thái --"
+          labelSelect={t("contract.contract.status")}
+          placeholder={t("contract.filter.placeholderStatus")}
           data={[
             {
               label: t("statusBadge.vehicleStatus.active"),
@@ -50,8 +50,8 @@ const ContractVehicleFilter = ({ props }: { props: ContractTenantFilterProps }) 
         />
         <FieldsSelectLabel
           name="vehicleType"
-          labelSelect="Loại phương tiện"
-          placeholder="Loại phương tiện --"
+          labelSelect={t("vehicle.response.vehicleType")}
+          placeholder={t("vehicle.filter.placeholderType")}
           data={[
             {
               label: t("statusBadge.vehicleType.car"),
@@ -77,7 +77,7 @@ const ContractVehicleFilter = ({ props }: { props: ContractTenantFilterProps }) 
         <InputLabel
           id="query"
           name="query"
-          placeholder="Tìm kiếm"
+          placeholder={t("tenant.search")}
           value={query}
           onChange={(e) => handleChange("query", e.target.value)}
         />

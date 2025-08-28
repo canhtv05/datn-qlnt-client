@@ -28,13 +28,13 @@ const HistoryInvoice = () => {
 
   const columnConfigs: ColumnConfig[] = [
     {
-      label: "Mã hóa đơn",
+      label: t("invoice.response.invoiceCode"),
       accessorKey: "invoiceCode",
       isSort: true,
       hasHighlight: true,
     },
     {
-      label: "Thao tác",
+      label: t("invoice.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -81,62 +81,56 @@ const HistoryInvoice = () => {
       },
     },
     {
-      label: "Tòa nhà",
+      label: t("invoice.response.building"),
       accessorKey: "buildingName",
       isSort: true,
     },
     {
-      label: "Phòng",
+      label: t("invoice.response.room"),
       accessorKey: "roomCode",
       isSort: true,
     },
     {
-      label: "Khách thuê",
+      label: t("invoice.response.tenantName"),
       accessorKey: "tenantName",
       isSort: true,
     },
     {
-      label: "Tháng",
+      label: t("invoice.response.month"),
       accessorKey: "month",
       isSort: true,
     },
     {
-      label: "Năm",
+      label: t("invoice.response.year"),
       accessorKey: "year",
       isSort: true,
     },
     {
-      label: "Tổng tiền",
+      label: t("invoice.response.totalAmount"),
       accessorKey: "totalAmount",
       isSort: true,
     },
     {
-      label: "Hạn thanh toán",
+      label: t("invoice.response.paymentDueDate"),
       accessorKey: "paymentDueDate",
-      isSort: true,
-      hasDate: true,
-    },
-    {
-      label: "Loại hóa đơn",
-      accessorKey: "invoiceType",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
     {
-      label: "Trạng thái",
+      label: t("invoice.response.invoiceStatus"),
       accessorKey: "invoiceStatus",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
     {
-      label: "Ghi chú",
+      label: t("invoice.response.invoiceStatus"),
       accessorKey: "note",
       isSort: false,
     },
     {
-      label: "Ngày tạo",
+      label: t("invoice.response.createdAt"),
       accessorKey: "createdAt",
       isSort: true,
       hasDate: true,
@@ -148,7 +142,7 @@ const HistoryInvoice = () => {
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
         <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-5 py-3 justify-between items-center">
-            <h3 className="font-semibold">Lịch sử xóa hóa đơn</h3>
+            <h3 className="font-semibold">{t("invoice.titleHistory")}</h3>
             <div className="flex gap-2">
               {BUTTON_HISTORY.map((btn, idx) => (
                 <TooltipProvider key={idx}>
@@ -163,7 +157,7 @@ const HistoryInvoice = () => {
                             openDialogAll(
                               { ids: rowSelection, type: "remove" },
                               {
-                                desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tầng đã chọn và không thể hoàn tác lại. Bạn có chắc chắn muốn tiếp tục?",
+                                desc: t("common.confirmDialog.desc"),
                                 type: "warn",
                               }
                             );
@@ -171,7 +165,7 @@ const HistoryInvoice = () => {
                             openDialogAll(
                               { ids: rowSelection, type: "undo" },
                               {
-                                desc: Notice.RESTORES,
+                                desc: t(Notice.RESTORES),
                                 type: "default",
                               }
                             );
@@ -195,7 +189,9 @@ const HistoryInvoice = () => {
                           fill: btn.arrowColor,
                           background: btn.arrowColor,
                         }}
-                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                        className={
+                          "size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
+                        }
                       />
                     </TooltipContent>
                   </Tooltip>

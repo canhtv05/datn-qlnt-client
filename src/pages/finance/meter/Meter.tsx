@@ -37,18 +37,20 @@ const Meter = () => {
 
   const columnConfigs: ColumnConfig[] = [
     {
-      label: "Mã công tơ",
+      label: t("meter.response.meterCode"),
       accessorKey: "meterCode",
+
       isSort: true,
       hasHighlight: true,
     },
     {
-      label: "Tên công tơ",
+      label: t("meter.response.meterName"),
       accessorKey: "meterName",
       isSort: true,
     },
     {
-      label: "Thao tác",
+      label: t("meter.response.actions"),
+
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -71,7 +73,11 @@ const Meter = () => {
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                  <TooltipContent
+                    className="text-white"
+                    style={{ background: btn.arrowColor }}
+                    arrow={false}
+                  >
                     <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
@@ -89,59 +95,60 @@ const Meter = () => {
       },
     },
     {
-      label: "Tên dịch vụ",
+      label: t("meter.response.serviceName"),
       accessorKey: "serviceName",
       isSort: true,
     },
     {
-      label: "Loại công tơ",
+      label: t("meter.response.meterType"),
       accessorKey: "meterType",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
     {
-      label: "Chỉ số gần nhất",
+      label: t("meter.response.closestIndex"),
+
       accessorKey: "closestIndex",
       isSort: true,
       isCenter: true,
     },
     {
-      label: "Phòng",
+      label: t("meter.response.roomCode"),
       accessorKey: "roomCode",
       isSort: true,
     },
     {
-      label: "Mô tả",
+      label: t("meter.response.descriptionMeter"),
       accessorKey: "descriptionMeter",
       isSort: false,
     },
     {
-      label: "Ngày sản xuất",
+      label: t("meter.response.manufactureDate"),
       accessorKey: "manufactureDate",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ngày tạo",
+      label: t("meter.response.createdAt"),
       accessorKey: "createdAt",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ngày cập nhật",
+      label: t("meter.response.updatedAt"),
       accessorKey: "updatedAt",
       isSort: true,
       hasDate: true,
     },
     // Các trường ẩn
     {
-      label: "roomId",
+      label: "meter.roomId",
       accessorKey: "roomId",
       isHidden: true,
     },
     {
-      label: "serviceId",
+      label: "meter.serviceId",
       accessorKey: "serviceId",
       isHidden: true,
     },
@@ -165,12 +172,12 @@ const Meter = () => {
           setRowSelection={setRowSelection}
         />
         <Modal
-          title="Công tơ"
+          title="meter.title"
           trigger={null}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
           onConfirm={handleUpdateFloor}
-          desc={Notice.UPDATE}
+          desc={t(Notice.UPDATE)}
         >
           <AddOrUpdateMeter
             meterInit={meterInit}

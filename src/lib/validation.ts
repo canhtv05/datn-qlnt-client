@@ -197,12 +197,7 @@ export const createOrUpdateBuildingSchema = z
     numberOfFloorsForRent: zSafeNumber(t("validation:numberOfFloorsForRent.label"), { min: 1 }),
 
     buildingType: z.enum(
-      [
-        BuildingType.CAN_HO_DICH_VU,
-        BuildingType.CHUNG_CU_MINI,
-        BuildingType.KHAC,
-        BuildingType.NHA_TRO,
-      ],
+      [BuildingType.CAN_HO_DICH_VU, BuildingType.CHUNG_CU_MINI, BuildingType.KHAC, BuildingType.NHA_TRO],
       { message: t("validation:buildingType.invalid") }
     ),
 
@@ -222,15 +217,11 @@ export const createOrUpdateBuildingSchema = z
 export const createFloorSchema = z.object({
   maximumRoom: zSafeNumber(t("validation:maximumRoom.label"), { min: 1 })
     .transform((val) => Number(val))
-    .refine(
-      (val) => val >= 1 && val <= 99,
-      t("validation:maximumRoom.range")
-    ),
+    .refine((val) => val >= 1 && val <= 99, t("validation:maximumRoom.range")),
 
-  floorType: z.enum(
-    [FloorType.CHO_THUE, FloorType.DE_O, FloorType.KHAC, FloorType.KHO, FloorType.KHONG_CHO_THUE],
-    { message: t("validation:floorType.invalid") }
-  ),
+  floorType: z.enum([FloorType.CHO_THUE, FloorType.DE_O, FloorType.KHAC, FloorType.KHO, FloorType.KHONG_CHO_THUE], {
+    message: t("validation:floorType.invalid"),
+  }),
 
   descriptionFloor: z.string().optional(),
 });
@@ -239,48 +230,29 @@ export const updateFloorSchema = createFloorSchema.extend({
   nameFloor: z.string().min(1, t("validation:nameFloor.required")),
 });
 
-
 /* ASSET TYPE */
 export const createOrUpdateAssetTypeSchema = z.object({
-  nameAssetType: z
-    .string()
-    .min(1, t("validation:nameAssetType.required")),
+  nameAssetType: z.string().min(1, t("validation:nameAssetType.required")),
 
-  assetGroup: z.enum(
-    [
-      AssetGroup.CA_NHAN,
-      AssetGroup.DIEN,
-      AssetGroup.GIA_DUNG,
-      AssetGroup.KHAC,
-      AssetGroup.NOI_THAT,
-    ],
-    { message: t("validation:assetGroup.invalid") }
-  ),
+  assetGroup: z.enum([AssetGroup.CA_NHAN, AssetGroup.DIEN, AssetGroup.GIA_DUNG, AssetGroup.KHAC, AssetGroup.NOI_THAT], {
+    message: t("validation:assetGroup.invalid"),
+  }),
 
-  descriptionAssetType: z
-    .string()
-    .min(1, t("validation:descriptionAssetType.required")),
+  descriptionAssetType: z.string().min(1, t("validation:descriptionAssetType.required")),
 });
-
 
 /* ROOM ASSET */
 export const roomAssetFormSchema = z
   .object({
-    assetBeLongTo: z
-      .string()
-      .min(1, { message: t("validation:assetBeLongTo.required") }),
+    assetBeLongTo: z.string().min(1, { message: t("validation:assetBeLongTo.required") }),
 
-    roomId: z
-      .string()
-      .min(1, { message: t("validation:roomId.required") }),
+    roomId: z.string().min(1, { message: t("validation:roomId.required") }),
 
     assetId: z.string(),
 
     quantity: zSafeNumber(t("validation:quantity.label"), { min: 1 }),
 
-    assetName: z
-      .string()
-      .min(1, { message: t("validation:assetName.required") }),
+    assetName: z.string().min(1, { message: t("validation:assetName.required") }),
 
     price: zSafeNumber(t("validation:price.label"), { min: 1 }),
 
@@ -356,10 +328,9 @@ export const createOrUpdateRoomSchema = z
         message: t("validation:maximumPeople.min"),
       }),
 
-    roomType: z.enum(
-      [RoomType.GHEP, RoomType.DON, RoomType.KHAC, RoomType.CAO_CAP],
-      { message: t("validation:roomType.invalid") }
-    ),
+    roomType: z.enum([RoomType.GHEP, RoomType.DON, RoomType.KHAC, RoomType.CAO_CAP], {
+      message: t("validation:roomType.invalid"),
+    }),
 
     status: z.enum(
       [
@@ -378,8 +349,7 @@ export const createOrUpdateRoomSchema = z
   })
   .refine(
     (data) =>
-      typeof data.acreage === "number" &&
-      (data.maximumPeople === null || typeof data.maximumPeople === "number"),
+      typeof data.acreage === "number" && (data.maximumPeople === null || typeof data.maximumPeople === "number"),
     {
       message: t("validation:room.invalidData"),
       path: ["maximumPeople"],
@@ -391,21 +361,13 @@ export const baseAssetSchema = z.object({
   nameAsset: z.string().min(1, t("validation:nameAsset.required")),
 
   assetType: z.enum(
-    [
-      AssetType.AN_NINH,
-      AssetType.DIEN,
-      AssetType.GIA_DUNG,
-      AssetType.KHAC,
-      AssetType.NOI_THAT,
-      AssetType.VE_SINH,
-    ],
+    [AssetType.AN_NINH, AssetType.DIEN, AssetType.GIA_DUNG, AssetType.KHAC, AssetType.NOI_THAT, AssetType.VE_SINH],
     { message: t("validation:assetType.invalid") }
   ),
 
-  assetBeLongTo: z.enum(
-    [AssetBeLongTo.CA_NHAN, AssetBeLongTo.CHUNG, AssetBeLongTo.PHONG],
-    { message: t("validation:assetBeLongTo2.invalid") }
-  ),
+  assetBeLongTo: z.enum([AssetBeLongTo.CA_NHAN, AssetBeLongTo.CHUNG, AssetBeLongTo.PHONG], {
+    message: t("validation:assetBeLongTo2.invalid"),
+  }),
 
   descriptionAsset: z.string().optional(),
 
@@ -433,7 +395,6 @@ export const updateAssetSchema = baseAssetSchema.extend({
   ),
 });
 
-
 /* TENANT */
 export const createOrUpdateTenantSchema = z.object({
   email: z.string().email(t("validation:email.invalid")),
@@ -455,15 +416,14 @@ export const createOrUpdateTenantSchema = z.object({
     .max(11, t("validation:phone.max"))
     .regex(/^[0-9]+$/, t("validation:phone.onlyNumber"))
     .regex(/^(03|05|07|08|09)\d{8}$/, {
-      message: t("validation:phone.pattern"),}),
+      message: t("validation:phone.pattern"),
+    }),
 
   gender: z.enum([Gender.FEMALE, Gender.MALE, Gender.UNKNOWN], {
     message: t("validation:gender.invalid"),
   }),
 
-  identityCardNumber: z
-    .string()
-    .regex(/^\d{12}$/, t("validation:identityCardNumber.invalid")),
+  identityCardNumber: z.string().regex(/^\d{12}$/, t("validation:identityCardNumber.invalid")),
 
   address: z.string().min(1, t("validation:address.required")),
 
@@ -483,17 +443,15 @@ export const createVehicleSchema = z
   .object({
     tenantId: z.string().min(1, t("validation:tenantId.required")),
 
-    vehicleType: z.enum(
-      [VehicleType.KHAC, VehicleType.O_TO, VehicleType.XE_DAP, VehicleType.XE_MAY],
-      { message: t("validation:vehicleType.invalid") }
-    ),
+    vehicleType: z.enum([VehicleType.KHAC, VehicleType.O_TO, VehicleType.XE_DAP, VehicleType.XE_MAY], {
+      message: t("validation:vehicleType.invalid"),
+    }),
 
     licensePlate: z.string(),
 
-    vehicleStatus: z.enum(
-      [VehicleStatus.TAM_KHOA, VehicleStatus.SU_DUNG],
-      { message: t("validation:vehicleStatus.invalid") }
-    ),
+    vehicleStatus: z.enum([VehicleStatus.TAM_KHOA, VehicleStatus.SU_DUNG], {
+      message: t("validation:vehicleStatus.invalid"),
+    }),
 
     registrationDate: z
       .string()
@@ -516,10 +474,9 @@ export const createVehicleSchema = z
   );
 
 export const updateVehicleSchema = z.object({
-  vehicleStatus: z.enum(
-    [VehicleStatus.TAM_KHOA, VehicleStatus.SU_DUNG],
-    { message: t("validation:vehicleStatus.invalid") }
-  ),
+  vehicleStatus: z.enum([VehicleStatus.TAM_KHOA, VehicleStatus.SU_DUNG], {
+    message: t("validation:vehicleStatus.invalid"),
+  }),
   describe: z.string(),
 });
 
@@ -536,9 +493,7 @@ export const updateContractSchema = z
       .refine((val) => !isNaN(Date.parse(val)), t("validation:endDate.invalid"))
       .transform((val) => new Date(val)),
 
-    deposit: z
-      .number({ message: t("validation:deposit.number") })
-      .min(1, t("validation:deposit.min")),
+    deposit: z.number({ message: t("validation:deposit.number") }).min(1, t("validation:deposit.min")),
   })
   .refine(
     (data) => {
@@ -608,7 +563,6 @@ export const noticeContractSchema = z.object({
     .transform((val) => new Date(val)),
 });
 
-
 /* SERVICE */
 export const createOrUpdateService = z.object({
   name: z.string().min(1, t("validation:service.name.required")),
@@ -653,12 +607,9 @@ export const createOrUpdateService = z.object({
 });
 /* DEFAULT SERVICE */
 export const updateDefaultServiceSchema = z.object({
-  defaultServiceAppliesTo: z.enum(
-    [DefaultServiceAppliesTo.HOP_DONG, DefaultServiceAppliesTo.PHONG],
-    {
-      message: t("validation:defaultService.appliesTo.invalid"),
-    }
-  ),
+  defaultServiceAppliesTo: z.enum([DefaultServiceAppliesTo.HOP_DONG, DefaultServiceAppliesTo.PHONG], {
+    message: t("validation:defaultService.appliesTo.invalid"),
+  }),
 
   pricesApply: zSafeNumber(t("validation:defaultService.price.label")).refine(
     (val) => val >= 0.0,
@@ -666,11 +617,7 @@ export const updateDefaultServiceSchema = z.object({
   ),
 
   defaultServiceStatus: z.enum(
-    [
-      DefaultServiceStatus.HOAT_DONG,
-      DefaultServiceStatus.TAM_DUNG,
-      DefaultServiceStatus.HUY_BO,
-    ],
+    [DefaultServiceStatus.HOAT_DONG, DefaultServiceStatus.TAM_DUNG, DefaultServiceStatus.HUY_BO],
     {
       message: t("validation:defaultService.status.invalid"),
     }
@@ -682,17 +629,13 @@ export const updateDefaultServiceSchema = z.object({
 export const creationDefaultServiceSchema = updateDefaultServiceSchema.extend({
   startApplying: z
     .string()
-    .refine(
-      (val) => !isNaN(Date.parse(val)),
-      t("validation:defaultService.startApplying.invalid")
-    )
+    .refine((val) => !isNaN(Date.parse(val)), t("validation:defaultService.startApplying.invalid"))
     .transform((val) => new Date(val)),
 
   buildingId: z.string().min(1, t("validation:defaultService.building.required")),
   floorId: z.string().min(1, t("validation:defaultService.floor.required")),
   serviceId: z.string().min(1, t("validation:defaultService.service.required")),
 });
-
 
 /* SERVICE ROOM */
 export const createServiceRoomSchema = z.object({
@@ -720,18 +663,10 @@ export const updateServicePriceInBuildingSchema = z.object({
 });
 
 export const updateServiceRoomSchema = createServiceRoomSchema.extend({
-  serviceRoomStatus: z.enum(
-    [
-      ServiceRoomStatus.DANG_SU_DUNG,
-      ServiceRoomStatus.DA_HUY,
-      ServiceRoomStatus.TAM_DUNG,
-    ],
-    {
-      message: t("validation:serviceRoom.status.invalid"),
-    }
-  ),
+  serviceRoomStatus: z.enum([ServiceRoomStatus.DANG_SU_DUNG, ServiceRoomStatus.DA_HUY, ServiceRoomStatus.TAM_DUNG], {
+    message: t("validation:serviceRoom.status.invalid"),
+  }),
 });
-
 
 /* METER */
 export const createOrUpdateMeterSchema = z.object({
@@ -748,20 +683,19 @@ export const createOrUpdateMeterSchema = z.object({
       return !isNaN(Date.parse(val));
     }, t("validation:meter.manufactureDate.invalid"))
     .transform((val) => new Date(val))
-    .refine(
-      (val) => {
-        const date = new Date();
-        return val <= date;
-      },
-      t("validation:meter.manufactureDate.future")
-    ),
+    .refine((val) => {
+      const date = new Date();
+      return val <= date;
+    }, t("validation:meter.manufactureDate.future")),
   closestIndex: zSafeNumber(t("validation:meter.closestIndex.label"), { min: 0 }),
   descriptionMeter: z.string().optional(),
 });
 /* METER READING */
 export const updateMeterReadingSchema = z.object({
-  newIndex: zSafeNumber(t("validation:meterReading.newIndex.label"))
-    .refine((val) => val >= 0, t("validation:meterReading.newIndex.negative")),
+  newIndex: zSafeNumber(t("validation:meterReading.newIndex.label")).refine(
+    (val) => val >= 0,
+    t("validation:meterReading.newIndex.negative")
+  ),
   descriptionMeterReading: z.string().optional(),
 });
 
@@ -775,7 +709,6 @@ export const createMeterReadingSchema = updateMeterReadingSchema.extend({
     max: 12,
   }),
 });
-
 
 // invoice
 export const createInvoiceSchema = z.object({
@@ -809,15 +742,24 @@ export const invoiceDetailUpdateSchema = z.object({
 
   newIndex: z.preprocess(
     (val) => (val === "" || val === null || val === undefined ? undefined : Number(val)),
-    z.number().min(1, { message: t("validation:invoice.newIndex.min") }).optional()
+    z
+      .number()
+      .min(1, { message: t("validation:invoice.newIndex.min") })
+      .optional()
   ),
   quantity: z.preprocess(
     (val) => (val === "" || val === null || val === undefined ? undefined : Number(val)),
-    z.number().min(1, { message: t("validation:invoice.quantity.min") }).optional()
+    z
+      .number()
+      .min(1, { message: t("validation:invoice.quantity.min") })
+      .optional()
   ),
   unitPrice: z.preprocess(
     (val) => (val === "" || val === null || val === undefined ? undefined : Number(val)),
-    z.number().min(1, { message: t("validation:invoice.unitPrice.min") }).optional()
+    z
+      .number()
+      .min(1, { message: t("validation:invoice.unitPrice.min") })
+      .optional()
   ),
   serviceName: z.string().optional(),
 });
@@ -863,7 +805,6 @@ export const invoiceDetailCreationSchema = invoiceDetailUpdateSchema
     { message: t("validation:invoice.serviceRoom.requiredForService"), path: ["serviceRoomId"] }
   );
 
-
 /* PAYMENT RECEIPT */
 export const rejectPaymentReceiptSchema = z.object({
   reason: z
@@ -877,12 +818,9 @@ export const createOrUpdateNotificationSchema = z
   .object({
     title: z.string().min(1, t("validation:notification.title.required")),
     content: z.string().min(1, t("validation:notification.content.required")),
-    notificationType: z.enum(
-      [NotificationType.CHUNG, NotificationType.HE_THONG, NotificationType.KHAC],
-      {
-        message: t("validation:notification.notificationType.invalid"),
-      }
-    ),
+    notificationType: z.enum([NotificationType.CHUNG, NotificationType.HE_THONG, NotificationType.KHAC], {
+      message: t("validation:notification.notificationType.invalid"),
+    }),
     sendToAll: z.boolean({ message: t("validation:notification.sendToAll.required") }),
     users: z.array(z.string()).optional(),
   })
@@ -899,4 +837,3 @@ export const createOrUpdateNotificationSchema = z
       path: ["users"],
     }
   );
-

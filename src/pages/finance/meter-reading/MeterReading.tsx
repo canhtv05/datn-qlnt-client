@@ -38,18 +38,18 @@ const MeterReading = () => {
 
   const columnConfigs: ColumnConfig[] = [
     {
-      label: "Mã công tơ",
+      label: t("meterReading.response.meterCode"),
       accessorKey: "meterCode",
       isSort: true,
       hasHighlight: true,
     },
     {
-      label: "Tên công tơ",
+      label: t("meterReading.response.meterName"),
       accessorKey: "meterName",
       isSort: true,
     },
     {
-      label: "Thao tác",
+      label: t("meterReading.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -72,7 +72,11 @@ const MeterReading = () => {
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                  <TooltipContent
+                    className="text-white"
+                    style={{ background: btn.arrowColor }}
+                    arrow={false}
+                  >
                     <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
@@ -90,41 +94,41 @@ const MeterReading = () => {
       },
     },
     {
-      label: "Loại công tơ",
+      label: t("meterReading.response.meterType"),
       accessorKey: "meterType",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
     {
-      label: "Chỉ số cũ",
+      label: t("meterReading.response.oldIndex"),
       accessorKey: "oldIndex",
       isSort: true,
     },
     {
-      label: "Chỉ số mới",
+      label: t("meterReading.response.newIndex"),
       accessorKey: "newIndex",
       isSort: true,
     },
     {
-      label: "Số lượng",
+      label: t("meterReading.response.quantity"),
       accessorKey: "quantity",
       isSort: true,
     },
     {
-      label: "Tháng",
+      label: t("meterReading.response.month"),
       accessorKey: "month",
       isSort: true,
       isCenter: true,
     },
     {
-      label: "Năm",
+      label: t("meterReading.response.year"),
       accessorKey: "year",
       isSort: true,
       isCenter: true,
     },
     {
-      label: "Ngày ghi chỉ số",
+      label: t("meterReading.response.readingDate"),
       accessorKey: "readingDate",
       isSort: true,
       render: (row: MeterReadingResponse) => {
@@ -138,24 +142,29 @@ const MeterReading = () => {
       isSort: false,
     },
     {
-      label: "Ngày tạo",
+      label: t("meterReading.response.descriptionMeterReading"),
+      accessorKey: "descriptionMeterReading",
+      isSort: false,
+    },
+    {
+      label: t("meterReading.response.createdAt"),
       accessorKey: "createdAt",
       hasDate: true,
       isSort: true,
     },
     {
-      label: "Ngày cập nhật",
+      label: t("meterReading.response.updatedAt"),
       accessorKey: "updatedAt",
       hasDate: true,
       isSort: true,
     },
     {
-      label: "ID",
+      label: t("meterReading.roomId"),
       accessorKey: "id",
       isHidden: true,
     },
     {
-      label: "Meter ID",
+      label: t("meterReading.response.updatedAt"),
       accessorKey: "meterId",
       isHidden: true,
     },
@@ -163,7 +172,11 @@ const MeterReading = () => {
 
   return (
     <div className="flex flex-col">
-      <MeterReadingButton ids={rowSelection} meterInitResponse={meterFindAll} data={data?.data ?? []} />
+      <MeterReadingButton
+        ids={rowSelection}
+        meterInitResponse={meterFindAll}
+        data={data?.data ?? []}
+      />
       <div className="shadow-lg">
         <MeterReadingFilter props={props} />
         <DataTable<MeterReadingResponse>
@@ -178,12 +191,12 @@ const MeterReading = () => {
           setRowSelection={setRowSelection}
         />
         <Modal
-          title="Ghi chỉ số"
+          title={t("meterReading.title")}
           trigger={null}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
           onConfirm={handleUpdateFloor}
-          desc={Notice.UPDATE}
+          desc={t(Notice.UPDATE)}
         >
           <AddOrUpdateMeterReading
             type="update"

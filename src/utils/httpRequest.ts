@@ -31,7 +31,6 @@ httpRequest.interceptors.request.use(
     if (accessToken && !publicRoutes.some((route) => config.url?.includes(route))) {
       config.headers.Authorization = `Bearer ${accessToken}`;
       const language = lang === "vi-VN" ? "vi" : "en";
-      console.log(language, lang);
       config.headers["Accept-Language"] = language;
     }
     return config;

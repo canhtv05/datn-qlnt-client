@@ -79,7 +79,7 @@ const ServiceRoomDetail = () => {
       hasBadge: true,
       isCenter: true,
     },
-    { label: "Mô tả", accessorKey: "description", isSort: false },
+    { label: t("service.response.description"), accessorKey: "description", isSort: false },
   ];
 
   return (

@@ -15,9 +15,11 @@ import TextareaLabel from "@/components/TextareaLabel";
 import RenderIf from "@/components/RenderIf";
 import useViewInvoiceDetail from "./useViewInvoiceDetail";
 import SelectPaymentMethod from "@/components/finance/invoice/SelectPaymentMethod";
+import { useTranslation } from "react-i18next";
 
 const NA = "N/A";
 const ViewInvoiceDetail = () => {
+  const { t } = useTranslation();
   const {
     handleRejectPayment,
     isLoading,
@@ -38,7 +40,7 @@ const ViewInvoiceDetail = () => {
   if (isLoading) {
     return (
       <div className="w-full text-center">
-        <span>Đang tải chi tiết hóa đơn...</span>
+        <span> {t("invoice.detail.loading")}</span>
       </div>
     );
   }
@@ -47,7 +49,7 @@ const ViewInvoiceDetail = () => {
     <div className="p-10 bg-background rounded-md shadow-lg">
       <div className="flex justify-end gap-2">
         <Button variant={"status"} className="text-white cursor-pointer" onClick={reactToPrintFn}>
-          Tải hóa đơn
+          {t("invoice.detail.download")}
         </Button>
       </div>
       <div ref={contentRef} className="print-area">
@@ -55,13 +57,13 @@ const ViewInvoiceDetail = () => {
           <aside className="flex flex-col gap-y-2">
             <Logo tro="text-[26px]" hub="text-[26px]" />
             <span>
-              Tên tòa nhà/Building name: <strong>{data?.data?.buildingName}</strong>
+              {t("invoice.detail.buildingName")}: <strong>{data?.data?.buildingName}</strong>
             </span>
             <span>
-              Phòng/Room: <strong>{data?.data?.roomCode}</strong>
+              {t("invoice.detail.roomCode")}: <strong>{data?.data?.roomCode}</strong>
             </span>
             <span>
-              Khách hàng/Customer:{" "}
+              {t("invoice.detail.tenantPhone")}:
               <strong>
                 {data?.data?.tenantName} - {data?.data?.tenantPhone ?? NA}
               </strong>
@@ -70,23 +72,25 @@ const ViewInvoiceDetail = () => {
           <article className="flex flex-col gap-y-2 md:mt-0 mt-5 md:items-end items-start">
             <h1 className="uppercase font-black text-end">Hóa đơn/Payment request</h1>
             <span className="text-end">
-              Mã/Code: <strong>{data?.data?.invoiceCode}</strong>
+              {t("invoice.detail.invoiceCode")}:<strong>{data?.data?.invoiceCode}</strong>
             </span>
             <span className="text-end">
-              Ngày/Date:{" "}
+              {t("invoice.detail.date")}:
               <strong>{data?.data?.createdAt && new Date(data?.data?.createdAt).toLocaleDateString(lang)}</strong>
             </span>
             <span className="text-end">
-              Hạn TT/Due date:{" "}
+              {t("invoice.detail.paymentDueDate")}:
               <strong>
                 {data?.data?.paymentDueDate && new Date(data?.data?.paymentDueDate).toLocaleDateString(lang)}
               </strong>
             </span>
             <span className="flex gap-2 items-center justify-end">
-              Loại hóa đơn/Invoice type: {data?.data?.invoiceType && <StatusBadge status={data?.data?.invoiceType} />}
+              {t("invoice.detail.invoiceType")}:
+              {data?.data?.invoiceType && <StatusBadge status={data?.data?.invoiceType} />}
             </span>
             <span className="flex gap-2 items-center justify-end">
-              Trạng thái/Status: {data?.data?.invoiceStatus && <StatusBadge status={data?.data?.invoiceStatus} />}
+              {t("invoice.detail.invoiceStatus")}:
+              {data?.data?.invoiceStatus && <StatusBadge status={data?.data?.invoiceStatus} />}
             </span>
           </article>
         </header>
@@ -94,16 +98,16 @@ const ViewInvoiceDetail = () => {
           <Table className="border">
             <TableHeader>
               <TableRow className="[&>th]:border-r last:border-r-0 [&>th]:font-black [&>th]:bg-primary [&>th]:text-white [&>th]:text-end">
-                <TableHead className="!text-center">STT</TableHead>
-                <TableHead className="!text-start">Tên dịch vụ</TableHead>
-                <TableHead className="!text-center">Loại dịch vụ</TableHead>
-                <TableHead className="!text-center">Dịch vụ tính theo</TableHead>
-                <TableHead className="!text-center">Đơn vị</TableHead>
-                <TableHead>Chỉ số đầu</TableHead>
-                <TableHead>Chỉ số cuối</TableHead>
-                <TableHead className="text-right">Số lượng</TableHead>
-                <TableHead className="text-right">Đơn giá</TableHead>
-                <TableHead className="text-right">Thành tiền</TableHead>
+                <TableHead className="!text-center">{t("invoice.detail.table.index")}</TableHead>
+                <TableHead className="!text-start">{t("invoice.detail.table.serviceName")}</TableHead>
+                <TableHead className="!text-center">{t("invoice.detail.table.serviceCategory")}</TableHead>
+                <TableHead className="!text-center">{t("invoice.detail.table.serviceCalculation")}</TableHead>
+                <TableHead className="!text-center">{t("invoice.detail.table.unit")}</TableHead>
+                <TableHead>{t("invoice.detail.table.oldIndex")}</TableHead>
+                <TableHead>{t("invoice.detail.table.newIndex")}</TableHead>
+                <TableHead className="text-right">{t("invoice.detail.table.quantity")}</TableHead>
+                <TableHead className="text-right">{t("invoice.detail.table.unitPrice")}</TableHead>
+                <TableHead className="text-right">{t("invoice.detail.table.amount")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -132,13 +136,13 @@ const ViewInvoiceDetail = () => {
           <div className="flex flex-row justify-between items-end">
             <div className="flex flex-col justify-start text-sm mt-6">
               <span>
-                Hóa đơn / Invoice for:{" "}
+                {t("invoice.detail.invoiceFor")}:{" "}
                 <strong>
                   {data?.data?.month ?? NA} - {data?.data?.year ?? NA}
                 </strong>
               </span>
               <span className="mt-2">
-                <span className="text-red-500 font-medium">Ghi chú / Note:</span> {data?.data?.note || NA}
+                <span className="text-red-500 font-medium">{t("invoice.detail.note")}:</span> {data?.data?.note || NA}
               </span>
             </div>
           </div>
@@ -146,16 +150,16 @@ const ViewInvoiceDetail = () => {
           <div className="flex flex-col items-end mt-4 text-sm">
             <div className="text-end">
               <div>
-                Thành tiền / Total amount:{" "}
+                {t("invoice.detail.totalAmount")}:{" "}
                 <strong className="text-red-500 text-base">
                   {data?.data?.totalAmount ? formattedCurrency(data?.data?.totalAmount) : formattedCurrency(0)}
                 </strong>
               </div>
               <div className="italic text-xs mt-1 text-foreground">
-                (Bằng chữ:{" "}
+                ({t("invoice.detail.inWords")}
                 {(() => {
                   const text = readVNNumber.toVNWord(data?.data?.totalAmount);
-                  return text === "" ? "Miễn phí" : text.charAt(0).toUpperCase() + text.slice(1) + " đồng";
+                  return text === "" ? t("invoice.detail.free") : text.charAt(0).toUpperCase() + text.slice(1) + "VND";
                 })()}
                 )
               </div>
@@ -178,13 +182,13 @@ const ViewInvoiceDetail = () => {
             }
           >
             <Modal
-              title="Lý do từ chối thanh toán"
+              title={t("invoice.detail.modal.paymentTitle")}
               trigger={
                 <Button variant={"delete"} className="cursor-pointer">
                   <span className="text-white">Từ chối thanh toán</span>
                 </Button>
               }
-              desc={Notice.UPDATE}
+              desc={t(Notice.UPDATE)}
               onConfirm={handleRejectPayment}
             >
               <TextareaLabel
@@ -192,8 +196,8 @@ const ViewInvoiceDetail = () => {
                 errorText={errors.reason}
                 id="reason"
                 name="reason"
-                placeholder="Nhập lý do"
-                label="Lý do từ chối thanh toán:"
+                placeholder={t("invoice.detail.modal.rejectPlaceholder")}
+                label={t("invoice.detail.modal.rejectLabel")}
                 value={reason ?? ""}
                 onChange={(e) => setReason(e.target.value)}
               />
@@ -201,10 +205,10 @@ const ViewInvoiceDetail = () => {
           </RenderIf>
 
           <Modal
-            title="Chọn phương thức thanh toán"
+            title={t("invoice.detail.modal.paymentTitle")}
             trigger={
               <Button variant={"default"} className="cursor-pointer">
-                <span className="text-white">Thanh toán</span>
+                <span className="text-white">{t("invoice.detail.button.confirmPayment")}</span>
               </Button>
             }
             onConfirm={handleContinue}

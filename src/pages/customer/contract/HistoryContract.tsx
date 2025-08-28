@@ -30,13 +30,13 @@ const HistoryContract = () => {
 
   const columnConfigs: ColumnConfig[] = [
     {
-      label: "Mã hợp đồng",
+      label: t("contract.response.contractCode"),
       accessorKey: "contractCode",
       isSort: true,
       hasHighlight: true,
     },
     {
-      label: "Thao tác",
+      label: t("contract.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -83,13 +83,13 @@ const HistoryContract = () => {
       },
     },
     {
-      label: "Phòng",
+      label: t("contract.response.room"),
       accessorKey: "roomCode",
       isSort: true,
       isCenter: true,
     },
     {
-      label: "Ngày bắt đầu",
+      label: t("contract.response.startDate"),
       accessorKey: "startDate",
       isSort: true,
       render: (row: ContractResponse) =>
@@ -100,7 +100,7 @@ const HistoryContract = () => {
         }),
     },
     {
-      label: "Ngày kết thúc",
+      label: t("contract.response.endDate"),
       accessorKey: "endDate",
       isSort: true,
       render: (row: ContractResponse) =>
@@ -111,21 +111,21 @@ const HistoryContract = () => {
         }),
     },
     {
-      label: "Tiền cọc",
+      label: t("contract.response.deposit"),
       accessorKey: "deposit",
       isSort: true,
       isCenter: true,
       render: (row: ContractResponse) => `${formattedCurrency(row.deposit ?? 0)}`,
     },
     {
-      label: "Tiền phòng",
+      label: t("contract.response.roomPrice"),
       accessorKey: "roomPrice",
       isSort: true,
       isCenter: true,
       render: (row: ContractResponse) => `${formattedCurrency(row.roomPrice ?? 0)}`,
     },
     {
-      label: "Trạng thái",
+      label: t("contract.response.actions"),
       accessorKey: "status",
       isSort: true,
       isCenter: true,
@@ -139,7 +139,7 @@ const HistoryContract = () => {
       <div className="pb-5 rounded-t-sm bg-background rounded-b-sm">
         <div className="h-full bg-background rounded-t-sm">
           <div className="flex px-5 py-3 justify-between items-center">
-            <h3 className="font-semibold">Lịch sử xóa hợp đồng</h3>
+            <h3 className="font-semibold">{t("contract.titleHistory")}</h3>
             <div className="flex gap-2">
               {BUTTON_HISTORY.map((btn, idx) => (
                 <TooltipProvider key={idx}>
@@ -154,7 +154,7 @@ const HistoryContract = () => {
                             openDialogAll(
                               { ids: rowSelection, type: "remove" },
                               {
-                                desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tầng đã chọn và không thể hoàn tác lại. Bạn có chắc chắn muốn tiếp tục?",
+                                desc: t("common.confirmDialog.delete"),
                                 type: "warn",
                               }
                             );
@@ -162,7 +162,7 @@ const HistoryContract = () => {
                             openDialogAll(
                               { ids: rowSelection, type: "undo" },
                               {
-                                desc: Notice.RESTORES,
+                                desc: t(Notice.RESTORES),
                                 type: "default",
                               }
                             );
@@ -186,7 +186,9 @@ const HistoryContract = () => {
                           fill: btn.arrowColor,
                           background: btn.arrowColor,
                         }}
-                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                        className={
+                          "size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
+                        }
                       />
                     </TooltipContent>
                   </Tooltip>

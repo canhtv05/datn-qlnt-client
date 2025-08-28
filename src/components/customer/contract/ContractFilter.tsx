@@ -2,9 +2,11 @@ import ButtonFilter from "@/components/ButtonFilter";
 import FieldsSelectLabel from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import RenderIf from "@/components/RenderIf";
+import { ContractStatus } from "@/enums";
 import { switchGrid2 } from "@/lib/utils";
 import { ContractFilterValues } from "@/types";
 import { Dispatch, FormEvent, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface ContractFilterProps {
   filterValues: ContractFilterValues;
@@ -13,7 +15,14 @@ export interface ContractFilterProps {
   onFilter: () => void;
 }
 
-const ContractFilter = ({ props, type }: { props: ContractFilterProps; type: "default" | "restore" }) => {
+const ContractFilter = ({
+  props,
+  type,
+}: {
+  props: ContractFilterProps;
+  type: "default" | "restore";
+}) => {
+  const { t } = useTranslation();
   const { filterValues, setFilterValues, onClear, onFilter } = props;
   const { status, query } = filterValues;
 
@@ -32,14 +41,27 @@ const ContractFilter = ({ props, type }: { props: ContractFilterProps; type: "de
         <RenderIf value={type === "default"}>
           <FieldsSelectLabel
             name="status"
-            labelSelect="Trạng thái hợp đồng"
-            placeholder="-- Trạng thái --"
+            labelSelect={t("contract.response.status")}
+            placeholder={t("contract.filter.placeholderStatus")}
             data={[
-              { label: "Hiệu lực", value: "HIEU_LUC" },
-              { label: "Sắp hết hạn", value: "SAP_HET_HAN" },
-              { label: "Hết hạn", value: "HET_HAN" },
-              { label: "Đã thanh lý", value: "DA_THANH_LY" },
-              { label: "Đã huỷ", value: "DA_HUY" },
+              { label: t("statusBadge.contractStatus.valid"), value: ContractStatus.HIEU_LUC },
+              {
+                label: t("statusBadge.contractStatus.expiring"),
+                value: ContractStatus.SAP_HET_HAN,
+              },
+              {
+                label: t("statusBadge.contractStatus.endedNotice"),
+                value: ContractStatus.KET_THUC_CO_BAO_TRUOC,
+              },
+              {
+                label: t("statusBadge.contractStatus.endedOnTime"),
+                value: ContractStatus.KET_THUC_DUNG_HAN,
+              },
+              {
+                label: t("statusBadge.contractStatus.terminated"),
+                value: ContractStatus.TU_Y_HUY_BO,
+              },
+              { label: t("statusBadge.contractStatus.cancelled"), value: ContractStatus.DA_HUY },
             ]}
             value={status}
             onChange={(value) => handleChange("status", String(value))}
@@ -49,7 +71,7 @@ const ContractFilter = ({ props, type }: { props: ContractFilterProps; type: "de
         <InputLabel
           id="query"
           name="query"
-          placeholder="Tìm kiếm"
+          placeholder={t("contract.search")}
           value={query}
           onChange={(e) => handleChange("query", e.target.value)}
         />

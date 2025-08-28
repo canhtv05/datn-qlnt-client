@@ -16,6 +16,7 @@ import { httpRequest } from "@/utils/httpRequest";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Eye } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -54,6 +55,7 @@ export default function useInvoiceDetail() {
     errors: errorsUpdate,
     handleZodErrors: handleZodErrorsUpdate,
   } = useFormErrors<InvoiceDetailUpdateRequest>();
+  const { t } = useTranslation();
 
   const [rowsSelection, setRowsSelection] = useState<Record<string, boolean>>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,7 +76,9 @@ export default function useInvoiceDetail() {
     retry: 1,
   });
 
-  const { data: dataServiceRoom, isError: isErrorServiceRoom } = useQuery<ApiResponse<IdNameAndType[]>>({
+  const { data: dataServiceRoom, isError: isErrorServiceRoom } = useQuery<
+    ApiResponse<IdNameAndType[]>
+  >({
     queryKey: ["service-room-all"],
     queryFn: async () => {
       const res = await httpRequest.get(`/service-rooms/all/${roomId}`);
@@ -88,26 +92,27 @@ export default function useInvoiceDetail() {
 
   useEffect(() => {
     if (!roomId && location.pathname !== "/finance/invoice") {
-      toast.error("Không có mã phòng, vui lòng thử lại");
+      toast.error(t("invoice.error.noRoomId"));
       navigate("/finance/invoice", { replace: true });
     }
-  }, [navigate, roomId, location.pathname]);
+  }, [navigate, roomId, location.pathname, t]);
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải hóa đơn chi tiết");
+      toast.error(t("invoice.error.fetchInvoice"));
     }
     if (isErrorServiceRoom) {
-      toast.error("Có lỗi xảy ra khi tải dịch vụ phòng");
+      toast.error(t("invoice.error.fetchServiceRoom"));
     }
-  }, [isError, isErrorServiceRoom]);
+  }, [isError, isErrorServiceRoom, t]);
 
   const addInvoiceDetailMutation = useMutation({
     mutationKey: ["add-invoice-detail"],
-    mutationFn: async (payload: InvoiceDetailCreationRequest) => await httpRequest.post(`/invoice-details`, payload),
+    mutationFn: async (payload: InvoiceDetailCreationRequest) =>
+      await httpRequest.post(`/invoice-details`, payload),
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setValueCreation({
         description: "",
         invoiceId: "",
@@ -119,7 +124,8 @@ export default function useInvoiceDetail() {
         unitPrice: undefined,
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "invoice-detail",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "invoice-detail",
       });
     },
     retry: 1,
@@ -128,10 +134,18 @@ export default function useInvoiceDetail() {
   const handleAddInvoiceDetail = useCallback(async () => {
     try {
       if (!id) {
-        toast.error("Không có mã hóa đơn");
+        toast.error(t("invoice.error.noInvoiceId"));
         return false;
       }
-      const { description, invoiceItemType, newIndex, quantity, serviceName, serviceRoomId, unitPrice } = valueCreation;
+      const {
+        description,
+        invoiceItemType,
+        newIndex,
+        quantity,
+        serviceName,
+        serviceRoomId,
+        unitPrice,
+      } = valueCreation;
 
       const data: InvoiceDetailCreationRequest = {
         description: description.trim(),
@@ -152,7 +166,14 @@ export default function useInvoiceDetail() {
       handleZodErrorsCreation(error);
       return false;
     }
-  }, [addInvoiceDetailMutation, clearErrorsCreation, handleZodErrorsCreation, id, valueCreation]);
+  }, [
+    addInvoiceDetailMutation,
+    clearErrorsCreation,
+    handleZodErrorsCreation,
+    id,
+    t,
+    valueCreation,
+  ]);
 
   const { ConfirmDialog: ConfirmDialogUpdate, openDialog: openDialogUpdate } = useConfirmDialog<{
     id: string;
@@ -174,10 +195,11 @@ export default function useInvoiceDetail() {
       await removeInvoiceMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "invoice-detail",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "invoice-detail",
           });
 
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -205,15 +227,17 @@ export default function useInvoiceDetail() {
           { id: invoiceDetail.id, type: action },
           {
             type: "warn",
-            desc: Notice.REMOVE,
+            desc: t(Notice.REMOVE),
           }
         );
       }
     },
-    [openDialogUpdate]
+    [openDialogUpdate, t]
   );
 
-  const handleRemoveItemsInvoiceDetailByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
+  const handleRemoveItemsInvoiceDetailByIds = async (
+    ids: Record<string, boolean>
+  ): Promise<boolean> => {
     try {
       const selectedIds = Object.entries(ids)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -223,10 +247,11 @@ export default function useInvoiceDetail() {
       await Promise.all(selectedIds.map((id) => removeInvoiceMutation.mutateAsync(id)));
 
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "invoice-detail",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "invoice-detail",
       });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       return true;
     } catch (error) {
       handleMutationError(error);
@@ -234,12 +259,14 @@ export default function useInvoiceDetail() {
     }
   };
 
-  const { ConfirmDialog: ConfirmDialogAdd, openDialog: openDialogAdd } = useConfirmDialog<Record<string, boolean>>({
+  const { ConfirmDialog: ConfirmDialogAdd, openDialog: openDialogAdd } = useConfirmDialog<
+    Record<string, boolean>
+  >({
     onConfirm: async (ids?: Record<string, boolean>) => {
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveItemsInvoiceDetailByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các mục đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("common.confirmDialog.delete"),
     type: "warn",
   });
 
@@ -286,10 +313,11 @@ export default function useInvoiceDetail() {
           });
 
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "invoice-detail",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "invoice-detail",
           });
 
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
           setIsModalOpen(false);
         },
       });
@@ -299,24 +327,32 @@ export default function useInvoiceDetail() {
       handleZodErrorsUpdate(error);
       return false;
     }
-  }, [valueUpdate, updateInvoiceItemMutation, clearErrorsUpdate, queryClient, handleZodErrorsUpdate]);
+  }, [
+    valueUpdate,
+    updateInvoiceItemMutation,
+    clearErrorsUpdate,
+    queryClient,
+    t,
+    handleZodErrorsUpdate,
+  ]);
 
-  const handleChange = (type: "creation" | "update") => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    e.stopPropagation();
-    const { name, value } = e.target;
+  const handleChange =
+    (type: "creation" | "update") => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      e.stopPropagation();
+      const { name, value } = e.target;
 
-    if (type === "creation") {
-      setValueCreation((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    } else {
-      setValueUpdate((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
-  };
+      if (type === "creation") {
+        setValueCreation((prev) => ({
+          ...prev,
+          [name]: value,
+        }));
+      } else {
+        setValueUpdate((prev) => ({
+          ...prev,
+          [name]: value,
+        }));
+      }
+    };
 
   const viewBtn: IBtnType[] = [
     {

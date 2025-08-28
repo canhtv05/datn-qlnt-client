@@ -13,10 +13,21 @@ import { DepositDetailView, IBtnType } from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
-import { depositStatusEnumToString, formatDate, formatNumber, handleExportExcel } from "@/lib/utils";
+import {
+  depositStatusEnumToString,
+  formatDate,
+  formatNumber,
+  handleExportExcel,
+} from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
-const DepositButton = ({ ids, data }: { data?: DepositDetailView[]; ids: Record<string, boolean> }) => {
+const DepositButton = ({
+  ids,
+  data,
+}: {
+  data?: DepositDetailView[];
+  ids: Record<string, boolean>;
+}) => {
   const { t } = useTranslation();
 
   const queryClient = useQueryClient();
@@ -53,7 +64,7 @@ const DepositButton = ({ ids, data }: { data?: DepositDetailView[]; ids: Record<
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveAssetTypeByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các tiền cọc đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("common.confirmDialog.delete", { name: t("deposit.title") }),
     type: "warn",
   });
 
@@ -65,22 +76,24 @@ const DepositButton = ({ ids, data }: { data?: DepositDetailView[]; ids: Record<
       if (btn.type === "download") {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
-          "Mã đặt cọc": d.id,
-          "Mã hợp đồng": d.contractCode,
-          "Mã phòng": d.roomCode,
-          "Người đặt cọc": d.depositor,
-          "Người nhận cọc": d.depositRecipient,
-          "Số tiền cọc": formatNumber(d.depositAmount),
-          "Trạng thái cọc": depositStatusEnumToString(d.depositStatus, t),
-          "Ngày đặt cọc": formatDate(d.depositDate),
-          "Ngày hoàn trả": formatDate(d.depositRefundDate),
-          "Ngày trả lại tiền đặt cọc": formatDate(d.securityDepositReturnDate),
-          "Ghi chú": d.note,
-          "Ngày tạo": formatDate(d.createdAt),
-          "Ngày cập nhật": formatDate(d.updatedAt),
+          [t("deposit.response.id")]: d.id,
+          [t("deposit.response.contractCode")]: d.contractCode,
+          [t("deposit.response.roomCode")]: d.roomCode,
+          [t("deposit.response.depositor")]: d.depositor,
+          [t("deposit.response.depositRecipient")]: d.depositRecipient,
+          [t("deposit.response.depositAmount")]: formatNumber(d.depositAmount),
+          [t("deposit.response.depositStatus")]: depositStatusEnumToString(d.depositStatus, t),
+          [t("deposit.response.depositDate")]: formatDate(d.depositDate),
+          [t("deposit.response.depositRefundDate")]: formatDate(d.depositRefundDate),
+          [t("deposit.response.securityDepositReturnDate")]: formatDate(
+            d.securityDepositReturnDate
+          ),
+          [t("deposit.response.note")]: d.note,
+          [t("deposit.response.createdAt")]: formatDate(d.createdAt),
+          [t("deposit.response.updatedAt")]: formatDate(d.updatedAt),
         }));
 
-        handleExportExcel("Tiền cọc", exportData, data);
+        handleExportExcel(t("deposit.title"), exportData, data);
       }
     },
     [openDialog, ids, data, t]
@@ -89,7 +102,7 @@ const DepositButton = ({ ids, data }: { data?: DepositDetailView[]; ids: Record<
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Tiền cọc</h3>
+        <h3 className="font-semibold">{t("deposit.title")}</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>

@@ -6,6 +6,7 @@ import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -15,6 +16,7 @@ type BulkRemovePayload = {
 };
 
 export const useHistoryContract = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
@@ -53,7 +55,10 @@ export const useHistoryContract = () => {
   const { data, isLoading, isError } = useQuery<ApiResponse<ContractResponse[]>>({
     queryKey: ["contracts-cancel", page, size, query, status],
     queryFn: async () => {
-      const params: Record<string, string> = { page: parsedPage.toString(), size: parsedSize.toString() };
+      const params: Record<string, string> = {
+        page: parsedPage.toString(),
+        size: parsedSize.toString(),
+      };
       Object.entries(filterValues).forEach(([k, v]) => {
         if (v) params[k] = v;
       });
@@ -78,14 +83,16 @@ export const useHistoryContract = () => {
       await removeContractMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "contracts",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts-cancel",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "contracts-cancel",
           });
           queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
 
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -105,14 +112,16 @@ export const useHistoryContract = () => {
       await restoreContractMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "contracts",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts-cancel",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "contracts-cancel",
           });
           queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
 
-          toast.success(Status.RESTORE_SUCCESS);
+          toast.success(t(Status.RESTORE_SUCCESS));
         },
       });
       return true;
@@ -122,7 +131,10 @@ export const useHistoryContract = () => {
     }
   };
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "restore" | "remove" }>({
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{
+    id: string;
+    type: "restore" | "remove";
+  }>({
     onConfirm: async ({ id, type }) => {
       if (type === "remove") {
         return await handleRemoveContractById(id);
@@ -132,16 +144,17 @@ export const useHistoryContract = () => {
     },
   });
 
-  const { ConfirmDialog: ConfirmDialogRemoveAll, openDialog: openDialogAll } = useConfirmDialog<BulkRemovePayload>({
-    onConfirm: async ({ ids, type }) => {
-      if (!ids || !Object.values(ids).some(Boolean)) return false;
-      if (type === "remove") {
-        return await handleRemoveContractByIds(ids);
-      } else {
-        return await handleRestoreContractByIds(ids);
-      }
-    },
-  });
+  const { ConfirmDialog: ConfirmDialogRemoveAll, openDialog: openDialogAll } =
+    useConfirmDialog<BulkRemovePayload>({
+      onConfirm: async ({ ids, type }) => {
+        if (!ids || !Object.values(ids).some(Boolean)) return false;
+        if (type === "remove") {
+          return await handleRemoveContractByIds(ids);
+        } else {
+          return await handleRestoreContractByIds(ids);
+        }
+      },
+    });
 
   const handleRemoveContractByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
@@ -156,11 +169,12 @@ export const useHistoryContract = () => {
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts-cancel",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "contracts-cancel",
       });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       setRowSelection({});
       return true;
     } catch (error) {
@@ -182,11 +196,12 @@ export const useHistoryContract = () => {
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts-cancel",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "contracts-cancel",
       });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
 
-      toast.success(Status.RESTORE_SUCCESS);
+      toast.success(t(Status.RESTORE_SUCCESS));
       setRowSelection({});
       return true;
     } catch (error) {
@@ -228,9 +243,9 @@ export const useHistoryContract = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải hợp đồng");
+      toast.error(t("contract.errorFetch"));
     }
-  }, [isError]);
+  }, [isError, t]);
 
   return {
     query: {

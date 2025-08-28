@@ -15,10 +15,12 @@ import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useMeter = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const { id } = useParams();
   const {
@@ -75,10 +77,21 @@ export const useMeter = () => {
     if (filterValues.query) params.set("query", filterValues.query);
     if (filterValues.roomId) params.set("roomId", filterValues.roomId);
     params.set("page", "1");
-    if (filterValues.buildingId || filterValues.meterType || filterValues.query || filterValues.roomId) {
+    if (
+      filterValues.buildingId ||
+      filterValues.meterType ||
+      filterValues.query ||
+      filterValues.roomId
+    ) {
       setSearchParams(params);
     }
-  }, [filterValues.buildingId, filterValues.meterType, filterValues.query, filterValues.roomId, setSearchParams]);
+  }, [
+    filterValues.buildingId,
+    filterValues.meterType,
+    filterValues.query,
+    filterValues.roomId,
+    setSearchParams,
+  ]);
 
   const { data, isLoading, isError } = useQuery<ApiResponse<PaginatedResponse<MeterResponse[]>>>({
     queryKey: ["meters", page, size, buildingId, query, id, roomId, meterType],
@@ -140,7 +153,7 @@ export const useMeter = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "meters",
           });
           // queryClient.invalidateQueries({ queryKey: ["meter-statistics"] });
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -152,8 +165,16 @@ export const useMeter = () => {
 
   const handleUpdateDefaultService = useCallback(async () => {
     try {
-      const { descriptionMeter, closestIndex, manufactureDate, meterCode, meterName, meterType, roomId, serviceId } =
-        value;
+      const {
+        descriptionMeter,
+        closestIndex,
+        manufactureDate,
+        meterCode,
+        meterName,
+        meterType,
+        roomId,
+        serviceId,
+      } = value;
 
       await createOrUpdateMeterSchema.parseAsync(value);
 
@@ -184,7 +205,7 @@ export const useMeter = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "meters",
           });
           // queryClient.invalidateQueries({ queryKey: ["meter-statistics"] });
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
           setIsModalOpen(false);
         },
       });
@@ -194,7 +215,7 @@ export const useMeter = () => {
       handleZodErrors(error);
       return false;
     }
-  }, [updateMeterMutation, clearErrors, handleZodErrors, queryClient, value]);
+  }, [value, updateMeterMutation, clearErrors, queryClient, t, handleZodErrors]);
 
   const handleActionClick = useCallback(
     (meter: MeterResponse, action: "update" | "delete") => {
@@ -216,15 +237,17 @@ export const useMeter = () => {
           { id: meter.id, type: action },
           {
             type: "warn",
-            desc: Notice.REMOVE,
+            desc: t(Notice.REMOVE),
           }
         );
       }
     },
-    [openDialog]
+    [openDialog, t]
   );
 
-  const { data: meterInit, isError: errorMeterInit } = useQuery<ApiResponse<CreateMeterInitResponse>>({
+  const { data: meterInit, isError: errorMeterInit } = useQuery<
+    ApiResponse<CreateMeterInitResponse>
+  >({
     queryKey: ["meters-init"],
     queryFn: async () => {
       const res = await httpRequest.get("/meters/init");
@@ -233,7 +256,9 @@ export const useMeter = () => {
     retry: 1,
   });
 
-  const { data: filterMeterInit, isError: errorFilterMeterInit } = useQuery<ApiResponse<MeterInitFilterResponse>>({
+  const { data: filterMeterInit, isError: errorFilterMeterInit } = useQuery<
+    ApiResponse<MeterInitFilterResponse>
+  >({
     queryKey: ["meters-filter-init"],
     queryFn: async () => {
       const res = await httpRequest.get(`/meters/init-filter/${id}`);
@@ -254,17 +279,17 @@ export const useMeter = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải công tơ");
+      toast.error(t("meter.errorFetch"));
     }
 
     if (errorMeterInit) {
-      toast.error("Có lỗi xảy ra khi tải khởi tạo công tơ");
+      toast.error(t("meter.errorFetch"));
     }
 
     if (errorFilterMeterInit) {
-      toast.error("Có lỗi xảy ra khi tải lọc công tơ");
+      toast.error(t("meter.errorFetch"));
     }
-  }, [errorFilterMeterInit, errorMeterInit, isError]);
+  }, [errorFilterMeterInit, errorMeterInit, isError, t]);
 
   return {
     query: {

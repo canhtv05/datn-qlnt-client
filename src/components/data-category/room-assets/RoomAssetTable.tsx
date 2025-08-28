@@ -89,20 +89,20 @@ const RoomAssetTable: React.FC<RoomAssetTableProps> = ({ roomId }) => {
       },
     },
     {
-      label: t("roomAsset.response.assetBeLongTo"),
+      label: t("roomAsset.addOrUpdate.assetBeLongTo"),
       accessorKey: "assetBeLongTo",
       isSort: true,
       isCenter: true,
       hasBadge: true,
     },
     {
-      label: t("roomAsset.response.assetStatus"),
+      label: t("roomAsset.response.status"),
       accessorKey: "assetStatus",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
-    { label: t("roomAsset.response.price"), accessorKey: "price", isSort: true },
+    { label: t("roomAsset.addOrUpdate.price"), accessorKey: "price", isSort: true },
     {
       label: t("roomAsset.response.quantity"),
       accessorKey: "quantity",
@@ -134,18 +134,18 @@ const RoomAssetTable: React.FC<RoomAssetTableProps> = ({ roomId }) => {
           </h3>
           <div className="px-5 flex border-primary/20 flex-col space-y-2 [&_>span]:text-sm [&_>strong]:text-sm border-b-2 border-r-2 border-l-2 -mt-3 rounded-b-sm">
             <strong className="mt-2">
-              - {t("room.roomCode")}: <span>{data?.data?.roomCode}</span>
+              - {t("room.response.roomCode")}: <span>{data?.data?.roomCode}</span>
             </strong>
             <strong>
-              - {t("room.roomType")}:{" "}
+              - {t("room.response.roomType")}:{" "}
               <span>{data?.data?.roomType && <StatusBadge status={data?.data?.roomType} />}</span>
             </strong>
             <strong>
-              - {t("room.status")}:{" "}
+              - {t("room.response.status")}:{" "}
               <span>{data?.data?.status && <StatusBadge status={data?.data?.status} />}</span>
             </strong>
             <strong className="pb-2">
-              - {t("room.description")}:{" "}
+              - {t("room.response.description")}:{" "}
               <p className="inline-block">
                 {data?.data?.description !== "" ? (
                   data?.data?.description

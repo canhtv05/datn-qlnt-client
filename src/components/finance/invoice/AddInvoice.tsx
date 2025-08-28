@@ -10,6 +10,7 @@ import {
   InvoiceFloorCreationRequest,
 } from "@/types";
 import { Dispatch, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 interface AddInvoiceForContractProps {
   value: InvoiceCreationRequest;
@@ -54,6 +55,7 @@ type AddInvoiceProps =
   | AddInvoiceFinalizeProps;
 
 const AddInvoice = (props: AddInvoiceProps) => {
+  const { t } = useTranslation();
   const { value, setValue, errors, type } = props;
 
   const contractOptions = useMemo(() => {
@@ -98,13 +100,13 @@ const AddInvoice = (props: AddInvoiceProps) => {
         {(type === "contract" || type === "finalize") && (
           <FieldsSelectLabel
             data={contractOptions}
-            placeholder="-- Chọn hợp đồng --"
-            label="Hợp đồng:"
+            placeholder={t("invoice.add.placeholderContract")}
+            label={t("invoice.add.labelContract")}
             id="contractId"
             name="contractId"
             value={value.contractId ?? ""}
             onChange={(val) => setValue((prev) => ({ ...prev, contractId: val as string }))}
-            labelSelect="Hợp đồng"
+            labelSelect={t("invoice.add.labelContract")}
             showClear
             errorText={errors.contractId}
             required
@@ -114,13 +116,13 @@ const AddInvoice = (props: AddInvoiceProps) => {
         {type === "building" && (
           <FieldsSelectLabel
             data={buildingOptions}
-            placeholder="-- Chọn tòa nhà --"
-            label="Tòa nhà:"
+            placeholder={t("invoice.add.placeholderBuilding")}
+            label={t("invoice.add.labelBuilding")}
             id="buildingId"
             name="buildingId"
             value={value.buildingId ?? ""}
             onChange={(val) => setValue((prev) => ({ ...prev, buildingId: val as string }))}
-            labelSelect="Tòa nhà"
+            labelSelect={t("invoice.add.labelBuilding")}
             showClear
             errorText={errors.buildingId}
             required
@@ -130,13 +132,13 @@ const AddInvoice = (props: AddInvoiceProps) => {
         {type === "floor" && (
           <FieldsSelectLabel
             data={floorOptions}
-            placeholder="-- Chọn tầng nhà --"
-            label="Tầng nhà:"
+            placeholder={t("invoice.add.placeholderFloor")}
+            label={t("invoice.add.labelFloor")}
             id="floorId"
             name="floorId"
             value={value.floorId ?? ""}
             onChange={(val) => setValue((prev) => ({ ...prev, floorId: val as string }))}
-            labelSelect="Tầng nhà"
+            labelSelect={t("invoice.add.labelFloor")}
             showClear
             errorText={errors.floorId}
             required
@@ -148,16 +150,20 @@ const AddInvoice = (props: AddInvoiceProps) => {
           setDate={(d) => {
             const date = d.toISOString();
             if (type === "building") {
-              setValue((prev) => ({ ...prev, paymentDueDate: date } as InvoiceBuildingCreationRequest));
+              setValue(
+                (prev) => ({ ...prev, paymentDueDate: date } as InvoiceBuildingCreationRequest)
+              );
             } else if (type === "contract") {
               setValue((prev) => ({ ...prev, paymentDueDate: date } as InvoiceCreationRequest));
             } else if (type === "floor") {
-              setValue((prev) => ({ ...prev, paymentDueDate: date } as InvoiceFloorCreationRequest));
+              setValue(
+                (prev) => ({ ...prev, paymentDueDate: date } as InvoiceFloorCreationRequest)
+              );
             } else if (type === "finalize") {
               setValue((prev) => ({ ...prev, paymentDueDate: date } as InvoiceCreationRequest));
             }
           }}
-          label="Hạn thanh toán:"
+          label={t("invoice.add.labelPaymentDueDate")}
           errorText={errors?.paymentDueDate}
           required
           fromYear={new Date().getFullYear()}
@@ -168,8 +174,8 @@ const AddInvoice = (props: AddInvoiceProps) => {
       <TextareaLabel
         id="note"
         name="note"
-        placeholder="Nhập ghi chú"
-        label="Ghi chú:"
+        placeholder={t("invoice.add.placeholderNote")}
+        label={t("invoice.add.labelNote")}
         value={value.note ?? ""}
         onChange={(e) => {
           const note = e.target.value;

@@ -11,108 +11,122 @@ import PaymentReceiptFilter from "@/components/finance/payment-receipt/PaymentRe
 import { useTranslation } from "react-i18next";
 
 const PaymentReceipt = () => {
-  const { props, data, isLoading, query, handleActionClick, rowSelection, setRowSelection, ConfirmDialog } =
-    usePaymentReceipt();
+  const {
+    props,
+    data,
+    isLoading,
+    query,
+    handleActionClick,
+    rowSelection,
+    setRowSelection,
+    ConfirmDialog,
+  } = usePaymentReceipt();
   const { page, size } = query;
   const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     {
-      label: "Mã phiếu",
+      label: t("paymentReceipt.response.receiptCode"),
       accessorKey: "receiptCode",
       isSort: true,
       hasHighlight: true,
     },
     {
-      label: "Mã hóa đơn",
+      label: t("paymentReceipt.response.invoiceCode"),
       accessorKey: "invoiceCode",
       isSort: true,
       hasHighlight: true,
     },
     {
-      label: "Thao tác",
+      label: t("paymentReceipt.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
       render: (row: PaymentReceiptResponse) => {
         return (
           <div className="flex gap-2">
-            {ACTION_BUTTONS_FOR_PAYMENT_RECEIPT(row.paymentMethod, row.paymentStatus).map((btn, index) => (
-              <TooltipProvider key={index}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      size="icon"
-                      variant={btn.type}
-                      className="cursor-pointer"
-                      onClick={() => {
-                        const type = btn.type as "view";
-                        handleActionClick(row, type);
-                      }}
+            {ACTION_BUTTONS_FOR_PAYMENT_RECEIPT(row.paymentMethod, row.paymentStatus).map(
+              (btn, index) => (
+                <TooltipProvider key={index}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        size="icon"
+                        variant={btn.type}
+                        className="cursor-pointer"
+                        onClick={() => {
+                          const type = btn.type as "view";
+                          handleActionClick(row, type);
+                        }}
+                      >
+                        <btn.icon className="text-white" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      className="text-white"
+                      style={{ background: btn.arrowColor }}
+                      arrow={false}
                     >
-                      <btn.icon className="text-white" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
-                    <p>{t(btn.tooltipContent)}</p>
-                    <TooltipPrimitive.Arrow
-                      style={{
-                        fill: btn.arrowColor,
-                        background: btn.arrowColor,
-                      }}
-                      className="size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
-                    />
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            ))}
+                      <p>{t(btn.tooltipContent)}</p>
+                      <TooltipPrimitive.Arrow
+                        style={{
+                          fill: btn.arrowColor,
+                          background: btn.arrowColor,
+                        }}
+                        className="size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
+                      />
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )
+            )}
           </div>
         );
       },
     },
     {
-      label: "Số tiền",
+      label: t("paymentReceipt.response.amount"),
       accessorKey: "amount",
       isSort: true,
     },
     {
-      label: "Phương thức thanh toán",
+      label: t("paymentReceipt.response.paymentMethod"),
       accessorKey: "paymentMethod",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
     {
-      label: "Trạng thái thanh toán",
+      label: t("paymentReceipt.response.paymentStatus"),
       accessorKey: "paymentStatus",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
     {
-      label: "Người thu",
+      label: t("paymentReceipt.response.collectedBy"),
       accessorKey: "collectedBy",
       isSort: true,
     },
     {
-      label: "Ngày thanh toán",
+      label: t("paymentReceipt.response.paymentDate"),
       accessorKey: "paymentDate",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ghi chú",
+      label: t("paymentReceipt.response.note"),
       accessorKey: "note",
       isSort: false,
     },
     {
-      label: "Ngày tạo",
+      label: t("paymentReceipt.response.createdAt"),
       accessorKey: "createdAt",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ngày cập nhật",
+      label: t("paymentReceipt.response.updatedAt"),
       accessorKey: "updatedAt",
       isSort: true,
       hasDate: true,
@@ -124,7 +138,7 @@ const PaymentReceipt = () => {
       isHidden: true,
     },
     {
-      label: "Invoice ID",
+      label: t("paymentReceipt.response.invoiceId"),
       accessorKey: "invoiceId",
       isHidden: true,
     },

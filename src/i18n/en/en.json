@@ -1,5 +1,6 @@
 {
   "common": {
+    "autoCheck": "🤖 AI will automatically check",
     "button": {
       "search": "Search",
       "cancel": "Cancel",
@@ -300,6 +301,13 @@
       "locked": "Locked"
     },
 
+    "statisticsContracts": {
+      "total": "Total",
+      "active": "Active",
+      "cancelled": "Cancelled",
+      "expired": "Expired"
+    },
+
     "contractStatus": {
       "valid": "Valid",
       "expiring": "Expiring soon",
@@ -350,12 +358,14 @@
     },
 
     "invoiceStatus": {
+      "total": "Total",
       "unpaid": "Unpaid",
       "restored": "Restored",
       "paid": "Paid",
       "overdue": "Overdue",
       "cancelled": "Cancelled",
       "waitingPayment": "Waiting for payment",
+      "cannotBePaid": "Cannot Be Paid",
       "restore": "Restore"
     },
 
@@ -540,7 +550,6 @@
       "floorId": "Floor:",
       "acreage": "Acreage (m²):",
       "price": "Price (VND):",
-
       "maximumPeople": "Maximum people:",
       "roomType": "Room type:",
       "status": "Status:",
@@ -703,7 +712,6 @@
       "maxPrice": "To",
       "search": "Search"
     },
-
     "addOrUpdate": {
       "name": "Service Name:",
       "placeholderName": "Cleaning",
@@ -838,6 +846,434 @@
       "owner": "-- Select owner --",
       "type": "-- Select vehicle type --",
       "status": "-- Select vehicle status --"
+    }
+  },
+  "contract": {
+    "title": "Contract Management",
+    "titleHistory": "Deleted Contract History",
+    "search": "Search contracts",
+    "errorFetch": "Failed to load contracts.",
+    "errorFetchStatistics": "Failed to load contract statistics.",
+    "value": "Value",
+    "description": "Description",
+    "pdf": "Download Pdf",
+    "docx": "Download Docx",
+    "infoManagerAndMainTenant": "Manager & Main Tenant Information",
+    "representative": "Representative",
+    "viewContent": "View content",
+    "activateSuccess": "Contract activated successfully",
+    "confirmActivate": "Are you sure you want to activate this contract?",
+    "changeRepresentative": "Change representative",
+    "changeRepresentativeDesc": "Do you want to change the representative?",
+    "addTenant": "Add tenant",
+    "vehicles": "Contract Vehicles",
+    "addVehicle": "Add Vehicle",
+    "noData": "N/A",
+    "filter": {
+      "placeholderRoom": "-- Select room --",
+      "placeholderTenant": "-- Select tenant --",
+      "placeholderVehicle": "-- Select vehicle --",
+      "placeholderStatus": "-- Status --"
+    },
+    "response": {
+      "contractCode": "Contract Code",
+      "actions": "Actions",
+      "room": "Room",
+      "tenants": "Tenants",
+      "vehicles": "Vehicles",
+      "deposit": "Deposit",
+      "roomPrice": "Room Price",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "status": "Status",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At"
+    },
+    "addOrUpdate": {
+      "titleAdd": "Add Contract",
+      "titleUpdate": "Update Contract",
+      "room": "Room",
+      "deposit": "Deposit",
+      "dateRange": "Effective Date",
+      "tenants": "Tenants",
+      "vehicles": "Vehicles",
+      "content": "Contract Content",
+      "buttonSubmit": "Save Contract"
+    },
+    "contract": {
+      "contractCode": "Contract code",
+      "roomCode": "Room code",
+      "nameManager": "Manager name",
+      "phoneNumberManager": "Manager phone",
+      "nameUser": "Tenant name",
+      "emailUser": "Tenant email",
+      "phoneNumberUser": "Tenant phone",
+      "identityCardUser": "ID card",
+      "addressUser": "Tenant address",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "deposit": "Deposit",
+      "roomPrice": "Room price",
+      "buildingAddress": "Building address",
+      "status": "Status",
+      "electricPrice": "Electric price",
+      "waterPrice": "Water price",
+      "tenants": "Tenants",
+      "assets": "Assets",
+      "services": "Services",
+      "vehicles": "Vehicles",
+      "createdAt": "Created at",
+      "updatedAt": "Updated at"
+    }
+  },
+  "meter": {
+    "title": "Meter",
+    "titleHistory": "Deleted meter history",
+    "statistic": "Meter statistics",
+    "search": "Name/Code",
+    "errorFetch": "An error occurred while fetching meters.",
+    "errorFetchStatistics": "An error occurred while fetching meter statistics.",
+    "roomId": "Room ID",
+    "serviceId": "Service ID",
+    "response": {
+      "meterCode": "Meter code",
+      "meterName": "Meter name",
+      "serviceName": "Service",
+      "meterType": "Meter type",
+      "closestIndex": "Closest index",
+      "roomCode": "Room",
+      "descriptionMeter": "Description",
+      "manufactureDate": "Manufacture date",
+      "createdAt": "Created at",
+      "updatedAt": "Updated at",
+      "actions": "Actions"
+    },
+    "filter": {
+      "placeholderRoom": "-- Room --",
+      "placeholderType": "-- Meter type --",
+      "labelRoom": "Room",
+      "labelType": "Meter type"
+    },
+    "addOrUpdate": {
+      "service": "Service",
+      "room": "Room",
+      "meterType": "Meter type",
+      "meterName": "Meter name",
+      "meterCode": "Meter code",
+      "manufactureDate": "Manufacture date",
+      "closestIndex": "Closest index",
+      "descriptionMeter": "Description",
+      "descriptionMeterPlaceholder": "Enter description"
+    },
+    "placeholder": {
+      "service": "-- Select service --",
+      "room": "-- Select room --",
+      "meterType": "-- Select meter type --"
+    }
+  },
+  "meterReading": {
+    "title": "Meter Reading",
+    "titleHistory": "Deleted Meter Reading History",
+    "statistic": "Meter Reading Statistics",
+    "search": "Meter Code/Name",
+    "errorFetch": "An error occurred while fetching meter readings.",
+    "errorFetchStatistics": "An error occurred while fetching meter reading statistics.",
+    "roomId": "Room ID",
+    "meterId": "Meter ID",
+    "response": {
+      "meterCode": "Meter Code",
+      "meterName": "Meter Name",
+      "meterType": "Meter Type",
+      "oldIndex": "Old Index",
+      "newIndex": "New Index",
+      "quantity": "Quantity",
+      "month": "Month",
+      "year": "Year",
+      "readingDate": "Reading Date",
+      "descriptionMeterReading": "Description",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "roomCode": "Room",
+      "actions": "Actions"
+    },
+    "filter": {
+      "placeholderRoom": "-- Room --",
+      "placeholderType": "-- Meter Type --",
+      "labelRoom": "Room",
+      "labelType": "Meter Type",
+      "labelMonth": "Month",
+      "placeholderMonth": "Enter month (1-12)"
+    },
+    "addOrUpdate": {
+      "meter": "Meter",
+      "newIndex": "New Index",
+      "oldIndex": "Old Index",
+      "month": "Month",
+      "year": "Year",
+      "descriptionMeterReading": "Description",
+      "descriptionMeterReadingPlaceholder": "Enter description"
+    },
+    "placeholder": {
+      "meter": "-- Select meter --"
+    }
+  },
+  "paymentReceipt": {
+    "title": "Payment Receipt",
+    "titleHistory": "Deleted Payment Receipt History",
+    "statistic": "Payment Receipt Statistics",
+    "search": "Receipt Code/Invoice Code",
+    "errorFetch": "An error occurred while loading payment receipts.",
+    "errorFetchStatistics": "An error occurred while loading payment receipt statistics.",
+    "invoiceId": "Invoice ID",
+    "response": {
+      "receiptCode": "Receipt Code",
+      "invoiceCode": "Invoice Code",
+      "amount": "Amount",
+      "paymentMethod": "Payment Method",
+      "paymentStatus": "Payment Status",
+      "collectedBy": "Collected By",
+      "paymentDate": "Payment Date",
+      "note": "Note",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "actions": "Actions",
+      "invoiceId": "Invoice ID"
+    },
+    "filter": {
+      "labelPaymentMethod": "Payment Method",
+      "labelPaymentStatus": "Payment Status",
+      "labelFromAmount": "From Amount",
+      "labelToAmount": "To Amount",
+      "labelQuery": "Search",
+      "placeholderPaymentMethod": "-- Payment Method --",
+      "placeholderPaymentStatus": "-- Payment Status --",
+      "placeholderFromAmount": "From Amount",
+      "placeholderToAmount": "To Amount",
+      "placeholderQuery": "Search"
+    },
+    "dialog": {
+      "delete": {
+        "desc": "This action will permanently delete the selected payment receipts. Are you sure you want to continue?",
+        "success": "Payment receipts deleted successfully"
+      },
+      "sendNotice": {
+        "desc": "This action will create a payment receipt. Are you sure you want to continue?",
+        "success": "Payment receipt created successfully"
+      }
+    },
+    "export": {
+      "fileName": "Payment Receipt",
+      "headers": {
+        "receiptCode": "Receipt Code",
+        "invoiceCode": "Invoice Code",
+        "amount": "Amount",
+        "paymentMethod": "Payment Method",
+        "paymentStatus": "Payment Status",
+        "collectedBy": "Collected By",
+        "paymentDate": "Payment Date",
+        "note": "Note",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At"
+      }
+    }
+  },
+  "deposit": {
+    "title": "Deposit",
+    "titleHistory": "Deleted deposit history",
+    "statistic": "Deposit statistics",
+    "search": "Contract code/Room code/Depositor",
+    "errorFetch": "An error occurred while fetching deposits.",
+    "errorFetchStatistics": "An error occurred while fetching deposit statistics.",
+    "successRefund": "Customer deposit refunded successfully",
+    "response": {
+      "id": "Deposit ID",
+      "contractCode": "Contract code",
+      "roomCode": "Room code",
+      "depositor": "Depositor",
+      "depositRecipient": "Deposit recipient",
+      "depositAmount": "Deposit amount",
+      "depositStatus": "Deposit status",
+      "depositDate": "Deposit date",
+      "depositRefundDate": "Refund date",
+      "securityDepositReturnDate": "Security deposit return date",
+      "note": "Note",
+      "createdAt": "Created at",
+      "updatedAt": "Updated at",
+      "actions": "Actions",
+      "contractId": "contract ID"
+    },
+    "filter": {
+      "placeholderStatus": "-- Deposit status --",
+      "labelStatus": "Deposit status",
+      "placeholderSearch": "Search"
+    }
+  },
+  "invoice": {
+    "title": "Invoice",
+    "titleHistory": "Deleted Invoice History",
+    "statistic": "Invoice Statistics",
+    "search": "Invoice Code/Name",
+    "errorFetch": "An error occurred while fetching invoices.",
+    "errorFetchStatistics": "An error occurred while fetching invoice statistics.",
+    "contract": "Create contract invoice",
+    "building": "Create building invoice",
+    "updateTitle": "Update Invoice",
+    "rejectSuccess": "Payment rejection successful",
+    "Payment": "Payment confirmed ",
+    "success": "successfully",
+    "last": "?",
+    "response": {
+      "invoiceCode": "Invoice Code",
+      "building": "Building",
+      "floor": "Floor",
+      "room": "Room",
+      "contract": "Contract",
+      "invoiceType": "Invoice Type",
+      "invoiceStatus": "Invoice Status",
+      "month": "Month",
+      "year": "Year",
+      "tenantName": "Tenant Name",
+      "totalAmount": "Total Amount",
+      "paymentDueDate": "Payment Due Date",
+      "note": "Note",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "actions": "Actions"
+    },
+    "filter": {
+      "placeholderBuilding": "-- Building --",
+      "placeholderFloor": "-- Floor --",
+      "placeholderStatus": "-- Invoice Status --",
+      "placeholderType": "-- Invoice Type --",
+      "labelMonth": "Month",
+      "labelYear": "Year",
+      "placeholderMonth": "Enter month (1-12)",
+      "placeholderYear": "Enter year",
+      "placeholderQuery": "Search",
+      "placeholderMinTotalAmount": "Price from",
+      "placeholderMaxTotalAmount": "Price to"
+    },
+    "addOrUpdate": {
+      "building": "Building",
+      "floor": "Floor",
+      "contract": "Contract",
+      "invoiceType": "Invoice Type",
+      "invoiceStatus": "Invoice Status",
+      "paymentDueDate": "Payment Due Date",
+      "note": "Note",
+      "notePlaceholder": "Enter note",
+      "placeholderItemType": "-- Select invoice item type --",
+      "labelItemType": "Invoice Item Type:",
+      "placeholderServiceRoom": "-- Select service room --",
+      "labelServiceRoom": "Service Room:",
+      "newIndex": "New Index:",
+      "quantity": "Quantity:",
+      "unitPrice": "Unit Price:",
+      "placeholderDescription": "Enter description",
+      "labelDescription": "Description:"
+    },
+    "add": {
+      "placeholderContract": "-- Select contract --",
+      "labelContract": "Contract:",
+      "placeholderBuilding": "-- Select building --",
+      "labelBuilding": "Building:",
+      "placeholderFloor": "-- Select floor --",
+      "labelFloor": "Floor:",
+      "labelPaymentDueDate": "Payment Due Date:",
+      "placeholderNote": "Enter note",
+      "labelNote": "Note:"
+    },
+    "payment": {
+      "invalidMethod": "Invalid payment method",
+      "title": "Payment by bank transfer",
+      "totalAmount": "Total amount",
+      "guideTitle": "Follow the steps below to complete the payment:",
+      "step1": {
+        "title": "Step 1:",
+        "desc": "Open your bank's Mobile Banking app"
+      },
+      "step2": {
+        "title": "Step 2:",
+        "desc": "Select \"Payment\" and scan the QR code in this guide"
+      },
+      "step3": {
+        "title": "Step 3:",
+        "desc": "Enter the amount {{amount}} and payment content {{method}} - {{note}}"
+      },
+      "step4": {
+        "title": "Step 4:",
+        "desc": "Complete the payment steps as instructed and wait for landlord confirmation"
+      },
+      "accountName": "Account name",
+      "accountNumber": "Account number",
+      "warning": "The QR code is only valid for this payment. Do not save or reuse it for future payments."
+    },
+    "detail": {
+      "title": "Invoice Detail",
+      "addTitle": "Add Invoice Detail",
+      "updateTitle": "Update Invoice Detail",
+
+      "tenantInfo": "Tenant Information",
+      "roomCode": "Room",
+      "buildingName": "Building Name",
+      "tenantName": "Representative Tenant",
+      "tenantPhone": "Phone Number",
+
+      "invoiceInfo": "Invoice Information",
+      "invoiceCode": "Invoice Code",
+      "invoiceType": "Invoice Type",
+      "period": "Invoice Period",
+      "totalAmount": "Total Amount",
+      "paymentDueDate": "Payment Due Date",
+      "invoiceStatus": "Status",
+
+      "loading": "Loading invoice details...",
+      "download": "Download Invoice",
+      "customer": "Customer",
+      "date": "Date",
+      "dueDate": "Due Date",
+      "note": "Note",
+      "inWords": "In Words",
+      "free": "Free",
+      "invoiceFor": "Invoice for",
+
+      "table": {
+        "index": "No.",
+        "serviceName": "Service Name",
+        "serviceCategory": "Service Category",
+        "serviceCalculation": "Service Calculation",
+        "unit": "Unit",
+        "oldIndex": "Old Index",
+        "newIndex": "New Index",
+        "quantity": "Quantity",
+        "unitPrice": "Unit Price",
+        "amount": "Amount"
+      },
+
+      "modal": {
+        "rejectTitle": "Reason for Payment Rejection",
+        "rejectLabel": "Reason for payment rejection:",
+        "rejectPlaceholder": "Enter reason",
+        "paymentTitle": "Select Payment Method"
+      },
+
+      "button": {
+        "reject": "Reject Payment",
+        "confirmPayment": "Confirm Payment"
+      },
+
+      "toast": {
+        "missingInvoice": "Invoice code is missing",
+        "loadError": "An error occurred while loading invoice details",
+        "rejectSuccess": "Payment rejected successfully"
+      }
+    },
+
+    "error": {
+      "noInvoiceId": "No invoice ID found",
+      "noRoomId": "No room ID found, please try again",
+      "fetchInvoice": "An error occurred while loading invoice details",
+      "fetchServiceRoom": "An error occurred while loading room services"
     }
   }
 }

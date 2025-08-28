@@ -17,21 +17,27 @@ import { handleMutationError } from "@/utils/handleMutationError";
 import { queryFilter } from "@/utils/queryFilter";
 import { httpRequest } from "@/utils/httpRequest";
 import { updateContractSchema } from "@/lib/validation";
+import { TFunction } from "i18next";
+import { useTranslation } from "react-i18next";
 
-export const switchVehicleType = (vehicleType: VehicleType | string) => {
+export const switchVehicleType = (
+  vehicleType: VehicleType | string,
+  t: TFunction<"translate", undefined>
+) => {
   switch (vehicleType) {
     case VehicleType.O_TO:
-      return "Ô tô";
+      return t("statusBadge.vehicleType.car");
     case VehicleType.XE_DAP:
-      return "Xe đạp";
+      return t("statusBadge.vehicleType.bicycle");
     case VehicleType.XE_MAY:
-      return "Xe máy";
+      return t("statusBadge.vehicleType.motorbike");
     default:
-      return "Khác";
+      return t("statusBadge.vehicleType.other");
   }
 };
 
 export const useContract = () => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -67,7 +73,10 @@ export const useContract = () => {
     setFilterValues({ query, status });
   }, [query, status]);
 
-  const handleChange = <K extends keyof IUpdateContract>(field: K, newValue: IUpdateContract[K]) => {
+  const handleChange = <K extends keyof IUpdateContract>(
+    field: K,
+    newValue: IUpdateContract[K]
+  ) => {
     setValue((prev) => ({
       ...prev,
       [field]: newValue,
@@ -103,42 +112,45 @@ export const useContract = () => {
     },
     retry: 1,
   });
-  const { data: statistics, isError: errorStatistics } = useQuery<ApiResponse<IContractStatisticsResponse>>({
+  const { data: statistics, isError: errorStatistics } = useQuery<
+    ApiResponse<IContractStatisticsResponse>
+  >({
     queryKey: ["contracts-statistics"],
     queryFn: async () => (await httpRequest.get("/contracts/statistics")).data,
     retry: 1,
   });
 
   useEffect(() => {
-    if (isError) toast.error("Lỗi khi tải danh sách hợp đồng");
-    if (errorStatistics) toast.error("Lỗi khi tải thống kê hợp đồng");
-  }, [isError, errorStatistics]);
+    if (isError) toast.error(t("contract.errorFetch"));
+    if (errorStatistics) toast.error(t("contract.errorFetch"));
+  }, [isError, errorStatistics, t]);
 
   const dataStatisticsContracts = [
     {
-      label: "Tổng hợp đồng",
+      label: t("statusBadge.statisticsContracts.total"),
       value: statistics?.data.totalContracts ?? 0,
       icon: Layers,
     },
     {
-      label: "Đang hoạt động",
+      label: t("statusBadge.statisticsContracts.active"),
       value: statistics?.data.totalActiveContracts ?? 0,
       icon: FileText,
     },
     {
-      label: "Đã huỷ",
+      label: t("statusBadge.statisticsContracts.cancelled"),
       value: statistics?.data.totalCancelledContracts ?? 0,
       icon: XCircle,
     },
     {
-      label: "Hết hạn",
+      label: t("statusBadge.statisticsContracts.expired"),
       value: statistics?.data.totalExpiredContracts ?? 0,
       icon: CalendarRange,
     },
   ];
 
   const updateContractMutation = useMutation({
-    mutationFn: (payload: IUpdateContract) => httpRequest.put(`/contracts/${idRef.current}`, payload),
+    mutationFn: (payload: IUpdateContract) =>
+      httpRequest.put(`/contracts/${idRef.current}`, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
@@ -183,7 +195,7 @@ export const useContract = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
-      toast.success("Kích hoạt hợp đồng thành công");
+      toast.success(t("contract.activateSuccess"));
     },
     onError: handleMutationError,
   });
@@ -208,7 +220,10 @@ export const useContract = () => {
   });
 
   const handleActionClick = useCallback(
-    (contract: ContractResponse, type: "update" | "delete" | "view" | "toggle" | "cash" | "deposit1") => {
+    (
+      contract: ContractResponse,
+      type: "update" | "delete" | "view" | "toggle" | "cash" | "deposit1"
+    ) => {
       idRef.current = contract.id;
 
       if (type === "update") {
@@ -225,7 +240,7 @@ export const useContract = () => {
       } else if (type === "cash") {
         openDialog(
           { id: contract.id, type },
-          { type: "warn", desc: "Bạn có muốn chắc chắn kích hoạt hợp đồng này không?" }
+          { type: "warn", desc: t("contract.confirmActivate") }
         );
       } else if (type === "deposit1") {
         navigate(`/customers/contracts/vehicles/${contract.id}`);
@@ -233,7 +248,7 @@ export const useContract = () => {
         navigate(`/customers/contracts/tenants/${contract.id}`);
       }
     },
-    [navigate, openDialog]
+    [navigate, openDialog, t]
   );
 
   return {

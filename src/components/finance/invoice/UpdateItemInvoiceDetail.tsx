@@ -3,6 +3,7 @@ import TextareaLabel from "@/components/TextareaLabel";
 import { ServiceCategory } from "@/enums";
 import { InvoiceDetailUpdateRequest } from "@/types";
 import { Dispatch } from "react";
+import { useTranslation } from "react-i18next";
 
 interface UpdateItemInvoiceDetailProps {
   value: InvoiceDetailUpdateRequest;
@@ -12,7 +13,14 @@ interface UpdateItemInvoiceDetailProps {
   type: string;
 }
 
-const UpdateItemInvoiceDetail = ({ value, handleChange, setValue, errors, type }: UpdateItemInvoiceDetailProps) => {
+const UpdateItemInvoiceDetail = ({
+  value,
+  handleChange,
+  setValue,
+  errors,
+  type,
+}: UpdateItemInvoiceDetailProps) => {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-3">
       {type === ServiceCategory.DEN_BU && (
@@ -20,8 +28,8 @@ const UpdateItemInvoiceDetail = ({ value, handleChange, setValue, errors, type }
           <InputLabel
             id="serviceName"
             name="serviceName"
-            placeholder="Tên dịch vụ"
-            label="Tên dịch vụ:"
+            placeholder={t("service.response.name")}
+            label={t("service.addOrUpdate.name")}
             value={value.serviceName ?? ""}
             onChange={handleChange}
             errorText={errors.serviceName}
@@ -31,7 +39,7 @@ const UpdateItemInvoiceDetail = ({ value, handleChange, setValue, errors, type }
             name="quantity"
             placeholder="100"
             type="number"
-            label="Số lượng:"
+            label={t("invoice.addOrUpdate.quantity")}
             required
             value={value.quantity ?? ""}
             onChange={handleChange}
@@ -42,7 +50,7 @@ const UpdateItemInvoiceDetail = ({ value, handleChange, setValue, errors, type }
             name="unitPrice"
             placeholder="100"
             type="number"
-            label="Đơn giá:"
+            label={t("invoice.addOrUpdate.unitPrice")}
             required
             value={value.unitPrice ?? ""}
             onChange={handleChange}
@@ -57,7 +65,7 @@ const UpdateItemInvoiceDetail = ({ value, handleChange, setValue, errors, type }
           name="newIndex"
           placeholder="100"
           type="number"
-          label="Chỉ số mới:"
+          label={t("invoice.addOrUpdate.newIndex")}
           value={value.newIndex ?? ""}
           onChange={handleChange}
           errorText={errors.newIndex}
@@ -68,8 +76,8 @@ const UpdateItemInvoiceDetail = ({ value, handleChange, setValue, errors, type }
       <TextareaLabel
         id="description"
         name="description"
-        placeholder="Nhập mô tả"
-        label="Mô tả:"
+        placeholder={t("invoice.addOrUpdate.placeholderDescription")}
+        label={t("invoice.addOrUpdate.labelDescription")}
         value={value.description ?? ""}
         onChange={(e) => setValue((prev) => ({ ...prev, description: e.target.value }))}
       />

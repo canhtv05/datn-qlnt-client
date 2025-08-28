@@ -22,7 +22,13 @@ import {
 } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
-const PaymentReceiptButton = ({ ids, data }: { data?: PaymentReceiptResponse[]; ids: Record<string, boolean> }) => {
+const PaymentReceiptButton = ({
+  ids,
+  data,
+}: {
+  data?: PaymentReceiptResponse[];
+  ids: Record<string, boolean>;
+}) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
@@ -31,7 +37,7 @@ const PaymentReceiptButton = ({ ids, data }: { data?: PaymentReceiptResponse[]; 
     mutationFn: async () => await httpRequest.post("/payment-receipts/send-payment-notice"),
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       queryClient.invalidateQueries({
         predicate: (prev) => {
           return Array.isArray(prev.queryKey) && prev.queryKey[0] === "payment-receipts";
@@ -45,17 +51,18 @@ const PaymentReceiptButton = ({ ids, data }: { data?: PaymentReceiptResponse[]; 
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemovePaymentReceiptByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các phiếu thanh toán đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("paymentReceipt.dialog.delete.desc"),
     type: "warn",
   });
 
-  const { ConfirmDialog: ConfirmDialogSendPaymentNotice, openDialog: openDialogSendPaymentNotice } = useConfirmDialog({
-    onConfirm: async () => {
-      return await handleSendPaymentNotice();
-    },
-    desc: "Thao tác này sẽ tạo phiếu thanh toán. Bạn có chắc chắn muốn tiếp tục không?",
-    type: "default",
-  });
+  const { ConfirmDialog: ConfirmDialogSendPaymentNotice, openDialog: openDialogSendPaymentNotice } =
+    useConfirmDialog({
+      onConfirm: async () => {
+        return await handleSendPaymentNotice();
+      },
+      desc: t("paymentReceipt.dialog.sendNotice.desc"),
+      type: "default",
+    });
 
   const handleButton = useCallback(
     (btn: IBtnType) => {
@@ -63,19 +70,28 @@ const PaymentReceiptButton = ({ ids, data }: { data?: PaymentReceiptResponse[]; 
         openDialog(ids);
       } else if (btn.type === "download") {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
-          "Mã phiếu": d.receiptCode,
-          "Mã hóa đơn": d.invoiceCode,
-          "Số tiền": formattedCurrency(d.amount),
-          "Phương thức thanh toán": receiptMethodEnumToString(d.paymentMethod, t),
-          "Trạng thái thanh toán": receiptStatusEnumToString(d.paymentStatus, t),
-          "Người thu": d.collectedBy,
-          "Ngày thanh toán": formatDate(d.paymentDate) !== "" ? formatDate(d.paymentDate) : "Chưa thanh toán",
-          "Ghi chú": d.note,
-          "Ngày tạo": formatDate(d.createdAt),
-          "Ngày cập nhật": formatDate(d.updatedAt),
-        }));
-        handleExportExcel(`Phiếu thanh toán`, exportData, data);
+        const exportData: Record<string, any>[] | undefined =
+          data?.map((d) => ({
+            [t("paymentReceipt.export.headers.receiptCode")]: d.receiptCode,
+            [t("paymentReceipt.export.headers.invoiceCode")]: d.invoiceCode,
+            [t("paymentReceipt.export.headers.amount")]: formattedCurrency(d.amount),
+            [t("paymentReceipt.export.headers.paymentMethod")]: receiptMethodEnumToString(
+              d.paymentMethod,
+              t
+            ),
+            [t("paymentReceipt.export.headers.paymentStatus")]: receiptStatusEnumToString(
+              d.paymentStatus,
+              t
+            ),
+            [t("paymentReceipt.export.headers.collectedBy")]: d.collectedBy,
+            [t("paymentReceipt.export.headers.paymentDate")]:
+              formatDate(d.paymentDate) !== "" ? formatDate(d.paymentDate) : t("common.notPaid"),
+            [t("paymentReceipt.export.headers.note")]: d.note,
+            [t("paymentReceipt.export.headers.createdAt")]: formatDate(d.createdAt),
+            [t("paymentReceipt.export.headers.updatedAt")]: formatDate(d.updatedAt),
+          })) ?? [];
+
+        handleExportExcel(t("paymentReceipt.export.fileName"), exportData, data);
       }
     },
     [data, ids, openDialog, t]
@@ -90,7 +106,9 @@ const PaymentReceiptButton = ({ ids, data }: { data?: PaymentReceiptResponse[]; 
     }
   }, [sendPaymentNoticeMutation]);
 
-  const handleRemovePaymentReceiptByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
+  const handleRemovePaymentReceiptByIds = async (
+    ids: Record<string, boolean>
+  ): Promise<boolean> => {
     try {
       const selectedIds = Object.entries(ids)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -100,10 +118,11 @@ const PaymentReceiptButton = ({ ids, data }: { data?: PaymentReceiptResponse[]; 
       await Promise.all(selectedIds.map((id) => removePaymentReceiptMutation.mutateAsync(id)));
 
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "payment-receipts",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "payment-receipts",
       });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       return true;
     } catch (error) {
       handleMutationError(error);
@@ -119,7 +138,7 @@ const PaymentReceiptButton = ({ ids, data }: { data?: PaymentReceiptResponse[]; 
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Phiếu thanh toán</h3>
+        <h3 className="font-semibold">{t("paymentReceipt.title")}</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>

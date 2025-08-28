@@ -304,17 +304,17 @@ export const useAssetType = () => {
   const dataServices: StatisticCardType[] = [
     {
       icon: Puzzle,
-      label: "Dịch vụ",
+      label: t("service.title"),
       value: statistics?.data.getTotal ?? 0,
     },
     {
       icon: CircleCheck,
-      label: "Hoạt động",
+      label: t("statusBadge.serviceStatus.active"),
       value: statistics?.data.getTotalHoatDong ?? 0,
     },
     {
       icon: XCircle,
-      label: "Không hoạt động",
+      label: t("statusBadge.serviceStatus.inactive"),
       value: statistics?.data.getTotalKhongHoatDong ?? 0,
     },
   ];

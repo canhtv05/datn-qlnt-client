@@ -4,6 +4,7 @@ import InputLabel from "@/components/InputLabel";
 import { MeterType } from "@/enums";
 import { ApiResponse, MeterReadingFilter as Filter, MeterInitFilterResponse } from "@/types";
 import { Dispatch, FormEvent, SetStateAction, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface MeterReadingFilterProps {
   filterValues: Filter;
@@ -14,6 +15,7 @@ export interface MeterReadingFilterProps {
 }
 
 const MeterReadingFilter = ({ props }: { props: MeterReadingFilterProps }) => {
+  const { t } = useTranslation();
   const { meterType, month, roomId } = props.filterValues;
   const meterFilter = props.meterFilter;
   const setFilterValues = props.setFilterValues;
@@ -43,8 +45,8 @@ const MeterReadingFilter = ({ props }: { props: MeterReadingFilterProps }) => {
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
       <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full items-end">
         <FieldsSelectLabel
-          placeholder="-- Phòng --"
-          labelSelect="Phòng"
+          placeholder={t("meterReading.filter.placeholderRoom")}
+          labelSelect={t("meterReading.filter.labelRoom")}
           data={roomOptions ?? []}
           value={roomId}
           onChange={(value) => handleChange("roomId", String(value))}
@@ -52,11 +54,11 @@ const MeterReadingFilter = ({ props }: { props: MeterReadingFilterProps }) => {
           showClear
         />
         <FieldsSelectLabel
-          placeholder="-- Loại công tơ --"
-          labelSelect="Loại công tơ"
+          placeholder={t("meterReading.filter.placeholderType")}
+          labelSelect={t("meterReading.filter.labelType")}
           data={[
-            { label: "Công tơ điện", value: MeterType.DIEN },
-            { label: "Công tơ nước", value: MeterType.NUOC },
+            { label: t("statusBadge.meterType.electric"), value: MeterType.DIEN },
+            { label: t("statusBadge.meterType.water"), value: MeterType.NUOC },
           ]}
           value={meterType ?? undefined}
           onChange={(value) => handleChange("meterType", String(value))}
@@ -67,7 +69,7 @@ const MeterReadingFilter = ({ props }: { props: MeterReadingFilterProps }) => {
           type="number"
           id="month"
           name="month"
-          placeholder="Tháng"
+          placeholder={t("meterReading.filter.placeholderMonth")}
           min={1}
           max={12}
           value={month ?? undefined}

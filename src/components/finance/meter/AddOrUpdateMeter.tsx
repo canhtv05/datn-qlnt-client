@@ -5,6 +5,7 @@ import TextareaLabel from "@/components/TextareaLabel";
 import { MeterType, ServiceCategory } from "@/enums";
 import { ApiResponse, CreateMeterInitResponse, MeterCreationAndUpdatedRequest } from "@/types";
 import { Dispatch, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 interface AddOrUpdateMeterProps {
   value: MeterCreationAndUpdatedRequest;
@@ -14,11 +15,21 @@ interface AddOrUpdateMeterProps {
   meterInit: ApiResponse<CreateMeterInitResponse> | undefined;
 }
 
-const AddOrUpdateMeter = ({ value, handleChange, meterInit, setValue, errors }: AddOrUpdateMeterProps) => {
+const AddOrUpdateMeter = ({
+  value,
+  handleChange,
+  meterInit,
+  setValue,
+  errors,
+}: AddOrUpdateMeterProps) => {
+  const { t } = useTranslation();
   const serviceOptions = useMemo((): FieldsSelectLabelType[] => {
     return (
       meterInit?.data?.services
-        ?.filter((service) => service.type === ServiceCategory.DIEN || service.type === ServiceCategory.NUOC)
+        ?.filter(
+          (service) =>
+            service.type === ServiceCategory.DIEN || service.type === ServiceCategory.NUOC
+        )
         ?.map((service) => {
           return {
             label: service.name,
@@ -44,42 +55,42 @@ const AddOrUpdateMeter = ({ value, handleChange, meterInit, setValue, errors }: 
       <div className="grid md:grid-cols-3 grid-cols-1 gap-5 w-full">
         <FieldsSelectLabel
           data={serviceOptions}
-          placeholder="-- Chọn dịch vụ --"
-          label="Dịch vụ:"
+          placeholder={t("meter.placeholder.service")}
+          label={t("meter.addOrUpdate.service")}
           id="serviceId"
           name="serviceId"
           value={value.serviceId ?? ""}
           onChange={(val) => setValue((prev) => ({ ...prev, serviceId: val as string }))}
-          labelSelect="Dịch vụ"
+          labelSelect={t("meter.addOrUpdate.service")}
           showClear
           errorText={errors.serviceId}
           required
         />
         <FieldsSelectLabel
           data={roomOptions}
-          placeholder="-- Chọn phòng --"
-          label="Phòng:"
+          placeholder={t("meter.placeholder.room")}
+          label={t("meter.addOrUpdate.room")}
           id="roomId"
           name="roomId"
           value={value.roomId ?? ""}
           onChange={(val) => setValue((prev) => ({ ...prev, roomId: val as string }))}
-          labelSelect="Phòng"
+          labelSelect={t("meter.addOrUpdate.room")}
           showClear
           errorText={errors.roomId}
           required
         />
         <FieldsSelectLabel
           data={[
-            { label: "Công tơ điện", value: MeterType.DIEN },
-            { label: "Công tơ nước", value: MeterType.NUOC },
+            { label: t("statusBadge.meterType.electric"), value: MeterType.DIEN },
+            { label: t("statusBadge.meterType.water"), value: MeterType.NUOC },
           ]}
-          placeholder="-- Chọn loại công tơ --"
-          label="Loại công tơ:"
+          placeholder={t("meter.placeholder.meterType")}
+          label={t("meter.addOrUpdate.meterType")}
           id="meterType"
           name="meterType"
           value={value.meterType ?? ""}
           onChange={(val) => setValue((prev) => ({ ...prev, meterType: val as MeterType }))}
-          labelSelect="Loại công tơ"
+          labelSelect={t("meter.addOrUpdate.meterType")}
           showClear
           errorText={errors.meterType}
           required
@@ -90,9 +101,9 @@ const AddOrUpdateMeter = ({ value, handleChange, meterInit, setValue, errors }: 
         <InputLabel
           id="meterName"
           name="meterName"
-          placeholder="Công tơ A"
+          placeholder={t("meter.addOrUpdate.meterName")}
           type="text"
-          label="Tên công tơ:"
+          label={t("meter.addOrUpdate.meterName")}
           required
           value={value.meterName ?? ""}
           onChange={handleChange}
@@ -101,9 +112,9 @@ const AddOrUpdateMeter = ({ value, handleChange, meterInit, setValue, errors }: 
         <InputLabel
           id="meterCode"
           name="meterCode"
-          placeholder="CT-A"
+          placeholder={t("meter.addOrUpdate.meterCode")}
           type="text"
-          label="Mã công tơ:"
+          label={t("meter.addOrUpdate.meterCode")}
           required
           value={value.meterCode ?? ""}
           onChange={handleChange}
@@ -112,7 +123,7 @@ const AddOrUpdateMeter = ({ value, handleChange, meterInit, setValue, errors }: 
         <DatePickerLabel
           date={value?.manufactureDate ? new Date(value?.manufactureDate) : undefined}
           setDate={(d) => setValue((prev) => ({ ...prev, manufactureDate: d.toISOString() }))}
-          label="Ngày sản xuất:"
+          label={t("meter.addOrUpdate.manufactureDate")}
           errorText={errors?.manufactureDate}
           required
         />
@@ -122,7 +133,7 @@ const AddOrUpdateMeter = ({ value, handleChange, meterInit, setValue, errors }: 
         name="closestIndex"
         placeholder="0"
         type="number"
-        label="Chỉ số gần nhất:"
+        label={t("meter.addOrUpdate.closestIndex")}
         required
         min={0}
         value={value.closestIndex ?? ""}
@@ -133,8 +144,8 @@ const AddOrUpdateMeter = ({ value, handleChange, meterInit, setValue, errors }: 
       <TextareaLabel
         id="descriptionMeter"
         name="descriptionMeter"
-        placeholder="Nhập mô tả"
-        label="Mô tả:"
+        placeholder={t("meter.addOrUpdate.descriptionMeterPlaceholder")}
+        label={t("meter.addOrUpdate.descriptionMeter")}
         value={value.descriptionMeter ?? ""}
         onChange={(e) => setValue((prev) => ({ ...prev, descriptionMeter: e.target.value }))}
         errorText={errors.descriptionMeter}
