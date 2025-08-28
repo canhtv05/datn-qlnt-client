@@ -65,7 +65,8 @@ export default function buildColumnsFromConfig<T extends object>(
 
       const formatted = new Intl.NumberFormat(lang, {
         style: "currency",
-        currency: lang === "vi-VN" ? "VND" : "USD",
+        // currency: lang === "vi-VN" ? "VND" : "USD",
+        currency: "VND",
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       }).format(price);

@@ -31,6 +31,7 @@ const Meter = () => {
     errors,
     meterInit,
     ConfirmDialog,
+    countNoMeter,
   } = useMeter();
   const { page, size } = query;
   const { t } = useTranslation();
@@ -50,7 +51,6 @@ const Meter = () => {
     },
     {
       label: t("meter.response.actions"),
-
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -73,11 +73,7 @@ const Meter = () => {
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent
-                    className="text-white"
-                    style={{ background: btn.arrowColor }}
-                    arrow={false}
-                  >
+                  <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
                     <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
@@ -98,6 +94,7 @@ const Meter = () => {
       label: t("meter.response.serviceName"),
       accessorKey: "serviceName",
       isSort: true,
+      isCenter: true,
     },
     {
       label: t("meter.response.meterType"),
@@ -158,8 +155,11 @@ const Meter = () => {
     <div className="flex flex-col">
       {/* <StatisticCard data={dataDefaultServices} /> */}
       <MeterButton ids={rowSelection} meterInit={meterInit} data={data?.data} />
-      <div className="shadow-lg">
+      <div className="shadow-lg bg-background rounded-b-md">
         <MeterFilter props={props} />
+        <span className="px-5 pb-5 block text-sm">
+          {t("meter.noMeter")}: {countNoMeter?.data?.totalNoMeterRooms || 0}
+        </span>
         <DataTable<MeterResponse>
           data={data?.data?.data ?? []}
           columns={buildColumnsFromConfig(columnConfigs)}

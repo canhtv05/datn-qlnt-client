@@ -9,6 +9,7 @@ import {
   MeterInitFilterResponse,
   MeterResponse,
   PaginatedResponse,
+  RoomNoMeterCountStatistics,
 } from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
@@ -77,21 +78,10 @@ export const useMeter = () => {
     if (filterValues.query) params.set("query", filterValues.query);
     if (filterValues.roomId) params.set("roomId", filterValues.roomId);
     params.set("page", "1");
-    if (
-      filterValues.buildingId ||
-      filterValues.meterType ||
-      filterValues.query ||
-      filterValues.roomId
-    ) {
+    if (filterValues.buildingId || filterValues.meterType || filterValues.query || filterValues.roomId) {
       setSearchParams(params);
     }
-  }, [
-    filterValues.buildingId,
-    filterValues.meterType,
-    filterValues.query,
-    filterValues.roomId,
-    setSearchParams,
-  ]);
+  }, [filterValues.buildingId, filterValues.meterType, filterValues.query, filterValues.roomId, setSearchParams]);
 
   const { data, isLoading, isError } = useQuery<ApiResponse<PaginatedResponse<MeterResponse[]>>>({
     queryKey: ["meters", page, size, buildingId, query, id, roomId, meterType],
@@ -113,6 +103,7 @@ export const useMeter = () => {
       return res.data;
     },
     retry: 1,
+    enabled: !!id,
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -165,16 +156,8 @@ export const useMeter = () => {
 
   const handleUpdateDefaultService = useCallback(async () => {
     try {
-      const {
-        descriptionMeter,
-        closestIndex,
-        manufactureDate,
-        meterCode,
-        meterName,
-        meterType,
-        roomId,
-        serviceId,
-      } = value;
+      const { descriptionMeter, closestIndex, manufactureDate, meterCode, meterName, meterType, roomId, serviceId } =
+        value;
 
       await createOrUpdateMeterSchema.parseAsync(value);
 
@@ -245,20 +228,17 @@ export const useMeter = () => {
     [openDialog, t]
   );
 
-  const { data: meterInit, isError: errorMeterInit } = useQuery<
-    ApiResponse<CreateMeterInitResponse>
-  >({
+  const { data: meterInit, isError: errorMeterInit } = useQuery<ApiResponse<CreateMeterInitResponse>>({
     queryKey: ["meters-init"],
     queryFn: async () => {
-      const res = await httpRequest.get("/meters/init");
+      const res = await httpRequest.get(`/meters/init/${id}`);
       return res.data;
     },
     retry: 1,
+    enabled: !!id,
   });
 
-  const { data: filterMeterInit, isError: errorFilterMeterInit } = useQuery<
-    ApiResponse<MeterInitFilterResponse>
-  >({
+  const { data: filterMeterInit, isError: errorFilterMeterInit } = useQuery<ApiResponse<MeterInitFilterResponse>>({
     queryKey: ["meters-filter-init"],
     queryFn: async () => {
       const res = await httpRequest.get(`/meters/init-filter/${id}`);
@@ -266,6 +246,15 @@ export const useMeter = () => {
     },
     retry: 1,
     enabled: !!id,
+  });
+
+  const { data: countNoMeter, isError: errorCountMeter } = useQuery<ApiResponse<RoomNoMeterCountStatistics>>({
+    queryKey: ["count-no-meter"],
+    queryFn: async () => {
+      const res = await httpRequest.get(`/meters/no-meter/count`);
+      return res.data;
+    },
+    retry: 1,
   });
 
   const props = {
@@ -289,7 +278,11 @@ export const useMeter = () => {
     if (errorFilterMeterInit) {
       toast.error(t("meter.errorFetch"));
     }
-  }, [errorFilterMeterInit, errorMeterInit, isError, t]);
+
+    if (errorCountMeter) {
+      toast.error(t("meter.errorFetch"));
+    }
+  }, [errorCountMeter, errorFilterMeterInit, errorMeterInit, isError, t]);
 
   return {
     query: {
@@ -313,6 +306,7 @@ export const useMeter = () => {
     setIsModalOpen,
     handleChange,
     handleUpdateFloor: handleUpdateDefaultService,
+    countNoMeter,
     value,
     setValue,
     errors,

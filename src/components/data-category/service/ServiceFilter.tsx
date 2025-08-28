@@ -15,16 +15,9 @@ export interface ServiceFilterProps {
   onFilter: () => void;
 }
 
-const ServiceFilter = ({
-  props,
-  type,
-}: {
-  props: ServiceFilterProps;
-  type: "default" | "restore";
-}) => {
+const ServiceFilter = ({ props, type }: { props: ServiceFilterProps; type: "default" | "restore" }) => {
   const { t } = useTranslation();
-  const { maxPrice, minPrice, query, serviceStatus, serviceCalculation, serviceCategory } =
-    props.filterValues;
+  const { maxPrice, minPrice, query, serviceStatus, serviceCalculation, serviceCategory } = props.filterValues;
   const setFilterValues = props.setFilterValues;
 
   const handleChange = (key: keyof Filter, value: string) => {
@@ -111,7 +104,7 @@ const ServiceFilter = ({
           onChange={(e) => handleChange("minPrice", e.target.value)}
         />
         <InputLabel
-          type="text"
+          type="number"
           id="maxPrice"
           name="maxPrice"
           placeholder={t("service.filter.maxPrice")}
@@ -119,7 +112,7 @@ const ServiceFilter = ({
           onChange={(e) => handleChange("maxPrice", e.target.value)}
         />
         <InputLabel
-          type="text"
+          type="number"
           id="query"
           name="query"
           placeholder={t("service.filter.search")}
