@@ -15,7 +15,7 @@ import StatusBadge from "@/components/ui/StatusBadge";
 
 const styleGridItemWithSidebar = (open: boolean, length: number | undefined) => {
   if (!length) return "grid-cols-1";
-  return open ? "grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1" : "grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1";
+  return open ? "grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1" : "grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1";
 };
 
 const SelectRoom = () => {
@@ -70,9 +70,7 @@ const SelectRoom = () => {
               {/* Logo nổi bật ở giữa */}
               <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
                 <BedSingle
-                  className={`w-6 h-6 ${
-                    d.status === RoomStatus.DANG_THUE ? "text-green-600" : "text-yellow-500"
-                  }`}
+                  className={`w-6 h-6 ${d.status === RoomStatus.DANG_THUE ? "text-green-600" : "text-yellow-500"}`}
                 />
               </div>
             </CardHeader>
@@ -111,12 +109,14 @@ const SelectRoom = () => {
 
                 <span className="flex items-center gap-2 font-bold">
                   <Tag className="w-4 h-4 stroke-2" />
-                  Loại phòng: <span className="ml-1 font-normal">{d.roomType ? <StatusBadge status={d.roomType} /> : "-"}</span>
+                  Loại phòng:{" "}
+                  <span className="ml-1 font-normal">{d.roomType ? <StatusBadge status={d.roomType} /> : "-"}</span>
                 </span>
 
                 <span className="flex items-center gap-2 font-bold">
                   <Tag className="w-4 h-4 stroke-2" />
-                  Trạng thái: <span className="ml-1 font-normal">{d.status ? <StatusBadge status={d.status} /> : "-"}</span>
+                  Trạng thái:{" "}
+                  <span className="ml-1 font-normal">{d.status ? <StatusBadge status={d.status} /> : "-"}</span>
                 </span>
               </div>
             </CardContent>

@@ -933,6 +933,7 @@
     }
   },
   "meter": {
+    "changeBtn": "Thay đổi công tơ",
     "viewNoMeter": "Xem phòng chưa có công tơ",
     "noMeter": "Số phòng chưa có công tơ",
     "title": "Công tơ",

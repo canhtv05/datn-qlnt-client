@@ -35,7 +35,7 @@ const styleGridItemWithSidebar = (open: boolean, length: number | undefined) => 
     return "grid-cols-1";
   }
   if (open) {
-    return "grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1";
+    return "grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1";
   } else {
     return "grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1";
   }

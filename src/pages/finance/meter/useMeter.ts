@@ -1,8 +1,9 @@
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
-import { createOrUpdateMeterSchema } from "@/lib/validation";
+import { changeMeterSchema, createOrUpdateMeterSchema } from "@/lib/validation";
 import {
   ApiResponse,
+  ChangeMeterRequest,
   CreateMeterInitResponse,
   MeterCreationAndUpdatedRequest,
   MeterFilter,
@@ -45,7 +46,17 @@ export const useMeter = () => {
     roomId: "",
     serviceId: "",
   });
+
+  const [valueChangeMeter, setValueChangeMeter] = useState<ChangeMeterRequest>({
+    closestIndex: undefined,
+    descriptionMeter: "",
+    manufactureDate: "",
+    meterCode: "",
+    meterName: "",
+  });
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isChangeModalOpen, setIsChangeModalOpen] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -53,6 +64,11 @@ export const useMeter = () => {
   const parsedSize = Math.max(Number(size) || 15, 1);
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<MeterCreationAndUpdatedRequest>();
+  const {
+    clearErrors: clearErrorsChange,
+    errors: errorsChange,
+    handleZodErrors: handleZodErrorsChange,
+  } = useFormErrors<ChangeMeterRequest>();
 
   const [filterValues, setFilterValues] = useState<MeterFilter>({
     buildingId,
@@ -106,13 +122,19 @@ export const useMeter = () => {
     enabled: !!id,
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, type: "default" | "change") => {
     e.stopPropagation();
     const { name, value } = e.target;
-    setValue((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (type === "default")
+      setValue((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    else
+      setValueChangeMeter((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
   };
 
   const updateMeterMutation = useMutation({
@@ -124,12 +146,21 @@ export const useMeter = () => {
     },
   });
 
+  const changeMeterMutation = useMutation({
+    mutationKey: ["change-meter"],
+    mutationFn: async (payload: ChangeMeterRequest) =>
+      await httpRequest.put(`/meters/change/${idRef.current}`, payload),
+    onError: (error) => {
+      handleMutationError(error);
+    },
+  });
+
   const removeMeterMutation = useMutation({
     mutationKey: ["remove-meter"],
     mutationFn: async (id: string) => await httpRequest.delete(`/meters/${id}`),
   });
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" }>({
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "toggle" | "update" }>({
     onConfirm: async ({ id, type }) => {
       if (type === "delete") return await handleRemoveMeterById(id);
       return false;
@@ -159,8 +190,6 @@ export const useMeter = () => {
       const { descriptionMeter, closestIndex, manufactureDate, meterCode, meterName, meterType, roomId, serviceId } =
         value;
 
-      await createOrUpdateMeterSchema.parseAsync(value);
-
       const data: MeterCreationAndUpdatedRequest = {
         descriptionMeter: descriptionMeter.trim(),
         closestIndex: closestIndex || 0,
@@ -171,6 +200,8 @@ export const useMeter = () => {
         roomId: roomId.trim(),
         serviceId: serviceId.trim(),
       };
+
+      await createOrUpdateMeterSchema.parseAsync(data);
 
       updateMeterMutation.mutate(data, {
         onSuccess: () => {
@@ -200,8 +231,47 @@ export const useMeter = () => {
     }
   }, [value, updateMeterMutation, clearErrors, queryClient, t, handleZodErrors]);
 
+  const changeMeter = useCallback(async () => {
+    try {
+      const { descriptionMeter, closestIndex, manufactureDate, meterCode, meterName } = valueChangeMeter;
+
+      const data: ChangeMeterRequest = {
+        descriptionMeter: descriptionMeter.trim(),
+        closestIndex: closestIndex || 0,
+        manufactureDate,
+        meterCode: meterCode.trim(),
+        meterName: meterName.trim(),
+      };
+
+      await changeMeterSchema.parseAsync(data);
+      changeMeterMutation.mutate(data, {
+        onSuccess: () => {
+          setValueChangeMeter({
+            descriptionMeter: "",
+            closestIndex: 0,
+            manufactureDate: "",
+            meterCode: "",
+            meterName: "",
+          });
+          queryClient.invalidateQueries({
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "meters",
+          });
+          // queryClient.invalidateQueries({ queryKey: ["meter-statistics"] });
+          toast.success(t(Status.UPDATE_SUCCESS));
+          // sua thanh thay doi cong to thanh cong
+          setIsChangeModalOpen(false);
+        },
+      });
+      clearErrorsChange();
+      return true;
+    } catch (error) {
+      handleZodErrorsChange(error);
+      return false;
+    }
+  }, [valueChangeMeter, changeMeterMutation, clearErrorsChange, queryClient, t, handleZodErrorsChange]);
+
   const handleActionClick = useCallback(
-    (meter: MeterResponse, action: "update" | "delete") => {
+    (meter: MeterResponse, action: "update" | "delete" | "toggle") => {
       idRef.current = meter.id;
       if (action === "update") {
         setValue({
@@ -215,6 +285,15 @@ export const useMeter = () => {
           serviceId: meter.serviceId,
         });
         setIsModalOpen(true);
+      } else if (action === "toggle") {
+        setValueChangeMeter({
+          closestIndex: meter.closestIndex,
+          descriptionMeter: meter.descriptionMeter,
+          manufactureDate: meter.manufactureDate,
+          meterCode: meter.meterCode,
+          meterName: meter.meterName,
+        });
+        setIsChangeModalOpen(true);
       } else {
         openDialog(
           { id: meter.id, type: action },
@@ -311,5 +390,11 @@ export const useMeter = () => {
     setValue,
     errors,
     ConfirmDialog,
+    isChangeModalOpen,
+    setIsChangeModalOpen,
+    valueChangeMeter,
+    setValueChangeMeter,
+    changeMeter,
+    errorsChange,
   };
 };

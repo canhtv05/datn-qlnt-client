@@ -5,13 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 import { isNumber } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useNoMeter = () => {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { id } = useParams();
   const {
     page = "1",
     size = "15",
@@ -55,7 +54,7 @@ export const useNoMeter = () => {
   }, [filterValues, setSearchParams]);
 
   const { data, isLoading, isError } = useQuery<ApiResponse<RoomNoMeterResponse[]>>({
-    queryKey: ["no-meters", page, size, query, id, minPrice, maxPrice, roomType, status],
+    queryKey: ["no-meters", page, size, query, minPrice, maxPrice, roomType, status],
     queryFn: async () => {
       const params: Record<string, string> = {
         page: page.toString(),
@@ -70,12 +69,9 @@ export const useNoMeter = () => {
         params,
       });
 
-      console.log(res.data);
-
       return res.data;
     },
     retry: 1,
-    enabled: !!id,
   });
 
   const props = {

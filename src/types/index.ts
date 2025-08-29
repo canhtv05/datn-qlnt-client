@@ -387,6 +387,14 @@ export interface RoomNoMeterCountStatistics {
   totalNoMeterRooms: number;
 }
 
+export interface ChangeMeterRequest {
+  meterName: string;
+  meterCode: string;
+  manufactureDate: string;
+  closestIndex: number | undefined;
+  descriptionMeter: string;
+}
+
 export interface RoomNoMeterResponse {
   id: string;
   nameFloor: string;

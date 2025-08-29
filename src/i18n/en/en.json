@@ -932,6 +932,7 @@
     }
   },
   "meter": {
+    "changeBtn": "Change meter",
     "viewNoMeter": "View room without meter",
     "noMeter": "Number of rooms without meter",
     "title": "Meter",

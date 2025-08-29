@@ -3,7 +3,7 @@ import buildColumnsFromConfig from "@/utils/buildColumnsFromConfig";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import { ColumnConfig, MeterResponse } from "@/types";
+import { ColumnConfig, IBtnType, MeterResponse } from "@/types";
 import Modal from "@/components/Modal";
 import { Notice } from "@/enums";
 import { GET_BTNS } from "@/constant";
@@ -12,12 +12,26 @@ import MeterButton from "@/components/finance/meter/MeterButton";
 import MeterFilter from "@/components/finance/meter/MeterFilter";
 import AddOrUpdateMeter from "@/components/finance/meter/AddOrUpdateMeter";
 import { useTranslation } from "react-i18next";
+import { Shuffle } from "lucide-react";
+import ChangeMeter from "@/components/finance/meter/ChangeMeter";
+
+const changeMeterBtn: IBtnType[] = [
+  {
+    tooltipContent: "meter.changeBtn",
+    icon: Shuffle,
+    arrowColor: "var(--color-purple-400)",
+    type: "toggle",
+    hasConfirm: true,
+  },
+  ...GET_BTNS("update", "delete"),
+];
 
 const Meter = () => {
   const {
     props,
     data,
     isLoading,
+    valueChangeMeter,
     query,
     handleActionClick,
     rowSelection,
@@ -26,11 +40,16 @@ const Meter = () => {
     setIsModalOpen,
     handleChange,
     handleUpdateFloor,
+    errorsChange,
     value,
     setValue,
     errors,
     meterInit,
     ConfirmDialog,
+    changeMeter,
+    setValueChangeMeter,
+    isChangeModalOpen,
+    setIsChangeModalOpen,
     countNoMeter,
   } = useMeter();
   const { page, size } = query;
@@ -57,7 +76,7 @@ const Meter = () => {
       render: (row: MeterResponse) => {
         return (
           <div className="flex gap-2">
-            {GET_BTNS("update", "delete").map((btn, index) => (
+            {changeMeterBtn.map((btn, index) => (
               <TooltipProvider key={index}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -172,7 +191,7 @@ const Meter = () => {
           setRowSelection={setRowSelection}
         />
         <Modal
-          title="meter.title"
+          title={t("meter.title")}
           trigger={null}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
@@ -181,10 +200,27 @@ const Meter = () => {
         >
           <AddOrUpdateMeter
             meterInit={meterInit}
-            handleChange={handleChange}
+            handleChange={(e) => handleChange(e, "default")}
             value={value}
             setValue={setValue}
             errors={errors}
+          />
+        </Modal>
+        <Modal
+          // sua doan nay thanh thay doi cong to
+          title={t("meter.title")}
+          trigger={null}
+          open={isChangeModalOpen}
+          onOpenChange={setIsChangeModalOpen}
+          onConfirm={changeMeter}
+          desc={t(Notice.UPDATE)}
+          // mo ta day nua
+        >
+          <ChangeMeter
+            handleChange={(e) => handleChange(e, "change")}
+            value={valueChangeMeter}
+            errors={errorsChange}
+            setValue={setValueChangeMeter}
           />
         </Modal>
         <ConfirmDialog />

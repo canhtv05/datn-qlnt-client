@@ -29,7 +29,7 @@ const FooterLayout = () => {
   const { t } = useTranslation();
 
   return (
-    <footer className="py-3 px-4 flex justify-between border-t items-center">
+    <footer className="py-3 px-4 flex justify-between border-t items-center border-t-input border">
       <h1 className="text-[12px] text-primary">
         <span className="text-primary">&copy; </span>
         {new Date().getFullYear()} TroHub
