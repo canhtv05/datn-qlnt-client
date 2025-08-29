@@ -1272,5 +1272,15 @@
       "fetchInvoice": "Có lỗi xảy ra khi tải hóa đơn chi tiết",
       "fetchServiceRoom": "Có lỗi xảy ra khi tải dịch vụ phòng"
     }
+  },
+  "cccd": {
+    "title": "Ảnh CCCD",
+    "required": "Thông tin bắt buộc",
+    "front": "Mặt trước",
+    "back": "Mặt sau",
+    "processing": "Đang xử lý OCR...",
+    "mismatch": "Mặt trước và mặt sau CCCD không khớp!",
+    "alt": "Ảnh CCCD",
+    "autoCheck": "Tự động kiểm tra"
   }
 }

@@ -26,28 +26,6 @@ const NA = "N/A";
 const API_KEY = import.meta.env.VITE_API_KEY_FPT_AI;
 const API_URL = "https://api.fpt.ai/vision/idr/vnm";
 
-const ImagePreview = ({
-  url,
-  onRemove,
-  loading,
-}: {
-  url: string;
-  onRemove: () => void;
-  loading?: boolean;
-}) => (
-  <div className="relative w-full aspect-video rounded-md border border-border overflow-hidden flex items-center justify-center">
-    <button type="button" className="absolute top-2 right-2 cursor-pointer z-10" onClick={onRemove}>
-      <XCircleIcon className="h-5 w-5 fill-primary text-white" />
-    </button>
-    <img src={url} alt="CCCD" className="max-w-full max-h-full object-contain" />
-    {loading && (
-      <div className="absolute inset-0 bg-black/30 flex items-center justify-center rounded-md">
-        <span className="text-white font-medium animate-pulse">Đang xử lý OCR...</span>
-      </div>
-    )}
-  </div>
-);
-
 const OCR_ERROR_MAP: Record<number, string> = {
   0: "No error -- Không có lỗi",
   1: "Sai thông số trong request",
@@ -69,6 +47,32 @@ export default function CccdUpload({
   setValue,
   errors,
 }: CccdUploadProps) {
+  const ImagePreview = ({
+    url,
+    onRemove,
+    loading,
+  }: {
+    url: string;
+    onRemove: () => void;
+    loading?: boolean;
+  }) => (
+    <div className="relative w-full aspect-video rounded-md border border-border overflow-hidden flex items-center justify-center">
+      <button
+        type="button"
+        className="absolute top-2 right-2 cursor-pointer z-10"
+        onClick={onRemove}
+      >
+        <XCircleIcon className="h-5 w-5 fill-primary text-white" />
+      </button>
+      <img src={url} alt="CCCD" className="max-w-full max-h-full object-contain" />
+      {loading && (
+        <div className="absolute inset-0 bg-black/30 flex items-center justify-center rounded-md">
+          <span className="text-white font-medium animate-pulse">{t("cccd.processing")}</span>
+        </div>
+      )}
+    </div>
+  );
+
   const [frontUrl, setFrontUrl] = useState<string | null>(null);
   const [backUrl, setBackUrl] = useState<string | null>(null);
   const [frontResult, setFrontResult] = useState<any>(null);
@@ -179,7 +183,7 @@ export default function CccdUpload({
           gender: "",
         }));
 
-        toast.error("Mặt trước và mặt sau CCCD không khớp!");
+        toast.error(t("cccd.mismatch"));
         setFrontResult(null);
         setBackResult(null);
       }
@@ -214,7 +218,7 @@ export default function CccdUpload({
           <ImageIcon className="h-10 w-10" strokeWidth={1.25} />
           {loading && (
             <div className="absolute inset-0 bg-black/30 flex items-center justify-center rounded-md">
-              <span className="text-white font-medium animate-pulse">Đang xử lý OCR...</span>
+              <span className="text-white font-medium animate-pulse">{t("cccd.processing")}</span>
             </div>
           )}
         </div>
@@ -225,13 +229,15 @@ export default function CccdUpload({
   return (
     <div className="flex flex-col gap-3">
       <Label>
-        Ảnh CCCD <span className="text-[10px] text-red-500">(*)</span>
+        {t("cccd.title")}
+        <span className="text-[10px] text-red-500">(*)</span>
       </Label>
       <div className="flex gap-5 md:flex-row flex-col w-full">
         {/** Mặt trước */}
         <div className="flex flex-col gap-2 w-full md:w-1/2">
           <span className="text-sm text-center">
-            Mặt trước <span className="text-[10px] text-red-500">(*)</span>
+            {t("cccd.front")}
+            <span className="text-[10px] text-red-500">(*)</span>
             <span className="block">{t("common.autoCheck")}</span>
           </span>
           {frontUrl ? (
@@ -253,7 +259,7 @@ export default function CccdUpload({
           )}
           <RenderIf value={isFrontInvalid}>
             <span className="text-[12px] text-red-500 font-light text-left">
-              Thông tin bắt buộc
+              {t("cccd.required")}
             </span>
           </RenderIf>
           <span className="text-[12px] text-red-500 font-light text-left">{errors.frontCccd}</span>
@@ -262,7 +268,7 @@ export default function CccdUpload({
         {/** Mặt sau */}
         <div className="flex flex-col gap-2 w-full md:w-1/2">
           <span className="text-sm text-center">
-            Mặt sau <span className="text-[10px] text-red-500">(*)</span>
+            {t("cccd.back")} <span className="text-[10px] text-red-500">(*)</span>
             <span className="block">{t("common.autoCheck")}</span>
           </span>
           {backUrl ? (
@@ -280,7 +286,7 @@ export default function CccdUpload({
           )}
           <RenderIf value={isBackInvalid}>
             <span className="text-[12px] text-red-500 font-light text-left">
-              Thông tin bắt buộc
+              {t("cccd.required")}
             </span>
           </RenderIf>
           <span className="text-[12px] text-red-500 font-light text-left">{errors.backCccd}</span>

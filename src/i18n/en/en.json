@@ -1272,5 +1272,15 @@
       "fetchInvoice": "An error occurred while loading invoice details",
       "fetchServiceRoom": "An error occurred while loading room services"
     }
+  },
+  "cccd": {
+    "title": "Citizen ID Image",
+    "required": "This field is required",
+    "front": "Front side",
+    "back": "Back side",
+    "processing": "Processing OCR...",
+    "mismatch": "Front and back Citizen ID do not match!",
+    "alt": "Citizen ID Image",
+    "autoCheck": "Auto check"
   }
 }
