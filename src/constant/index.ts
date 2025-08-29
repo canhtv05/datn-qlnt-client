@@ -826,57 +826,57 @@ export const STATUS_BADGE = [
   // --- Service Category ---
   {
     value: ServiceCategory.DIEN,
-    label: "statusBadge.invoiceType.electric",
+    label: "statusBadge.serviceCategory.electric",
     className: COLOR_CLASS.yellow,
   },
   {
     value: ServiceCategory.NUOC,
-    label: "statusBadge.invoiceType.water",
+    label: "statusBadge.serviceCategory.water",
     className: COLOR_CLASS.blue,
   },
   {
     value: ServiceCategory.GUI_XE,
-    label: "statusBadge.invoiceType.parking",
+    label: "statusBadge.serviceCategory.parking",
     className: COLOR_CLASS.gray,
   },
   {
     value: ServiceCategory.INTERNET,
-    label: "statusBadge.invoiceType.internet",
+    label: "statusBadge.serviceCategory.internet",
     className: COLOR_CLASS.indigo,
   },
   {
     value: ServiceCategory.VE_SINH,
-    label: "statusBadge.invoiceType.cleaning",
+    label: "statusBadge.serviceCategory.cleaning",
     className: COLOR_CLASS.green,
   },
   {
     value: ServiceCategory.THANG_MAY,
-    label: "statusBadge.invoiceType.elevator",
+    label: "statusBadge.serviceCategory.elevator",
     className: COLOR_CLASS.purple,
   },
   {
     value: ServiceCategory.BAO_TRI,
-    label: "statusBadge.invoiceType.maintenance",
+    label: "statusBadge.serviceCategory.maintenance",
     className: COLOR_CLASS.red,
   },
   {
     value: ServiceCategory.AN_NINH,
-    label: "statusBadge.invoiceType.security",
+    label: "statusBadge.serviceCategory.security",
     className: COLOR_CLASS.orange,
   },
   {
     value: ServiceCategory.GIAT_SAY,
-    label: "statusBadge.invoiceType.laundry",
+    label: "statusBadge.serviceCategory.laundry",
     className: COLOR_CLASS.pink,
   },
   {
     value: ServiceCategory.TIEN_PHONG,
-    label: "statusBadge.invoiceType.rent",
+    label: "statusBadge.serviceCategory.rent",
     className: COLOR_CLASS.teal,
   },
   {
     value: ServiceCategory.KHAC,
-    label: "statusBadge.invoiceType.other",
+    label: "statusBadge.serviceCategory.other",
     className: COLOR_CLASS.neutral,
   },
   {
@@ -1250,7 +1250,10 @@ export const BTNS: IBtnType[] = [
 ];
 
 /* PAYMENT RECEIPT */
-export const ACTION_BUTTONS_FOR_PAYMENT_RECEIPT = (type: PaymentMethod, status: PaymentStatus): IBtnType[] => {
+export const ACTION_BUTTONS_FOR_PAYMENT_RECEIPT = (
+  type: PaymentMethod,
+  status: PaymentStatus
+): IBtnType[] => {
   const CASH: IBtnType[] = [
     {
       tooltipContent: "common.button.paymentConfirmed",

@@ -161,7 +161,7 @@ export const usePaymentReceipt = () => {
             predicate: (query) =>
               Array.isArray(query.queryKey) && query.queryKey[0] === "payment-receipts",
           });
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;

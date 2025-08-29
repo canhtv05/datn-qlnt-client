@@ -1286,5 +1286,47 @@
     "mismatch": "Mặt trước và mặt sau CCCD không khớp!",
     "alt": "Ảnh CCCD",
     "autoCheck": "Tự động kiểm tra"
+  },
+  "home": {
+    "contract": "Thông tin liên hệ",
+    "feature": "Tính Năng",
+    "policy": "Chính sách bảo mật",
+    "service": "Dịch vụ"
+  },
+  "notification": {
+    "title": "Thông báo",
+    "titleHistory": "Lịch sử thông báo đã xóa",
+    "statistic": "Thống kê thông báo",
+    "search": "Nội dung thông báo",
+    "errorFetch": "Có lỗi xảy ra khi tải thông báo.",
+    "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê thông báo.",
+    "response": {
+      "sender": "Người gửi",
+      "receiver": "Người nhận",
+      "content": "Nội dung",
+      "status": "Trạng thái",
+      "type": "Loại thông báo",
+      "createdAt": "Ngày tạo",
+      "updatedAt": "Ngày cập nhật",
+      "actions": "Thao tác"
+    },
+    "filter": {
+      "placeholderType": "-- Loại thông báo --",
+      "placeholderStatus": "-- Trạng thái --",
+      "placeholderContent": "Nhập nội dung thông báo",
+      "labelType": "Loại thông báo",
+      "labelStatus": "Trạng thái"
+    },
+    "addOrUpdate": {
+      "title": "Tiêu đề",
+      "sender": "Người gửi",
+      "receiver": "Khách thuê",
+      "content": "Nội dung thông báo",
+      "status": "Trạng thái",
+      "type": "Loại thông báo",
+      "tenantPlaceholder": "-- Chọn khách thuê --",
+      "attachment": "Ảnh đính kèm",
+      "contentPlaceholder": "Nhập nội dung"
+    }
   }
 }

@@ -10,6 +10,7 @@ import { ImageIcon, XCircleIcon } from "lucide-react";
 import { Label } from "../ui/label";
 import { cn } from "@/lib/utils";
 import Dropzone from "react-dropzone";
+import { useTranslation } from "react-i18next";
 
 interface NotificationProps {
   value: NotificationCreationAndUpdateRequest;
@@ -45,6 +46,7 @@ const AddOrUpdateNotification = ({
   setValue,
   errors,
 }: NotificationProps) => {
+  const { t } = useTranslation();
   const [uploadImage, setUploadImage] = useState<string | null>(null);
   const toSelectType = (options: Option[]): FieldsSelectLabelType[] =>
     options.map((o) => ({ label: o.label, value: o.value }));
@@ -75,9 +77,9 @@ const AddOrUpdateNotification = ({
         <InputLabel
           id="title"
           name="title"
-          placeholder="Tiêu đề"
+          placeholder={t("notification.addOrUpdate.title")}
           type="text"
-          label="Tiêu đề:"
+          label={t("notification.addOrUpdate.title")}
           required
           value={value.title ?? ""}
           onChange={handleChange}
@@ -86,25 +88,27 @@ const AddOrUpdateNotification = ({
         <FieldsSelectLabel
           data={[
             {
-              label: "Chung",
+              label: t("statusBadge.notificationType.common"),
               value: NotificationType.CHUNG,
             },
             {
-              label: "Hệ thống",
+              label: t("statusBadge.notificationType.system"),
               value: NotificationType.HE_THONG,
             },
             {
-              label: "Khác",
+              label: t("statusBadge.notificationType.other"),
               value: NotificationType.KHAC,
             },
           ]}
-          placeholder="-- Chọn loại thông báo --"
-          label="Loại thông báo:"
+          placeholder={t("notification.filter.placeholderType")}
+          label={t("notification.addOrUpdate.type")}
           id="notificationType"
           name="notificationType"
           value={value.notificationType ?? ""}
-          onChange={(val) => handleChangeFieldMultipleSelect("notificationType", val as NotificationType)}
-          labelSelect="Loại thông báo"
+          onChange={(val) =>
+            handleChangeFieldMultipleSelect("notificationType", val as NotificationType)
+          }
+          labelSelect={t("notification.addOrUpdate.type")}
           showClear
           errorText={errors.notificationType}
           required
@@ -113,11 +117,11 @@ const AddOrUpdateNotification = ({
       <RadioLabel
         data={[
           {
-            label: "Có",
+            label: t("statusBadge.yes"),
             value: true,
           },
           {
-            label: "Không",
+            label: t("statusBadge.no"),
             value: false,
           },
         ]}
@@ -130,11 +134,13 @@ const AddOrUpdateNotification = ({
       />
       <FieldsMultiSelectLabel
         data={toSelectType(tenantOptions)}
-        placeholder="-- Chọn khách thuê --"
-        label="Khách thuê:"
+        placeholder={t("notification.addOrUpdate.tenantPlaceholder")}
+        label={t("notification.addOrUpdate.receiver")}
         id="users"
         name="users"
-        value={toSelectType(tenantOptions).filter((opt) => value?.users?.includes(String(opt.value)))}
+        value={toSelectType(tenantOptions).filter((opt) =>
+          value?.users?.includes(String(opt.value))
+        )}
         onChange={(selected) =>
           handleChangeFieldMultipleSelect(
             "users",
@@ -146,7 +152,8 @@ const AddOrUpdateNotification = ({
         isDisabled={String(value.sendToAll) === "true"}
       />
       <div>
-        <Label htmlFor="upload">Ảnh đính kèm</Label>
+        <Label htmlFor="upload">{t("notification.addOrUpdate.attachment")}</Label>
+
         <div className="mt-1">
           {uploadImage ? (
             <ImagePreview url={uploadImage} onRemove={() => setUploadImage(null)} />
@@ -187,8 +194,8 @@ const AddOrUpdateNotification = ({
         errorText={errors.content}
         id="content"
         name="content"
-        placeholder="Nhập nội dung"
-        label="Nội dung:"
+        placeholder={t("notification.addOrUpdate.content")}
+        label={t("notification.addOrUpdate.content")}
         value={value.content ?? ""}
         onChange={(e) => setValue((prev) => ({ ...prev, content: e.target.value }))}
       />

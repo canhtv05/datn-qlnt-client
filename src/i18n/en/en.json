@@ -1285,5 +1285,47 @@
     "mismatch": "Front and back Citizen ID do not match!",
     "alt": "Citizen ID Image",
     "autoCheck": "Auto check"
+  },
+  "home": {
+    "contract": "Contact information",
+    "feature": "Features",
+    "policy": "Privacy policy",
+    "service": "Service"
+  },
+  "notification": {
+    "title": "Notification",
+    "titleHistory": "Deleted Notification History",
+    "statistic": "Notification Statistics",
+    "search": "Notification Content",
+    "errorFetch": "An error occurred while fetching notifications.",
+    "errorFetchStatistics": "An error occurred while fetching notification statistics.",
+    "response": {
+      "sender": "Sender",
+      "receiver": "Receiver",
+      "content": "Content",
+      "status": "Status",
+      "type": "Notification Type",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "actions": "Actions"
+    },
+    "filter": {
+      "placeholderType": "-- Notification Type --",
+      "placeholderStatus": "-- Status --",
+      "placeholderContent": "Enter notification content",
+      "labelType": "Notification Type",
+      "labelStatus": "Status"
+    },
+    "addOrUpdate": {
+      "title": "Title",
+      "sender": "Sender",
+      "receiver": "Tenant",
+      "content": "Notification Content",
+      "status": "Status",
+      "type": "Notification Type",
+      "tenantPlaceholder": "-- Select tenant --",
+      "attachment": "Attachment",
+      "contentPlaceholder": "Enter content"
+    }
   }
 }
