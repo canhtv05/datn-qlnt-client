@@ -1,4 +1,4 @@
-import { CircleUserRound, LogOut, Moon, Sun } from "lucide-react";
+import { CircleUserRound, Key, LogOut, Moon, Sun } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Image from "@/components/Image";
-import { useLogout } from "./useLogout";
+import { useAuth } from "./useAuth";
 import { useConfirmDialog } from "@/hooks/useConfirmDialog";
 import useHighestRole from "@/hooks/useHighestRole";
 import SystemNotification from "@/components/system/SystemNotification";
@@ -23,6 +23,8 @@ import images from "@/assets/imgs";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 import { switchRole } from "@/lib/utils";
+import Modal from "@/components/Modal";
+import ChangePassword from "./ChangePassword";
 
 const HeaderLayout = () => {
   const navigate = useNavigate();
@@ -32,7 +34,7 @@ const HeaderLayout = () => {
   const { t } = useTranslation();
   const { setStorage } = useLocalStorage();
 
-  const { handleLogout } = useLogout();
+  const { handleLogout, errors, handleChangePassword, isModalOpen, setIsModalOpen, setValue, value } = useAuth();
   const { ConfirmDialog, openDialog } = useConfirmDialog({
     onConfirm: handleLogout,
     type: "default",
@@ -100,17 +102,27 @@ const HeaderLayout = () => {
               <CircleUserRound className="text-light" />
               {t("profile.personalProfile")}
             </DropdownMenuItem>
-            {/* <DropdownMenuItem>
-              <Settings className="text-light" />
-              Cài đặt
-            </DropdownMenuItem> */}
-            {/* <DropdownMenuSeparator /> */}
+            <DropdownMenuItem onClick={() => setIsModalOpen(true)}>
+              <Key className="text-light" />
+              Đổi mật khẩu
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => openDialog()}>
               <LogOut className="text-light" />
               {t("profile.logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <Modal
+          title={"Đổi mật khẩu"}
+          trigger={null}
+          open={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          onConfirm={handleChangePassword}
+          desc={"Bạn có chắc chắn muốn đổi mật khẩu không"}
+        >
+          <ChangePassword value={value} setValue={setValue} errors={errors} />
+        </Modal>
         <ConfirmDialog />
       </div>
     </header>

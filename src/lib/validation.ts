@@ -115,6 +115,24 @@ export const forgotPassSchema = z
     path: ["confirm"],
   });
 
+export const changePassSchema = z
+  .object({
+    oldPassword: z.string().min(1, t("validation:password.require")),
+    newPassword: z
+      .string()
+      .min(5, t("validation:password.min"))
+      .regex(/[a-z]/, t("validation:password.lowercase"))
+      .regex(/[A-Z]/, t("validation:password.uppercase"))
+      .regex(/\d/, t("validation:password.number"))
+      .regex(/[^A-Za-z0-9]/, t("validation:password.special")),
+
+    reNewPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.reNewPassword, {
+    message: t("validation:password.confirmMismatch"),
+    path: ["reNewPassword"],
+  });
+
 /*
   REGISTER
 */
@@ -669,12 +687,7 @@ export const updateServiceRoomSchema = createServiceRoomSchema.extend({
 });
 
 /* METER */
-export const createOrUpdateMeterSchema = z.object({
-  roomId: z.string().min(1, t("validation:meter.room.required")),
-  serviceId: z.string().min(1, t("validation:meter.service.required")),
-  meterType: z.enum([MeterType.DIEN, MeterType.NUOC], {
-    message: t("validation:meter.type.invalid"),
-  }),
+export const changeMeterSchema = z.object({
   meterName: z.string().min(1, t("validation:meter.name.required")),
   meterCode: z.string().min(1, t("validation:meter.code.required")),
   manufactureDate: z
@@ -691,21 +704,12 @@ export const createOrUpdateMeterSchema = z.object({
   descriptionMeter: z.string().optional(),
 });
 
-export const changeMeterSchema = z.object({
-  meterName: z.string().min(1, t("validation:meter.name.required")),
-  meterCode: z.string().min(1, t("validation:meter.code.required")),
-  manufactureDate: z
-    .string()
-    .refine((val) => {
-      return !isNaN(Date.parse(val));
-    }, t("validation:meter.manufactureDate.invalid"))
-    .transform((val) => new Date(val))
-    .refine((val) => {
-      const date = new Date();
-      return val <= date;
-    }, t("validation:meter.manufactureDate.future")),
-  closestIndex: zSafeNumber(t("validation:meter.closestIndex.label"), { min: 0 }),
-  descriptionMeter: z.string().optional(),
+export const createOrUpdateMeterSchema = changeMeterSchema.extend({
+  roomId: z.string().min(1, t("validation:meter.room.required")),
+  serviceId: z.string().min(1, t("validation:meter.service.required")),
+  meterType: z.enum([MeterType.DIEN, MeterType.NUOC], {
+    message: t("validation:meter.type.invalid"),
+  }),
 });
 
 /* METER READING */

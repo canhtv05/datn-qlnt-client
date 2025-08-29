@@ -160,6 +160,12 @@ export interface ColumnConfig {
   render?: (row: any) => ReactNode;
 }
 
+export interface ChangePasswordRequest {
+  oldPassword: string;
+  newPassword: string;
+  reNewPassword: string;
+}
+
 /* BUILDING */
 export interface BuildingResponse extends AbstractResponse {
   buildingCode: string;

@@ -44,7 +44,7 @@ const Login = () => {
           errorText={errors.password}
           className="placeholder:text-[#6e6b7b] text-[#6e6b7b] dark:text-[#6e6b7b] border-border"
         />
-        <div className="w-full text-right block mt-3 mb-6">
+        <div className="w-full text-right block mt-3 mb-6" tabIndex={-1}>
           <Link to={`/forgot-password`}>
             <span className="text-primary text-[13px] hover:text-primary-hover">Quên mật khẩu?</span>
           </Link>

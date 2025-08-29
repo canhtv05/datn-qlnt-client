@@ -35,13 +35,13 @@
     "uppercase": "Mật khẩu phải chứa chữ in hoa",
     "number": "Mật khẩu phải chứa số",
     "special": "Mật khẩu phải chứa ký tự đặc biệt",
-    "confirmMismatch": "Mật khẩu xác nhận không khớp"
+    "confirmMismatch": "Mật khẩu xác nhận không khớp",
+    "require": "Vui lòng nhập mật khẩu cũ"
   },
   "policy": {
     "required": "Bạn cần đồng ý với chính sách bảo mật"
   },
 
-  
   "_comment_1": "=== BUILDINGS ===",
   "address": {
     "required": "Địa chỉ không được để trống"
@@ -60,7 +60,7 @@
     "invalid": "Loại tòa nhà không hợp lệ"
   },
 
-    "_comment_2": "=== ROOMS ===",
+  "_comment_2": "=== ROOMS ===",
   "maximumRoom": {
     "label": "Số phòng tối đa",
     "range": "Số phòng tối đa từ 1 -> 99"
@@ -72,7 +72,6 @@
     "required": "Tên tầng không được để trống"
   },
 
-  
   "_comment_3": "=== ASSET TYPES ===",
   "nameAssetType": {
     "required": "Tên loại tài sản không được để trống"
@@ -83,7 +82,6 @@
   "descriptionAssetType": {
     "required": "Mô tả không được để trống"
   },
-  
 
   "_comment_4": "===  ROOM ASSETS ===",
   "assetBeLongTo": {
@@ -111,7 +109,7 @@
     "required": "Tòa nhà không được để trống"
   },
 
-    "_comment_5": "===  ROOM ===",
+  "_comment_5": "===  ROOM ===",
   "floorId": {
     "required": "Vui lòng chọn tầng"
   },
@@ -151,9 +149,8 @@
     "invalid": "Trạng thái tài sản không hợp lệ"
   },
 
-
-   "_comment_7": "===  TENANT ===",
-   "identityCardNumber": {
+  "_comment_7": "===  TENANT ===",
+  "identityCardNumber": {
     "invalid": "Căn cước công dân phải gồm 12 chữ số"
   },
   "frontCccd": {
@@ -218,7 +215,7 @@
     "invalid": "Ngày báo trước không hợp lệ"
   },
 
-   "_comment_10": "===  SERVICE ===",
+  "_comment_10": "===  SERVICE ===",
   "service": {
     "name": {
       "required": "Không được để trống tên dịch vụ"
@@ -260,8 +257,8 @@
       "required": "Vui lòng chọn dịch vụ"
     }
   },
-    "_comment_12": "===   SERVICE ROOM ===",
-    "serviceRoom": {
+  "_comment_12": "===   SERVICE ROOM ===",
+  "serviceRoom": {
     "room": {
       "required": "Vui lòng chọn phòng",
       "min": "Phải có ít nhất một phòng"
