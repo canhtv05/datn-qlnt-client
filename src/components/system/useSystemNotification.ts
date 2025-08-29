@@ -1,11 +1,18 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { ApiResponse, PaginatedResponse, SystemNotificationResponse, UnreadNotificationCountResponse } from "@/types";
+import {
+  ApiResponse,
+  PaginatedResponse,
+  SystemNotificationResponse,
+  UnreadNotificationCountResponse,
+} from "@/types";
 import { httpRequest } from "@/utils/httpRequest";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function useSystemNotification() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { data, isError } = useQuery<ApiResponse<UnreadNotificationCountResponse>>({
     queryKey: ["unread-all"],
@@ -38,7 +45,11 @@ export default function useSystemNotification() {
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-    if (scrollTop + clientHeight >= scrollHeight - 10 && query.hasNextPage && !query.isFetchingNextPage) {
+    if (
+      scrollTop + clientHeight >= scrollHeight - 10 &&
+      query.hasNextPage &&
+      !query.isFetchingNextPage
+    ) {
       query.fetchNextPage();
     }
   };
@@ -87,13 +98,20 @@ export default function useSystemNotification() {
 
   useEffect(() => {
     if (query.isError) {
-      toast.error("Có lỗi xảy ra khi tải thông báo hệ thống");
+      toast.error(t("systemNotification.error.load"));
     }
 
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải số thông báo chưa đọc");
+      toast.error(t("systemNotification.error.count"));
     }
-  }, [isError, query.isError]);
+  }, [isError, query.isError, t]);
 
-  return { query, handleScroll, handleReadNotification, handleReadAllNotification, handleRemoveReadNotification, data };
+  return {
+    query,
+    handleScroll,
+    handleReadNotification,
+    handleReadAllNotification,
+    handleRemoveReadNotification,
+    data,
+  };
 }

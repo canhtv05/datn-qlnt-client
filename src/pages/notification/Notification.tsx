@@ -38,17 +38,17 @@ const Notification = () => {
 
   const columnConfigs: ColumnConfig[] = [
     {
-      label: "Tiêu đề",
+      label: t("notification.response.title"),
       accessorKey: "title",
       isSort: false,
     },
     {
-      label: "Nội dung",
+      label: t("notification.response.content"),
       accessorKey: "content",
       isSort: false,
     },
     {
-      label: "Thao tác",
+      label: t("notification.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -71,7 +71,11 @@ const Notification = () => {
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                  <TooltipContent
+                    className="text-white"
+                    style={{ background: btn.arrowColor }}
+                    arrow={false}
+                  >
                     <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
@@ -89,7 +93,7 @@ const Notification = () => {
       },
     },
     {
-      label: "Hình ảnh",
+      label: t("notification.response.image"),
       accessorKey: "image",
       isSort: false,
       render: (row: NotificationResponse) => {
@@ -102,39 +106,43 @@ const Notification = () => {
       isCenter: true,
     },
     {
-      label: "Loại thông báo",
+      label: t("notification.response.notificationType"),
       accessorKey: "notificationType",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
     {
-      label: "Gửi cho tất cả",
+      label: t("notification.response.sendToAll"),
       accessorKey: "sendToAll",
       isSort: true,
       render: (row: NotificationResponse) => {
-        return row.sendToAll ? "Có" : "Không";
+        return row.sendToAll ? t("statusBadge.yes") : t("statusBadge.no");
       },
       isCenter: true,
     },
     {
-      label: "Gửi lúc",
+      label: t("notification.response.sentAt"),
       accessorKey: "sentAt",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Người gửi",
+      label: t("notification.response.fullName"),
       accessorKey: "fullName",
       isSort: true,
       isCenter: true,
     },
     {
-      label: "Gửi tới",
+      label: t("notification.response.sentToUsers"),
       accessorKey: "sentToUsers",
       render: (row: NotificationResponse) => {
         return row.sentToUsers.length > 0 ? (
-          <span>{row.sentToUsers.map((u) => u.fullName).join(`${row.sentToUsers.length > 1 ? ", " : ""}`)}</span>
+          <span>
+            {row.sentToUsers
+              .map((u) => u.fullName)
+              .join(`${row.sentToUsers.length > 1 ? ", " : ""}`)}
+          </span>
         ) : (
           <StatusBadge status={"__EMPTY__"} />
         );
@@ -149,7 +157,11 @@ const Notification = () => {
 
   return (
     <div className="flex flex-col">
-      <NotificationButton ids={rowSelection} data={data?.data ?? []} tennantOptions={tenantOptions} />
+      <NotificationButton
+        ids={rowSelection}
+        data={data?.data ?? []}
+        tennantOptions={tenantOptions}
+      />
       <div className="shadow-lg">
         <NotificationFilter props={props} />
         <DataTable<NotificationResponse>
@@ -164,12 +176,12 @@ const Notification = () => {
           setRowSelection={setRowSelection}
         />
         <Modal
-          title="Thông báo"
+          title={t("notification.title")}
           trigger={null}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
           onConfirm={handleUpdateNotification}
-          desc={Notice.UPDATE}
+          desc={t(Notice.UPDATE)}
         >
           <AddOrUpdateNotification
             tennantOptions={tenantOptions}

@@ -13,12 +13,13 @@ import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useNotification = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const { t } = useTranslation();
   const {
     page = "1",
     size = "15",
@@ -44,7 +45,8 @@ export const useNotification = () => {
   const parsedPage = Math.max(Number(page) || 1, 1);
   const parsedSize = Math.max(Number(size) || 15, 1);
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<NotificationCreationAndUpdateRequest>();
+  const { clearErrors, errors, handleZodErrors } =
+    useFormErrors<NotificationCreationAndUpdateRequest>();
 
   const [filterValues, setFilterValues] = useState<NotificationFilter>({
     fromDate,
@@ -137,9 +139,10 @@ export const useNotification = () => {
         users: [],
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "notifications",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "notifications",
       });
-      toast.success(Status.UPDATE_SUCCESS);
+      toast.success(t(Status.UPDATE_SUCCESS));
       setIsModalOpen(false);
     },
   });
@@ -161,9 +164,10 @@ export const useNotification = () => {
       await removeNotificationMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "notifications",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "notifications",
           });
-          toast.success(Status.REMOVE_SUCCESS);
+          toast.success(t(Status.REMOVE_SUCCESS));
         },
       });
       return true;
@@ -211,10 +215,10 @@ export const useNotification = () => {
         });
         setIsModalOpen(true);
       } else {
-        openDialog({ id: notification.id, type: action }, { type: "warn", desc: Notice.REMOVE });
+        openDialog({ id: notification.id, type: action }, { type: "warn", desc: t(Notice.REMOVE) });
       }
     },
-    [openDialog]
+    [openDialog, t]
   );
 
   const { data: tenantAll, isError: errorTenantAll } = useQuery<ApiResponse<TenantResponse[]>>({
@@ -243,9 +247,9 @@ export const useNotification = () => {
   };
 
   useEffect(() => {
-    if (isError) toast.error("Có lỗi xảy ra khi tải thông báo");
-    if (errorTenantAll) toast.error("Có lỗi xảy ra khi tải khách thuê");
-  }, [errorTenantAll, isError]);
+    if (isError) toast.error(t("systemNotification.error.load"));
+    if (errorTenantAll) toast.error(t("notification.error.loadTenant"));
+  }, [errorTenantAll, isError, t]);
 
   return {
     query: {

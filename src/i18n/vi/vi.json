@@ -1,7 +1,6 @@
 {
   "common": {
     "autoCheck": "🤖 AI sẽ tự động kiểm tra",
-
     "button": {
       "search": "Tìm kiếm",
       "cancel": "Hủy",
@@ -1309,16 +1308,18 @@
     "errorFetch": "Có lỗi xảy ra khi tải thông báo.",
     "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê thông báo.",
     "response": {
-      "sender": "Người gửi",
-      "receiver": "Người nhận",
+      "title": "Tiêu đề",
       "content": "Nội dung",
-      "status": "Trạng thái",
-      "type": "Loại thông báo",
-      "createdAt": "Ngày tạo",
-      "updatedAt": "Ngày cập nhật",
-      "actions": "Thao tác"
+      "actions": "Thao tác",
+      "image": "Hình ảnh",
+      "notificationType": "Loại thông báo",
+      "sendToAll": "Gửi cho tất cả",
+      "sentAt": "Gửi lúc",
+      "fullName": "Người gửi",
+      "sentToUsers": "Gửi tới"
     },
     "filter": {
+      "search": "Tìm kiếm",
       "placeholderType": "-- Loại thông báo --",
       "placeholderStatus": "-- Trạng thái --",
       "placeholderContent": "Nhập nội dung thông báo",
@@ -1328,6 +1329,7 @@
     "addOrUpdate": {
       "title": "Tiêu đề",
       "sender": "Người gửi",
+      "sendAll": "Gửi cho tất cả",
       "receiver": "Khách thuê",
       "content": "Nội dung thông báo",
       "status": "Trạng thái",
@@ -1335,6 +1337,21 @@
       "tenantPlaceholder": "-- Chọn khách thuê --",
       "attachment": "Ảnh đính kèm",
       "contentPlaceholder": "Nhập nội dung"
+    }
+  },
+  "systemNotification": {
+    "title": "Thông báo",
+    "new": "Mới",
+    "loading": "Đang tải...",
+    "read": "Đã đọc",
+    "unread": "Chưa đọc",
+    "markRead": "Đánh dấu đã đọc",
+    "remove": "Xóa",
+    "markAllRead": "Đánh dấu đọc hết thông báo",
+    "error": {
+      "load": "Có lỗi xảy ra khi tải thông báo hệ thống",
+      "count": "Có lỗi xảy ra khi tải số thông báo chưa đọc",
+      "loadTenant": "Có lỗi xảy ra khi tải khách thuê"
     }
   }
 }

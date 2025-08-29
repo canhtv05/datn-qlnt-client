@@ -13,6 +13,7 @@ import useSystemNotification from "./useSystemNotification";
 import NoData from "../NoData";
 import RenderIf from "../RenderIf";
 import { formatDate } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const SystemNotification = () => {
   const {
@@ -23,7 +24,7 @@ const SystemNotification = () => {
     handleRemoveReadNotification,
     handleScroll,
   } = useSystemNotification();
-
+  const { t } = useTranslation();
   // const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string | number; type: "remove" | "read" }>({
   //   onConfirm: async ({ id, type }) => {
   //     console.log(id, type);
@@ -63,7 +64,7 @@ const SystemNotification = () => {
       >
         <DropdownMenuLabel className="p-0 font-normal cursor-default">
           <div className="flex items-center justify-between gap-2 px-1 py-1.5 text-left text-sm">
-            <strong>Thông báo</strong>
+            <strong>{t("systemNotification.title")}</strong>
             <div className="flex gap-2 items-center justify-between">
               <Badge variant="default" className="text-white">
                 {count?.data.totalUnreadNotifications || 0} Mới
@@ -74,7 +75,7 @@ const SystemNotification = () => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <div className="max-h-[300px] overflow-y-auto overflow-hidden" onScroll={handleScroll}>
-          {isLoading && <p className="px-2 py-1 text-sm">Đang tải...</p>}
+          {isLoading && <p className="px-2 py-1 text-sm">{t("systemNotification.loading")}</p>}
           {notifications.length === 0 && !isLoading && <NoData />}
           {notifications.map((notification) => (
             <DropdownMenuItem
@@ -88,14 +89,24 @@ const SystemNotification = () => {
               <div className="flex items-center justify-between w-full">
                 <div className="flex-1 min-w-0 flex flex-col [&_*]:text-foreground space-y-0.5 max-w-[65%]">
                   <span className="text-sm dark:!text-white !text-black">{notification.title}</span>
-                  <p className="text-sm max-w-[100%] truncate text-[12px]">{notification.content}</p>
-                  <span className="text-[12px]">{formatDate(new Date(notification.createdAt))}</span>
+                  <p className="text-sm max-w-[100%] truncate text-[12px]">
+                    {notification.content}
+                  </p>
+                  <span className="text-[12px]">
+                    {formatDate(new Date(notification.createdAt))}
+                  </span>
                 </div>
                 <div className="flex items-center [&_*]:text-foreground flex-shrink-0 gap-1 ml-2">
                   <div
-                    className={`h-1.5 w-1.5 rounded-full ${notification.isRead ? "bg-emerald-500" : "bg-red-500"} mr-1`}
+                    className={`h-1.5 w-1.5 rounded-full ${
+                      notification.isRead ? "bg-emerald-500" : "bg-red-500"
+                    } mr-1`}
                   />
-                  <span className="text-xs">{notification.isRead ? "Đã đọc" : "Chưa đọc"}</span>
+                  <span className="text-xs">
+                    {notification.isRead
+                      ? t("systemNotification.read")
+                      : t("systemNotification.unread")}
+                  </span>
                   <DropdownMenu>
                     <DropdownMenuTrigger>
                       <div className="ml-3 cursor-pointer">
@@ -113,11 +124,14 @@ const SystemNotification = () => {
                           className="h-7 flex !p-0 justify-start w-full bg-transparent shadow-none hover:!bg-transparent"
                           // onClick={() => handleClick(idx, "read")}
                           onClick={() => {
-                            if (!notification.isRead) handleReadNotification(notification.systemNotificationId);
+                            if (!notification.isRead)
+                              handleReadNotification(notification.systemNotificationId);
                           }}
                         >
                           <Eye />
-                          <span className="text-[14px] dark:!text-white !text-foreground">Đã đọc</span>
+                          <span className="text-[14px] dark:!text-white !text-foreground">
+                            Đã đọc
+                          </span>
                         </Button>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
@@ -125,7 +139,9 @@ const SystemNotification = () => {
                         <Button
                           className="h-7 flex !p-0 justify-start w-full bg-transparent shadow-none hover:!bg-transparent"
                           // onClick={() => handleClick(idx, "remove")}
-                          onClick={() => handleRemoveReadNotification(notification.systemNotificationId)}
+                          onClick={() =>
+                            handleRemoveReadNotification(notification.systemNotificationId)
+                          }
                         >
                           <Trash2 />
                           <span className="text-[14px] dark:!text-white !text-foreground">Xóa</span>
@@ -151,7 +167,7 @@ const SystemNotification = () => {
               if (count?.data.totalUnreadNotifications !== 0) handleReadAllNotification();
             }}
           >
-            <span className="text-[14px] text-white">Đánh dấu đọc hết thông báo</span>
+            <span className="text-[14px] text-white"> {t("systemNotification.markRead")}</span>
           </Button>
         </DropdownMenuItem>
       </DropdownMenuContent>

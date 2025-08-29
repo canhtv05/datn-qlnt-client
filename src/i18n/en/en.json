@@ -1308,16 +1308,18 @@
     "errorFetch": "An error occurred while fetching notifications.",
     "errorFetchStatistics": "An error occurred while fetching notification statistics.",
     "response": {
-      "sender": "Sender",
-      "receiver": "Receiver",
+      "title": "Title",
       "content": "Content",
-      "status": "Status",
-      "type": "Notification Type",
-      "createdAt": "Created At",
-      "updatedAt": "Updated At",
-      "actions": "Actions"
+      "actions": "Actions",
+      "image": "Image",
+      "notificationType": "Notification type",
+      "sendToAll": "Send to all",
+      "sentAt": "Sent at",
+      "fullName": "Sender",
+      "sentToUsers": "Recipients"
     },
     "filter": {
+      "search": "Search",
       "placeholderType": "-- Notification Type --",
       "placeholderStatus": "-- Status --",
       "placeholderContent": "Enter notification content",
@@ -1327,6 +1329,7 @@
     "addOrUpdate": {
       "title": "Title",
       "sender": "Sender",
+      "sendAll": "Send All",
       "receiver": "Tenant",
       "content": "Notification Content",
       "status": "Status",
@@ -1334,6 +1337,21 @@
       "tenantPlaceholder": "-- Select tenant --",
       "attachment": "Attachment",
       "contentPlaceholder": "Enter content"
+    }
+  },
+  "systemNotification": {
+    "title": "Notifications",
+    "new": "New",
+    "loading": "Loading...",
+    "read": "Read",
+    "unread": "Unread",
+    "markRead": "Mark as read",
+    "remove": "Remove",
+    "markAllRead": "Mark all as read",
+    "error": {
+      "load": "An error occurred while loading system notifications",
+      "count": "An error occurred while loading unread count",
+      "loadTenant": "An error occurred while loading tenants"
     }
   }
 }

@@ -7,6 +7,7 @@ import { parseISO } from "date-fns";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 import { DateRange } from "react-day-picker";
 import DateRangePicker from "../DateRangePicker";
+import { useTranslation } from "react-i18next";
 
 export interface NotificationFilterProps {
   filterValues: Filter;
@@ -16,6 +17,7 @@ export interface NotificationFilterProps {
 }
 
 const NotificationFilter = ({ props }: { props: NotificationFilterProps }) => {
+  const { t } = useTranslation();
   const { fromDate, notificationType, query, toDate } = props.filterValues;
   const setFilterValues = props.setFilterValues;
 
@@ -48,12 +50,21 @@ const NotificationFilter = ({ props }: { props: NotificationFilterProps }) => {
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full items-end">
         <FieldsSelectLabel
-          placeholder="-- Loại thông báo --"
-          labelSelect="Loại thông báo"
+          placeholder={t("notification.filter.typePlaceholder")}
+          labelSelect={t("notification.filter.typeLabel")}
           data={[
-            { label: "Chung", value: NotificationType.CHUNG },
-            { label: "Hệ thống", value: NotificationType.HE_THONG },
-            { label: "Khác", value: NotificationType.KHAC },
+            {
+              label: t("statusBadge.notificationType.common"),
+              value: NotificationType.CHUNG,
+            },
+            {
+              label: t("statusBadge.notificationType.system"),
+              value: NotificationType.HE_THONG,
+            },
+            {
+              label: t("statusBadge.notificationType.other"),
+              value: NotificationType.KHAC,
+            },
           ]}
           value={notificationType ?? undefined}
           onChange={(value) => handleChange("notificationType", String(value))}
@@ -65,7 +76,7 @@ const NotificationFilter = ({ props }: { props: NotificationFilterProps }) => {
       <InputLabel
         id="query"
         name="query"
-        placeholder="Tìm kiếm"
+        placeholder={t("notification.filter.search")}
         value={query ?? undefined}
         onChange={(e) => handleChange("query", e.target.value)}
       />

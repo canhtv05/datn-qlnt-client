@@ -13,7 +13,12 @@ import { toast } from "sonner";
 import { Notice, NotificationType, Status } from "@/enums";
 import { createOrUpdateNotificationSchema } from "@/lib/validation";
 import { useFormErrors } from "@/hooks/useFormErrors";
-import { IBtnType, NotificationCreationAndUpdateRequest, NotificationResponse, Option } from "@/types";
+import {
+  IBtnType,
+  NotificationCreationAndUpdateRequest,
+  NotificationResponse,
+  Option,
+} from "@/types";
 import { ACTION_BUTTONS } from "@/constant";
 import RenderIf from "@/components/RenderIf";
 import { useConfirmDialog } from "@/hooks";
@@ -40,7 +45,8 @@ const NotificationButton = ({
     users: [],
   });
 
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<NotificationCreationAndUpdateRequest>();
+  const { clearErrors, errors, handleZodErrors } =
+    useFormErrors<NotificationCreationAndUpdateRequest>();
 
   const queryClient = useQueryClient();
 
@@ -79,7 +85,7 @@ const NotificationButton = ({
     },
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.ADD_SUCCESS);
+      toast.success(t(Status.ADD_SUCCESS));
       setValue({
         content: "",
         notificationType: NotificationType.CHUNG,
@@ -89,7 +95,8 @@ const NotificationButton = ({
         users: [],
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "notifications",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "notifications",
       });
     },
   });
@@ -127,10 +134,11 @@ const NotificationButton = ({
       await Promise.all(selectedIds.map((id) => removeNotificationMutation.mutateAsync(id)));
 
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "notifications",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "notifications",
       });
 
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
       return true;
     } catch (error) {
       handleMutationError(error);
@@ -143,7 +151,7 @@ const NotificationButton = ({
       if (!ids || !Object.values(ids).some(Boolean)) return false;
       return await handleRemoveMeterReadingByIds(ids);
     },
-    desc: "Thao tác này sẽ xóa vĩnh viễn dữ liệu các thông báo đã chọn. Bạn có chắc chắn muốn tiếp tục?",
+    desc: t("common.confirmDialog.delete"),
     type: "warn",
   });
 
@@ -154,16 +162,21 @@ const NotificationButton = ({
       } else if (btn.type === "download") {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const exportData: Record<string, any>[] | undefined = data?.map((d) => ({
-          "Tiêu đề": d.title,
-          "Nội dung": d.content,
-          "Hình ảnh": d.image,
-          "Loại thông báo": notificationTypeEnumToString(d.notificationType, t),
-          "Gửi cho tất cả": d.sendToAll ? "Có" : "Không",
-          "Gửi lúc": formatDate(d.sentAt),
-          "Tên người gửi": d.fullName,
-          "Gửi cho người dùng": d.sentToUsers.map((u) => u.fullName).join(", "),
+          [t("notification.response.title")]: d.title,
+          [t("notification.response.content")]: d.content,
+          [t("notification.response.image")]: d.image,
+          [t("notification.response.notificationType")]: notificationTypeEnumToString(
+            d.notificationType,
+            t
+          ),
+          [t("notification.response.sendToAll")]: d.sendToAll
+            ? t("statusBadge.yes")
+            : t("statusBadge.no"),
+          [t("notification.response.sentAt")]: formatDate(d.sentAt),
+          [t("notification.response.fullName")]: d.fullName,
+          [t("notification.response.sentToUsers")]: d.sentToUsers.map((u) => u.fullName).join(", "),
         }));
-        handleExportExcel(`Thông báo`, exportData, data);
+        handleExportExcel(t("notification.title"), exportData, data);
       }
     },
     [data, ids, openDialog, t]
@@ -177,14 +190,14 @@ const NotificationButton = ({
   return (
     <div className="h-full bg-background rounded-t-sm">
       <div className="flex px-4 py-3 justify-between items-center">
-        <h3 className="font-semibold">Thông báo</h3>
+        <h3 className="font-semibold">{t("notification.title")}</h3>
         <div className="flex gap-2">
           {ACTION_BUTTONS.map((btn, index) => (
             <TooltipProvider key={index}>
               <Tooltip>
                 <RenderIf value={btn.type === "default"}>
                   <Modal
-                    title="Thông báo"
+                    title={t("notification.title")}
                     trigger={
                       <TooltipTrigger asChild>
                         <Button size={"icon"} variant={btn.type} className="cursor-pointer">
@@ -192,7 +205,7 @@ const NotificationButton = ({
                         </Button>
                       </TooltipTrigger>
                     }
-                    desc={Notice.ADD}
+                    desc={t(Notice.ADD)}
                     onConfirm={handleAddNotification}
                   >
                     <AddOrUpdateNotification

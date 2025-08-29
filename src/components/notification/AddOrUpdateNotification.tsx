@@ -129,7 +129,7 @@ const AddOrUpdateNotification = ({
         onChange={(val) => setValue((prev) => ({ ...prev, sendToAll: val as boolean }))}
         id="sendToAll"
         name="sendToAll"
-        label="Gửi cho tất cả"
+        label={t("notification.addOrUpdate.sendAll")}
         required
       />
       <FieldsMultiSelectLabel
