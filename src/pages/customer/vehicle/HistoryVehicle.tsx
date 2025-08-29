@@ -10,6 +10,7 @@ import { Notice } from "@/enums";
 import StatusBadge from "@/components/ui/StatusBadge";
 import VehicleFilter from "@/components/customer/vehicle/VehicleFilter";
 import { useTranslation } from "react-i18next";
+import { lang } from "@/lib/utils";
 
 const HistoryVehicle = () => {
   const {
@@ -102,7 +103,7 @@ const HistoryVehicle = () => {
       hasDate: true,
       render: (row: VehicleResponse) =>
         row.registrationDate ? (
-          new Date(row.registrationDate).toLocaleDateString("vi-VN")
+          new Date(row.registrationDate).toLocaleDateString(lang)
         ) : (
           <StatusBadge status={"__EMPTY__"} />
         ),
@@ -179,9 +180,7 @@ const HistoryVehicle = () => {
                           fill: btn.arrowColor,
                           background: btn.arrowColor,
                         }}
-                        className={
-                          "size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
-                        }
+                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
                       />
                     </TooltipContent>
                   </Tooltip>

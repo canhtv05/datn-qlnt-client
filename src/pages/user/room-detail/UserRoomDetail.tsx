@@ -30,7 +30,13 @@ import { AxiosError } from "axios";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { contractStatusEnumToString, roomStatusEnumToString, roomTypeEnumToString } from "@/lib/utils";
+import {
+  contractStatusEnumToString,
+  formattedCurrency,
+  lang,
+  roomStatusEnumToString,
+  roomTypeEnumToString,
+} from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
 const NA = "N/A";
@@ -187,7 +193,7 @@ const UserRoomDetail = () => {
                     <CalendarDays className="size-4 text-muted-foreground" />
                     <span className="font-medium text-muted-foreground">Ngày sinh:</span>
                     <span className="font-bold">
-                      {(room?.dob && new Date(room.dob).toLocaleDateString("vi-VN")) || NA}
+                      {(room?.dob && new Date(room.dob).toLocaleDateString(lang)) || NA}
                     </span>
                   </div>
 
@@ -200,17 +206,13 @@ const UserRoomDetail = () => {
                   <div className="flex items-center gap-2">
                     <CreditCard className="size-4 text-muted-foreground" />
                     <span className="font-medium text-muted-foreground">Tiền cọc:</span>
-                    <span className="font-bold">
-                      {(room?.deposit && Number(room?.deposit).toLocaleString("vi-VN")) || NA} đ
-                    </span>
+                    <span className="font-bold">{formattedCurrency(room?.deposit ?? 0)}</span>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <DollarSign className="size-4 text-muted-foreground" />
                     <span className="font-medium text-muted-foreground">Giá phòng:</span>
-                    <span className="font-bold">
-                      {(room?.roomPrice && Number(room?.roomPrice).toLocaleString("vi-VN")) || NA} đ
-                    </span>
+                    <span className="font-bold">{formattedCurrency(room?.roomPrice ?? 0)}</span>
                   </div>
 
                   <div className="flex items-center gap-2">
@@ -225,7 +227,7 @@ const UserRoomDetail = () => {
                     <CalendarCheck className="size-4 text-muted-foreground" />
                     <span className="font-medium text-muted-foreground">Bắt đầu:</span>
                     <span className="font-bold">
-                      {(room?.startDate && new Date(room.startDate).toLocaleDateString("vi-VN")) || NA}
+                      {(room?.startDate && new Date(room.startDate).toLocaleDateString(lang)) || NA}
                     </span>
                   </div>
 
@@ -233,7 +235,7 @@ const UserRoomDetail = () => {
                     <CalendarX className="size-4 text-muted-foreground" />
                     <span className="font-medium text-muted-foreground">Kết thúc:</span>
                     <span className="font-bold">
-                      {(room?.endDate && new Date(room.endDate).toLocaleDateString("vi-VN")) || NA}
+                      {(room?.endDate && new Date(room.endDate).toLocaleDateString(lang)) || NA}
                     </span>
                   </div>
                 </div>

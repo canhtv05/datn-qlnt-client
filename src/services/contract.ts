@@ -27,6 +27,7 @@ import {
   assetStatusEnumToString,
   contractStatusEnumToString,
   formattedCurrency,
+  lang,
   serviceRoomStatusEnumToString,
   vehicleTypeEnumToString,
 } from "@/lib/utils";
@@ -217,7 +218,7 @@ export const replacePlaceholders = (
       if (!value) result = checkValue(regex, result);
       if (["createdAt", "updatedAt", "startDate", "endDate"].includes(key)) {
         if (!value) result = checkValue(regex, result);
-        else result = result.replace(regex, new Date(value).toLocaleDateString("vi-VN"));
+        else result = result.replace(regex, new Date(value).toLocaleDateString(lang));
       } else if (key === "status") {
         if (!value) result = checkValue(regex, result);
         const contractStatus = value as ContractStatus;

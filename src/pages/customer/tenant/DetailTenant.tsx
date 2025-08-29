@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { BsPersonFill, BsCalendarDate, BsTelephone, BsEnvelope } from "react-icons/bs";
 import StatusBadge from "@/components/ui/StatusBadge";
 import Image from "@/components/Image";
-import { genderEnumToString } from "@/lib/utils";
+import { genderEnumToString, lang } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 
 const NA = "N/A";
@@ -78,7 +78,7 @@ const DetailTenant = () => {
             <div className="flex items-center space-x-3">
               <BsCalendarDate className="text-blue-600 dark:text-blue-400 w-5 h-5" />
               <span className="text-neutral-800 dark:text-neutral-100">
-                {tenant.dob ? new Date(tenant.dob).toLocaleDateString("vi-VN") : NA}
+                {tenant.dob ? new Date(tenant.dob).toLocaleDateString(lang) : NA}
               </span>
             </div>
             <div className="flex items-center space-x-3">

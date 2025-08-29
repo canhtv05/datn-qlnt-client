@@ -27,7 +27,7 @@ import {
   VehicleType,
 } from "@/enums";
 import { RoleType } from "@/hooks/useHighestRole";
-import { UserResponse } from "@/types";
+import { RevenueStatisticResponse, StatisticalItemType, UserResponse } from "@/types";
 import { useEditorStore } from "@/zustand/editorStore";
 import { FindResultType } from "ckeditor5";
 import { clsx, type ClassValue } from "clsx";
@@ -37,6 +37,8 @@ import { saveAs } from "file-saver";
 import { TFunction } from "i18next";
 import { Locale } from "date-fns";
 import { enUS, vi } from "date-fns/locale";
+import { Banknote, Droplets, Plug, Wrench } from "lucide-react";
+import configs from "@/configs";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -48,18 +50,27 @@ export const getHighestRole = (roles: RoleType[]): RoleType => {
   return roles.sort((a, b) => ROLE_PRIORITY.indexOf(b) - ROLE_PRIORITY.indexOf(a))[0];
 };
 
-export const setLang = (newLang: "vi-VN" | "en-US") => {
-  lang = newLang;
-};
-
-export let lang: "vi-VN" | "en-US" = "vi-VN";
+export const lang: "vi-VN" | "en-US" = (() => {
+  try {
+    const stored = localStorage.getItem(configs.storage.key);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (parsed.language === "vi") {
+        return "vi-VN";
+      } else if (parsed.language === "en") {
+        return "en-US";
+      }
+    }
+  } catch {
+    return "en-US";
+  }
+  return "en-US";
+})();
 
 export const formattedCurrency = (price: number): string => {
-  const currency = lang === "en-US" ? "USD" : "VND";
-
-  return new Intl.NumberFormat(lang, {
+  return new Intl.NumberFormat("vi-VN", {
     style: "currency",
-    currency,
+    currency: "VND",
     currencyDisplay: "symbol",
   }).format(price);
 };
@@ -431,18 +442,6 @@ export const checkUser = (user: UserResponse | null, isLoading: boolean): boolea
 export const handleExportExcel = (name: string, exportData?: Record<string, any>[], data?: Record<string, any>[]) => {
   if (!data?.length) return;
 
-  // Lấy keys từ object đầu tiên (tất cả cột có trong dữ liệu)
-  // const keys = Object.keys(data[0]);
-
-  // Tạo exportData bằng cách duyệt qua từng row
-  // const exportData = data.map((row) => {
-  //   const obj: Record<string, any> = {};
-  //   keys.forEach((key) => {
-  //     obj[key] = row[key as keyof typeof row];
-  //   });
-  //   return obj;
-  // });
-
   const finalExportData = exportData && exportData.length > 0 ? exportData : data.map((row) => ({ ...row }));
   if (!finalExportData.length) return;
 
@@ -499,7 +498,7 @@ export const genderToString = (gender: Gender | undefined) => {
     case Gender.UNKNOWN:
     default:
       return "N/A";
-  } 
+  }
 };
 
 export const tenantStatusToString = (status: TenantStatus | undefined) => {
@@ -517,7 +516,6 @@ export const tenantStatusToString = (status: TenantStatus | undefined) => {
     default:
       return "N/A";
   }
-
 };
 export const assetStatusToString = (status: AssetStatus | string) => {
   switch (status) {
@@ -538,4 +536,55 @@ export const assetStatusToString = (status: AssetStatus | string) => {
     default:
       return "N/A";
   }
+};
+
+export const chartData = (statistical: StatisticalItemType) => {
+  const children = statistical.children || [];
+
+  const colorVars = ["hsl(47 95% 53%)", "hsl(142 76% 36%)", "hsl(0 84% 60%)", "hsl(187 85% 53%)"];
+
+  return children.map((child, index) => ({
+    browser: child.label.toLowerCase(),
+    label: child.label,
+    count: child.count,
+    fill: colorVars[index] || "var(--color-other)",
+  }));
+};
+
+export const buildRevenueStatistical = (data?: RevenueStatisticResponse): StatisticalItemType => {
+  const paidRoomFee = data?.paidRoomFee ?? 0;
+  const paidWaterFee = data?.paidWaterFee ?? 0;
+  const paidEnergyFee = data?.paidEnergyFee ?? 0;
+  const paidServiceFee = data?.paidServiceFee ?? 0;
+
+  return {
+    label: "Thống kê doanh thu",
+    type: "revenue",
+    children: [
+      {
+        label: "Tiền phòng",
+        count: paidRoomFee,
+        icon: Banknote,
+        classText: "text-blue-500",
+      },
+      {
+        label: "Tiền nước",
+        count: paidWaterFee,
+        icon: Droplets,
+        classText: "text-cyan-500",
+      },
+      {
+        label: "Tiền điện",
+        count: paidEnergyFee,
+        icon: Plug,
+        classText: "text-orange-500",
+      },
+      {
+        label: "Phí dịch vụ",
+        count: paidServiceFee,
+        icon: Wrench,
+        classText: "text-purple-500",
+      },
+    ],
+  };
 };

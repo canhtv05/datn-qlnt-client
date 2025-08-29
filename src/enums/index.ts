@@ -267,6 +267,7 @@ export enum NotificationType {
 export enum SidebarKey {
   DASHBOARD_LABEL = "sidebar.dashboard.label",
   DASHBOARD_TITLE = "sidebar.dashboard.title",
+  STATISTICS_TITLE = "sidebar.statistics.title",
 
   FACILITIES_LABEL = "sidebar.facilities.label",
   FACILITIES_TITLE = "sidebar.facilities.title",

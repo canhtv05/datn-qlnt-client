@@ -1,16 +1,9 @@
 import Logo from "@/components/Logo";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import StatusBadge from "@/components/ui/StatusBadge";
 import "@/assets/css/print.css";
 import { Button } from "@/components/ui/button";
-import { formattedCurrency } from "@/lib/utils";
+import { formattedCurrency, lang } from "@/lib/utils";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -83,16 +76,12 @@ const ViewInvoiceDetail = () => {
             </span>
             <span className="text-end">
               {t("invoice.detail.date")}:
-              <strong>
-                {data?.data?.createdAt &&
-                  new Date(data?.data?.createdAt).toLocaleDateString("vi-VN")}
-              </strong>
+              <strong>{data?.data?.createdAt && new Date(data?.data?.createdAt).toLocaleDateString(lang)}</strong>
             </span>
             <span className="text-end">
               {t("invoice.detail.paymentDueDate")}:
               <strong>
-                {data?.data?.paymentDueDate &&
-                  new Date(data?.data?.paymentDueDate).toLocaleDateString("vi-VN")}
+                {data?.data?.paymentDueDate && new Date(data?.data?.paymentDueDate).toLocaleDateString(lang)}
               </strong>
             </span>
             <span className="flex gap-2 items-center justify-end">
@@ -110,15 +99,9 @@ const ViewInvoiceDetail = () => {
             <TableHeader>
               <TableRow className="[&>th]:border-r last:border-r-0 [&>th]:font-black [&>th]:bg-primary [&>th]:text-white [&>th]:text-end">
                 <TableHead className="!text-center">{t("invoice.detail.table.index")}</TableHead>
-                <TableHead className="!text-start">
-                  {t("invoice.detail.table.serviceName")}
-                </TableHead>
-                <TableHead className="!text-center">
-                  {t("invoice.detail.table.serviceCategory")}
-                </TableHead>
-                <TableHead className="!text-center">
-                  {t("invoice.detail.table.serviceCalculation")}
-                </TableHead>
+                <TableHead className="!text-start">{t("invoice.detail.table.serviceName")}</TableHead>
+                <TableHead className="!text-center">{t("invoice.detail.table.serviceCategory")}</TableHead>
+                <TableHead className="!text-center">{t("invoice.detail.table.serviceCalculation")}</TableHead>
                 <TableHead className="!text-center">{t("invoice.detail.table.unit")}</TableHead>
                 <TableHead>{t("invoice.detail.table.oldIndex")}</TableHead>
                 <TableHead>{t("invoice.detail.table.newIndex")}</TableHead>
@@ -129,10 +112,7 @@ const ViewInvoiceDetail = () => {
             </TableHeader>
             <TableBody>
               {data?.data?.items?.map((item, index) => (
-                <TableRow
-                  key={item.id ?? index}
-                  className="[&>td]:border-r last:border-r-0 [&>td]:text-end"
-                >
+                <TableRow key={item.id ?? index} className="[&>td]:border-r last:border-r-0 [&>td]:text-end">
                   <TableCell className="!text-center">{index + 1}</TableCell>
                   <TableCell className="!text-start">{item.serviceName}</TableCell>
                   <TableCell className="!text-center">
@@ -162,8 +142,7 @@ const ViewInvoiceDetail = () => {
                 </strong>
               </span>
               <span className="mt-2">
-                <span className="text-red-500 font-medium">{t("invoice.detail.note")}:</span>{" "}
-                {data?.data?.note || NA}
+                <span className="text-red-500 font-medium">{t("invoice.detail.note")}:</span> {data?.data?.note || NA}
               </span>
             </div>
           </div>
@@ -173,18 +152,14 @@ const ViewInvoiceDetail = () => {
               <div>
                 {t("invoice.detail.totalAmount")}:{" "}
                 <strong className="text-red-500 text-base">
-                  {data?.data?.totalAmount
-                    ? formattedCurrency(data?.data?.totalAmount)
-                    : formattedCurrency(0)}
+                  {data?.data?.totalAmount ? formattedCurrency(data?.data?.totalAmount) : formattedCurrency(0)}
                 </strong>
               </div>
               <div className="italic text-xs mt-1 text-foreground">
                 ({t("invoice.detail.inWords")}
                 {(() => {
                   const text = readVNNumber.toVNWord(data?.data?.totalAmount);
-                  return text === ""
-                    ? t("invoice.detail.free")
-                    : text.charAt(0).toUpperCase() + text.slice(1) + "VND";
+                  return text === "" ? t("invoice.detail.free") : text.charAt(0).toUpperCase() + text.slice(1) + "VND";
                 })()}
                 )
               </div>

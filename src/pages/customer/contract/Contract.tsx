@@ -15,6 +15,7 @@ import UpdateContract from "@/components/customer/contract/UpdateContract";
 import { ContractResponse, ColumnConfig, IBtnType } from "@/types";
 import { useTranslation } from "react-i18next";
 import { Car, Play, Users2 } from "lucide-react";
+import { formattedCurrency, lang } from "@/lib/utils";
 
 const Contract = () => {
   const {
@@ -135,7 +136,7 @@ const Contract = () => {
       accessorKey: "startDate",
       isSort: true,
       render: (row: ContractResponse) =>
-        new Date(row.startDate).toLocaleDateString("vi-VN", {
+        new Date(row.startDate).toLocaleDateString(lang, {
           day: "2-digit",
           month: "2-digit",
           year: "numeric",
@@ -147,7 +148,7 @@ const Contract = () => {
       accessorKey: "endDate",
       isSort: true,
       render: (row: ContractResponse) =>
-        new Date(row.endDate).toLocaleDateString("vi-VN", {
+        new Date(row.endDate).toLocaleDateString(lang, {
           day: "2-digit",
           month: "2-digit",
           year: "numeric",
@@ -159,14 +160,14 @@ const Contract = () => {
       accessorKey: "deposit",
       isSort: true,
       isCenter: true,
-      render: (row: ContractResponse) => `${row.deposit?.toLocaleString("vi-VN")} VNĐ`,
+      render: (row: ContractResponse) => `${formattedCurrency(row.deposit)}`,
     },
     {
       label: t("contract.response.roomPrice"),
       accessorKey: "roomPrice",
       isSort: true,
       isCenter: true,
-      render: (row: ContractResponse) => `${row.roomPrice?.toLocaleString("vi-VN")} VNĐ`,
+      render: (row: ContractResponse) => `${formattedCurrency(row.roomPrice)}`,
     },
     {
       label: t("contract.response.actions"),

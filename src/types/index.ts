@@ -62,6 +62,27 @@ export interface IBtnType {
   hasConfirm: boolean;
 }
 
+export type ChartDataType = {
+  label: string;
+  count: number;
+  fill?: string;
+  dataKey?: string;
+  color?: string;
+};
+
+export type StatisticalChildType = {
+  label: string;
+  count: number;
+  icon: LucideIcon;
+  classText: string;
+};
+
+export type StatisticalItemType = {
+  label: string;
+  type: string;
+  children: StatisticalChildType[];
+};
+
 /* FILTER */
 export type FilterObject = Record<string, string>;
 
@@ -409,6 +430,7 @@ export type IUpdateAsset = Omit<ICreateAsset, "buildingId"> & { assetStatus: Ass
 // export type IUpdateAsset = ICreateAsset;
 
 export interface AssetResponse extends AbstractResponse {
+  descriptionAsset: string;
   assetName: string;
   description: string;
   buildingName: string;
@@ -1327,4 +1349,28 @@ export interface ContractVehicleFilter {
 export interface ContractExtendAndTerminateRequest {
   newEndDate: string | Date;
   oldEndDate: string | Date;
+}
+
+/* REVENUE */
+export interface RevenueStatisticResponse {
+  buildingId: string;
+  buildingName: string;
+  year: number;
+  month: number;
+  expectedRevenue: number;
+  currentRevenue: number;
+  paidRoomFee: number;
+  paidEnergyFee: number;
+  paidWaterFee: number;
+  paidServiceFee: number;
+  compensationAmount: number;
+  damageAmount: number;
+  overdueAmount: number;
+  unreturnedDeposit: number;
+}
+
+export interface RevenueStatisticRequest {
+  month: number | undefined;
+  year: number | undefined;
+  buildingId: string;
 }

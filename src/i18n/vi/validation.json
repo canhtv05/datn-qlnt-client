@@ -39,5 +39,348 @@
   },
   "policy": {
     "required": "Bạn cần đồng ý với chính sách bảo mật"
+  },
+
+  
+  "_comment_1": "=== BUILDINGS ===",
+  "address": {
+    "required": "Địa chỉ không được để trống"
+  },
+  "buildingName": {
+    "required": "Tên tòa nhà không được để trống"
+  },
+  "actualNumberOfFloors": {
+    "label": "Số tầng thực tế"
+  },
+  "numberOfFloorsForRent": {
+    "label": "Số tầng cho thuê",
+    "notGreater": "Số tầng cho thuê không được lớn hơn số tầng thực tế"
+  },
+  "buildingType": {
+    "invalid": "Loại tòa nhà không hợp lệ"
+  },
+
+    "_comment_2": "=== ROOMS ===",
+  "maximumRoom": {
+    "label": "Số phòng tối đa",
+    "range": "Số phòng tối đa từ 1 -> 99"
+  },
+  "floorType": {
+    "invalid": "Loại tầng không hợp lệ"
+  },
+  "nameFloor": {
+    "required": "Tên tầng không được để trống"
+  },
+
+  
+  "_comment_3": "=== ASSET TYPES ===",
+  "nameAssetType": {
+    "required": "Tên loại tài sản không được để trống"
+  },
+  "assetGroup": {
+    "invalid": "Nhóm tài sản không hợp lệ"
+  },
+  "descriptionAssetType": {
+    "required": "Mô tả không được để trống"
+  },
+  
+
+  "_comment_4": "===  ROOM ASSETS ===",
+  "assetBeLongTo": {
+    "required": "Trường 'Thuộc về' không được để trống"
+  },
+  "roomId": {
+    "required": "Phòng không được để trống",
+    "bulkRequired": "Vui lòng chọn ít nhất một phòng."
+  },
+  "assetId": {
+    "required": "Tài sản không được để trống",
+    "bulkRequired": "Vui lòng chọn ít nhất một tài sản.",
+    "requiredWhenBelongToRoom": "Mã tài sản không được để trống khi thuộc về phòng"
+  },
+  "quantity": {
+    "label": "Số lượng"
+  },
+  "assetName": {
+    "required": "Tên tài sản không được để trống"
+  },
+  "assetRoomSelection": {
+    "invalidCombination": "Chỉ cho phép chọn (nhiều phòng + 1 tài sản) hoặc (1 phòng + nhiều tài sản)."
+  },
+  "buildingId": {
+    "required": "Tòa nhà không được để trống"
+  },
+
+    "_comment_5": "===  ROOM ===",
+  "floorId": {
+    "required": "Vui lòng chọn tầng"
+  },
+  "acreage": {
+    "label": "Diện tích",
+    "min": "Diện tích phải ≥ 1"
+  },
+  "price": {
+    "label": "Giá",
+    "nonNegative": "Giá phải là số không âm"
+  },
+  "maximumPeople": {
+    "label": "Số người tối đa",
+    "min": "Số người tối đa phải ≥ 1"
+  },
+  "roomType": {
+    "invalid": "Loại phòng không hợp lệ"
+  },
+  "roomStatus": {
+    "invalid": "Trạng thái phòng không hợp lệ"
+  },
+  "room": {
+    "invalidData": "Dữ liệu diện tích hoặc số người tối đa không hợp lệ"
+  },
+
+  "_comment_6": "===  ASSET ===",
+  "nameAsset": {
+    "required": "Tên tài sản không được để trống"
+  },
+  "assetType": {
+    "invalid": "Loại tài sản không hợp lệ"
+  },
+  "assetBeLongTo2": {
+    "invalid": "Tài sản thuộc về không hợp lệ"
+  },
+  "assetStatus": {
+    "invalid": "Trạng thái tài sản không hợp lệ"
+  },
+
+
+   "_comment_7": "===  TENANT ===",
+   "identityCardNumber": {
+    "invalid": "Căn cước công dân phải gồm 12 chữ số"
+  },
+  "frontCccd": {
+    "required": "Bạn phải tải lên mặt trước CCCD"
+  },
+  "backCccd": {
+    "required": "Bạn phải tải lên mặt sau CCCD"
+  },
+
+  "_comment_8": "===  VEHICLE ===",
+  "tenantId": {
+    "required": "Vui lòng chọn khách thuê"
+  },
+  "vehicleType": {
+    "invalid": "Loại phương tiện không hợp lệ"
+  },
+  "licensePlate": {
+    "required": "Biển số xe không được để trống"
+  },
+  "vehicleStatus": {
+    "invalid": "Trạng thái phương tiện không hợp lệ"
+  },
+  "registrationDate": {
+    "invalid": "Ngày đăng ký không hợp lệ"
+  },
+
+  "_comment_9": "===  CONTRACT ===",
+  "startDate": {
+    "invalid": "Ngày bắt đầu không hợp lệ"
+  },
+  "endDate": {
+    "invalid": "Ngày kết thúc không hợp lệ",
+    "minRange": "Ngày kết thúc phải cách ngày bắt đầu ít nhất 3 tháng"
+  },
+  "deposit": {
+    "number": "Tiền cọc phải là số",
+    "min": "Tiền cọc phải lớn hơn 0"
+  },
+  "roomId1": {
+    "required": "Vui lòng chọn phòng"
+  },
+  "tenants": {
+    "min": "Phải có ít nhất một khách thuê"
+  },
+  "content": {
+    "required": "Không được để trống hợp đồng"
+  },
+  "contractId": {
+    "required": "Không có mã hợp đồng"
+  },
+  "vehicleId": {
+    "required": "Vui lòng chọn phương tiện"
+  },
+  "newEndDate": {
+    "invalid": "Ngày gia hạn không hợp lệ",
+    "minRange": "Ngày gia hạn phải cách ngày kết thúc cũ ít nhất 3 tháng"
+  },
+  "oldEndDate": {
+    "invalid": "Ngày hạn hết cũ không hợp lệ"
+  },
+  "noticeDate": {
+    "invalid": "Ngày báo trước không hợp lệ"
+  },
+
+   "_comment_10": "===  SERVICE ===",
+  "service": {
+    "name": {
+      "required": "Không được để trống tên dịch vụ"
+    },
+    "category": {
+      "invalid": "Loại dịch vụ không hợp lệ"
+    },
+    "price": {
+      "label": "Giá",
+      "nonNegative": "Giá không được âm"
+    },
+    "calculation": {
+      "invalid": "Tính toán dịch vụ không hợp lệ"
+    }
+  },
+
+  "_comment_11": "===  DEFAULT SERVICE ===",
+  "defaultService": {
+    "appliesTo": {
+      "invalid": "Dịch vụ mặc định áp dụng không hợp lệ"
+    },
+    "price": {
+      "label": "Giá",
+      "nonNegative": "Giá không được âm"
+    },
+    "status": {
+      "invalid": "Trạng thái dịch vụ mặc định không hợp lệ"
+    },
+    "startApplying": {
+      "invalid": "Ngày bắt đầu áp dụng không hợp lệ"
+    },
+    "building": {
+      "required": "Vui lòng chọn tòa nhà"
+    },
+    "floor": {
+      "required": "Vui lòng chọn tầng"
+    },
+    "service": {
+      "required": "Vui lòng chọn dịch vụ"
+    }
+  },
+    "_comment_12": "===   SERVICE ROOM ===",
+    "serviceRoom": {
+    "room": {
+      "required": "Vui lòng chọn phòng",
+      "min": "Phải có ít nhất một phòng"
+    },
+    "building": {
+      "required": "Vui lòng chọn tòa nhà"
+    },
+    "service": {
+      "required": "Vui lòng chọn dịch vụ",
+      "min": "Phải có ít nhất một dịch vụ"
+    },
+    "price": {
+      "label": "Đơn giá mới"
+    },
+    "status": {
+      "invalid": "Dịch vụ phòng không hợp lệ"
+    }
+  },
+  "_comment_13": "===   METER ===",
+  "meter": {
+    "room": {
+      "required": "Vui lòng chọn phòng"
+    },
+    "service": {
+      "required": "Vui lòng chọn dịch vụ"
+    },
+    "type": {
+      "invalid": "Loại công tơ không hợp lệ"
+    },
+    "name": {
+      "required": "Tên công tơ không được để trống"
+    },
+    "code": {
+      "required": "Mã công tơ không được để trống"
+    },
+    "manufactureDate": {
+      "invalid": "Ngày sản xuất không hợp lệ",
+      "future": "Ngày sản xuất không được ở trong tương lai"
+    },
+    "closestIndex": {
+      "label": "Chỉ số gần nhất"
+    }
+  },
+  "_comment_14": "===   METER READING ===",
+  "meterReading": {
+    "newIndex": {
+      "label": "Chỉ số mới",
+      "negative": "Chỉ số mới không được âm"
+    },
+    "meter": {
+      "required": "Vui lòng chọn công tơ"
+    },
+    "year": {
+      "label": "Năm"
+    },
+    "month": {
+      "label": "Tháng"
+    }
+  },
+  "_comment_15": "===   invoice ===",
+  "invoice": {
+    "paymentDueDate": {
+      "future": "Ngày đến hạn phải ở tương lai"
+    },
+    "contract": {
+      "required": "Vui lòng chọn hợp đồng"
+    },
+    "building": {
+      "required": "Vui lòng chọn tòa nhà"
+    },
+    "floor": {
+      "required": "Vui lòng chọn tầng nhà"
+    },
+    "invoiceId": {
+      "required": "Mã hóa đơn không được để trống"
+    },
+    "invoiceItemType": {
+      "invalid": "Loại mục hóa đơn không hợp lệ"
+    },
+    "newIndex": {
+      "min": "Chỉ số mới phải ≥ 1",
+      "requiredForElectricOrWater": "Chỉ số mới là bắt buộc với điện hoặc nước"
+    },
+    "quantity": {
+      "min": "Số lượng phải ≥ 1",
+      "requiredForCompensation": "Số lượng là bắt buộc với loại đền bù"
+    },
+    "unitPrice": {
+      "min": "Đơn giá phải ≥ 1",
+      "requiredForCompensation": "Đơn giá là bắt buộc với loại đền bù"
+    },
+    "serviceRoom": {
+      "requiredForService": "Dịch vụ bắt buộc phải chọn phòng"
+    }
+  },
+  "_comment_16": "===   PAYMENT RECEIPT ===",
+  "rejectPaymentReceipt": {
+    "reason": {
+      "required": "Không được để trống lý do",
+      "maxLength": "Lý do không được vượt quá 255 ký tự"
+    }
+  },
+
+  "_comment_17": "===   NOTIFICATION ===",
+  "notification": {
+    "title": {
+      "required": "Vui lòng nhập tiêu đề"
+    },
+    "content": {
+      "required": "Vui lòng nhập nội dung"
+    },
+    "notificationType": {
+      "invalid": "Loại thông báo không hợp lệ"
+    },
+    "sendToAll": {
+      "required": "Vui lòng chọn"
+    },
+    "users": {
+      "requiredWhenNotAll": "Vui lòng chọn ít nhất 1 người dùng khi không gửi cho tất cả"
+    }
   }
 }

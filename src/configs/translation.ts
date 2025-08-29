@@ -34,6 +34,10 @@ i18next.use(initReactI18next).init({
   },
   ns: ["translation", "validation"],
   defaultNS: "translation",
+  detection: {
+    order: ["localStorage", "navigator"],
+    caches: ["localStorage"],
+  },
 });
 
 export default i18next;

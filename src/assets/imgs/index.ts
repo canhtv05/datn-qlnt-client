@@ -41,8 +41,10 @@ import american from "./american.webp";
 import vietnam from "./vietnam.webp";
 import uk from "./uk.webp";
 import deposit from "./deposit.webp";
+import revenue from "./revenue.webp";
 
 const images = {
+  revenue,
   deposit,
   uk,
   american,

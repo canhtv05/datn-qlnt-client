@@ -14,14 +14,7 @@ import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  AlertTriangle,
-  CircleCheck,
-  CircleDollarSign,
-  HelpCircle,
-  Wrench,
-  XCircle,
-} from "lucide-react";
+import { AlertTriangle, CircleCheck, CircleDollarSign, HelpCircle, Wrench, XCircle } from "lucide-react";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams, useSearchParams } from "react-router-dom";
@@ -38,15 +31,7 @@ export const useAsset = () => {
     assetBeLongTo = "",
     assetStatus = "",
     assetType = "",
-  } = queryFilter(
-    searchParams,
-    "page",
-    "size",
-    "nameAsset",
-    "assetType",
-    "assetBeLongTo",
-    "assetStatus"
-  );
+  } = queryFilter(searchParams, "page", "size", "nameAsset", "assetType", "assetBeLongTo", "assetStatus");
 
   const [rowSelection, setRowSelection] = useState({});
   const idRef = useRef<string>("");
@@ -136,9 +121,7 @@ export const useAsset = () => {
     }));
   };
 
-  const { data: statistics, isError: isStatisticsError } = useQuery<
-    ApiResponse<AssetStatusStatistic>
-  >({
+  const { data: statistics, isError: isStatisticsError } = useQuery<ApiResponse<AssetStatusStatistic>>({
     queryKey: ["asset-statistics", id],
     queryFn: async () => {
       const res = await httpRequest.get("/assets/statistics", {
@@ -187,8 +170,7 @@ export const useAsset = () => {
 
   const updateAssetMutation = useMutation({
     mutationKey: ["update-assets"],
-    mutationFn: async (payload: IUpdateAsset) =>
-      await httpRequest.put(`/assets/${idRef.current}`, payload),
+    mutationFn: async (payload: IUpdateAsset) => await httpRequest.put(`/assets/${idRef.current}`, payload),
     onError: (error) => {
       handleMutationError(error);
     },
@@ -204,15 +186,13 @@ export const useAsset = () => {
     mutationFn: async (id: string) => await httpRequest.put(`/assets/toggle/${id}`),
   });
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>(
-    {
-      onConfirm: async ({ id, type }) => {
-        if (type === "delete") return await handleRemoveAssetById(id);
-        if (type === "status") return await handleToggleStatusBuildingById(id);
-        return false;
-      },
-    }
-  );
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "delete" | "status" }>({
+    onConfirm: async ({ id, type }) => {
+      if (type === "delete") return await handleRemoveAssetById(id);
+      if (type === "status") return await handleToggleStatusBuildingById(id);
+      return false;
+    },
+  });
 
   const handleToggleStatusBuildingById = async (id: string): Promise<boolean> => {
     try {
@@ -222,8 +202,7 @@ export const useAsset = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
           });
           queryClient.invalidateQueries({
-            predicate: (query) =>
-              Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
           });
           toast.success(t(Status.UPDATE_SUCCESS));
         },
@@ -243,8 +222,7 @@ export const useAsset = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
           });
           queryClient.invalidateQueries({
-            predicate: (query) =>
-              Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
           });
           toast.success(t(Status.REMOVE_SUCCESS));
         },
@@ -258,15 +236,7 @@ export const useAsset = () => {
 
   const handleUpdateFloor = useCallback(async () => {
     try {
-      const {
-        assetBeLongTo,
-        assetType,
-        descriptionAsset,
-        nameAsset,
-        price,
-        quantity,
-        assetStatus,
-      } = value;
+      const { assetBeLongTo, assetType, descriptionAsset, nameAsset, price, quantity, assetStatus } = value;
 
       const data: IUpdateAsset = {
         assetBeLongTo,
@@ -295,8 +265,7 @@ export const useAsset = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "assets",
           });
           queryClient.invalidateQueries({
-            predicate: (query) =>
-              Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-statistics",
           });
           toast.success(t(Status.UPDATE_SUCCESS));
           setIsModalOpen(false);
@@ -317,7 +286,7 @@ export const useAsset = () => {
         setValue({
           assetBeLongTo: asset.assetBeLongTo,
           assetType: asset.assetType,
-          descriptionAsset: asset.description,
+          descriptionAsset: asset.descriptionAsset,
           nameAsset: asset.nameAsset,
           price: asset.price,
           quantity: asset.quantity,

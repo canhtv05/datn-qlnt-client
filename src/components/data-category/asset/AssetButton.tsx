@@ -193,7 +193,7 @@ const AssetButton = ({ ids, data }: { ids: Record<string, boolean>; data?: Asset
 
   useEffect(() => {
     if (errorBuildingInitToAdd) {
-      toast.error(t(t("building.errorFetch")));
+      toast.error(t("building.errorFetch"));
     }
   }, [errorBuildingInitToAdd, t]);
 

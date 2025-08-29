@@ -13,6 +13,7 @@ import { Notice } from "@/enums";
 import UpdateInvoice from "@/components/finance/invoice/UpdateInvoice";
 import StatisticCard from "@/components/StatisticCard";
 import { useTranslation } from "react-i18next";
+import { lang } from "@/lib/utils";
 
 const Invoice = () => {
   const {
@@ -127,7 +128,7 @@ const Invoice = () => {
       isSort: true,
       isCenter: true,
       render(row: InvoiceResponse) {
-        return <span>{new Date(row.paymentDueDate).toLocaleDateString("vi-VN")}</span>;
+        return <span>{new Date(row.paymentDueDate).toLocaleDateString(lang)}</span>;
       },
     },
     {

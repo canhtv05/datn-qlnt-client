@@ -147,13 +147,7 @@ const Floor = () => {
           onConfirm={handleUpdateFloor}
           desc={t(Notice.UPDATE)}
         >
-          <AddOrUpdateFloor
-            handleChange={handleChange}
-            value={value}
-            setValue={setValue}
-            errors={errors}
-            type="add"
-          />
+          <AddOrUpdateFloor handleChange={handleChange} value={value} setValue={setValue} errors={errors} type="add" />
         </Modal>
         <ConfirmDialog />
       </div>

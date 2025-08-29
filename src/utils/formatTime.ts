@@ -1,3 +1,5 @@
+import { lang } from "@/lib/utils";
+
 export const formatTime = (seconds: number) => {
   const hrs = Math.floor(seconds / 3600);
   const mins = Math.floor((seconds % 3600) / 60);
@@ -11,7 +13,7 @@ export const formatTime = (seconds: number) => {
 };
 export const formatDate = (date: string | Date): string => {
   const d = new Date(date);
-  return d.toLocaleDateString("vi-VN", {
+  return d.toLocaleDateString(lang, {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
