@@ -95,8 +95,7 @@ export const useHistoryTenant = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "tenants",
           });
           queryClient.invalidateQueries({
-            predicate: (query) =>
-              Array.isArray(query.queryKey) && query.queryKey[0] === "tenants-cancel",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "tenants-cancel",
           });
           queryClient.invalidateQueries({ queryKey: ["tenants-statistics"] });
 
@@ -112,7 +111,7 @@ export const useHistoryTenant = () => {
 
   const restoreTenantMutation = useMutation({
     mutationKey: ["restore-tenant"],
-    mutationFn: async (id: string) => await httpRequest.put(`/tenants/${id}`),
+    mutationFn: async (id: string) => await httpRequest.put(`/tenants/restore/${id}`),
   });
 
   const handleRestoreTenantById = async (id: string): Promise<boolean> => {
@@ -123,8 +122,7 @@ export const useHistoryTenant = () => {
             predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "tenants",
           });
           queryClient.invalidateQueries({
-            predicate: (query) =>
-              Array.isArray(query.queryKey) && query.queryKey[0] === "tenants-cancel",
+            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "tenants-cancel",
           });
           queryClient.invalidateQueries({ queryKey: ["tenants-statistics"] });
 
@@ -151,17 +149,16 @@ export const useHistoryTenant = () => {
     },
   });
 
-  const { ConfirmDialog: ConfirmDialogRemoveAll, openDialog: openDialogAll } =
-    useConfirmDialog<BulkRemovePayload>({
-      onConfirm: async ({ ids, type }) => {
-        if (!ids || !Object.values(ids).some(Boolean)) return false;
-        if (type === "remove") {
-          return await handleRemoveTenantByIds(ids);
-        } else {
-          return await handleRestoreTenantByIds(ids);
-        }
-      },
-    });
+  const { ConfirmDialog: ConfirmDialogRemoveAll, openDialog: openDialogAll } = useConfirmDialog<BulkRemovePayload>({
+    onConfirm: async ({ ids, type }) => {
+      if (!ids || !Object.values(ids).some(Boolean)) return false;
+      if (type === "remove") {
+        return await handleRemoveTenantByIds(ids);
+      } else {
+        return await handleRestoreTenantByIds(ids);
+      }
+    },
+  });
 
   const handleRemoveTenantByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
@@ -176,8 +173,7 @@ export const useHistoryTenant = () => {
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "tenants",
       });
       queryClient.invalidateQueries({
-        predicate: (query) =>
-          Array.isArray(query.queryKey) && query.queryKey[0] === "tenants-cancel",
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "tenants-cancel",
       });
       queryClient.invalidateQueries({ queryKey: ["tenants-statistics"] });
 
@@ -203,8 +199,7 @@ export const useHistoryTenant = () => {
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "tenants",
       });
       queryClient.invalidateQueries({
-        predicate: (query) =>
-          Array.isArray(query.queryKey) && query.queryKey[0] === "tenants-cancel",
+        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "tenants-cancel",
       });
       queryClient.invalidateQueries({ queryKey: ["tenants-statistics"] });
 

@@ -81,11 +81,7 @@ const InvoiceDetail = () => {
                               <btn.icon className="text-white" />
                             </Button>
                           </TooltipTrigger>
-                          <TooltipContent
-                            className="text-white"
-                            style={{ background: btn.arrowColor }}
-                            arrow={false}
-                          >
+                          <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
                             <p>{t(btn.tooltipContent)}</p>
                             <TooltipPrimitive.Arrow
                               style={{
@@ -171,93 +167,84 @@ const InvoiceDetail = () => {
   return (
     <div className="py-5 bg-background rounded-md flex flex-col shadow-lg">
       <div className="flex lg:flex-row flex-col justify-between items-center px-5">
-        <h3 className="font-semibold md:py-0 py-3 text-2xl md:text-[16px]">
-          {" "}
-          {t("invoice.detail.title")}
-        </h3>
+        <h3 className="font-semibold md:py-0 py-3 text-2xl md:text-[16px]"> {t("invoice.detail.title")}</h3>
         <div className="flex gap-2">
-          {CUSTOM_ACTION_BUTTONS.filter((b) => b.type !== "upload" && b.type !== "download").map(
-            (btn, index) => (
-              <TooltipProvider key={index}>
-                <Tooltip>
-                  <RenderIf value={btn.type === "default"}>
-                    <Modal
-                      title={t("invoice.detail.addTitle")}
-                      trigger={
-                        <TooltipTrigger asChild>
-                          <Button size={"icon"} variant={btn.type} className="cursor-pointer">
-                            <btn.icon className="text-white" />
-                          </Button>
-                        </TooltipTrigger>
-                      }
-                      desc={t(Notice.ADD)}
-                      onConfirm={handleAddInvoiceDetail}
+          {CUSTOM_ACTION_BUTTONS.filter((b) => b.type !== "upload" && b.type !== "download").map((btn, index) => (
+            <TooltipProvider key={index}>
+              <Tooltip>
+                <RenderIf value={btn.type === "default"}>
+                  <Modal
+                    title={t("invoice.detail.addTitle")}
+                    trigger={
+                      <TooltipTrigger asChild>
+                        <Button size={"icon"} variant={btn.type} className="cursor-pointer">
+                          <btn.icon className="text-white" />
+                        </Button>
+                      </TooltipTrigger>
+                    }
+                    desc={t(Notice.ADD)}
+                    onConfirm={handleAddInvoiceDetail}
+                  >
+                    <AddItemInvoiceDetail
+                      errors={errorsCreation}
+                      handleChange={handleChange("creation")}
+                      serviceRooms={dataServiceRoom}
+                      setValue={setValueCreation}
+                      value={valueCreation}
+                    />
+                  </Modal>
+                </RenderIf>
+                <RenderIf value={btn.type === "delete"}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      size={"icon"}
+                      variant={btn.type}
+                      className="cursor-pointer"
+                      onClick={() => handleButton(btn)}
+                      disabled={btn.type === "delete" && !Object.values(rowsSelection).some(Boolean)}
                     >
-                      <AddItemInvoiceDetail
-                        errors={errorsCreation}
-                        handleChange={handleChange("creation")}
-                        serviceRooms={dataServiceRoom}
-                        setValue={setValueCreation}
-                        value={valueCreation}
-                      />
-                    </Modal>
-                  </RenderIf>
-                  <RenderIf value={btn.type === "delete"}>
-                    <TooltipTrigger asChild>
-                      <Button
-                        size={"icon"}
-                        variant={btn.type}
-                        className="cursor-pointer"
-                        onClick={() => handleButton(btn)}
-                        disabled={
-                          btn.type === "delete" && !Object.values(rowsSelection).some(Boolean)
-                        }
-                      >
-                        <btn.icon className="text-white" />
-                      </Button>
-                    </TooltipTrigger>
-                  </RenderIf>
-                  <RenderIf value={btn.type === "view"}>
-                    <TooltipTrigger asChild>
-                      <Button
-                        size={"icon"}
-                        variant={btn.type}
-                        className="cursor-pointer"
-                        onClick={() => navigate(`/finance/invoice/view/${id}`, { replace: true })}
-                      >
-                        <btn.icon className="text-white" />
-                      </Button>
-                    </TooltipTrigger>
-                  </RenderIf>
-                  <TooltipContent
-                    className="text-white"
+                      <btn.icon className="text-white" />
+                    </Button>
+                  </TooltipTrigger>
+                </RenderIf>
+                <RenderIf value={btn.type === "view"}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      size={"icon"}
+                      variant={btn.type}
+                      className="cursor-pointer"
+                      onClick={() => navigate(`/finance/invoice/view/${id}`, { replace: true })}
+                    >
+                      <btn.icon className="text-white" />
+                    </Button>
+                  </TooltipTrigger>
+                </RenderIf>
+                <TooltipContent
+                  className="text-white"
+                  style={{
+                    background: btn.arrowColor,
+                  }}
+                  arrow={false}
+                >
+                  <p>{t(btn.tooltipContent)}</p>
+                  <TooltipPrimitive.Arrow
                     style={{
+                      fill: btn.arrowColor,
                       background: btn.arrowColor,
                     }}
-                    arrow={false}
-                  >
-                    <p>{t(btn.tooltipContent)}</p>
-                    <TooltipPrimitive.Arrow
-                      style={{
-                        fill: btn.arrowColor,
-                        background: btn.arrowColor,
-                      }}
-                      className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
-                    />
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )
-          )}
+                    className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                  />
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ))}
           <ConfirmDialogAdd />
         </div>
       </div>
       <main className="mt-10">
         <DataTable<InvoiceItemResponse>
           data={data?.data?.items ?? []}
-          columns={buildColumnsFromConfig(
-            columnConfigs(data?.data?.invoiceStatus || InvoiceStatus.CHUA_THANH_TOAN)
-          )}
+          columns={buildColumnsFromConfig(columnConfigs(data?.data?.invoiceStatus || InvoiceStatus.CHUA_THANH_TOAN))}
           loading={isLoading}
           page={0}
           rowSelection={rowsSelection}
@@ -292,7 +279,7 @@ const InvoiceDetail = () => {
 
           <div className="w-full flex flex-col flex-1">
             <h3 className="font-semibold rounded-sm p-2 bg-primary/50 text-sm text-white mb-2 pl-5 border-b-2">
-              Thông tin hóa đơn
+              {t("invoice.detail.invoiceInfo")}
             </h3>
             <div className="px-5 -mt-3 border-t-transparent py-3 border border-primary/20 flex-1 flex flex-col space-y-2 rounded-b-sm [&_>span]:text-sm [&_>strong]:text-sm">
               <strong>
@@ -303,30 +290,24 @@ const InvoiceDetail = () => {
               </strong>
               <strong>
                 - {t("invoice.detail.invoiceType")}:{" "}
-                <span>
-                  {data?.data?.invoiceType && <StatusBadge status={data?.data?.invoiceType} />}
-                </span>
+                <span>{data?.data?.invoiceType && <StatusBadge status={data?.data?.invoiceType} />}</span>
               </strong>
               <strong>
-                - {t("invoice.detail.period")}:{" "}
-                <span>{`${data?.data?.month}/${data?.data?.year}`}</span>
+                - {t("invoice.detail.period")}: <span>{`${data?.data?.month}/${data?.data?.year}`}</span>
               </strong>
               <strong>
-                - {t("invoice.detail.totalAmount")}:{" "}
-                <span>{formattedCurrency(data?.data.totalAmount || 0)}</span>
+                - {t("invoice.detail.totalAmount")}: <span>{formattedCurrency(data?.data.totalAmount || 0)}</span>
               </strong>
 
               <strong>
-                - {t("invoice.detail.paymentDueDate")}:
+                - {t("invoice.detail.paymentDueDate")}:{" "}
                 <span>
                   {data?.data?.paymentDueDate ? new Date(data?.data?.paymentDueDate).toLocaleDateString(lang) : "..."}
                 </span>
               </strong>
               <strong>
-                - {t("invoice.detail.invoiceStatus")}
-                <span>
-                  {data?.data?.invoiceStatus && <StatusBadge status={data?.data?.invoiceStatus} />}
-                </span>
+                - {t("invoice.detail.invoiceStatus")}:{" "}
+                <span>{data?.data?.invoiceStatus && <StatusBadge status={data?.data?.invoiceStatus} />}</span>
               </strong>
             </div>
           </div>

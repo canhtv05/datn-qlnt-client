@@ -46,7 +46,12 @@
     "other": "Khác",
     "loading": "Tải tải dữ liệu...",
     "noImage": "Chưa có ảnh",
-    "noChange": "Không có thay đổi nào"
+    "noChange": "Không có thay đổi nào",
+    "footer": {
+      "startChat": "Xin chào, tôi có thể giúp gì cho bạn",
+      "enterMessage": "Nhập nội dung ...",
+      "supportMessage": "Nhắn tin hỗ trợ"
+    }
   },
   "actions": {
     "serviceActions": {
@@ -928,10 +933,13 @@
     }
   },
   "meter": {
+    "changeBtn": "Thay đổi công tơ",
+    "viewNoMeter": "Xem phòng chưa có công tơ",
+    "noMeter": "Số phòng chưa có công tơ",
     "title": "Công tơ",
     "titleHistory": "Lịch sử công tơ đã xóa",
     "statistic": "Thống kê công tơ",
-    "search": "Tên/Mã công tơ",
+    "search": "Tìm kiếm",
     "errorFetch": "Có lỗi xảy ra khi tải công tơ.",
     "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê công tơ.",
     "roomId": "Mã phòng",

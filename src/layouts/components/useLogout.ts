@@ -9,10 +9,12 @@ import { useAuthStore } from "@/zustand/authStore";
 import cookieUtil from "@/utils/cookieUtil";
 import { Status } from "@/enums";
 import { handleMutationError } from "@/utils/handleMutationError";
+import { useTranslation } from "react-i18next";
 
 export const useLogout = () => {
   const clearUser = useAuthStore((state) => state.clearUser);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const logoutMutation = useMutation({
     mutationKey: ["logout"],
@@ -29,14 +31,14 @@ export const useLogout = () => {
     onSuccess: () => {
       cookieUtil.deleteStorage();
       clearUser();
-      toast.success(Status.LOGOUT_SUCCESS);
+      toast.success(t(Status.LOGOUT_SUCCESS));
       navigate("/login");
     },
     onError: (error: Error) => {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.message ?? Status.LOGOUT_FAILED);
+        toast.error(error.response?.data?.message ?? t(Status.LOGOUT_FAILED));
       } else {
-        toast.error(Status.LOGOUT_FAILED);
+        toast.error(t(Status.LOGOUT_FAILED));
       }
     },
   });

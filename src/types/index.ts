@@ -383,6 +383,36 @@ export interface RoomDetailsResponse {
   vehicleInRoomCount: number;
 }
 
+export interface RoomNoMeterCountStatistics {
+  totalNoMeterRooms: number;
+}
+
+export interface ChangeMeterRequest {
+  meterName: string;
+  meterCode: string;
+  manufactureDate: string;
+  closestIndex: number | undefined;
+  descriptionMeter: string;
+}
+
+export interface RoomNoMeterResponse {
+  id: string;
+  nameFloor: string;
+  roomCode: string;
+  price: number;
+  roomType: RoomType;
+  status: RoomStatus;
+  description: string;
+}
+
+export interface RoomNoMeterFilter {
+  query: string;
+  status: RoomStatus | string;
+  roomType: RoomType | string;
+  minPrice: number | undefined;
+  maxPrice: number | undefined;
+}
+
 /* Asset */
 export interface ICreateAsset {
   nameAsset: string;

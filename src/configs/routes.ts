@@ -66,6 +66,7 @@ const routes = {
   finance: {
     meter: "/finance/meters",
     meterId: "/finance/meters/:id",
+    noMeter: "/finance/meters/no-meter",
     meterStatisticId: "/finance/meters/statistics/:id",
     meterReading: "/finance/meter-reading",
     meterReadingId: "/finance/meter-reading/:id",

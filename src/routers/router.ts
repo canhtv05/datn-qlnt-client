@@ -66,6 +66,7 @@ const ContractVehicles = lazy(() => import("@/pages/customer/contract-vehicle/Co
 
 /* FINANCE */
 const Meter = lazy(() => import("@/pages/finance/meter"));
+const NoMeter = lazy(() => import("@/pages/finance/no-meter"));
 // const MeterStatistics = lazy(() => import("@/pages/finance/meter/MeterStatistics"));
 const MeterReading = lazy(() => import("@/pages/finance/meter-reading"));
 const Invoice = lazy(() => import("@/pages/finance/invoice"));
@@ -332,6 +333,11 @@ const privateRoutes: RouteType[] = [
   {
     path: configs.routes.finance.meter,
     component: SelectBuilding,
+    allowedRoles: ["ADMIN", "MANAGER"],
+  },
+  {
+    path: configs.routes.finance.noMeter,
+    component: NoMeter,
     allowedRoles: ["ADMIN", "MANAGER"],
   },
   {

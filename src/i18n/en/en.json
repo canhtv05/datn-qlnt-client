@@ -45,7 +45,12 @@
     "other": "Other",
     "loading": "Loading...",
     "noImage": "No image",
-    "noChange": "No change"
+    "noChange": "No change",
+    "footer": {
+      "startChat": "Hello, how can I help you?",
+      "enterMessage": "Type a message ...",
+      "supportMessage": "Contact support"
+    }
   },
   "actions": {
     "serviceActions": {
@@ -927,10 +932,13 @@
     }
   },
   "meter": {
+    "changeBtn": "Change meter",
+    "viewNoMeter": "View room without meter",
+    "noMeter": "Number of rooms without meter",
     "title": "Meter",
     "titleHistory": "Deleted meter history",
     "statistic": "Meter statistics",
-    "search": "Name/Code",
+    "search": "Search",
     "errorFetch": "An error occurred while fetching meters.",
     "errorFetchStatistics": "An error occurred while fetching meter statistics.",
     "roomId": "Room ID",

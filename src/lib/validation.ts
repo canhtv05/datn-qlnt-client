@@ -690,6 +690,24 @@ export const createOrUpdateMeterSchema = z.object({
   closestIndex: zSafeNumber(t("validation:meter.closestIndex.label"), { min: 0 }),
   descriptionMeter: z.string().optional(),
 });
+
+export const changeMeterSchema = z.object({
+  meterName: z.string().min(1, t("validation:meter.name.required")),
+  meterCode: z.string().min(1, t("validation:meter.code.required")),
+  manufactureDate: z
+    .string()
+    .refine((val) => {
+      return !isNaN(Date.parse(val));
+    }, t("validation:meter.manufactureDate.invalid"))
+    .transform((val) => new Date(val))
+    .refine((val) => {
+      const date = new Date();
+      return val <= date;
+    }, t("validation:meter.manufactureDate.future")),
+  closestIndex: zSafeNumber(t("validation:meter.closestIndex.label"), { min: 0 }),
+  descriptionMeter: z.string().optional(),
+});
+
 /* METER READING */
 export const updateMeterReadingSchema = z.object({
   newIndex: zSafeNumber(t("validation:meterReading.newIndex.label")).refine(

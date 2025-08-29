@@ -52,7 +52,6 @@ const MeterFilter = ({ props }: { props: MeterFilterProps }) => {
         />
         <FieldsSelectLabel
           placeholder={t("meter.placeholder.meterType")}
-          label={t("meter.addOrUpdate.meterType")}
           data={[
             { label: t("statusBadge.meterType.electric"), value: MeterType.DIEN },
             { label: t("statusBadge.meterType.water"), value: MeterType.NUOC },

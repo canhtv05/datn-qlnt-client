@@ -28,6 +28,7 @@ import AddOrUpdateMeter from "./AddOrUpdateMeter";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatDate, formatNumber, handleExportExcel, meterTypeEnumToString } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
+import { Eye } from "lucide-react";
 
 const MeterButton = ({
   ids,
@@ -66,8 +67,7 @@ const MeterButton = ({
 
   const addMeterMutation = useMutation({
     mutationKey: ["add-meter"],
-    mutationFn: async (payload: MeterCreationAndUpdatedRequest) =>
-      await httpRequest.post("/meters", payload),
+    mutationFn: async (payload: MeterCreationAndUpdatedRequest) => await httpRequest.post("/meters", payload),
     onError: handleMutationError,
     onSuccess: () => {
       toast.success(t(Status.ADD_SUCCESS));
@@ -92,16 +92,8 @@ const MeterButton = ({
 
   const handleMeterType = useCallback(async () => {
     try {
-      const {
-        descriptionMeter,
-        closestIndex,
-        manufactureDate,
-        meterCode,
-        meterName,
-        meterType,
-        roomId,
-        serviceId,
-      } = value;
+      const { descriptionMeter, closestIndex, manufactureDate, meterCode, meterName, meterType, roomId, serviceId } =
+        value;
 
       const data: MeterCreationAndUpdatedRequest = {
         descriptionMeter: descriptionMeter.trim(),
@@ -179,6 +171,8 @@ const MeterButton = ({
         }));
 
         handleExportExcel(t("meter.title"), exportData, data?.data);
+      } else if (btn.type === "contract") {
+        navigate(`/finance/meters/no-meter`);
       }
     },
     [id, openDialog, ids, navigate, data?.data, t]
@@ -199,7 +193,18 @@ const MeterButton = ({
   //     tooltipContent: "Xem thống kê",
   //   },
   // ];
-  const ACTION_BUTTONS_CUSTOM = [...ACTION_BUTTONS];
+
+  const viewNoMeterBtn: IBtnType[] = [
+    {
+      type: "contract",
+      arrowColor: "var(--color-purple-600)",
+      hasConfirm: false,
+      icon: Eye,
+      tooltipContent: t("meter.viewNoMeter"),
+    },
+  ];
+
+  const ACTION_BUTTONS_CUSTOM = [...viewNoMeterBtn, ...ACTION_BUTTONS];
 
   return (
     <div className="h-full bg-background rounded-t-sm">

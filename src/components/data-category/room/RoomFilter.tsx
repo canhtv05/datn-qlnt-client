@@ -21,8 +21,7 @@ export interface RoomFilterProps {
 const RoomFilter = ({ props, type }: { props: RoomFilterProps; type: "default" | "restore" }) => {
   const { t } = useTranslation();
   const { filterValues, setFilterValues, onClear, onFilter } = props;
-  const { status, maxPrice, minPrice, maxAcreage, minAcreage, maximumPeople, buildingId, floorId } =
-    filterValues;
+  const { status, maxPrice, minPrice, maxAcreage, minAcreage, maximumPeople, buildingId, floorId } = filterValues;
 
   const handleChange = (key: keyof FilterRoomValues, value: string) => {
     setFilterValues((prev) => ({ ...prev, [key]: value }));
@@ -121,10 +120,10 @@ const RoomFilter = ({ props, type }: { props: RoomFilterProps; type: "default" |
                 label: t("statusBadge.roomStatus.locked"),
                 value: RoomStatus.TAM_KHOA,
               },
-              {
-                label: t("statusBadge.roomStatus.inactive"),
-                value: RoomStatus.HUY_HOAT_DONG,
-              },
+              // {
+              //   label: t("statusBadge.roomStatus.inactive"),
+              //   value: RoomStatus.HUY_HOAT_DONG,
+              // },
             ]}
             value={status}
             onChange={(value) => handleChange("status", String(value))}
