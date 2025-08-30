@@ -1361,5 +1361,12 @@
       "count": "Có lỗi xảy ra khi tải số thông báo chưa đọc",
       "loadTenant": "Có lỗi xảy ra khi tải khách thuê"
     }
+  },
+  "headerLayout": {
+    "personalProfile": "Hồ sơ cá nhân",
+    "changePassword": "Đổi mật khẩu",
+    "confirmChangePassword": "Bạn có chắc chắn muốn đổi mật khẩu không?",
+    "logout": "Đăng xuất",
+    "confirmLogout": "Bạn có chắc chắn muốn đăng xuất không?"
   }
 }

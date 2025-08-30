@@ -34,7 +34,15 @@ const HeaderLayout = () => {
   const { t } = useTranslation();
   const { setStorage } = useLocalStorage();
 
-  const { handleLogout, errors, handleChangePassword, isModalOpen, setIsModalOpen, setValue, value } = useAuth();
+  const {
+    handleLogout,
+    errors,
+    handleChangePassword,
+    isModalOpen,
+    setIsModalOpen,
+    setValue,
+    value,
+  } = useAuth();
   const { ConfirmDialog, openDialog } = useConfirmDialog({
     onConfirm: handleLogout,
     type: "default",
@@ -54,7 +62,11 @@ const HeaderLayout = () => {
   return (
     <header className="flex items-center">
       <div className="p-2 cursor-pointer" onClick={handleToggleLang}>
-        <img src={i18next.language === "en" ? images.uk : images.vietnam} alt="lang-flag" className="size-5 block" />
+        <img
+          src={i18next.language === "en" ? images.uk : images.vietnam}
+          alt="lang-flag"
+          className="size-5 block"
+        />
       </div>
       <Button onClick={toggleTheme} className="shadow-none cursor-pointer">
         <RenderIf value={theme === "dark"}>
@@ -98,13 +110,15 @@ const HeaderLayout = () => {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => navigate("/profile", { state: { background: location } })}>
+            <DropdownMenuItem
+              onClick={() => navigate("/profile", { state: { background: location } })}
+            >
               <CircleUserRound className="text-light" />
               {t("profile.personalProfile")}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setIsModalOpen(true)}>
               <Key className="text-light" />
-              Đổi mật khẩu
+              {t("headerLayout.changePassword")}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => openDialog()}>
@@ -114,12 +128,12 @@ const HeaderLayout = () => {
           </DropdownMenuContent>
         </DropdownMenu>
         <Modal
-          title={"Đổi mật khẩu"}
+          title={t("headerLayout.changePassword")}
           trigger={null}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
           onConfirm={handleChangePassword}
-          desc={"Bạn có chắc chắn muốn đổi mật khẩu không"}
+          desc={t("headerLayout.confirmChangePassword")}
         >
           <ChangePassword value={value} setValue={setValue} errors={errors} />
         </Modal>

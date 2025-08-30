@@ -1361,5 +1361,12 @@
       "count": "An error occurred while loading unread count",
       "loadTenant": "An error occurred while loading tenants"
     }
+  },
+  "headerLayout": {
+    "personalProfile": "Personal Profile",
+    "changePassword": "Change Password",
+    "confirmChangePassword": "Are you sure you want to change your password?",
+    "logout": "Logout",
+    "confirmLogout": "Are you sure you want to logout?"
   }
 }
