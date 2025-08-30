@@ -143,7 +143,7 @@ const Register = () => {
           </label>
         </div>
         {errors.acceptPolicy && <p className="text-red-500 text-[12px] font-light mb-3">{errors.acceptPolicy}</p>}
-        <div className="w-full text-right block mt-3 mb-6">
+        <div className="w-full text-right block mt-3 mb-6" tabIndex={-1}>
           <Link to={`/forgot-password`}>
             <span className="text-primary text-[13px] hover:text-primary-hover">Quên mật khẩu?</span>
           </Link>

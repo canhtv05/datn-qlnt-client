@@ -35,7 +35,8 @@
     "uppercase": "Password must contain an uppercase letter",
     "number": "Password must contain a number",
     "special": "Password must contain a special character",
-    "confirmMismatch": "Password confirmation does not match"
+    "confirmMismatch": "Password confirmation does not match",
+    "require": "Please enter your old password"
   },
   "policy": {
     "required": "You must agree to the privacy policy"
@@ -59,7 +60,6 @@
     "invalid": "Invalid building type"
   },
 
-  
   "_comment_2": "=== ROOMS ===",
   "maximumRoom": {
     "label": "Maximum rooms",
@@ -108,7 +108,6 @@
   "buildingId": {
     "required": "Building is required"
   },
-
 
   "_comment_5": "===  ROOM ===",
   "floorId": {
@@ -215,7 +214,7 @@
   "noticeDate": {
     "invalid": "Invalid notice date"
   },
-  
+
   "_comment_10": "===  SERVICE ===",
   "service": {
     "name": {

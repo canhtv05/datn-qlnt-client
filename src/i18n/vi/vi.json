@@ -440,6 +440,14 @@
     "nonRefund": "Không trả cọc",
     "cancelled": "Hủy"
   },
+  "changePass": {
+    "oldPassword": "Mật khẩu cũ:",
+    "placeholderOldPassword": "Nhập mật khẩu cũ",
+    "newPassword": "Mật khẩu mới:",
+    "placeholderNewPassword": "Nhập mật khẩu mới",
+    "reNewPassword": "Xác nhận mật khẩu mới:",
+    "placeholderReNewPassword": "Nhập lại mật khẩu mới"
+  },
   "building": {
     "title": "Tòa nhà",
     "titleHistory": "Lịch sử xóa tòa nhà",
