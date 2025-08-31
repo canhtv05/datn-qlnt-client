@@ -937,6 +937,13 @@
       "vehicles": "Phương tiện",
       "createdAt": "Ngày tạo",
       "updatedAt": "Ngày cập nhật"
+    },
+    "detail": {
+      "extend": "Gia hạn hợp đồng",
+      "extendConfirm": "Bạn có chắc chắn muốn gia hạn hợp đồng này không?",
+      "notice": "Kết thúc có báo trước",
+      "noticeConfirm": "Bạn có chắc chắn muốn kết thúc hợp đồng này không?",
+      "cancel": "Tự ý hủy bỏ"
     }
   },
   "meter": {

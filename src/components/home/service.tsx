@@ -2,7 +2,7 @@ import Services from "@/layouts/components/ServicesHome";
 import Navbar from "@/layouts/components/nav-home";
 import Footer from "@/layouts/components/FooterHome";
 import Breadcrumb from "@/layouts/components/Breadcrumb";
-import { useTranslation } from "node_modules/react-i18next";
+import { useTranslation } from "react-i18next";
 
 const ServicesPage = () => {
   const { t } = useTranslation();

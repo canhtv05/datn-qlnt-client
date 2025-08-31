@@ -9,13 +9,7 @@ import {
 } from "@/types";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  RoomResponse,
-  TenantBasicResponse,
-  AssetResponse,
-  ServiceResponse,
-  VehicleResponse,
-} from "@/types";
+import { RoomResponse, TenantBasicResponse, AssetResponse, ServiceResponse, VehicleResponse } from "@/types";
 import { Option } from "@/types";
 import { handlerRequest, httpRequest } from "@/utils/httpRequest";
 import { switchVehicleType } from "@/pages/customer/contract/useContract";
@@ -145,13 +139,9 @@ export const replacePlaceholders = (
             (t) =>
               `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Họ và tên: ${
                 t.fullName || NA
-<<<<<<< HEAD
               } - Email: ${t.email || NA} - SDT: ${t.phoneNumber || NA}${
-                t.isRepresentative ? ` - ${"contract.representative"}` : ""
+                t.representative ? ` - ${"contract.representative"}` : ""
               }</span>`
-=======
-              } - Email: ${t.email || NA} - SDT: ${t.phoneNumber || NA}${t.representative ? " - Đại diện" : ""}</span>`
->>>>>>> origin/main
           );
           result = result.replace(regex, createListHtml(items));
         }
@@ -164,13 +154,11 @@ export const replacePlaceholders = (
                 a.assetName || NA
               } - ${"asset.addOrUpdate.assetBeLongTo"} ${
                 assetBelongToEnumToString(a.assetBeLongTo, t) || NA
-              } - ${"asset.response.quantity"}: ${
-                a.quantity || 0
-              } - ${"asset.response.price"}: ${formattedCurrency(
+              } - ${"asset.response.quantity"}: ${a.quantity || 0} - ${"asset.response.price"}: ${formattedCurrency(
                 a.price || 0
-              )} - ${"asset.response.descriptionAsset"}: ${
-                assetStatusEnumToString(a.assetStatus, t) || NA
-              } - Mô tả: ${a.description || NA}</span>`
+              )} - ${"asset.response.descriptionAsset"}: ${assetStatusEnumToString(a.assetStatus, t) || NA} - Mô tả: ${
+                a.description || NA
+              }</span>`
           );
           result = result.replace(regex, createListHtml(items));
         }
@@ -179,21 +167,13 @@ export const replacePlaceholders = (
         else {
           const items = (value as ServiceLittleResponse[]).map(
             (s) =>
-<<<<<<< HEAD
               `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">${"service.response.name"}: ${
-                s.name || NA
-              } - ${"service.response.category"}: ${
-                serviceCategoryEnumToString(s.category, t) || NA
-              } - ${"service.response.unit"}: ${
-                s.unit || NA
-              } - ${"service.response.description"}: ${s.description || NA}</span>`
-=======
-              `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Tên dịch vụ: ${
                 s.serviceName || NA
-              } - Trạng thái: ${serviceRoomStatusEnumToString(s.serviceRoomStatus, t) || NA} - Đơn vị: ${
-                s.unit || NA
-              } Đơn giá: ${formattedCurrency(s.unitPrice) || NA} - Mô tả: ${s.description || NA}</span>`
->>>>>>> origin/main
+              } - ${"service.response.status"}: ${
+                serviceRoomStatusEnumToString(s.serviceRoomStatus, t) || NA
+              } - ${"service.response.unit"}: ${s.unit || NA} - ${"service.response.price"}: ${
+                formattedCurrency(s.unitPrice) || NA
+              } - ${"service.response.description"}: ${s.description || NA}</span>`
           );
           result = result.replace(regex, createListHtml(items));
         }
@@ -204,9 +184,9 @@ export const replacePlaceholders = (
             (v) =>
               `<li><p><span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Loại phương tiện: ${
                 vehicleTypeEnumToString(v.vehicleType, t) || NA
-              } - ${"vehicle.response.licensePlate"}: ${
-                v.licensePlate || NA
-              } - ${"vehicle.response.describe"}: ${v.description || NA}</span></p></li>`
+              } - ${"vehicle.response.licensePlate"}: ${v.licensePlate || NA} - ${"vehicle.response.describe"}: ${
+                v.description || NA
+              }</span></p></li>`
           );
           result = result.replace(regex, createListHtml(items));
         }

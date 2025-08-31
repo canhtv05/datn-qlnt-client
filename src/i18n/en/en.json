@@ -937,6 +937,13 @@
       "vehicles": "Vehicles",
       "createdAt": "Created at",
       "updatedAt": "Updated at"
+    },
+    "detail": {
+      "extend": "Extend contract",
+      "extendConfirm": "Are you sure you want to extend this contract?",
+      "notice": "Termination with notice",
+      "noticeConfirm": "Are you sure you want to terminate this contract with notice?",
+      "cancel": "Unilateral termination"
     }
   },
   "meter": {

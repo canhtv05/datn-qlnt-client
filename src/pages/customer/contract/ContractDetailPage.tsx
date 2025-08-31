@@ -37,14 +37,9 @@ import { useCallback, useState } from "react";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
 import { extendContractSchema, noticeContractSchema } from "@/lib/validation";
 import Modal from "@/components/Modal";
-import ExtendOrNoticeContract from "./ExtendOrNoticeContract";
-import {
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-  Tooltip as TT,
-} from "@/components/ui/tooltip";
+import { TooltipContent, TooltipProvider, TooltipTrigger, Tooltip as TT } from "@/components/ui/tooltip";
 import { ContractStatus } from "@/enums";
+import ExtendOrNoticeContract from "./ExtendOrNoticeContract";
 
 const ContractDetailPage = () => {
   const queryClient = useQueryClient();
@@ -63,8 +58,7 @@ const ContractDetailPage = () => {
     newEndDate: "",
     oldEndDate: "",
   });
-  const { clearErrors, errors, handleZodErrors } =
-    useFormErrors<ContractExtendAndTerminateRequest>();
+  const { clearErrors, errors, handleZodErrors } = useFormErrors<ContractExtendAndTerminateRequest>();
 
   const extendContractMutation = useMutation({
     mutationFn: (payload: ContractExtendAndTerminateRequest) =>
@@ -177,10 +171,7 @@ const ContractDetailPage = () => {
         openDialog({ type });
         return await true;
       } else {
-        openDialog(
-          { type },
-          { desc: "Bạn có chắc chắn muốn xác nhận rằng hợp đồng tự ý hủy bỏ không?" }
-        );
+        openDialog({ type }, { desc: "Bạn có chắc chắn muốn xác nhận rằng hợp đồng tự ý hủy bỏ không?" });
         return await true;
       }
     },
@@ -208,12 +199,10 @@ const ContractDetailPage = () => {
             <h2 className="text-lg font-semibold mb-4">{t("contract.title")}</h2>
             <div className="grid grid-cols-2 text-sm">
               <p>
-                <span className="font-medium">{t("contract.contract.contractCode")}:</span>{" "}
-                {data?.contractCode}
+                <span className="font-medium">{t("contract.contract.contractCode")}:</span> {data?.contractCode}
               </p>
               <p>
-                <span className="font-medium">{t("contract.contract.roomCode")}:</span>{" "}
-                {data?.roomCode}
+                <span className="font-medium">{t("contract.contract.roomCode")}:</span> {data?.roomCode}
               </p>
               <p>
                 <span className="font-medium">{t("contract.contract.startDate")}:</span>{" "}
@@ -232,8 +221,7 @@ const ContractDetailPage = () => {
                 {formattedCurrency(data?.roomPrice || 0)}
               </p>
               <p>
-                <span className="font-medium">{t("contract.contract.buildingAddress")}:</span>{" "}
-                {data?.buildingAddress}
+                <span className="font-medium">{t("contract.contract.buildingAddress")}:</span> {data?.buildingAddress}
               </p>
               <p>
                 <span className="font-medium">{t("contract.contract.status")}:</span>{" "}
@@ -256,21 +244,19 @@ const ContractDetailPage = () => {
             <div className="grid md:grid-cols-2 grid-cols-1 gap-4 text-sm">
               <div>
                 <p>
-                  <span className="font-medium">{t("contract.contract.phoneNumberManager")}:</span>{" "}
-                  {data?.nameManager} ({data?.phoneNumberManager})
+                  <span className="font-medium">{t("contract.contract.phoneNumberManager")}:</span> {data?.nameManager}{" "}
+                  ({data?.phoneNumberManager})
                 </p>
                 <p>
                   <span className="font-medium">Email:</span> {user?.email}
                 </p>
                 <p>
-                  <span className="font-medium">{t("contract.contract.phoneNumber")}:</span>{" "}
-                  {user?.phoneNumber}
+                  <span className="font-medium">{t("contract.contract.phoneNumber")}:</span> {user?.phoneNumber}
                 </p>
               </div>
               <div>
                 <p>
-                  <span className="font-medium">{t("contract.contract.nameUser")}:</span>{" "}
-                  {data?.nameUser}
+                  <span className="font-medium">{t("contract.contract.nameUser")}:</span> {data?.nameUser}
                 </p>
                 <p>
                   <span className="font-medium">Email:</span> {data?.emailUser}
@@ -280,8 +266,7 @@ const ContractDetailPage = () => {
                   {data?.identityCardUser}
                 </p>
                 <p>
-                  <span className="font-medium">{t("contract.contract.addressUser")}:</span>{" "}
-                  {data?.addressUser}
+                  <span className="font-medium">{t("contract.contract.addressUser")}:</span> {data?.addressUser}
                 </p>
               </div>
             </div>
@@ -293,25 +278,20 @@ const ContractDetailPage = () => {
               {data?.tenants?.map((tn: TenantLittleResponse, i: number) => (
                 <li key={i} className="border-background border p-3 rounded-lg">
                   <p>
-                    <span className="font-medium">{t("tenant.response.fullName")}:</span>{" "}
-                    {tn.fullName}
+                    <span className="font-medium">{t("tenant.response.fullName")}:</span> {tn.fullName}
                   </p>
                   <p>
                     <span className="font-medium">{t("tenant.response.gender")}:</span>{" "}
                     {genderEnumToString(tn.gender, t)}
                   </p>
                   <p>
-                    <span className="font-medium">{t("contract.contract.phoneNumber")}:</span>{" "}
-                    {tn.phoneNumber}
+                    <span className="font-medium">{t("contract.contract.phoneNumber")}:</span> {tn.phoneNumber}
                   </p>
                   <p>
                     <span className="font-medium">Email:</span> {tn.email}
                   </p>
                   {tn.representative && (
-                    <span className="text-green-600 font-semibold">
-                      {" "}
-                      {t("contract.representative")}
-                    </span>
+                    <span className="text-green-600 font-semibold"> {t("contract.representative")}</span>
                   )}
                 </li>
               ))}
@@ -324,28 +304,24 @@ const ContractDetailPage = () => {
               {data?.assets?.map((a: AssetLittleResponse, i: number) => (
                 <li key={i} className="border-background border p-3 rounded-lg">
                   <p>
-                    <span className="font-medium">{t("asset.response.nameAsset")}:</span>{" "}
-                    {a.assetName}
+                    <span className="font-medium">{t("asset.response.nameAsset")}:</span> {a.assetName}
                   </p>
                   <p>
                     <span className="font-medium">{t("asset.response.assetBeLongTo")}:</span>{" "}
                     {assetBelongToEnumToString(a.assetBeLongTo, t)}
                   </p>
                   <p>
-                    <span className="font-medium">{t("asset.response.quantity")}:</span>{" "}
-                    {a.quantity}
+                    <span className="font-medium">{t("asset.response.quantity")}:</span> {a.quantity}
                   </p>
                   <p>
-                    <span className="font-medium">{t("asset.response.price")}:</span>{" "}
-                    {formattedCurrency(a.price || 0)}
+                    <span className="font-medium">{t("asset.response.price")}:</span> {formattedCurrency(a.price || 0)}
                   </p>
                   <p>
                     <span className="font-medium">{t("asset.response.assetStatus")}:</span>{" "}
                     {assetStatusEnumToString(a.assetStatus, t)}
                   </p>
                   <p>
-                    <span className="font-medium">{t("asset.response.description")}:</span>{" "}
-                    {a.description}
+                    <span className="font-medium">{t("asset.response.description")}:</span> {a.description}
                   </p>
                 </li>
               ))}
@@ -358,8 +334,7 @@ const ContractDetailPage = () => {
               {data?.services?.map((s: ServiceLittleResponse, i: number) => (
                 <li key={i} className="border-background border p-3 rounded-lg">
                   <p>
-                    <span className="font-medium">{t("service.response.name")}:</span>{" "}
-                    {s.serviceName}
+                    <span className="font-medium">{t("service.response.name")}:</span> {s.serviceName}
                   </p>
                   <p>
                     <span className="font-medium">{t("service.response.price")}:</span>{" "}
@@ -370,8 +345,7 @@ const ContractDetailPage = () => {
                     {serviceRoomStatusEnumToString(s.serviceRoomStatus, t)}
                   </p>
                   <p>
-                    <span className="font-medium">{t("service.response.description")}:</span>{" "}
-                    {s.description}
+                    <span className="font-medium">{t("service.response.description")}:</span> {s.description}
                   </p>
                 </li>
               ))}
@@ -384,20 +358,17 @@ const ContractDetailPage = () => {
               {data?.vehicles?.map((v: VehicleBasicResponse, i: number) => (
                 <li key={i} className="border-background border p-3 rounded-lg">
                   <p>
-                    <span className="font-medium">{t("vehicle.response.owner")}:</span>{" "}
-                    {v.tenantName}
+                    <span className="font-medium">{t("vehicle.response.owner")}:</span> {v.tenantName}
                   </p>
                   <p>
                     <span className="font-medium">{t("vehicle.response.vehicleType")}:</span>{" "}
                     {vehicleTypeEnumToString(v.vehicleType, t)}
                   </p>
                   <p>
-                    <span className="font-medium">{t("vehicle.response.licensePlate")}:</span>{" "}
-                    {v.licensePlate}
+                    <span className="font-medium">{t("vehicle.response.licensePlate")}:</span> {v.licensePlate}
                   </p>
                   <p>
-                    <span className="font-medium">{t("vehicle.response.describe")}:</span>{" "}
-                    {v.description}
+                    <span className="font-medium">{t("vehicle.response.describe")}:</span> {v.description}
                   </p>
                 </li>
               ))}
@@ -407,21 +378,148 @@ const ContractDetailPage = () => {
           <div className="flex md:flex-row flex-col items-center justify-between">
             <div className="text-xs text-gray-500 text-right">
               <p>
-                {t("contract.contract.createdAt")}:{" "}
-                {data?.createdAt ? formatDate(data?.createdAt) : ""}
+                {t("contract.contract.createdAt")}: {data?.createdAt ? formatDate(data?.createdAt) : ""}
               </p>
               <p>
-                {t("contract.contract.updatedAt")}:{" "}
-                {data?.updatedAt ? formatDate(data?.updatedAt) : ""}
+                {t("contract.contract.updatedAt")}: {data?.updatedAt ? formatDate(data?.updatedAt) : ""}
               </p>
             </div>
-            <Tooltip content={t("contract.viewContent")}>
-              <Link to={`/customers/contracts/content/${contractId}`}>
-                <Button size={"icon"}>
-                  <Eye className="stroke-white" />
-                </Button>
-              </Link>
-            </Tooltip>
+            <div className="flex gap-3">
+              <RenderIf
+                value={
+                  data?.status !== ContractStatus.TU_Y_HUY_BO &&
+                  data?.status !== ContractStatus.KET_THUC_CO_BAO_TRUOC &&
+                  data?.status !== ContractStatus.CHO_KICH_HOAT
+                }
+              >
+                <TooltipProvider>
+                  <TT>
+                    <Modal
+                      title={t("contract.detail.extend")}
+                      trigger={
+                        <TooltipTrigger asChild>
+                          <Button
+                            size={"icon"}
+                            variant={"status"}
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setValue({
+                                newEndDate: data?.endDate || "",
+                                oldEndDate: data?.endDate || "",
+                              });
+                            }}
+                          >
+                            <RotateCcw className="stroke-white" />
+                          </Button>
+                        </TooltipTrigger>
+                      }
+                      desc={t("contract.detail.extendConfirm")}
+                      onConfirm={handleExtendContract}
+                    >
+                      <ExtendOrNoticeContract errors={errors} setValue={setValue} value={value} />
+                    </Modal>
+                    <TooltipContent
+                      className="text-white"
+                      style={{
+                        background: "var(--color-sky-500)",
+                      }}
+                      arrow={false}
+                    >
+                      <p>{t("contract.detail.extend")}</p>
+                      <TooltipPrimitive.Arrow
+                        style={{
+                          fill: "var(--color-sky-500)",
+                          background: "var(--color-sky-500)",
+                        }}
+                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                      />
+                    </TooltipContent>
+                  </TT>
+                </TooltipProvider>
+                <TooltipProvider>
+                  <TT>
+                    <Modal
+                      title={t("contract.detail.notice")}
+                      trigger={
+                        <TooltipTrigger asChild>
+                          <Button
+                            size={"icon"}
+                            variant={"cash"}
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setValue({
+                                newEndDate: data?.endDate || "",
+                                oldEndDate: data?.endDate || "",
+                              });
+                            }}
+                          >
+                            <CalendarX className="stroke-white" />
+                          </Button>
+                        </TooltipTrigger>
+                      }
+                      desc={t("contract.detail.noticeConfirm")}
+                      onConfirm={handleNoticeContract}
+                    >
+                      <ExtendOrNoticeContract errors={errors} setValue={setValue} value={value} />
+                    </Modal>
+                    <TooltipContent
+                      className="text-white"
+                      style={{
+                        background: "var(--color-amber-400)",
+                      }}
+                      arrow={false}
+                    >
+                      <p>{t("contract.detail.notice")}</p>
+                      <TooltipPrimitive.Arrow
+                        style={{
+                          fill: "var(--color-amber-400)",
+                          background: "var(--color-amber-400)",
+                        }}
+                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                      />
+                    </TooltipContent>
+                  </TT>
+                </TooltipProvider>
+                <TooltipProvider>
+                  <TT>
+                    <TooltipTrigger asChild>
+                      <Button
+                        size={"icon"}
+                        variant={"delete"}
+                        className="cursor-pointer"
+                        onClick={() => handleActionClick("cancel")}
+                      >
+                        <Ban className="stroke-white" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      className="text-white"
+                      style={{
+                        background: "var(--color-red-400)",
+                      }}
+                      arrow={false}
+                    >
+                      <p>{t("contract.detail.cancel")}</p>
+                      <TooltipPrimitive.Arrow
+                        style={{
+                          fill: "var(--color-red-400)",
+                          background: "var(--color-red-400)",
+                        }}
+                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                      />
+                    </TooltipContent>
+                  </TT>
+                </TooltipProvider>
+              </RenderIf>
+
+              <Tooltip content={t("contract.viewContent")}>
+                <Link to={`/customers/contracts/content/${contractId}`}>
+                  <Button size={"icon"}>
+                    <Eye className="stroke-white" />
+                  </Button>
+                </Link>
+              </Tooltip>
+            </div>
           </div>
         </div>
         <ConfirmDialog />

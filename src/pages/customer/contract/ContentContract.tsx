@@ -6,7 +6,7 @@ import { usePrintPdf } from "@/hooks/usePrintPdf";
 import { ContractDetailResponse } from "@/types";
 import { httpRequest } from "@/utils/httpRequest";
 import { useQuery } from "@tanstack/react-query";
-import { Download, File } from "lucide-react";
+import { Download } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { saveAs } from "file-saver";
 import { asBlob } from "html-docx-js-typescript";
@@ -76,19 +76,9 @@ const ContentContract = () => {
               <Download />
             </Button>
           </Tooltip>
-<<<<<<< HEAD
           <Tooltip content={t("contract.docx")}>
-            <Button
-              size={"icon"}
-              className="text-white cursor-pointer"
-              onClick={handleDownloadDocx}
-            >
-              <Download />
-=======
-          <Tooltip content="Tải Docx">
             <Button size={"icon"} className="text-white cursor-pointer" onClick={handleDownloadDocx}>
-              <File />
->>>>>>> origin/main
+              <Download />
             </Button>
           </Tooltip>
         </div>
@@ -97,9 +87,7 @@ const ContentContract = () => {
             ref={printRef}
             className="[&_.ck]:!border-none [&_.ck]:!shadow-none rounded-sm shadow-lg px-5 bg-white"
             dangerouslySetInnerHTML={{
-              __html: content
-                .replace(/\\"/g, '"')
-                .replace(/contenteditable="true"/gi, 'contenteditable="false"'),
+              __html: content.replace(/\\"/g, '"').replace(/contenteditable="true"/gi, 'contenteditable="false"'),
             }}
           ></div>
         </div>
