@@ -12,7 +12,11 @@ export default function useRevenue() {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const { month = "", year = "", buildingId = "" } = queryFilter(searchParams, "month", "year", "buildingId");
+  const {
+    month = "",
+    year = "",
+    buildingId = "",
+  } = queryFilter(searchParams, "month", "year", "buildingId");
 
   const [filterValues, setFilterValues] = useState<RevenueStatisticRequest>({
     buildingId,
@@ -62,7 +66,7 @@ export default function useRevenue() {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải thống kê doanh thu");
+      toast.error(t("revenue.loadError"));
     }
     if (errorBuilding) {
       toast.error(t("building.errorFetch"));
@@ -81,7 +85,13 @@ export default function useRevenue() {
   return {
     query: { ...filterValues },
     setSearchParams,
-    props: { filterValues, setFilterValues, onClear: handleClear, onFilter: handleFilter, buildingOptions },
+    props: {
+      filterValues,
+      setFilterValues,
+      onClear: handleClear,
+      onFilter: handleFilter,
+      buildingOptions,
+    },
     data,
     isLoading,
   };

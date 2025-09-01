@@ -50,8 +50,8 @@ const NotificationFilter = ({ props }: { props: NotificationFilterProps }) => {
     <form className="bg-background p-5 flex flex-col gap-2 items-end" onSubmit={handleSubmit}>
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full items-end">
         <FieldsSelectLabel
-          placeholder={t("notification.filter.typePlaceholder")}
-          labelSelect={t("notification.filter.typeLabel")}
+          placeholder={t("notification.filter.placeholderType")}
+          labelSelect={t("notification.filter.labelType")}
           data={[
             {
               label: t("statusBadge.notificationType.common"),

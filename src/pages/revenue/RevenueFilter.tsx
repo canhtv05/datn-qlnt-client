@@ -4,6 +4,7 @@ import InputLabel from "@/components/InputLabel";
 import { switchGrid3 } from "@/lib/utils";
 import { RevenueStatisticRequest } from "@/types";
 import { Dispatch, FormEvent, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface RevenueFilterProps {
   filterValues: RevenueStatisticRequest;
@@ -16,7 +17,7 @@ export interface RevenueFilterProps {
 const RevenueFilter = ({ props }: { props: RevenueFilterProps }) => {
   const { buildingId, month, year } = props.filterValues;
   const setFilterValues = props.setFilterValues;
-
+  const { t } = useTranslation();
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     props.onFilter();
@@ -29,9 +30,9 @@ const RevenueFilter = ({ props }: { props: RevenueFilterProps }) => {
     >
       <div className={switchGrid3("default")}>
         <FieldsSelectLabel
-          placeholder={"-- Tháng --"}
-          labelSelect={"Tháng"}
-          label="Tháng"
+          placeholder={t("revenue.filter.monthPlaceholder")}
+          labelSelect={t("revenue.filter.month")}
+          label={t("revenue.filter.month")}
           data={[
             { label: "1", value: 1 },
             { label: "2", value: 2 },
@@ -56,17 +57,17 @@ const RevenueFilter = ({ props }: { props: RevenueFilterProps }) => {
         <InputLabel
           id="year"
           name="number"
-          placeholder={"Nhập năm"}
-          label="Năm"
+          placeholder={t("revenue.filter.yearPlaceholder")}
+          label={t("revenue.filter.year")}
           value={year ?? new Date().getFullYear()}
           onChange={(value) => {
             setFilterValues((prev) => ({ ...prev, year: Number(value) }));
           }}
         />
         <FieldsSelectLabel
-          label="Tòa nhà"
-          placeholder={"-- Tòa nhà --"}
-          labelSelect={"Tòa nhà"}
+          label={t("revenue.filter.building")}
+          placeholder={t("revenue.filter.buildingPlaceholder")}
+          labelSelect={t("revenue.filter.building")}
           data={props.buildingOptions ?? []}
           value={buildingId}
           onChange={(value) => {

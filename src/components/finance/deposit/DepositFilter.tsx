@@ -34,14 +34,14 @@ const DepositFilter = ({ props }: { props: DepositFilterProps }) => {
           placeholder={t("deposit.filter.placeholderStatus")}
           labelSelect={t("deposit.filter.labelStatus")}
           data={[
-            { label: t("statusBadge.depositStatus.pending"), value: DepositStatus.CHO_XAC_NHAN },
+            { label: t("depositStatus.pending"), value: DepositStatus.CHO_XAC_NHAN },
             {
-              label: t("statusBadge.depositStatus.notReceived"),
+              label: t("depositStatus.notReceived"),
               value: DepositStatus.CHUA_NHAN_COC,
             },
-            { label: t("statusBadge.depositStatus.common"), value: DepositStatus.DA_DAT_COC },
-            { label: t("statusBadge.depositStatus.refunded"), value: DepositStatus.DA_HOAN_TRA },
-            { label: t("statusBadge.depositStatus.nonRefund"), value: DepositStatus.KHONG_TRA_COC },
+            { label: t("depositStatus.common"), value: DepositStatus.DA_DAT_COC },
+            { label: t("depositStatus.refunded"), value: DepositStatus.DA_HOAN_TRA },
+            { label: t("depositStatus.nonRefund"), value: DepositStatus.KHONG_TRA_COC },
           ]}
           value={depositStatus}
           onChange={(value) => handleChange("depositStatus", String(value))}

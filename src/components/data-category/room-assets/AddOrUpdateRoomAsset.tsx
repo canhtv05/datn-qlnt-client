@@ -203,7 +203,7 @@ const AddOrUpdateRoomAsset = ({
                 bulkValue.roomId.length > 1 &&
                 selected.length > 1
               ) {
-                toast.error(t("roomAsset.error.onlyOneAsset"));
+                toast.error(t("roomAsset.onlyOneAsset"));
                 return;
               }
 

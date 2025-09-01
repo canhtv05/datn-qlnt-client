@@ -1375,5 +1375,32 @@
     "confirmChangePassword": "Are you sure you want to change your password?",
     "logout": "Logout",
     "confirmLogout": "Are you sure you want to logout?"
+  },
+  "revenue": {
+    "loadError": "An error occurred while loading revenue statistics",
+    "title": {
+      "overview": "Revenue Overview",
+      "detail": "Revenue Detail"
+    },
+    "response": {
+      "expectedRevenue": "Expected Revenue",
+      "currentRevenue": "Current Revenue",
+      "damageAmount": "Damage Amount",
+      "overdueAmount": "Overdue Amount",
+      "paidRoomFee": "Paid Room Fee",
+      "paidWaterFee": "Paid Water Fee",
+      "paidEnergyFee": "Paid Energy Fee",
+      "paidServiceFee": "Paid Service Fee",
+      "compensationAmount": "Compensation Amount",
+      "unreturnedDeposit": "Unreturned Deposit"
+    },
+    "filter": {
+      "month": "Month",
+      "monthPlaceholder": "-- Month --",
+      "year": "Year",
+      "yearPlaceholder": "Enter year",
+      "building": "Building",
+      "buildingPlaceholder": "-- Building --"
+    }
   }
 }

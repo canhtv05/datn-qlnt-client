@@ -656,6 +656,7 @@
     "errorFetch": "Có lỗi xảy ra khi tải tài sản phòng",
     "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê tài sản phòng",
     "onlyOneAsset": "Chỉ được chọn 1 tài sản nếu đã chọn nhiều phòng.",
+    "onlyOneRoom": "Chỉ được chọn 1 phòng nếu đã chọn nhiều tài sản.",
     "totalRoomAssets": "Tổng số tài sản phòng",
     "roomAssetsAvailable": "Tài sản phòng còn lại",
     "addOrUpdate": {
@@ -776,7 +777,6 @@
   "tenant": {
     "title": "Khách thuê",
     "titleHistory": "Lịch sử khách thuê đã xóa",
-
     "search": "Tìm kiếm",
     "errorFetch": "Không lấy được dữ liệu khách thuê.",
     "errorFetchStatistics": "Không lấy được dữ liệu thống kê khách thuê.",
@@ -1375,5 +1375,32 @@
     "confirmChangePassword": "Bạn có chắc chắn muốn đổi mật khẩu không?",
     "logout": "Đăng xuất",
     "confirmLogout": "Bạn có chắc chắn muốn đăng xuất không?"
+  },
+  "revenue": {
+    "loadError": "Có lỗi xảy ra khi tải thống kê doanh thu",
+    "title": {
+      "overview": "Doanh thu tổng quan",
+      "detail": "Doanh thu chi tiết"
+    },
+    "response": {
+      "expectedRevenue": "Doanh thu dự kiến",
+      "currentRevenue": "Doanh thu hiện tại",
+      "damageAmount": "Thiệt hại",
+      "overdueAmount": "Khoản tiền quá hạn",
+      "paidRoomFee": "Đã trả tiền phòng",
+      "paidWaterFee": "Đã trả phí nước",
+      "paidEnergyFee": "Đã trả phí điện",
+      "paidServiceFee": "Đã trả phí dịch vụ",
+      "compensationAmount": "Tiền bồi thường",
+      "unreturnedDeposit": "Tiền cọc chưa trả"
+    },
+    "filter": {
+      "month": "Tháng",
+      "monthPlaceholder": "-- Tháng --",
+      "year": "Năm",
+      "yearPlaceholder": "Nhập năm",
+      "building": "Tòa nhà",
+      "buildingPlaceholder": "-- Tòa nhà --"
+    }
   }
 }
