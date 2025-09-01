@@ -431,6 +431,7 @@ export const depositStatusEnumToString = (status: DepositStatus, t: TFunction<"t
 
 export const checkUser = (user: UserResponse | null, isLoading: boolean): boolean => {
   if (
+    user &&
     (!user?.dob || (user?.gender !== Gender.FEMALE && user?.gender !== Gender.MALE) || !user?.phoneNumber) &&
     !isLoading
   ) {
@@ -485,6 +486,11 @@ export const localeMap: Record<string, Locale> = {
 export const parseDate = (dateStr: string) => {
   const [day, month, year] = dateStr.split("/").map(Number);
   return new Date(year, month - 1, day);
+};
+
+export const parseDateLocal = (dateStr: string) => {
+  const [day, month, year] = dateStr.split("/").map(Number);
+  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 };
 
 export const genderToString = (gender: Gender | undefined) => {

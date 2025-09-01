@@ -16,13 +16,7 @@ interface AddOrUpdateTenantProps {
   onBlur: () => void;
 }
 
-const AddOrUpdateTenant = ({
-  value,
-  handleChange,
-  setValue,
-  errors,
-  onBlur,
-}: AddOrUpdateTenantProps) => {
+const AddOrUpdateTenant = ({ value, handleChange, setValue, errors, onBlur }: AddOrUpdateTenantProps) => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-3">
@@ -56,7 +50,7 @@ const AddOrUpdateTenant = ({
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
         <DatePickerLabel
           date={value?.dob ? new Date(value.dob) : undefined}
-          setDate={(d) => setValue((prev) => ({ ...prev, dob: d.toISOString() }))}
+          setDate={(d) => setValue((prev) => ({ ...prev, dob: new Date(d).toISOString() }))}
           label={t("tenant.addOrUpdate.dob")}
           errorText={errors?.dob}
           required

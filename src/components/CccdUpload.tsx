@@ -2,7 +2,7 @@
 import { useState, useEffect, Dispatch } from "react";
 import Dropzone from "react-dropzone";
 import { XCircleIcon, ImageIcon } from "lucide-react";
-import { cn, parseDate } from "@/lib/utils";
+import { cn, parseDateLocal } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
 import OCRAlertBox from "./OCRAlertBox";
@@ -47,21 +47,9 @@ export default function CccdUpload({
   setValue,
   errors,
 }: CccdUploadProps) {
-  const ImagePreview = ({
-    url,
-    onRemove,
-    loading,
-  }: {
-    url: string;
-    onRemove: () => void;
-    loading?: boolean;
-  }) => (
+  const ImagePreview = ({ url, onRemove, loading }: { url: string; onRemove: () => void; loading?: boolean }) => (
     <div className="relative w-full aspect-video rounded-md border border-border overflow-hidden flex items-center justify-center">
-      <button
-        type="button"
-        className="absolute top-2 right-2 cursor-pointer z-10"
-        onClick={onRemove}
-      >
+      <button type="button" className="absolute top-2 right-2 cursor-pointer z-10" onClick={onRemove}>
         <XCircleIcon className="h-5 w-5 fill-primary text-white" />
       </button>
       <img src={url} alt="CCCD" className="max-w-full max-h-full object-contain" />
@@ -82,6 +70,8 @@ export default function CccdUpload({
   const [loadingFront, setLoadingFront] = useState(false);
   const [loadingBack, setLoadingBack] = useState(false);
 
+  const { t } = useTranslation();
+
   const callOcrApi = async (file: File, side: "front" | "back") => {
     try {
       if (side === "front") setLoadingFront(true);
@@ -97,8 +87,7 @@ export default function CccdUpload({
       if (side === "front") setFrontResult(res.data.data);
       if (side === "back") setBackResult(res.data.data);
     } catch (err) {
-      if (axios.isAxiosError(err))
-        toast.error(OCR_ERROR_MAP[err?.response?.data?.errorCode] || Status.ERROR);
+      if (axios.isAxiosError(err)) toast.error(OCR_ERROR_MAP[err?.response?.data?.errorCode] || Status.ERROR);
       else toast.error(Status.ERROR);
     } finally {
       if (side === "front") setLoadingFront(false);
@@ -132,8 +121,6 @@ export default function CccdUpload({
     }
   }, [backImage]);
 
-  // console.log(frontResult, backResult);
-
   useEffect(() => {
     if (Array.isArray(frontResult) && frontResult.length > 0) {
       const res = frontResult[0];
@@ -141,7 +128,7 @@ export default function CccdUpload({
         ...prev,
         fullName: res?.name !== NA ? res?.name : "",
         gender: res?.sex === "NAM" && res?.sex !== NA ? Gender.MALE : Gender.FEMALE,
-        dob: res?.dob && res?.dob !== NA ? new Date(parseDate(res?.dob)).toISOString() : "",
+        dob: res?.dob && res?.dob !== NA ? parseDateLocal(res.dob) : "",
         identityCardNumber: res?.id && res?.id !== NA ? res?.id : "",
         address: res?.address && res?.address !== NA ? res?.address : "",
         frontCccd: frontImage instanceof File ? frontImage : prev.frontCccd,
@@ -159,12 +146,7 @@ export default function CccdUpload({
   }, [backResult, backImage, setValue]);
 
   useEffect(() => {
-    if (
-      frontResult?.length > 0 &&
-      backResult?.length > 0 &&
-      frontResult[0]?.id &&
-      backResult[0]?.mrz_details?.id
-    ) {
+    if (frontResult?.length > 0 && backResult?.length > 0 && frontResult[0]?.id && backResult[0]?.mrz_details?.id) {
       const frontId = frontResult[0]?.id;
       const backId = backResult[0]?.mrz_details?.id;
 
@@ -188,11 +170,10 @@ export default function CccdUpload({
         setBackResult(null);
       }
     }
-  }, [frontResult, backResult, setValue, setFrontImage, setBackImage]);
+  }, [frontResult, backResult, setValue, setFrontImage, setBackImage, t]);
 
   const isFrontInvalid = touchedFront && !frontImage;
   const isBackInvalid = touchedBack && !backImage;
-  const { t } = useTranslation();
   const renderDropzone = (
     loading: boolean,
     setImage: (file: File | null) => void,
@@ -241,11 +222,7 @@ export default function CccdUpload({
             <span className="block">{t("common.autoCheck")}</span>
           </span>
           {frontUrl ? (
-            <ImagePreview
-              url={frontUrl}
-              onRemove={() => setFrontImage(null)}
-              loading={loadingFront}
-            />
+            <ImagePreview url={frontUrl} onRemove={() => setFrontImage(null)} loading={loadingFront} />
           ) : (
             renderDropzone(loadingFront, setFrontImage, setTouchedFront)
           )}
@@ -258,9 +235,7 @@ export default function CccdUpload({
             />
           )}
           <RenderIf value={isFrontInvalid}>
-            <span className="text-[12px] text-red-500 font-light text-left">
-              {t("cccd.required")}
-            </span>
+            <span className="text-[12px] text-red-500 font-light text-left">{t("cccd.required")}</span>
           </RenderIf>
           <span className="text-[12px] text-red-500 font-light text-left">{errors.frontCccd}</span>
         </div>
@@ -285,9 +260,7 @@ export default function CccdUpload({
             />
           )}
           <RenderIf value={isBackInvalid}>
-            <span className="text-[12px] text-red-500 font-light text-left">
-              {t("cccd.required")}
-            </span>
+            <span className="text-[12px] text-red-500 font-light text-left">{t("cccd.required")}</span>
           </RenderIf>
           <span className="text-[12px] text-red-500 font-light text-left">{errors.backCccd}</span>
         </div>

@@ -16,19 +16,16 @@ const useChatbot = () => {
   const sendMessage = async (message: string) => {
     await delay(500);
 
-    const newMessages: Message[] = [...messages, { text: message, sender: "user" }];
-    setMessages(newMessages);
+    setMessages((prev) => [...prev, { text: message, sender: "user" }]);
 
     try {
       const response = await axios.post(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
         {
-          contents: [
-            {
-              role: "user",
-              parts: [{ text: message }],
-            },
-          ],
+          contents: messages.concat({ text: message, sender: "user" }).map((msg) => ({
+            role: msg.sender === "user" ? "user" : "assistant",
+            parts: [{ text: msg.text }],
+          })),
         },
         {
           headers: {
@@ -38,10 +35,10 @@ const useChatbot = () => {
       );
 
       const botMessage = response.data.candidates?.[0]?.content?.parts?.[0]?.text || "Không có phản hồi từ Gemini.";
-      setMessages([...newMessages, { text: botMessage, sender: "bot" }]);
+      setMessages((prev) => [...prev, { text: botMessage, sender: "bot" }]);
     } catch (error) {
       console.error("Lỗi từ Gemini API:", error);
-      setMessages([...newMessages, { text: "Đã xảy ra lỗi khi gọi API.", sender: "bot" }]);
+      setMessages((prev) => [...prev, { text: "Đã xảy ra lỗi khi gọi API.", sender: "bot" }]);
     }
   };
 
