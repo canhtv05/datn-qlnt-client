@@ -37,7 +37,12 @@ const Building = () => {
   const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
-    { label: t("building.response.buildingCode"), accessorKey: "buildingCode", isSort: true, hasHighlight: true },
+    {
+      label: t("building.response.buildingCode"),
+      accessorKey: "buildingCode",
+      isSort: true,
+      hasHighlight: true,
+    },
     {
       label: t("building.response.actions"),
       accessorKey: "actions",
@@ -63,7 +68,11 @@ const Building = () => {
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                  <TooltipContent
+                    className="text-white"
+                    style={{ background: btn.arrowColor }}
+                    arrow={false}
+                  >
                     <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{ fill: btn.arrowColor, background: btn.arrowColor }}
@@ -99,9 +108,25 @@ const Building = () => {
       isCenter: true,
     },
     { label: t("building.response.description"), accessorKey: "description" },
-    { label: t("building.response.status"), accessorKey: "status", isSort: true, hasBadge: true, isCenter: true },
-    { label: t("building.response.createdAt"), accessorKey: "createdAt", isSort: true, hasDate: true },
-    { label: t("building.response.updatedAt"), accessorKey: "updatedAt", isSort: true, hasDate: true },
+    {
+      label: t("building.response.status"),
+      accessorKey: "status",
+      isSort: true,
+      hasBadge: true,
+      isCenter: true,
+    },
+    {
+      label: t("building.response.createdAt"),
+      accessorKey: "createdAt",
+      isSort: true,
+      hasDate: true,
+    },
+    {
+      label: t("building.response.updatedAt"),
+      accessorKey: "updatedAt",
+      isSort: true,
+      hasDate: true,
+    },
   ];
 
   return (
@@ -127,9 +152,14 @@ const Building = () => {
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
           onConfirm={handleUpdateBuilding}
-          desc={Notice.UPDATE}
+          desc={t(Notice.UPDATE)}
         >
-          <AddOrUpdateBuilding handleChange={handleChange} value={value} setValue={setValue} errors={errors} />
+          <AddOrUpdateBuilding
+            handleChange={handleChange}
+            value={value}
+            setValue={setValue}
+            errors={errors}
+          />
         </Modal>
         <ConfirmDialog />
       </div>
