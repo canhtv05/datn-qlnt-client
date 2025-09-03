@@ -62,7 +62,7 @@ export function ChartAreaRevenue({ data }: ChartAreaRevenueProps) {
         <div>
           <Badge className={checkPercent ? COLOR_CLASS.red : COLOR_CLASS.green}>
             {checkPercent ? <ArrowDown className="stroke-red-500" /> : <ArrowUp className="stroke-primary" />}{" "}
-            {data?.percent || 0}
+            {data?.percent || 0}%
           </Badge>
         </div>
       </CardHeader>
