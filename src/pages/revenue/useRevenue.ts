@@ -1,4 +1,4 @@
-import { ApiResponse, IdAndName, RevenueStatisticRequest, RevenueStatisticResponse } from "@/types";
+import { ApiResponse, IdAndName, RevenueComparisonResponse, RevenueStatisticRequest } from "@/types";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useQuery } from "@tanstack/react-query";
@@ -12,11 +12,7 @@ export default function useRevenue() {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const {
-    month = "",
-    year = "",
-    buildingId = "",
-  } = queryFilter(searchParams, "month", "year", "buildingId");
+  const { month = "", year = "", buildingId = "" } = queryFilter(searchParams, "month", "year", "buildingId");
 
   const [filterValues, setFilterValues] = useState<RevenueStatisticRequest>({
     buildingId,
@@ -41,15 +37,14 @@ export default function useRevenue() {
     setSearchParams(params);
   }, [filterValues, setSearchParams]);
 
-  const { data, isLoading, isError } = useQuery<ApiResponse<RevenueStatisticResponse>>({
-    queryKey: ["revenue-statistics", buildingId, month, year],
+  const { data, isLoading, isError } = useQuery<ApiResponse<RevenueComparisonResponse[]>>({
+    queryKey: ["revenue-comparison", buildingId, month, year],
     queryFn: async () => {
       const params: Record<string, string> = {};
       Object.entries(filterValues).forEach(([k, v]) => {
         if (v) params[k] = v;
       });
-      const res = await httpRequest.get("/revenues/statistic", { params });
-      // console.log(res.data);
+      const res = await httpRequest.get("/revenues/comparison", { params });
       return res.data;
     },
     retry: 1,

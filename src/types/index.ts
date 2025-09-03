@@ -28,6 +28,7 @@ import {
   AssetBeLongTo,
   NotificationType,
   DepositStatus,
+  RevenueCategory,
 } from "@/enums";
 import { ColumnDef } from "@tanstack/react-table";
 import { LucideIcon } from "lucide-react";
@@ -1409,4 +1410,12 @@ export interface RevenueStatisticRequest {
   month: number | undefined;
   year: number | undefined;
   buildingId: string;
+}
+
+export interface RevenueComparisonResponse {
+  category: RevenueCategory;
+  current: number;
+  previous: number;
+  difference: number;
+  percent: number;
 }

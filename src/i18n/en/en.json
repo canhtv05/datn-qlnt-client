@@ -440,6 +440,21 @@
     "nonRefund": "Non-refundable",
     "cancelled": "Cancelled"
   },
+  "revenueCategory": {
+    "ROOM": "Room",
+    "ENERGY": "Energy",
+    "WATER": "Water",
+    "SERVICE": "Service",
+    "COMPENSATION": "Compensation",
+    "DEPOSIT": "Deposit",
+    "EXPECTED_REVENUE": "Expected Revenue",
+    "ACTUAL_REVENUE": "Actual Revenue",
+    "OVERDUE": "Overdue",
+    "DAMAGE": "Damage",
+    "previous": "Previous",
+    "current": "Current",
+    "revenue": "Revenue"
+  },
   "changePass": {
     "oldPassword": "Old Password:",
     "placeholderOldPassword": "Enter old password",

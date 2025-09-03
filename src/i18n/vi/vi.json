@@ -440,6 +440,21 @@
     "nonRefund": "Không trả cọc",
     "cancelled": "Hủy"
   },
+  "revenueCategory": {
+    "ROOM": "Phòng",
+    "ENERGY": "Điện",
+    "WATER": "Nước",
+    "SERVICE": "Dịch vụ",
+    "COMPENSATION": "Bồi thường",
+    "DEPOSIT": "Đặt cọc",
+    "EXPECTED_REVENUE": "Doanh thu dự kiến",
+    "ACTUAL_REVENUE": "Doanh thu thực tế",
+    "OVERDUE": "Quá hạn",
+    "DAMAGE": "Thiệt hại",
+    "previous": "Trước",
+    "current": "Hiện tại",
+    "revenue": "Doanh thu"
+  },
   "changePass": {
     "oldPassword": "Mật khẩu cũ:",
     "placeholderOldPassword": "Nhập mật khẩu cũ",
