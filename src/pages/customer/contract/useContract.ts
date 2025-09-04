@@ -154,7 +154,7 @@ export const useContract = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
-      toast.success(Status.UPDATE_SUCCESS);
+      toast.success(t(Status.UPDATE_SUCCESS));
       setIsModalOpen(false);
     },
     onError: handleMutationError,
@@ -185,7 +185,7 @@ export const useContract = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
-      toast.success(Status.REMOVE_SUCCESS);
+      toast.success(t(Status.REMOVE_SUCCESS));
     },
     onError: handleMutationError,
   });
@@ -234,7 +234,7 @@ export const useContract = () => {
         });
         setIsModalOpen(true);
       } else if (type === "delete") {
-        openDialog({ id: contract.id, type }, { type: "warn", desc: Notice.REMOVE });
+        openDialog({ id: contract.id, type }, { type: "warn", desc: t(Notice.REMOVE) });
       } else if (type === "view") {
         navigate(`/customers/contracts/${contract.id}`);
       } else if (type === "cash") {

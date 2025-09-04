@@ -37,7 +37,12 @@ import { useCallback, useState } from "react";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
 import { extendContractSchema, noticeContractSchema } from "@/lib/validation";
 import Modal from "@/components/Modal";
-import { TooltipContent, TooltipProvider, TooltipTrigger, Tooltip as TT } from "@/components/ui/tooltip";
+import {
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+  Tooltip as TT,
+} from "@/components/ui/tooltip";
 import { ContractStatus } from "@/enums";
 import ExtendOrNoticeContract from "./ExtendOrNoticeContract";
 
@@ -58,7 +63,8 @@ const ContractDetailPage = () => {
     newEndDate: "",
     oldEndDate: "",
   });
-  const { clearErrors, errors, handleZodErrors } = useFormErrors<ContractExtendAndTerminateRequest>();
+  const { clearErrors, errors, handleZodErrors } =
+    useFormErrors<ContractExtendAndTerminateRequest>();
 
   const extendContractMutation = useMutation({
     mutationFn: (payload: ContractExtendAndTerminateRequest) =>
@@ -68,7 +74,7 @@ const ContractDetailPage = () => {
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
       queryClient.invalidateQueries({ queryKey: ["contract-detail"] });
-      toast.success("Gia hạn hợp đồng thành công");
+      toast.success(t("contract.extend"));
     },
     onError: handleMutationError,
   });
@@ -100,7 +106,7 @@ const ContractDetailPage = () => {
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
       queryClient.invalidateQueries({ queryKey: ["contract-detail"] });
-      toast.success("Xác thực hợp đồng có báo trước thành công");
+      toast.success(t("contract.verifyWithNotice"));
     },
     onError: handleMutationError,
   });
@@ -130,7 +136,7 @@ const ContractDetailPage = () => {
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
       queryClient.invalidateQueries({ queryKey: ["contract-detail"] });
-      toast.success("Xác thực hợp đồng tự ý hủy bỏ thành công");
+      toast.success(t("contract.verifyUnilateralCancel"));
     },
     onError: handleMutationError,
   });
@@ -171,11 +177,11 @@ const ContractDetailPage = () => {
         openDialog({ type });
         return await true;
       } else {
-        openDialog({ type }, { desc: "Bạn có chắc chắn muốn xác nhận rằng hợp đồng tự ý hủy bỏ không?" });
+        openDialog({ type }, { desc: t("contract.confirmCancel.desc") });
         return await true;
       }
     },
-    [data, openDialog]
+    [data, openDialog, t]
   );
 
   return (
@@ -199,10 +205,12 @@ const ContractDetailPage = () => {
             <h2 className="text-lg font-semibold mb-4">{t("contract.title")}</h2>
             <div className="grid grid-cols-2 text-sm">
               <p>
-                <span className="font-medium">{t("contract.contract.contractCode")}:</span> {data?.contractCode}
+                <span className="font-medium">{t("contract.contract.contractCode")}:</span>{" "}
+                {data?.contractCode}
               </p>
               <p>
-                <span className="font-medium">{t("contract.contract.roomCode")}:</span> {data?.roomCode}
+                <span className="font-medium">{t("contract.contract.roomCode")}:</span>{" "}
+                {data?.roomCode}
               </p>
               <p>
                 <span className="font-medium">{t("contract.contract.startDate")}:</span>{" "}
@@ -221,7 +229,8 @@ const ContractDetailPage = () => {
                 {formattedCurrency(data?.roomPrice || 0)}
               </p>
               <p>
-                <span className="font-medium">{t("contract.contract.buildingAddress")}:</span> {data?.buildingAddress}
+                <span className="font-medium">{t("contract.contract.buildingAddress")}:</span>{" "}
+                {data?.buildingAddress}
               </p>
               <p>
                 <span className="font-medium">{t("contract.contract.status")}:</span>{" "}
@@ -244,19 +253,21 @@ const ContractDetailPage = () => {
             <div className="grid md:grid-cols-2 grid-cols-1 gap-4 text-sm">
               <div>
                 <p>
-                  <span className="font-medium">{t("contract.contract.phoneNumberManager")}:</span> {data?.nameManager}{" "}
-                  ({data?.phoneNumberManager})
+                  <span className="font-medium">{t("contract.contract.phoneNumberManager")}:</span>{" "}
+                  {data?.nameManager} ({data?.phoneNumberManager})
                 </p>
                 <p>
                   <span className="font-medium">Email:</span> {user?.email}
                 </p>
                 <p>
-                  <span className="font-medium">{t("contract.contract.phoneNumber")}:</span> {user?.phoneNumber}
+                  <span className="font-medium">{t("contract.contract.phoneNumber")}:</span>{" "}
+                  {user?.phoneNumber}
                 </p>
               </div>
               <div>
                 <p>
-                  <span className="font-medium">{t("contract.contract.nameUser")}:</span> {data?.nameUser}
+                  <span className="font-medium">{t("contract.contract.nameUser")}:</span>{" "}
+                  {data?.nameUser}
                 </p>
                 <p>
                   <span className="font-medium">Email:</span> {data?.emailUser}
@@ -266,7 +277,8 @@ const ContractDetailPage = () => {
                   {data?.identityCardUser}
                 </p>
                 <p>
-                  <span className="font-medium">{t("contract.contract.addressUser")}:</span> {data?.addressUser}
+                  <span className="font-medium">{t("contract.contract.addressUser")}:</span>{" "}
+                  {data?.addressUser}
                 </p>
               </div>
             </div>
@@ -278,20 +290,25 @@ const ContractDetailPage = () => {
               {data?.tenants?.map((tn: TenantLittleResponse, i: number) => (
                 <li key={i} className="border-background border p-3 rounded-lg">
                   <p>
-                    <span className="font-medium">{t("tenant.response.fullName")}:</span> {tn.fullName}
+                    <span className="font-medium">{t("tenant.response.fullName")}:</span>{" "}
+                    {tn.fullName}
                   </p>
                   <p>
                     <span className="font-medium">{t("tenant.response.gender")}:</span>{" "}
                     {genderEnumToString(tn.gender, t)}
                   </p>
                   <p>
-                    <span className="font-medium">{t("contract.contract.phoneNumber")}:</span> {tn.phoneNumber}
+                    <span className="font-medium">{t("contract.contract.phoneNumberUser")}:</span>{" "}
+                    {tn.phoneNumber}
                   </p>
                   <p>
                     <span className="font-medium">Email:</span> {tn.email}
                   </p>
                   {tn.representative && (
-                    <span className="text-green-600 font-semibold"> {t("contract.representative")}</span>
+                    <span className="text-green-600 font-semibold">
+                      {" "}
+                      {t("contract.representative")}
+                    </span>
                   )}
                 </li>
               ))}
@@ -304,24 +321,28 @@ const ContractDetailPage = () => {
               {data?.assets?.map((a: AssetLittleResponse, i: number) => (
                 <li key={i} className="border-background border p-3 rounded-lg">
                   <p>
-                    <span className="font-medium">{t("asset.response.nameAsset")}:</span> {a.assetName}
+                    <span className="font-medium">{t("asset.response.nameAsset")}:</span>{" "}
+                    {a.assetName}
                   </p>
                   <p>
                     <span className="font-medium">{t("asset.response.assetBeLongTo")}:</span>{" "}
                     {assetBelongToEnumToString(a.assetBeLongTo, t)}
                   </p>
                   <p>
-                    <span className="font-medium">{t("asset.response.quantity")}:</span> {a.quantity}
+                    <span className="font-medium">{t("asset.response.quantity")}:</span>{" "}
+                    {a.quantity}
                   </p>
                   <p>
-                    <span className="font-medium">{t("asset.response.price")}:</span> {formattedCurrency(a.price || 0)}
+                    <span className="font-medium">{t("asset.response.price")}:</span>{" "}
+                    {formattedCurrency(a.price || 0)}
                   </p>
                   <p>
                     <span className="font-medium">{t("asset.response.assetStatus")}:</span>{" "}
                     {assetStatusEnumToString(a.assetStatus, t)}
                   </p>
                   <p>
-                    <span className="font-medium">{t("asset.response.description")}:</span> {a.description}
+                    <span className="font-medium">{t("asset.response.description")}:</span>{" "}
+                    {a.description}
                   </p>
                 </li>
               ))}
@@ -334,7 +355,8 @@ const ContractDetailPage = () => {
               {data?.services?.map((s: ServiceLittleResponse, i: number) => (
                 <li key={i} className="border-background border p-3 rounded-lg">
                   <p>
-                    <span className="font-medium">{t("service.response.name")}:</span> {s.serviceName}
+                    <span className="font-medium">{t("service.response.name")}:</span>{" "}
+                    {s.serviceName}
                   </p>
                   <p>
                     <span className="font-medium">{t("service.response.price")}:</span>{" "}
@@ -345,7 +367,8 @@ const ContractDetailPage = () => {
                     {serviceRoomStatusEnumToString(s.serviceRoomStatus, t)}
                   </p>
                   <p>
-                    <span className="font-medium">{t("service.response.description")}:</span> {s.description}
+                    <span className="font-medium">{t("service.response.description")}:</span>{" "}
+                    {s.description}
                   </p>
                 </li>
               ))}
@@ -358,17 +381,20 @@ const ContractDetailPage = () => {
               {data?.vehicles?.map((v: VehicleBasicResponse, i: number) => (
                 <li key={i} className="border-background border p-3 rounded-lg">
                   <p>
-                    <span className="font-medium">{t("vehicle.response.owner")}:</span> {v.tenantName}
+                    <span className="font-medium">{t("vehicle.response.owner")}:</span>{" "}
+                    {v.tenantName}
                   </p>
                   <p>
                     <span className="font-medium">{t("vehicle.response.vehicleType")}:</span>{" "}
                     {vehicleTypeEnumToString(v.vehicleType, t)}
                   </p>
                   <p>
-                    <span className="font-medium">{t("vehicle.response.licensePlate")}:</span> {v.licensePlate}
+                    <span className="font-medium">{t("vehicle.response.licensePlate")}:</span>{" "}
+                    {v.licensePlate}
                   </p>
                   <p>
-                    <span className="font-medium">{t("vehicle.response.describe")}:</span> {v.description}
+                    <span className="font-medium">{t("vehicle.response.describe")}:</span>{" "}
+                    {v.description}
                   </p>
                 </li>
               ))}
@@ -378,10 +404,12 @@ const ContractDetailPage = () => {
           <div className="flex md:flex-row flex-col items-center justify-between">
             <div className="text-xs text-gray-500 text-right">
               <p>
-                {t("contract.contract.createdAt")}: {data?.createdAt ? formatDate(data?.createdAt) : ""}
+                {t("contract.contract.createdAt")}:{" "}
+                {data?.createdAt ? formatDate(data?.createdAt) : ""}
               </p>
               <p>
-                {t("contract.contract.updatedAt")}: {data?.updatedAt ? formatDate(data?.updatedAt) : ""}
+                {t("contract.contract.updatedAt")}:{" "}
+                {data?.updatedAt ? formatDate(data?.updatedAt) : ""}
               </p>
             </div>
             <div className="flex gap-3">
@@ -431,7 +459,9 @@ const ContractDetailPage = () => {
                           fill: "var(--color-sky-500)",
                           background: "var(--color-sky-500)",
                         }}
-                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                        className={
+                          "size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
+                        }
                       />
                     </TooltipContent>
                   </TT>
@@ -475,7 +505,9 @@ const ContractDetailPage = () => {
                           fill: "var(--color-amber-400)",
                           background: "var(--color-amber-400)",
                         }}
-                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                        className={
+                          "size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
+                        }
                       />
                     </TooltipContent>
                   </TT>
@@ -505,7 +537,9 @@ const ContractDetailPage = () => {
                           fill: "var(--color-red-400)",
                           background: "var(--color-red-400)",
                         }}
-                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
+                        className={
+                          "size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
+                        }
                       />
                     </TooltipContent>
                   </TT>

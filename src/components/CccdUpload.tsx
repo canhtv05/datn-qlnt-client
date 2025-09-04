@@ -47,9 +47,21 @@ export default function CccdUpload({
   setValue,
   errors,
 }: CccdUploadProps) {
-  const ImagePreview = ({ url, onRemove, loading }: { url: string; onRemove: () => void; loading?: boolean }) => (
+  const ImagePreview = ({
+    url,
+    onRemove,
+    loading,
+  }: {
+    url: string;
+    onRemove: () => void;
+    loading?: boolean;
+  }) => (
     <div className="relative w-full aspect-video rounded-md border border-border overflow-hidden flex items-center justify-center">
-      <button type="button" className="absolute top-2 right-2 cursor-pointer z-10" onClick={onRemove}>
+      <button
+        type="button"
+        className="absolute top-2 right-2 cursor-pointer z-10"
+        onClick={onRemove}
+      >
         <XCircleIcon className="h-5 w-5 fill-primary text-white" />
       </button>
       <img src={url} alt="CCCD" className="max-w-full max-h-full object-contain" />
@@ -87,8 +99,9 @@ export default function CccdUpload({
       if (side === "front") setFrontResult(res.data.data);
       if (side === "back") setBackResult(res.data.data);
     } catch (err) {
-      if (axios.isAxiosError(err)) toast.error(OCR_ERROR_MAP[err?.response?.data?.errorCode] || Status.ERROR);
-      else toast.error(Status.ERROR);
+      if (axios.isAxiosError(err))
+        toast.error(OCR_ERROR_MAP[err?.response?.data?.errorCode] || t(Status.ERROR));
+      else toast.error(t(Status.ERROR));
     } finally {
       if (side === "front") setLoadingFront(false);
       if (side === "back") setLoadingBack(false);
@@ -146,7 +159,12 @@ export default function CccdUpload({
   }, [backResult, backImage, setValue]);
 
   useEffect(() => {
-    if (frontResult?.length > 0 && backResult?.length > 0 && frontResult[0]?.id && backResult[0]?.mrz_details?.id) {
+    if (
+      frontResult?.length > 0 &&
+      backResult?.length > 0 &&
+      frontResult[0]?.id &&
+      backResult[0]?.mrz_details?.id
+    ) {
       const frontId = frontResult[0]?.id;
       const backId = backResult[0]?.mrz_details?.id;
 
@@ -222,7 +240,11 @@ export default function CccdUpload({
             <span className="block">{t("common.autoCheck")}</span>
           </span>
           {frontUrl ? (
-            <ImagePreview url={frontUrl} onRemove={() => setFrontImage(null)} loading={loadingFront} />
+            <ImagePreview
+              url={frontUrl}
+              onRemove={() => setFrontImage(null)}
+              loading={loadingFront}
+            />
           ) : (
             renderDropzone(loadingFront, setFrontImage, setTouchedFront)
           )}
@@ -235,7 +257,9 @@ export default function CccdUpload({
             />
           )}
           <RenderIf value={isFrontInvalid}>
-            <span className="text-[12px] text-red-500 font-light text-left">{t("cccd.required")}</span>
+            <span className="text-[12px] text-red-500 font-light text-left">
+              {t("cccd.required")}
+            </span>
           </RenderIf>
           <span className="text-[12px] text-red-500 font-light text-left">{errors.frontCccd}</span>
         </div>
@@ -260,7 +284,9 @@ export default function CccdUpload({
             />
           )}
           <RenderIf value={isBackInvalid}>
-            <span className="text-[12px] text-red-500 font-light text-left">{t("cccd.required")}</span>
+            <span className="text-[12px] text-red-500 font-light text-left">
+              {t("cccd.required")}
+            </span>
           </RenderIf>
           <span className="text-[12px] text-red-500 font-light text-left">{errors.backCccd}</span>
         </div>

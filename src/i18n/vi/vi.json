@@ -897,6 +897,10 @@
     "vehicles": "Phương tiện hợp đồng",
     "addVehicle": "Thêm phương tiện",
     "noData": "Không có",
+    "confirmCancel": "Bạn có chắc chắn muốn xác nhận rằng hợp đồng tự ý hủy bỏ không?",
+    "extend": "Gia hạn hợp đồng thành công",
+    "verifyWithNotice": "Xác thực hợp đồng có báo trước thành công",
+    "verifyUnilateralCancel": "Xác thực hợp đồng tự ý hủy bỏ thành công",
     "filter": {
       "placeholderRoom": "-- Chọn phòng --",
       "placeholderTenant": "-- Chọn khách thuê --",

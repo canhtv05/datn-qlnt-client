@@ -897,6 +897,10 @@
     "vehicles": "Contract Vehicles",
     "addVehicle": "Add Vehicle",
     "noData": "N/A",
+    "confirmCancel": "Are you sure you want to confirm that the contract is canceled unilaterally?",
+    "extend": "Contract extension successful",
+    "verifyWithNotice": "Contract extension successful",
+    "verifyUnilateralCancel": "Unilateral contract cancellation verification successful",
     "filter": {
       "placeholderRoom": "-- Select room --",
       "placeholderTenant": "-- Select tenant --",

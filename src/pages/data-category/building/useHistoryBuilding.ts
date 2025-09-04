@@ -94,10 +94,12 @@ export const useHistoryBuilding = () => {
       await removeBuildingMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "buildings",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "buildings",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "buildings-cancel",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "buildings-cancel",
           });
           queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
 
@@ -121,10 +123,12 @@ export const useHistoryBuilding = () => {
       await restoreBuildingMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "buildings",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "buildings",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "buildings-cancel",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "buildings-cancel",
           });
           queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
 
@@ -138,7 +142,10 @@ export const useHistoryBuilding = () => {
     }
   };
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "restore" | "remove" }>({
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{
+    id: string;
+    type: "restore" | "remove";
+  }>({
     onConfirm: async ({ id, type }) => {
       if (type === "remove") {
         return await handleRemoveBuildingById(id);
@@ -148,16 +155,17 @@ export const useHistoryBuilding = () => {
     },
   });
 
-  const { ConfirmDialog: ConfirmDialogRemoveAll, openDialog: openDialogAll } = useConfirmDialog<BulkRemovePayload>({
-    onConfirm: async ({ ids, type }) => {
-      if (!ids || !Object.values(ids).some(Boolean)) return false;
-      if (type === "remove") {
-        return await handleRemoveBuildingByIds(ids);
-      } else {
-        return await handleRestoreBuildingByIds(ids);
-      }
-    },
-  });
+  const { ConfirmDialog: ConfirmDialogRemoveAll, openDialog: openDialogAll } =
+    useConfirmDialog<BulkRemovePayload>({
+      onConfirm: async ({ ids, type }) => {
+        if (!ids || !Object.values(ids).some(Boolean)) return false;
+        if (type === "remove") {
+          return await handleRemoveBuildingByIds(ids);
+        } else {
+          return await handleRestoreBuildingByIds(ids);
+        }
+      },
+    });
 
   const handleRemoveBuildingByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
@@ -172,7 +180,8 @@ export const useHistoryBuilding = () => {
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "buildings",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "buildings-cancel",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "buildings-cancel",
       });
       queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
 
@@ -198,7 +207,8 @@ export const useHistoryBuilding = () => {
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "buildings",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "buildings-cancel",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "buildings-cancel",
       });
       queryClient.invalidateQueries({ queryKey: ["building-statistics"] });
 
@@ -219,7 +229,7 @@ export const useHistoryBuilding = () => {
           { id: building.id, type: "remove" },
           {
             type: "warn",
-            desc: Notice.REMOVE,
+            desc: t(Notice.REMOVE),
           }
         );
       } else {
@@ -227,12 +237,12 @@ export const useHistoryBuilding = () => {
           { id: building.id, type: "restore" },
           {
             type: "default",
-            desc: Notice.RESTORE,
+            desc: t(Notice.RESTORE),
           }
         );
       }
     },
-    [openDialog]
+    [openDialog, t]
   );
 
   const props = {

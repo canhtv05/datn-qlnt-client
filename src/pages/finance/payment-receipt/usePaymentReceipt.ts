@@ -177,7 +177,7 @@ export const usePaymentReceipt = () => {
       await httpRequest.patch(`/payment-receipts/payment-confirm/${id}`),
     onError: handleMutationError,
     onSuccess: () => {
-      toast.success(Status.UPDATE_SUCCESS);
+      toast.success(t(Status.UPDATE_SUCCESS));
       queryClient.invalidateQueries({
         predicate: (prev) => {
           return Array.isArray(prev.queryKey) && prev.queryKey[0] === "payment-receipts";
