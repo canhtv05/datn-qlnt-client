@@ -1014,6 +1014,7 @@
     }
   },
   "meterReading": {
+    "warning": "Cảnh báo: Vui lòng ghi chỉ số vào những ngày cuối tháng, sang tháng sau sẽ không thể ghi chỉ số tháng trước.",
     "title": "Chỉ số công tơ",
     "titleHistory": "Lịch sử chỉ số công tơ đã xóa",
     "statistic": "Thống kê chỉ số công tơ",

@@ -723,13 +723,13 @@ export const updateMeterReadingSchema = z.object({
 
 export const createMeterReadingSchema = updateMeterReadingSchema.extend({
   meterId: z.string().min(1, t("validation:meterReading.meter.required")),
-  year: zSafeNumber(t("validation:meterReading.year.label"), {
-    min: new Date().getFullYear(),
-  }),
-  month: zSafeNumber(t("validation:meterReading.month.label"), {
-    min: 1,
-    max: 12,
-  }),
+  // year: zSafeNumber(t("validation:meterReading.year.label"), {
+  //   min: new Date().getFullYear(),
+  // }),
+  // month: zSafeNumber(t("validation:meterReading.month.label"), {
+  //   min: 1,
+  //   max: 12,
+  // }),
 });
 
 // invoice

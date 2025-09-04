@@ -1014,6 +1014,7 @@
     }
   },
   "meterReading": {
+    "warning": "Warning: Please record the index at the end of the month, next month it will not be possible to record the previous month's index.",
     "title": "Meter Reading",
     "titleHistory": "Deleted Meter Reading History",
     "statistic": "Meter Reading Statistics",

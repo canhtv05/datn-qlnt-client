@@ -1,12 +1,7 @@
 import FieldsSelectLabel, { FieldsSelectLabelType } from "@/components/FieldsSelectLabel";
 import InputLabel from "@/components/InputLabel";
 import TextareaLabel from "@/components/TextareaLabel";
-import {
-  ApiResponse,
-  MeterFindAllResponse,
-  MeterReadingCreationRequest,
-  MeterReadingUpdateRequest,
-} from "@/types";
+import { ApiResponse, MeterFindAllResponse, MeterReadingCreationRequest, MeterReadingUpdateRequest } from "@/types";
 import { ChangeEvent, Dispatch, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -87,7 +82,7 @@ const AddOrUpdateMeterReading = ({
         onChange={handleChangeMeterReading}
         errorText={errors.newIndex}
       />
-      {type === "add" && (
+      {/* {type === "add" && (
         <div className="grid md:grid-cols-2 grid-cols-1 gap-5 w-full">
           <InputLabel
             id="month"
@@ -115,7 +110,7 @@ const AddOrUpdateMeterReading = ({
             errorText={errors.year}
           />
         </div>
-      )}
+      )} */}
       <TextareaLabel
         id="descriptionMeterReading"
         name="descriptionMeterReading"
@@ -123,12 +118,15 @@ const AddOrUpdateMeterReading = ({
         label={t("meterReading.addOrUpdate.descriptionMeterReading")}
         value={value.descriptionMeterReading ?? ""}
         onChange={(e) => {
-          if (type === "add")
-            setValue((prev) => ({ ...prev, descriptionMeterReading: e.target.value }));
+          if (type === "add") setValue((prev) => ({ ...prev, descriptionMeterReading: e.target.value }));
           else setValue((prev) => ({ ...prev, descriptionMeterReading: e.target.value }));
         }}
         errorText={errors.descriptionMeterReading}
       />
+      <span className="mt-2 text-[12px]">
+        <span className="text-red-500 font-medium">(*) </span>
+        {t("meterReading.warning")}
+      </span>
     </div>
   );
 };
