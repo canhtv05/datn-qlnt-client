@@ -19,13 +19,13 @@ const UserInvoice = () => {
 
   const columnConfigs: ColumnConfig[] = [
     {
-      label: "Mã hóa đơn",
+      label: t("invoice.response.invoiceCode"),
       accessorKey: "invoiceCode",
       isSort: true,
       hasHighlight: true,
     },
     {
-      label: "Thao tác",
+      label: t("invoice.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -51,7 +51,11 @@ const UserInvoice = () => {
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                  <TooltipContent
+                    className="text-white"
+                    style={{ background: btn.arrowColor }}
+                    arrow={false}
+                  >
                     <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
@@ -69,62 +73,62 @@ const UserInvoice = () => {
       },
     },
     {
-      label: "Tòa nhà",
+      label: t("invoice.response.building"),
       accessorKey: "buildingName",
       isSort: true,
     },
     {
-      label: "Phòng",
+      label: t("invoice.response.room"),
       accessorKey: "roomCode",
       isSort: true,
     },
     {
-      label: "Khách thuê",
+      label: t("invoice.response.tenantName"),
       accessorKey: "tenantName",
       isSort: true,
     },
     {
-      label: "Tháng",
+      label: t("invoice.response.month"),
       accessorKey: "month",
       isSort: true,
     },
     {
-      label: "Năm",
+      label: t("invoice.response.year"),
       accessorKey: "year",
       isSort: true,
     },
     {
-      label: "Tổng tiền",
+      label: t("invoice.response.totalAmount"),
       accessorKey: "totalAmount",
       isSort: true,
     },
     {
-      label: "Hạn thanh toán",
+      label: t("invoice.response.paymentDueDate"),
       accessorKey: "paymentDueDate",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Loại hóa đơn",
+      label: t("invoice.response.invoiceType"),
       accessorKey: "invoiceType",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
     {
-      label: "Trạng thái",
+      label: t("invoice.response.invoiceStatus"),
       accessorKey: "invoiceStatus",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
     {
-      label: "Ghi chú",
+      label: t("invoice.response.invoiceStatus"),
       accessorKey: "note",
       isSort: false,
     },
     {
-      label: "Ngày tạo",
+      label: t("invoice.response.createdAt"),
       accessorKey: "createdAt",
       isSort: true,
       hasDate: true,
@@ -134,7 +138,7 @@ const UserInvoice = () => {
   return (
     <div className="flex flex-col">
       <div className="rounded-t-sm bg-background">
-        <h3 className="px-4 py-7 block font-semibold">Hóa đơn của tôi</h3>
+        <h3 className="px-4 py-7 block font-semibold">{t("invoice.title")}</h3>
         <InvoiceFilterForUser props={props} />
       </div>
       <DataTable<InvoiceResponse>

@@ -26,7 +26,7 @@ const UserRoom = () => {
 
   const columnConfigs: ColumnConfig[] = [
     {
-      label: "Mã phòng",
+      label: t("room.response.roomCode"),
       accessorKey: "roomCode",
       isSort: true,
       hasHighlight: true,
@@ -34,7 +34,7 @@ const UserRoom = () => {
       render: (row) => row.roomCode ?? "__EMPTY__",
     },
     {
-      label: "Thao tác",
+      label: t("room.response.actions"),
       accessorKey: "actions",
       isCenter: true,
       render: (row: RoomResponse) => (
@@ -52,7 +52,11 @@ const UserRoom = () => {
                     <btn.icon className="text-white" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                <TooltipContent
+                  className="text-white"
+                  style={{ background: btn.arrowColor }}
+                  arrow={false}
+                >
                   <p>{t(btn.tooltipContent)}</p>
                   <TooltipPrimitive.Arrow
                     style={{
@@ -69,7 +73,7 @@ const UserRoom = () => {
       ),
     },
     {
-      label: "Tên tầng",
+      label: t("room.response.floorName"),
       accessorKey: "nameFloor",
       isSort: true,
       render: (row) => row.floor?.nameFloor ?? "__EMPTY__",
@@ -77,7 +81,7 @@ const UserRoom = () => {
       hasHighlight: true,
     },
     {
-      label: "Tên tòa nhà",
+      label: t("building.response.buildingName"),
       accessorKey: "buildingName",
       isSort: true,
       render: (row) => row.floor?.buildingName ?? "__EMPTY__",
@@ -85,27 +89,27 @@ const UserRoom = () => {
       hasHighlight: true,
     },
     {
-      label: "Loại phòng",
+      label: t("room.response.roomType"),
       accessorKey: "roomType",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
     {
-      label: "Trạng thái",
+      label: t("room.response.status"),
       accessorKey: "status",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
     {
-      label: "Số người tối đa",
+      label: t("room.response.maximumPeople"),
       accessorKey: "maximumPeople",
       isSort: true,
       isCenter: true,
     },
     {
-      label: "Diện tích m³",
+      label: t("room.response.acreage"),
       accessorKey: "acreage",
       isSort: true,
       isCenter: true,
@@ -118,7 +122,7 @@ const UserRoom = () => {
       ),
     },
     {
-      label: "Giá phòng",
+      label: t("room.response.price"),
       accessorKey: "price",
       isSort: true,
     },
@@ -128,7 +132,7 @@ const UserRoom = () => {
     <div className="py-5 bg-background rounded-sm">
       <div className="h-full bg-background rounded-t-sm">
         <div className="flex px-4 py-3 justify-between items-center">
-          <h3 className="font-semibold">Phòng của tôi</h3>
+          <h3 className="font-semibold"> {t("room.title")}</h3>
         </div>
       </div>
       <DataTable<RoomResponse>

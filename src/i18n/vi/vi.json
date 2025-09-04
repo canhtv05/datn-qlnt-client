@@ -670,6 +670,7 @@
     "labelFormat": "Tên: {{name}} - Còn: {{remaining}} - Giá: {{price}}",
     "errorFetch": "Có lỗi xảy ra khi tải tài sản phòng",
     "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê tài sản phòng",
+    "errorNoAssets": "Chưa có tài sản nào trong phòng",
     "onlyOneAsset": "Chỉ được chọn 1 tài sản nếu đã chọn nhiều phòng.",
     "onlyOneRoom": "Chỉ được chọn 1 phòng nếu đã chọn nhiều tài sản.",
     "totalRoomAssets": "Tổng số tài sản phòng",
@@ -1127,6 +1128,8 @@
     "errorFetch": "Có lỗi xảy ra khi tải tiền cọc.",
     "errorFetchStatistics": "Có lỗi xảy ra khi tải thống kê tiền cọc.",
     "successRefund": "Trả cọc khách hàng thành công",
+    "notifyFullDeposit": "Gửi thông báo xác nhận đã nhận đủ cọc tới chủ nhà thành công",
+    "notifyIncompleteDeposit": "Gửi thông báo chưa nhận đủ cọc tới chủ nhà thành công",
     "response": {
       "id": "Mã đặt cọc",
       "contractCode": "Mã hợp đồng",
@@ -1421,5 +1424,18 @@
       "building": "Tòa nhà",
       "buildingPlaceholder": "-- Tòa nhà --"
     }
+  },
+  "roomMembers": {
+    "title": "Thành viên trong phòng",
+    "noMember": "Không có thành viên nào trong phòng",
+    "representative": "Đại diện",
+    "gender": "Giới tính",
+    "dob": "Ngày sinh",
+    "phone": "Số điện thoại",
+    "email": "Email",
+    "status": "Trạng thái",
+    "identityCard": "CCCD/CMT",
+    "noData": "Không có",
+    "loadError": "Không thể tải thành viên trong phòng. Vui lòng thử lại sau."
   }
 }

@@ -5,11 +5,13 @@ import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useDeposit = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { t } = useTranslation();
   const {
     page = "1",
     size = "15",
@@ -79,7 +81,10 @@ export const useDeposit = () => {
     mutationFn: async (id: string) => await httpRequest.post(`/deposits/not-received/${id}`),
   });
 
-  const { ConfirmDialog, openDialog } = useConfirmDialog<{ id: string; type: "deposit2" | "deposit3" }>({
+  const { ConfirmDialog, openDialog } = useConfirmDialog<{
+    id: string;
+    type: "deposit2" | "deposit3";
+  }>({
     onConfirm: async ({ id, type }) => {
       if (type === "deposit2") return await handleConfirmDepositById(id);
       else handleNotReceivedDepositById(id);
@@ -92,10 +97,11 @@ export const useDeposit = () => {
       await confirmReceiptDepositMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "my-deposits",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "my-deposits",
           });
           // queryClient.invalidateQueries({ queryKey: ["meter-statistics"] });
-          toast.success("Gửi thông báo xác nhận đã nhận đủ cọc tới chủ nhà thành công");
+          toast.success(t("deposit.notifyFullDeposit"));
         },
       });
       return true;
@@ -110,10 +116,11 @@ export const useDeposit = () => {
       await notReceiptDepositMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "my-deposits",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "my-deposits",
           });
           // queryClient.invalidateQueries({ queryKey: ["meter-statistics"] });
-          toast.success("Gửi thông báo chưa nhận đủ cọc tới chủ nhà thành công");
+          toast.success(t("deposit.notifyIncompleteDeposit"));
         },
       });
       return true;
@@ -145,9 +152,9 @@ export const useDeposit = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải tiền cọc");
+      toast.error(t("deposit.errorFetch"));
     }
-  }, [isError]);
+  }, [isError, t]);
 
   return {
     query: {

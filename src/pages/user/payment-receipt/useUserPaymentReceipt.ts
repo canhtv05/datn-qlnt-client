@@ -1,12 +1,19 @@
-import { ApiResponse, PaginatedResponse, PaymentReceiptFilter, PaymentReceiptResponse } from "@/types";
+import {
+  ApiResponse,
+  PaginatedResponse,
+  PaymentReceiptFilter,
+  PaymentReceiptResponse,
+} from "@/types";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useUserPaymentReceipt = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
@@ -91,7 +98,9 @@ export const useUserPaymentReceipt = () => {
     setSearchParams,
   ]);
 
-  const { data, isLoading, isError } = useQuery<ApiResponse<PaginatedResponse<PaymentReceiptResponse[]>>>({
+  const { data, isLoading, isError } = useQuery<
+    ApiResponse<PaginatedResponse<PaymentReceiptResponse[]>>
+  >({
     queryKey: [
       "payment-receipts",
       page,
@@ -135,9 +144,9 @@ export const useUserPaymentReceipt = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải phiếu thanh toán");
+      toast.error(t("paymentReceipt.errorFetch"));
     }
-  }, [isError]);
+  }, [isError, t]);
 
   return {
     query: {

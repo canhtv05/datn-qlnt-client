@@ -12,15 +12,18 @@ import { BedSingle, Building, House, User2, Grid2x2, DollarSign, Tag } from "luc
 import { useSidebar } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import StatusBadge from "@/components/ui/StatusBadge";
+import { useTranslation } from "react-i18next";
 
 const styleGridItemWithSidebar = (open: boolean, length: number | undefined) => {
   if (!length) return "grid-cols-1";
-  return open ? "grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1" : "grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1";
+  return open
+    ? "grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1"
+    : "grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1";
 };
 
 const SelectRoom = () => {
   const { open } = useSidebar();
-
+  const { t } = useTranslation();
   const { data, isError, isLoading } = useQuery<ApiResponse<RoomResponse[]>>({
     queryKey: ["room-by-tenant"],
     queryFn: async () => {
@@ -30,7 +33,7 @@ const SelectRoom = () => {
     retry: 1,
   });
 
-  if (isError) toast.error("Không lấy được dữ liệu phòng");
+  if (isError) toast.error(t("room.errorFetch"));
 
   return (
     <div
@@ -70,7 +73,9 @@ const SelectRoom = () => {
               {/* Logo nổi bật ở giữa */}
               <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
                 <BedSingle
-                  className={`w-6 h-6 ${d.status === RoomStatus.DANG_THUE ? "text-green-600" : "text-yellow-500"}`}
+                  className={`w-6 h-6 ${
+                    d.status === RoomStatus.DANG_THUE ? "text-green-600" : "text-yellow-500"
+                  }`}
                 />
               </div>
             </CardHeader>
@@ -79,22 +84,26 @@ const SelectRoom = () => {
               <div className="flex flex-col gap-2 text-foreground text-sm">
                 <span className="flex items-center gap-2 font-bold">
                   <BedSingle className="w-4 h-4 stroke-2" />
-                  Mã phòng: <span className="ml-1 font-normal">{d.roomCode}</span>
+                  {t("room.response.roomCode")}:{" "}
+                  <span className="ml-1 font-normal">{d.roomCode}</span>
                 </span>
 
                 <span className="flex items-center gap-2 font-bold">
                   <Building className="w-4 h-4 stroke-2" />
-                  Tòa nhà: <span className="ml-1 font-normal">{d.floor?.buildingName ?? "-"}</span>
+                  {t("building.response.buildingName")}:{" "}
+                  <span className="ml-1 font-normal">{d.floor?.buildingName ?? "-"}</span>
                 </span>
 
                 <span className="flex items-center gap-2 font-bold">
                   <House className="w-4 h-4 stroke-2" />
-                  Tầng: <span className="ml-1 font-normal">{d.floor?.nameFloor ?? "-"}</span>
+                  {t("room.response.floorName")}:{" "}
+                  <span className="ml-1 font-normal">{d.floor?.nameFloor ?? "-"}</span>
                 </span>
 
                 <span className="flex items-center gap-2 font-bold">
                   <User2 className="w-4 h-4 stroke-2" />
-                  Số người tối đa: <span className="ml-1 font-normal">{d.maximumPeople ?? "-"}</span>
+                  {t("room.response.maximumPeople")}:{" "}
+                  <span className="ml-1 font-normal">{d.maximumPeople ?? "-"}</span>
                 </span>
 
                 <span className="flex items-center gap-2 font-bold">
@@ -104,19 +113,24 @@ const SelectRoom = () => {
 
                 <span className="flex items-center gap-2 font-bold">
                   <DollarSign className="w-4 h-4 stroke-2" />
-                  Giá phòng: <span className="ml-1 font-normal">{formattedCurrency(d.price ?? 0)}</span>
+                  {t("room.response.price")}:{" "}
+                  <span className="ml-1 font-normal">{formattedCurrency(d.price ?? 0)}</span>
                 </span>
 
                 <span className="flex items-center gap-2 font-bold">
                   <Tag className="w-4 h-4 stroke-2" />
-                  Loại phòng:{" "}
-                  <span className="ml-1 font-normal">{d.roomType ? <StatusBadge status={d.roomType} /> : "-"}</span>
+                  {t("room.response.roomType")}:{" "}
+                  <span className="ml-1 font-normal">
+                    {d.roomType ? <StatusBadge status={d.roomType} /> : "-"}
+                  </span>
                 </span>
 
                 <span className="flex items-center gap-2 font-bold">
                   <Tag className="w-4 h-4 stroke-2" />
-                  Trạng thái:{" "}
-                  <span className="ml-1 font-normal">{d.status ? <StatusBadge status={d.status} /> : "-"}</span>
+                  {t("room.response.status")}:{" "}
+                  <span className="ml-1 font-normal">
+                    {d.status ? <StatusBadge status={d.status} /> : "-"}
+                  </span>
                 </span>
               </div>
             </CardContent>

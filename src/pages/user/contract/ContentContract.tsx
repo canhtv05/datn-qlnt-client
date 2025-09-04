@@ -12,8 +12,10 @@ import { saveAs } from "file-saver";
 import { asBlob } from "html-docx-js-typescript";
 import { useCallback } from "react";
 import "ckeditor5/ckeditor5.css";
+import { useTranslation } from "react-i18next";
 
 const ContentContract = () => {
+  const { t } = useTranslation();
   const { contractId } = useParams();
   const { data, isLoading } = useQuery<ContractDetailResponse>({
     queryKey: ["contract-detail", contractId],
@@ -69,13 +71,17 @@ const ContentContract = () => {
       </RenderIf>
       <RenderIf value={!isLoading}>
         <div className="flex justify-end items-center pb-2 gap-2">
-          <Tooltip content="Tải Pdf">
+          <Tooltip content={t("contract.pdf")}>
             <Button size={"icon"} className="text-white cursor-pointer" onClick={handleDownloadPdf}>
               <Download />
             </Button>
           </Tooltip>
-          <Tooltip content="Tải Docx">
-            <Button size={"icon"} className="text-white cursor-pointer" onClick={handleDownloadDocx}>
+          <Tooltip content={t("contract.docx")}>
+            <Button
+              size={"icon"}
+              className="text-white cursor-pointer"
+              onClick={handleDownloadDocx}
+            >
               <File />
             </Button>
           </Tooltip>
@@ -85,7 +91,9 @@ const ContentContract = () => {
             ref={printRef}
             className="[&_.ck]:!border-none [&_.ck]:!shadow-none rounded-sm shadow-lg px-5 bg-white"
             dangerouslySetInnerHTML={{
-              __html: content.replace(/\\"/g, '"').replace(/contenteditable="true"/gi, 'contenteditable="false"'),
+              __html: content
+                .replace(/\\"/g, '"')
+                .replace(/contenteditable="true"/gi, 'contenteditable="false"'),
             }}
           ></div>
         </div>

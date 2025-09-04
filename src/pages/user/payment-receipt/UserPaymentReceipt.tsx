@@ -19,19 +19,19 @@ const UserPaymentReceipt = () => {
 
   const columnConfigs: ColumnConfig[] = [
     {
-      label: "Mã biên nhận",
+      label: t("paymentReceipt.response.receiptCode"),
       accessorKey: "receiptCode",
       isSort: true,
       hasHighlight: true,
     },
     {
-      label: "Mã hóa đơn",
+      label: t("paymentReceipt.response.invoiceCode"),
       accessorKey: "invoiceCode",
       isSort: true,
       hasHighlight: true,
     },
     {
-      label: "Thao tác",
+      label: t("paymentReceipt.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -48,13 +48,20 @@ const UserPaymentReceipt = () => {
                       className="cursor-pointer"
                       onClick={() => {
                         navigate(`/invoices/view/${row.invoiceId}`, { replace: true });
-                        cookieUtil.setStorage({ paymentReceiptId: row.id, statusInvoice: row.paymentStatus });
+                        cookieUtil.setStorage({
+                          paymentReceiptId: row.id,
+                          statusInvoice: row.paymentStatus,
+                        });
                       }}
                     >
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                  <TooltipContent
+                    className="text-white"
+                    style={{ background: btn.arrowColor }}
+                    arrow={false}
+                  >
                     <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
@@ -72,48 +79,48 @@ const UserPaymentReceipt = () => {
       },
     },
     {
-      label: "Số tiền",
+      label: t("paymentReceipt.response.amount"),
       accessorKey: "amount",
       isSort: true,
     },
     {
-      label: "Phương thức thanh toán",
+      label: t("paymentReceipt.response.paymentMethod"),
       accessorKey: "paymentMethod",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
     {
-      label: "Trạng thái thanh toán",
+      label: t("paymentReceipt.response.paymentStatus"),
       accessorKey: "paymentStatus",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
     {
-      label: "Người thu",
+      label: t("paymentReceipt.response.collectedBy"),
       accessorKey: "collectedBy",
       isSort: true,
     },
     {
-      label: "Ngày thanh toán",
+      label: t("paymentReceipt.response.paymentDate"),
       accessorKey: "paymentDate",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ghi chú",
+      label: t("paymentReceipt.response.note"),
       accessorKey: "note",
       isSort: false,
     },
     {
-      label: "Ngày tạo",
+      label: t("paymentReceipt.response.createdAt"),
       accessorKey: "createdAt",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ngày cập nhật",
+      label: t("paymentReceipt.response.updatedAt"),
       accessorKey: "updatedAt",
       isSort: true,
       hasDate: true,
@@ -125,7 +132,7 @@ const UserPaymentReceipt = () => {
       isHidden: true,
     },
     {
-      label: "Invoice ID",
+      label: t("paymentReceipt.response.invoiceId"),
       accessorKey: "invoiceId",
       isHidden: true,
     },
@@ -134,7 +141,7 @@ const UserPaymentReceipt = () => {
   return (
     <div className="flex flex-col">
       <div className="rounded-t-sm bg-background">
-        <h3 className="px-4 py-7 block font-semibold">Phiếu thanh toán của tôi</h3>
+        <h3 className="px-4 py-7 block font-semibold">{t("paymentReceipt.title")}</h3>
         <PaymentReceiptFilter props={props} />
       </div>
       <DataTable<PaymentReceiptResponse>

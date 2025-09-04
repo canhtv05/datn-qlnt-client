@@ -670,6 +670,7 @@
     "labelFormat": "Name: {{name}} - Remaining: {{remaining}} - Price: {{price}}",
     "errorFetch": "An error occurred while fetching room assets",
     "errorFetchStatistics": "An error occurred while fetching room asset statistics",
+    "errorNoAssets": "There are no assets in the room yet.",
     "onlyOneAsset": "Only one asset can be selected if multiple rooms are chosen.",
     "onlyOneRoom": "Only one room can be selected if multiple assets are chosen.",
     "totalRoomAssets": "Total Room Assets",
@@ -1127,6 +1128,8 @@
     "errorFetch": "An error occurred while fetching deposits.",
     "errorFetchStatistics": "An error occurred while fetching deposit statistics.",
     "successRefund": "Customer deposit refunded successfully",
+    "notifyFullDeposit": "Notification of full deposit receipt to landlord sent successfully",
+    "notifyIncompleteDeposit": "Notification of incomplete deposit to landlord sent successfully",
     "response": {
       "id": "Deposit ID",
       "contractCode": "Contract code",
@@ -1421,5 +1424,18 @@
       "building": "Building",
       "buildingPlaceholder": "-- Building --"
     }
+  },
+  "roomMembers": {
+    "title": "Room Members",
+    "noMember": "No members in this room",
+    "representative": "Representative",
+    "gender": "Gender",
+    "dob": "Date of Birth",
+    "phone": "Phone",
+    "email": "Email",
+    "status": "Status",
+    "identityCard": "Identity Card",
+    "noData": "Not available",
+    "loadError": "Unable to load room members. Please try again later."
   }
 }

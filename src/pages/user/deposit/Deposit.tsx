@@ -28,20 +28,28 @@ const btns: IBtnType[] = [
 ];
 
 const Deposit = () => {
-  const { props, data, isLoading, query, handleActionClick, rowSelection, setRowSelection, ConfirmDialog } =
-    useDeposit();
+  const {
+    props,
+    data,
+    isLoading,
+    query,
+    handleActionClick,
+    rowSelection,
+    setRowSelection,
+    ConfirmDialog,
+  } = useDeposit();
   const { page, size } = query;
   const { t } = useTranslation();
 
   const columnConfigs: ColumnConfig[] = [
     {
-      label: "Mã hợp đồng",
+      label: t("deposit.response.contractCode"),
       accessorKey: "contractCode",
       isSort: true,
       hasHighlight: true,
     },
     {
-      label: "Thao tác",
+      label: t("deposit.response.actions"),
       accessorKey: "actions",
       isSort: false,
       isCenter: true,
@@ -64,7 +72,11 @@ const Deposit = () => {
                       <btn.icon className="text-white" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
+                  <TooltipContent
+                    className="text-white"
+                    style={{ background: btn.arrowColor }}
+                    arrow={false}
+                  >
                     <p>{t(btn.tooltipContent)}</p>
                     <TooltipPrimitive.Arrow
                       style={{
@@ -82,66 +94,66 @@ const Deposit = () => {
       },
     },
     {
-      label: "Mã phòng",
+      label: t("deposit.response.roomCode"),
       accessorKey: "roomCode",
       isSort: true,
     },
     {
-      label: "Người đặt cọc",
+      label: t("deposit.response.depositor"),
       accessorKey: "depositor",
       isSort: true,
       isCenter: true,
     },
     {
-      label: "Người nhận cọc",
+      label: t("deposit.response.depositRecipient"),
       accessorKey: "depositRecipient",
       isSort: true,
       isCenter: true,
     },
     {
-      label: "Số tiền cọc",
+      label: t("deposit.response.depositAmount"),
       accessorKey: "depositAmount",
       isSort: true,
       isCenter: true,
     },
     {
-      label: "Trạng thái cọc",
+      label: t("deposit.response.depositStatus"),
       accessorKey: "depositStatus",
       isSort: true,
       hasBadge: true,
       isCenter: true,
     },
     {
-      label: "Ngày đặt cọc",
+      label: t("deposit.response.depositDate"),
       accessorKey: "depositDate",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ngày hoàn trả",
+      label: t("deposit.response.depositRefundDate"),
       accessorKey: "depositRefundDate",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ngày trả lại tiền đặt cọc",
+      label: t("deposit.response.securityDepositReturnDate"),
       accessorKey: "securityDepositReturnDate",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ghi chú",
+      label: t("deposit.response.securityDepositReturnDate"),
       accessorKey: "note",
       isSort: false,
     },
     {
-      label: "Ngày tạo",
+      label: t("deposit.response.createdAt"),
       accessorKey: "createdAt",
       isSort: true,
       hasDate: true,
     },
     {
-      label: "Ngày cập nhật",
+      label: t("deposit.response.updatedAt"),
       accessorKey: "updatedAt",
       isSort: true,
       hasDate: true,
@@ -153,7 +165,7 @@ const Deposit = () => {
       isHidden: true,
     },
     {
-      label: "contractId",
+      label: t("deposit.response.contractId"),
       accessorKey: "contractId",
       isHidden: true,
     },

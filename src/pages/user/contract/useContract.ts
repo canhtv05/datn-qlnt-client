@@ -7,21 +7,27 @@ import { ApiResponse, ContractResponse, ContractFilterValues } from "@/types";
 import { VehicleType } from "@/enums";
 import { queryFilter } from "@/utils/queryFilter";
 import { httpRequest } from "@/utils/httpRequest";
+import { useTranslation } from "react-i18next";
+import { TFunction } from "i18next";
 
-export const switchVehicleType = (vehicleType: VehicleType | string) => {
+export const switchVehicleType = (
+  vehicleType: VehicleType | string,
+  t: TFunction<"translate", undefined>
+) => {
   switch (vehicleType) {
     case VehicleType.O_TO:
-      return "Ô tô";
+      return t("statusBadge.vehicleType.car");
     case VehicleType.XE_DAP:
-      return "Xe đạp";
+      return t("statusBadge.vehicleType.bicycle");
     case VehicleType.XE_MAY:
-      return "Xe máy";
+      return t("statusBadge.vehicleType.motorbike");
     default:
-      return "Khác";
+      return t("statusBadge.vehicleType.other");
   }
 };
 
 export const useContract = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -69,8 +75,8 @@ export const useContract = () => {
     retry: 1,
   });
   useEffect(() => {
-    if (isError) toast.error("Lỗi khi tải danh sách hợp đồng");
-  }, [isError]);
+    if (isError) toast.error(t("contract.errorFetch"));
+  }, [isError, t]);
 
   const handleActionClick = useCallback(
     (contract: ContractResponse) => {

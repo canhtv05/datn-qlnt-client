@@ -8,6 +8,7 @@ import { httpRequest } from "@/utils/httpRequest";
 import { ApiResponse, AssetRoomDetailResponse, AssetLittleResponse } from "@/types";
 import { Tag, DollarSign, FileText } from "lucide-react";
 import { assetStatusToString, formattedCurrency } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const NA = "N/A";
 
@@ -23,7 +24,7 @@ const statusColorMap: Record<string, string> = {
 
 const RoomAssets = () => {
   const { id } = useParams<{ id: string }>();
-
+  const { t } = useTranslation();
   const { data, isError, isLoading } = useQuery<ApiResponse<AssetRoomDetailResponse>>({
     queryKey: ["room-assets-detail", id],
     queryFn: async () => {
@@ -36,16 +37,18 @@ const RoomAssets = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Không thể tải tài sản trong phòng. Vui lòng thử lại sau.");
+      toast.error(t("roomAsset.errorFetch"));
     }
-  }, [isError]);
+  }, [isError, t]);
 
   const room = data?.data;
 
   return (
     <div className="bg-background rounded-md w-full p-4 flex flex-col gap-4">
       <div className="flex justify-between items-center mb-3">
-        <h3 className="font-semibold text-lg">Tài sản phòng: {room?.roomCode || NA}</h3>
+        <h3 className="font-semibold text-lg">
+          {t("roomAsset.title")}: {room?.roomCode || NA}
+        </h3>
       </div>
 
       {isLoading ? (
@@ -55,7 +58,7 @@ const RoomAssets = () => {
           ))}
         </div>
       ) : !room?.assets || room.assets.length === 0 ? (
-        <div className="text-center py-10 text-gray-500">Chưa có tài sản nào trong phòng</div>
+        <div className="text-center py-10 text-gray-500"> {t("roomAsset.errorNoAssets")}</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {room.assets.map((asset: AssetLittleResponse) => (
@@ -63,7 +66,9 @@ const RoomAssets = () => {
               key={asset.id}
               className="p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-shadow flex flex-col gap-3"
             >
-              <h4 className="font-bold text-lg text-gray-900 dark:text-gray-100">{asset.assetName || NA}</h4>
+              <h4 className="font-bold text-lg text-gray-900 dark:text-gray-100">
+                {asset.assetName || NA}
+              </h4>
 
               <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300">
                 <Tag className="w-4 h-4" />
@@ -78,7 +83,8 @@ const RoomAssets = () => {
               </div>
 
               <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300">
-                Số lượng: <span className="font-medium">{asset.quantity || 1}</span>
+                {t("roomAsset.addOrUpdate.quantity")}{" "}
+                <span className="font-medium">{asset.quantity || 1}</span>
               </div>
 
               <span

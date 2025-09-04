@@ -132,7 +132,7 @@ export default function CccdUpload({
       setBackUrl(null);
       setBackResult(null);
     }
-  }, [backImage, callOcrApi]);
+  }, [backImage]);
 
   useEffect(() => {
     if (Array.isArray(frontResult) && frontResult.length > 0) {

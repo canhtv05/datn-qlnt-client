@@ -4,10 +4,12 @@ import { queryFilter } from "@/utils/queryFilter";
 import { useQuery } from "@tanstack/react-query";
 import { isNumber } from "lodash";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useUserInvoice = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
@@ -74,8 +76,10 @@ export const useUserInvoice = () => {
     if (filterValues.floor) params.set("floor", filterValues.floor);
     if (filterValues.invoiceStatus) params.set("invoiceStatus", filterValues.invoiceStatus);
     if (filterValues.invoiceType) params.set("invoiceType", filterValues.invoiceType);
-    if (filterValues.maxTotalAmount) params.set("maxTotalAmount", filterValues.maxTotalAmount.toString());
-    if (filterValues.minTotalAmount) params.set("minTotalAmount", filterValues.minTotalAmount.toString());
+    if (filterValues.maxTotalAmount)
+      params.set("maxTotalAmount", filterValues.maxTotalAmount.toString());
+    if (filterValues.minTotalAmount)
+      params.set("minTotalAmount", filterValues.minTotalAmount.toString());
     if (filterValues.month) params.set("month", filterValues.month.toString());
     if (filterValues.year) params.set("year", filterValues.year.toString());
     if (filterValues.query) params.set("query", filterValues.query);
@@ -156,9 +160,9 @@ export const useUserInvoice = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải hóa đơn");
+      toast.error(t("invoice.errorFetch"));
     }
-  }, [isError]);
+  }, [isError, t]);
 
   return {
     query: {
