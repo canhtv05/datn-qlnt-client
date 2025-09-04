@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect, Dispatch } from "react";
+import { useState, useEffect, Dispatch, useCallback } from "react";
 import Dropzone from "react-dropzone";
 import { XCircleIcon, ImageIcon } from "lucide-react";
 import { cn, parseDateLocal } from "@/lib/utils";
@@ -72,28 +72,31 @@ export default function CccdUpload({
 
   const { t } = useTranslation();
 
-  const callOcrApi = async (file: File, side: "front" | "back") => {
-    try {
-      if (side === "front") setLoadingFront(true);
-      if (side === "back") setLoadingBack(true);
+  const callOcrApi = useCallback(
+    async (file: File, side: "front" | "back") => {
+      try {
+        if (side === "front") setLoadingFront(true);
+        if (side === "back") setLoadingBack(true);
 
-      const formData = new FormData();
-      formData.append("image", file);
+        const formData = new FormData();
+        formData.append("image", file);
 
-      const res = await axios.post(API_URL, formData, {
-        headers: { "api-key": API_KEY, "Content-Type": "multipart/form-data" },
-      });
+        const res = await axios.post(API_URL, formData, {
+          headers: { "api-key": API_KEY, "Content-Type": "multipart/form-data" },
+        });
 
-      if (side === "front") setFrontResult(res.data.data);
-      if (side === "back") setBackResult(res.data.data);
-    } catch (err) {
-      if (axios.isAxiosError(err)) toast.error(OCR_ERROR_MAP[err?.response?.data?.errorCode] || Status.ERROR);
-      else toast.error(Status.ERROR);
-    } finally {
-      if (side === "front") setLoadingFront(false);
-      if (side === "back") setLoadingBack(false);
-    }
-  };
+        if (side === "front") setFrontResult(res.data.data);
+        if (side === "back") setBackResult(res.data.data);
+      } catch (err) {
+        if (axios.isAxiosError(err)) toast.error(OCR_ERROR_MAP[err?.response?.data?.errorCode] || t(Status.ERROR));
+        else toast.error(t(Status.ERROR));
+      } finally {
+        if (side === "front") setLoadingFront(false);
+        if (side === "back") setLoadingBack(false);
+      }
+    },
+    [t]
+  );
 
   useEffect(() => {
     if (frontImage instanceof File) {
@@ -106,7 +109,7 @@ export default function CccdUpload({
       setFrontUrl(null);
       setFrontResult(null);
     }
-  }, [frontImage]);
+  }, [callOcrApi, frontImage]);
 
   useEffect(() => {
     if (backImage instanceof File) {
@@ -119,7 +122,7 @@ export default function CccdUpload({
       setBackUrl(null);
       setBackResult(null);
     }
-  }, [backImage]);
+  }, [backImage, callOcrApi]);
 
   useEffect(() => {
     if (Array.isArray(frontResult) && frontResult.length > 0) {

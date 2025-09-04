@@ -1,16 +1,24 @@
 import { Notice, Status } from "@/enums";
 import { useConfirmDialog, useFormErrors } from "@/hooks";
 import { createOrUpdateAssetTypeSchema } from "@/lib/validation";
-import { ApiResponse, AssetTypeFilterValues, AssetTypeResponse, IUpdateAssetType, PaginatedResponse } from "@/types";
+import {
+  ApiResponse,
+  AssetTypeFilterValues,
+  AssetTypeResponse,
+  IUpdateAssetType,
+  PaginatedResponse,
+} from "@/types";
 import { handleMutationError } from "@/utils/handleMutationError";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useAssetType = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     page = "1",
@@ -62,7 +70,9 @@ export const useAssetType = () => {
     }
   }, [filterValues.assetGroup, filterValues.nameAssetType, setSearchParams]);
 
-  const { data, isLoading, isError } = useQuery<ApiResponse<PaginatedResponse<AssetTypeResponse[]>>>({
+  const { data, isLoading, isError } = useQuery<
+    ApiResponse<PaginatedResponse<AssetTypeResponse[]>>
+  >({
     queryKey: ["asset-types", page, size, assetGroup, nameAssetType],
     queryFn: async () => {
       const params: Record<string, string> = {
@@ -93,7 +103,8 @@ export const useAssetType = () => {
 
   const updateAssetTypeMutation = useMutation({
     mutationKey: ["update-asset-type"],
-    mutationFn: async (payload: IUpdateAssetType) => await httpRequest.put(`/asset-types/${idRef.current}`, payload),
+    mutationFn: async (payload: IUpdateAssetType) =>
+      await httpRequest.put(`/asset-types/${idRef.current}`, payload),
     onError: (error) => {
       handleMutationError(error);
     },
@@ -116,7 +127,8 @@ export const useAssetType = () => {
       await removeAssetTypeMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-types",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "asset-types",
           });
           toast.success(Status.REMOVE_SUCCESS);
         },
@@ -148,9 +160,10 @@ export const useAssetType = () => {
             nameAssetType: "",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "asset-types",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "asset-types",
           });
-          toast.success(Status.UPDATE_SUCCESS);
+          toast.success(t(Status.UPDATE_SUCCESS));
           setIsModalOpen(false);
         },
       });
@@ -160,7 +173,7 @@ export const useAssetType = () => {
       handleZodErrors(error);
       return false;
     }
-  }, [updateAssetTypeMutation, clearErrors, handleZodErrors, queryClient, value]);
+  }, [value, updateAssetTypeMutation, clearErrors, queryClient, t, handleZodErrors]);
 
   const handleActionClick = useCallback(
     (assetTypes: AssetTypeResponse, action: "update") => {
@@ -177,12 +190,12 @@ export const useAssetType = () => {
           { id: assetTypes.id, type: action },
           {
             type: "warn",
-            desc: Notice.REMOVE,
+            desc: t(Notice.REMOVE),
           }
         );
       }
     },
-    [openDialog]
+    [openDialog, t]
   );
 
   const props = {

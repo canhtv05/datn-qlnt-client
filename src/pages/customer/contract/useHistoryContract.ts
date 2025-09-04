@@ -83,10 +83,12 @@ export const useHistoryContract = () => {
       await removeContractMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "contracts",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts-cancel",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "contracts-cancel",
           });
           queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
 
@@ -110,10 +112,12 @@ export const useHistoryContract = () => {
       await restoreContractMutation.mutateAsync(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "contracts",
           });
           queryClient.invalidateQueries({
-            predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts-cancel",
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey[0] === "contracts-cancel",
           });
           queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
 
@@ -140,16 +144,17 @@ export const useHistoryContract = () => {
     },
   });
 
-  const { ConfirmDialog: ConfirmDialogRemoveAll, openDialog: openDialogAll } = useConfirmDialog<BulkRemovePayload>({
-    onConfirm: async ({ ids, type }) => {
-      if (!ids || !Object.values(ids).some(Boolean)) return false;
-      if (type === "remove") {
-        return await handleRemoveContractByIds(ids);
-      } else {
-        return await handleRestoreContractByIds(ids);
-      }
-    },
-  });
+  const { ConfirmDialog: ConfirmDialogRemoveAll, openDialog: openDialogAll } =
+    useConfirmDialog<BulkRemovePayload>({
+      onConfirm: async ({ ids, type }) => {
+        if (!ids || !Object.values(ids).some(Boolean)) return false;
+        if (type === "remove") {
+          return await handleRemoveContractByIds(ids);
+        } else {
+          return await handleRestoreContractByIds(ids);
+        }
+      },
+    });
 
   const handleRemoveContractByIds = async (ids: Record<string, boolean>): Promise<boolean> => {
     try {
@@ -164,7 +169,8 @@ export const useHistoryContract = () => {
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts-cancel",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "contracts-cancel",
       });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
 
@@ -190,7 +196,8 @@ export const useHistoryContract = () => {
         predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts",
       });
       queryClient.invalidateQueries({
-        predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === "contracts-cancel",
+        predicate: (query) =>
+          Array.isArray(query.queryKey) && query.queryKey[0] === "contracts-cancel",
       });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
 
@@ -211,7 +218,7 @@ export const useHistoryContract = () => {
           { id: contract.id, type: "remove" },
           {
             type: "warn",
-            desc: Notice.REMOVE,
+            desc: t(Notice.REMOVE),
           }
         );
       } else {
@@ -219,12 +226,12 @@ export const useHistoryContract = () => {
           { id: contract.id, type: "restore" },
           {
             type: "default",
-            desc: Notice.RESTORE,
+            desc: t(Notice.RESTORE),
           }
         );
       }
     },
-    [openDialog]
+    [openDialog, t]
   );
 
   const props = {

@@ -68,7 +68,7 @@ const ContractDetailPage = () => {
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
       queryClient.invalidateQueries({ queryKey: ["contract-detail"] });
-      toast.success("Gia hạn hợp đồng thành công");
+      toast.success(t("contract.extend"));
     },
     onError: handleMutationError,
   });
@@ -100,7 +100,7 @@ const ContractDetailPage = () => {
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
       queryClient.invalidateQueries({ queryKey: ["contract-detail"] });
-      toast.success("Xác thực hợp đồng có báo trước thành công");
+      toast.success(t("contract.verifyWithNotice"));
     },
     onError: handleMutationError,
   });
@@ -130,7 +130,7 @@ const ContractDetailPage = () => {
       queryClient.invalidateQueries({ queryKey: ["contracts"] });
       queryClient.invalidateQueries({ queryKey: ["contracts-statistics"] });
       queryClient.invalidateQueries({ queryKey: ["contract-detail"] });
-      toast.success("Xác thực hợp đồng tự ý hủy bỏ thành công");
+      toast.success(t("contract.verifyUnilateralCancel"));
     },
     onError: handleMutationError,
   });
@@ -171,11 +171,11 @@ const ContractDetailPage = () => {
         openDialog({ type });
         return await true;
       } else {
-        openDialog({ type }, { desc: "Bạn có chắc chắn muốn xác nhận rằng hợp đồng tự ý hủy bỏ không?" });
+        openDialog({ type }, { desc: t("contract.confirmCancel.desc") });
         return await true;
       }
     },
-    [data, openDialog]
+    [data, openDialog, t]
   );
 
   return (
