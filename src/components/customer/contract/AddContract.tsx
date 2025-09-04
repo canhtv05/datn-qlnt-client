@@ -10,17 +10,12 @@ import Editor from "@/components/Editor";
 import DescriptionValueForContract from "./DescriptionValueForContract";
 import { Button } from "@/components/ui/button";
 import { contract_template } from "./contract_example";
-import {
-  useContractMutation,
-  useRoomOptions,
-  useTenantOptions,
-  useVehicleOptions,
-} from "@/services/contract";
+import { useContractMutation, useRoomOptions, useTenantOptions, useVehicleOptions } from "@/services/contract";
 import { createContractSchema } from "@/lib/validation";
 import { Switch } from "@/components/ui/switch";
 import DateRangePicker from "@/components/DateRangePicker";
 import { DateRange } from "react-day-picker";
-import { parseISO } from "date-fns";
+import { format, parse } from "date-fns";
 import { useTranslation } from "react-i18next";
 
 const AddContract = () => {
@@ -42,12 +37,9 @@ const AddContract = () => {
 
   const { clearErrors, errors, handleZodErrors } = useFormErrors<ICreateContract>();
 
-  const handleChange = useCallback(
-    <K extends keyof ICreateContract>(field: K, newValue: ICreateContract[K]) => {
-      setValue((prev) => ({ ...prev, [field]: newValue }));
-    },
-    []
-  );
+  const handleChange = useCallback(<K extends keyof ICreateContract>(field: K, newValue: ICreateContract[K]) => {
+    setValue((prev) => ({ ...prev, [field]: newValue }));
+  }, []);
 
   const handleNumberChange = (e: ChangeEvent<HTMLInputElement>, key: "deposit") => {
     const parsed = Number(e.target.value.trim());
@@ -83,17 +75,17 @@ const AddContract = () => {
   const dateRange = useCallback((): DateRange | undefined => {
     return value.startDate || value.endDate
       ? {
-          from: value.startDate ? parseISO(value.startDate) : undefined,
-          to: value.endDate ? parseISO(value.endDate) : undefined,
+          from: value.startDate ? parse(value.startDate, "yyyy-MM-dd", new Date()) : undefined,
+          to: value.endDate ? parse(value.endDate, "yyyy-MM-dd", new Date()) : undefined,
         }
       : undefined;
-  }, [value.endDate, value.startDate]);
+  }, [value.startDate, value.endDate]);
 
   const handleChangeDate = (range: DateRange | undefined) => {
     setValue((prev) => ({
       ...prev,
-      startDate: range?.from ? range.from.toISOString() : "",
-      endDate: range?.to ? range.to.toISOString() : "",
+      startDate: range?.from ? format(range.from, "yyyy-MM-dd") : "",
+      endDate: range?.to ? format(range.to, "yyyy-MM-dd") : "",
     }));
   };
 
@@ -188,9 +180,7 @@ const AddContract = () => {
               label={t("contract.addOrUpdate.vehicles")}
               id="vehicles"
               name="vehicles"
-              value={toSelectType(vehicleOptions).filter((opt) =>
-                value.vehicles.includes(String(opt.value))
-              )}
+              value={toSelectType(vehicleOptions).filter((opt) => value.vehicles.includes(String(opt.value)))}
               onChange={(selected) =>
                 handleChange(
                   "vehicles",

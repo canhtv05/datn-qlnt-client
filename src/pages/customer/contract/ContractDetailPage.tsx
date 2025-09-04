@@ -244,14 +244,13 @@ const ContractDetailPage = () => {
             <div className="grid md:grid-cols-2 grid-cols-1 gap-4 text-sm">
               <div>
                 <p>
-                  <span className="font-medium">{t("contract.contract.phoneNumberManager")}:</span> {data?.nameManager}{" "}
-                  ({data?.phoneNumberManager})
+                  <span className="font-medium">{t("contract.contract.nameManager")}:</span> {data?.nameManager}{" "}
                 </p>
                 <p>
                   <span className="font-medium">Email:</span> {user?.email}
                 </p>
                 <p>
-                  <span className="font-medium">{t("contract.contract.phoneNumber")}:</span> {user?.phoneNumber}
+                  <span className="font-medium">{t("contract.contract.phoneNumberManager")}:</span> {user?.phoneNumber}
                 </p>
               </div>
               <div>
@@ -285,7 +284,7 @@ const ContractDetailPage = () => {
                     {genderEnumToString(tn.gender, t)}
                   </p>
                   <p>
-                    <span className="font-medium">{t("contract.contract.phoneNumber")}:</span> {tn.phoneNumber}
+                    <span className="font-medium">{t("contract.contract.phoneNumberUser")}:</span> {tn.phoneNumber}
                   </p>
                   <p>
                     <span className="font-medium">Email:</span> {tn.email}
@@ -321,7 +320,7 @@ const ContractDetailPage = () => {
                     {assetStatusEnumToString(a.assetStatus, t)}
                   </p>
                   <p>
-                    <span className="font-medium">{t("asset.response.description")}:</span> {a.description}
+                    <span className="font-medium">{t("asset.response.descriptionAsset")}:</span> {a.description}
                   </p>
                 </li>
               ))}

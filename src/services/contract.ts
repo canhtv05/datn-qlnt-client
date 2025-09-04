@@ -101,10 +101,10 @@ export const useVehicleOptions = (): Option[] => {
   );
 };
 
-const NA = "contract.noData";
+const NA = (t: TFunction<"translate", null>) => t("contract.noData");
 
-const checkValue = (regex: RegExp, result: string) => {
-  return result.replace(regex, NA);
+const checkValue = (regex: RegExp, result: string, t: TFunction<"translate", null>) => {
+  return result.replace(regex, NA(t));
 };
 
 // thay thế các kí tự có trong nội dung hợp đồng
@@ -133,74 +133,90 @@ export const replacePlaceholders = (
 
     if (Array.isArray(value)) {
       if (key === "tenants") {
-        if (!value) result = checkValue(regex, result);
+        if (value.length === 0) {
+          result = result.replace(regex, NA(t));
+          return;
+        }
+        if (!value) result = checkValue(regex, result, t);
         else {
           const items = (value as TenantLittleResponse[]).map(
-            (t) =>
-              `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Họ và tên: ${
-                t.fullName || NA
-              } - Email: ${t.email || NA} - SDT: ${t.phoneNumber || NA}${
-                t.representative ? ` - ${"contract.representative"}` : ""
-              }</span>`
+            (te) =>
+              `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;"> ${t(
+                "tenant.response.fullName"
+              )}: ${te.fullName || NA(t)} - Email: ${te.email || NA(t)} - ${t("tenant.response.phoneNumber")}: ${
+                te.phoneNumber || NA(t)
+              }${te.representative ? ` - ${t("contract.representative")}` : ""}</span>`
           );
           result = result.replace(regex, createListHtml(items));
         }
       } else if (key === "assets") {
-        if (!value) result = checkValue(regex, result);
+        if (value.length === 0) {
+          result = result.replace(regex, NA(t));
+          return;
+        }
+        if (!value) result = checkValue(regex, result, t);
         else {
           const items = (value as AssetLittleResponse[]).map(
             (a) =>
-              `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">${"asset.response.nameAsset"}: ${
-                a.assetName || NA
-              } - ${"asset.addOrUpdate.assetBeLongTo"} ${
-                assetBelongToEnumToString(a.assetBeLongTo, t) || NA
-              } - ${"asset.response.quantity"}: ${a.quantity || 0} - ${"asset.response.price"}: ${formattedCurrency(
-                a.price || 0
-              )} - ${"asset.response.descriptionAsset"}: ${assetStatusEnumToString(a.assetStatus, t) || NA} - Mô tả: ${
-                a.description || NA
-              }</span>`
+              `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">${t(
+                "asset.response.nameAsset"
+              )}: ${a.assetName || NA(t)} - ${t("asset.addOrUpdate.assetBeLongTo")} ${
+                assetBelongToEnumToString(a.assetBeLongTo, t) || NA(t)
+              } - ${t("asset.response.quantity")}: ${a.quantity || 0} - ${t(
+                "asset.response.price"
+              )}: ${formattedCurrency(a.price || 0)} - ${t("asset.response.assetStatus")}: ${
+                assetStatusEnumToString(a.assetStatus, t) || NA(t)
+              } - ${t("asset.response.descriptionAsset")}: ${a.description || NA(t)}</span>`
           );
           result = result.replace(regex, createListHtml(items));
         }
       } else if (key === "services") {
-        if (!value) result = checkValue(regex, result);
+        if (value.length === 0) {
+          result = result.replace(regex, NA(t));
+          return;
+        }
+        if (!value) result = checkValue(regex, result, t);
         else {
           const items = (value as ServiceLittleResponse[]).map(
             (s) =>
-              `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">${"service.response.name"}: ${
-                s.serviceName || NA
-              } - ${"service.response.status"}: ${
-                serviceRoomStatusEnumToString(s.serviceRoomStatus, t) || NA
-              } - ${"service.response.unit"}: ${s.unit || NA} - ${"service.response.price"}: ${
-                formattedCurrency(s.unitPrice) || NA
-              } - ${"service.response.description"}: ${s.description || NA}</span>`
+              `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">${t(
+                "service.response.name"
+              )}: ${s.serviceName || NA(t)} - ${t("service.response.status")}: ${
+                serviceRoomStatusEnumToString(s.serviceRoomStatus, t) || NA(t)
+              } - ${t("service.response.unit")}: ${s.unit || NA(t)} - ${t("service.response.price")}: ${
+                formattedCurrency(s.unitPrice) || NA(t)
+              } - ${t("service.response.description")}: ${s.description || NA(t)}</span>`
           );
           result = result.replace(regex, createListHtml(items));
         }
       } else if (key === "vehicles") {
-        if (!value) result = checkValue(regex, result);
+        if (value.length === 0) {
+          result = result.replace(regex, NA(t));
+          return;
+        }
+        if (!value) result = checkValue(regex, result, t);
         else {
           const items = (value as VehicleBasicResponse[]).map(
             (v) =>
-              `<li><p><span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">Loại phương tiện: ${
-                vehicleTypeEnumToString(v.vehicleType, t) || NA
-              } - ${"vehicle.response.licensePlate"}: ${v.licensePlate || NA} - ${"vehicle.response.describe"}: ${
-                v.description || NA
-              }</span></p></li>`
+              `<span style="background-color:transparent;color:#000000;font-family:'Times New Roman',serif;font-size:13.999999999999998pt;">${t(
+                "vehicle.response.vehicleType"
+              )}: ${vehicleTypeEnumToString(v.vehicleType, t) || NA(t)} - ${t("vehicle.response.licensePlate")}: ${
+                v.licensePlate || NA(t)
+              } - ${t("vehicle.response.describe")}: ${v.description || NA(t)}</span>`
           );
           result = result.replace(regex, createListHtml(items));
         }
       } else {
-        if (!value) result = checkValue(regex, result);
+        if (!value) result = checkValue(regex, result, t);
         else result = result.replace(regex, value.join(", "));
       }
     } else {
-      if (!value) result = checkValue(regex, result);
+      if (!value) result = checkValue(regex, result, t);
       if (["createdAt", "updatedAt", "startDate", "endDate"].includes(key)) {
-        if (!value) result = checkValue(regex, result);
+        if (!value) result = checkValue(regex, result, t);
         else result = result.replace(regex, new Date(value).toLocaleDateString(lang));
       } else if (key === "status") {
-        if (!value) result = checkValue(regex, result);
+        if (!value) result = checkValue(regex, result, t);
         const contractStatus = value as ContractStatus;
         result = result.replace(regex, contractStatusEnumToString(contractStatus, t));
       } else if (key === "roomPrice" || key === "deposit" || key === "electricPrice" || key === "waterPrice") {

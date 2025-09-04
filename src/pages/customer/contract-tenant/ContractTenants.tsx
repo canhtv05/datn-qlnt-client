@@ -80,11 +80,7 @@ const ContractTenants = () => {
                           <btn.icon className="text-white" />
                         </Button>
                       </TooltipTrigger>
-                      <TooltipContent
-                        className="text-white"
-                        style={{ background: btn.arrowColor }}
-                        arrow={false}
-                      >
+                      <TooltipContent className="text-white" style={{ background: btn.arrowColor }} arrow={false}>
                         <p>{t(btn.tooltipContent)}</p>
                         <TooltipPrimitive.Arrow
                           style={{
@@ -118,7 +114,7 @@ const ContractTenants = () => {
     },
     { label: "Email", accessorKey: "email", isSort: true, isCenter: true },
     {
-      label: t("contract.contract.nameUser"),
+      label: t("contract.representative"),
       accessorKey: "representative",
       hasBadge: true,
       isSort: true,
@@ -165,12 +161,7 @@ const ContractTenants = () => {
                     desc={t(Notice.ADD)}
                     onConfirm={handleAddContractTenant}
                   >
-                    <AddContractTenant
-                      errors={errors}
-                      setValue={setValue}
-                      value={value}
-                      data={data?.data ?? []}
-                    />
+                    <AddContractTenant errors={errors} setValue={setValue} value={value} data={data?.data ?? []} />
                   </Modal>
                   <TooltipContent
                     className="text-white"
@@ -215,9 +206,7 @@ const ContractTenants = () => {
                           fill: "var(--color-red-400)",
                           background: "var(--color-red-400)",
                         }}
-                        className={
-                          "size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"
-                        }
+                        className={"size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]"}
                       />
                     </TooltipContent>
                   </Tooltip>
@@ -229,10 +218,7 @@ const ContractTenants = () => {
         <ContractTenantFilter props={props} />
         <DataTable<ContractTenantDetailResponse>
           data={data?.data ?? []}
-          columns={buildColumnsFromConfig(
-            columnConfigs,
-            Array.isArray(data?.data) && data.data.length > 1
-          )}
+          columns={buildColumnsFromConfig(columnConfigs, Array.isArray(data?.data) && data.data.length > 1)}
           page={Number(page)}
           size={Number(size)}
           totalElements={data?.meta?.pagination?.total || 0}

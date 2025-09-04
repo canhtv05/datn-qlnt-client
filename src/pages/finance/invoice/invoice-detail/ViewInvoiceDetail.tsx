@@ -157,9 +157,12 @@ const ViewInvoiceDetail = () => {
               </div>
               <div className="italic text-xs mt-1 text-foreground">
                 ({t("invoice.detail.inWords")}
+                {": "}
                 {(() => {
                   const text = readVNNumber.toVNWord(data?.data?.totalAmount);
-                  return text === "" ? t("invoice.detail.free") : text.charAt(0).toUpperCase() + text.slice(1) + "VND";
+                  return text === ""
+                    ? t("invoice.detail.free")
+                    : text.charAt(0).toUpperCase() + text.slice(1) + " đồng";
                 })()}
                 )
               </div>
@@ -177,15 +180,15 @@ const ViewInvoiceDetail = () => {
         >
           <RenderIf
             value={
-              paymentReceipt?.data?.paymentStatus === PaymentStatus.TU_CHOI &&
-              paymentReceipt?.data?.paymentMethod === PaymentMethod.CHON_PHUONG_THUC
+              paymentReceipt?.data?.paymentStatus !== PaymentStatus.TU_CHOI &&
+              paymentReceipt?.data?.paymentMethod !== PaymentMethod.CHON_PHUONG_THUC
             }
           >
             <Modal
               title={t("invoice.detail.modal.paymentTitle")}
               trigger={
                 <Button variant={"delete"} className="cursor-pointer">
-                  <span className="text-white">Từ chối thanh toán</span>
+                  <span className="text-white">{t("invoice.detail.button.reject")}</span>
                 </Button>
               }
               desc={t(Notice.UPDATE)}
