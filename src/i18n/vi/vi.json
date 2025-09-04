@@ -1060,6 +1060,7 @@
     }
   },
   "paymentReceipt": {
+    "myPaymentReceipt": "Phiếu thanh toán của tôi",
     "title": "Phiếu thanh toán",
     "titleHistory": "Lịch sử phiếu thanh toán đã xóa",
     "statistic": "Thống kê phiếu thanh toán",

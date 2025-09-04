@@ -1060,6 +1060,7 @@
     }
   },
   "paymentReceipt": {
+    "myPaymentReceipt": "My Payment Receipt",
     "title": "Payment Receipt",
     "titleHistory": "Deleted Payment Receipt History",
     "statistic": "Payment Receipt Statistics",

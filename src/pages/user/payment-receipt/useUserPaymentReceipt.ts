@@ -3,11 +3,13 @@ import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export const useUserPaymentReceipt = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { t } = useTranslation();
   const {
     page = "1",
     size = "15",
@@ -135,9 +137,9 @@ export const useUserPaymentReceipt = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error("Có lỗi xảy ra khi tải phiếu thanh toán");
+      toast.error(t("paymentReceipt.errorFetch"));
     }
-  }, [isError]);
+  }, [isError, t]);
 
   return {
     query: {
