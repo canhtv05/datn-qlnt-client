@@ -119,7 +119,7 @@ export default function CccdUpload({
       setFrontUrl(null);
       setFrontResult(null);
     }
-  }, [frontImage]);
+  }, [callOcrApi, frontImage]);
 
   useEffect(() => {
     if (backImage instanceof File) {
@@ -132,7 +132,7 @@ export default function CccdUpload({
       setBackUrl(null);
       setBackResult(null);
     }
-  }, [backImage]);
+  }, [backImage, callOcrApi]);
 
   useEffect(() => {
     if (Array.isArray(frontResult) && frontResult.length > 0) {
