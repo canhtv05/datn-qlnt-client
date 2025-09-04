@@ -1412,10 +1412,28 @@ export interface RevenueStatisticRequest {
   buildingId: string;
 }
 
+export interface RevenueYearRequest {
+  year: number | undefined;
+  buildingId: string;
+}
+
 export interface RevenueComparisonResponse {
   category: RevenueCategory;
   current: number;
   previous: number;
   difference: number;
+  percent: number;
+}
+
+export interface RevenueYearResponse {
+  year: number;
+  buildingId: string;
+  totalAmount: number;
+  months: MonthlyRevenueResponse[];
+}
+
+export interface MonthlyRevenueResponse {
+  month: number;
+  amount: number;
   percent: number;
 }

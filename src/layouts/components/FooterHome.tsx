@@ -28,11 +28,11 @@ const Footer = () => {
               <ul className="space-y-3 text-base text-gray-700 font-bold">
                 <li className="flex items-center gap-2">
                   <MdEmail className="text-xl text-green-600" />
-                  <span>hotro@trohub.vn</span>
+                  <span>trohub88@gmail.com</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <MdPhone className="text-xl text-green-600" />
-                  <span>0123 456 789</span>
+                  <span>0981635840</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <MdLocationOn className="text-xl text-green-600" />

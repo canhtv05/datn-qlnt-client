@@ -1,29 +1,26 @@
-import { ApiResponse, IdAndName, RevenueComparisonResponse, RevenueStatisticRequest } from "@/types";
+import { ApiResponse, IdAndName, RevenueYearRequest, RevenueYearResponse } from "@/types";
 import { httpRequest } from "@/utils/httpRequest";
 import { queryFilter } from "@/utils/queryFilter";
 import { useQuery } from "@tanstack/react-query";
-import { isNumber } from "lodash";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
-export default function useRevenue() {
+export default function useRevenueYear() {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const { month = "", year = "", buildingId = "" } = queryFilter(searchParams, "month", "year", "buildingId");
+  const { year = "", buildingId = "" } = queryFilter(searchParams, "year", "buildingId");
 
-  const [filterValues, setFilterValues] = useState<RevenueStatisticRequest>({
+  const [filterValues, setFilterValues] = useState<RevenueYearRequest>({
     buildingId,
-    month: isNumber(month) ? Number(month) : new Date().getMonth() + 1,
     year: year && !isNaN(Number(year)) ? Number(year) : new Date().getFullYear(),
   });
 
   const handleClear = () => {
     setFilterValues({
       buildingId: "",
-      month: new Date().getMonth() + 1,
       year: new Date().getFullYear(),
     });
     setSearchParams({});
@@ -37,14 +34,14 @@ export default function useRevenue() {
     setSearchParams(params);
   }, [filterValues, setSearchParams]);
 
-  const { data, isLoading, isError } = useQuery<ApiResponse<RevenueComparisonResponse[]>>({
-    queryKey: ["revenue-month", buildingId, month, year],
+  const { data, isLoading, isError } = useQuery<ApiResponse<RevenueYearResponse>>({
+    queryKey: ["revenue-year", buildingId, year],
     queryFn: async () => {
       const params: Record<string, string> = {};
       Object.entries(filterValues).forEach(([k, v]) => {
         if (v) params[k] = v;
       });
-      const res = await httpRequest.get("/revenues/month", { params });
+      const res = await httpRequest.get("/revenues/year", { params });
       return res.data;
     },
     retry: 1,

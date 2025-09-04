@@ -3,9 +3,9 @@ import { MapPin, Building, Phone, Mail } from "lucide-react";
 const ContactInfoSection = () => {
   return (
     <section className="bg-gradient-to-tr from-blue-500 to-blue-700 text-white py-16 pt-24">
-  <div className="max-w-5xl mx-auto px-4 text-center">
-    <h1 className="text-4xl md:text-5xl font-extrabold">THÔNG TIN LIÊN HỆ</h1>
-  </div>
+      <div className="max-w-5xl mx-auto px-4 text-center">
+        <h1 className="text-4xl md:text-5xl font-extrabold">THÔNG TIN LIÊN HỆ</h1>
+      </div>
     </section>
   );
 };
@@ -17,7 +17,8 @@ const ContactContentSection = () => {
         <div>
           <h2 className="text-green-700 text-2xl font-bold mb-4">LIÊN HỆ VÀ HỖ TRỢ</h2>
           <p className="text-gray-700 mb-6">
-            Chúng tôi có thể trả lời bất kỳ câu hỏi nào của bạn, cung cấp các bản demo sản phẩm và giúp bạn tìm ra gói giải pháp phù hợp.
+            Chúng tôi có thể trả lời bất kỳ câu hỏi nào của bạn, cung cấp các bản demo sản phẩm và giúp bạn tìm ra gói
+            giải pháp phù hợp.
           </p>
 
           <div className="space-y-6">
@@ -35,9 +36,7 @@ const ContactContentSection = () => {
               <Building className="w-6 h-6 text-green-600 mt-1" />
               <div>
                 <h3 className="font-semibold text-gray-800">Văn phòng</h3>
-                <p className="text-gray-600">
-                  BT12 Khu nhà ở Mễ Trì, số 2 Đỗ Đức Dục, Mễ Trì, Nam Từ Liêm, Hà Nội.
-                </p>
+                <p className="text-gray-600">BT12 Khu nhà ở Mễ Trì, số 2 Đỗ Đức Dục, Mễ Trì, Nam Từ Liêm, Hà Nội.</p>
               </div>
             </div>
 
@@ -45,7 +44,7 @@ const ContactContentSection = () => {
               <Phone className="w-6 h-6 text-green-600 mt-1" />
               <div>
                 <h3 className="font-semibold text-gray-800">Số điện thoại</h3>
-                <p className="text-gray-600">0123 456 789</p>
+                <p className="text-gray-600">0981635840</p>
               </div>
             </div>
 
@@ -53,7 +52,7 @@ const ContactContentSection = () => {
               <Mail className="w-6 h-6 text-green-600 mt-1" />
               <div>
                 <h3 className="font-semibold text-gray-800">Email hỗ trợ</h3>
-                <p className="text-gray-600">hotro@trohub.vn</p>
+                <p className="text-gray-600">trohub88@gmail.com</p>
               </div>
             </div>
           </div>

@@ -15,7 +15,7 @@ interface ChartAreaRevenueProps {
   data?: RevenueComparisonResponse;
 }
 
-interface ChartDataType {
+export interface ChartDataType {
   label: string;
   value?: number;
 }
@@ -25,7 +25,8 @@ const mapRevenueCategory = (t: TFunction<"translation", undefined>, key?: Revenu
   return t(`revenueCategory.${RevenueCategory[key]}`);
 };
 
-const chartConfig = (t: TFunction<"translation", null>) => {
+// eslint-disable-next-line react-refresh/only-export-components
+export const chartConfig = (t: TFunction<"translation", null>) => {
   return {
     value: {
       label: t("revenueCategory.revenue"),
