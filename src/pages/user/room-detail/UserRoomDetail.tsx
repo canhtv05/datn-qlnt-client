@@ -89,30 +89,31 @@ const UserRoomDetail = () => {
         </div>
         <div className="p-5 flex gap-5 lg:flex-row flex-col w-full bg-background">
           <div className="p-5 flex gap-5 lg:flex-row flex-col w-full bg-background">
+            {/* Thông tin tòa nhà */}
             <Card className="rounded-sm shadow-none w-full gap-2">
               <CardHeader>
-                <CardTitle>Thông tin tòa nhà</CardTitle>
+                <CardTitle>{t("userRoomDetail.buildingInfo")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col text-sm gap-3">
                   <div className="flex items-center gap-2">
                     <Building2 className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Tên tòa nhà:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.buildingName")}:</span>
                     <span className="font-bold">{room?.buildingName || NA}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Địa chỉ:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.buildingAddress")}:</span>
                     <span className="font-bold">{room?.buildingAddress || NA}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <UserCog className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Chủ nhà:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.ownerName")}:</span>
                     <span className="font-bold">{room?.ownerName || NA}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Phone className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">SĐT:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.ownerPhone")}:</span>
                     <span className="font-bold">{room?.ownerPhone || NA}</span>
                   </div>
                 </div>
@@ -122,76 +123,78 @@ const UserRoomDetail = () => {
             {/* Thông tin phòng */}
             <Card className="rounded-sm shadow-none w-full gap-2">
               <CardHeader>
-                <CardTitle>Thông tin phòng</CardTitle>
+                <CardTitle>{t("userRoomDetail.roomInfo")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col text-sm gap-3">
                   <div className="flex items-center gap-2">
                     <Key className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Mã phòng:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.roomCode")}:</span>
                     <span className="font-bold">{room?.roomCode || NA}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Ruler className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Diện tích:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.acreage")}:</span>
                     <span className="font-bold">{room?.acreage || NA} m²</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Users2 className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Sức chứa:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.maximumPeople")}:</span>
                     <span className="font-bold">{room?.maximumPeople || NA} người</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Tag className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Loại phòng:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.roomType")}:</span>
                     <span className="font-bold">{room?.roomType ? roomTypeEnumToString(room.roomType, t) : NA}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <DoorOpen className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Trạng thái:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.status")}:</span>
                     <span className="font-bold">{room?.status ? roomStatusEnumToString(room?.status, t) : NA}</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <FileText className="size-4 mt-1 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground mt-[2px]">Mô tả:</span>
+                    <span className="font-medium text-muted-foreground mt-[2px]">{t("userRoomDetail.description")}:</span>
                     <p className="font-normal">{room?.description || NA}</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
+
+            {/* Thông tin hợp đồng */}
             <Card className="rounded-sm shadow-none w-full gap-2">
               <CardHeader>
-                <CardTitle>Thông tin hợp đồng</CardTitle>
+                <CardTitle>{t("userRoomDetail.contractInfo")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col text-sm gap-3">
                   <div className="flex items-center gap-2">
                     <FileSignature className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Mã hợp đồng:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.contractCode")}:</span>
                     <span className="font-bold">{room?.contractCode || NA}</span>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <Users className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Số người thuê:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.numberOfPeople")}:</span>
                     <span className="font-bold">{room?.numberOfPeople || NA} người</span>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <UserCircle2 className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Người đại diện:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.representativeName")}:</span>
                     <span className="font-bold">{room?.representativeName || NA}</span>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <PhoneCall className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">SĐT đại diện:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.representativePhone")}:</span>
                     <span className="font-bold">{room?.representativePhone || NA}</span>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <CalendarDays className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Ngày sinh:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.dob")}:</span>
                     <span className="font-bold">
                       {(room?.dob && new Date(room.dob).toLocaleDateString(lang)) || NA}
                     </span>
@@ -199,25 +202,25 @@ const UserRoomDetail = () => {
 
                   <div className="flex items-center gap-2">
                     <IdCard className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">CMND/CCCD:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.identityCardNumber")}:</span>
                     <span className="font-bold">{room?.identityCardNumber || NA}</span>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <CreditCard className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Tiền cọc:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.deposit")}:</span>
                     <span className="font-bold">{formattedCurrency(room?.deposit ?? 0)}</span>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <DollarSign className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Giá phòng:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.roomPrice")}:</span>
                     <span className="font-bold">{formattedCurrency(room?.roomPrice ?? 0)}</span>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <BadgeDollarSign className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Trạng thái HĐ:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.contractStatus")}:</span>
                     <span className="font-bold">
                       {room?.contractStatus ? contractStatusEnumToString(room?.contractStatus, t) : NA}
                     </span>
@@ -225,7 +228,7 @@ const UserRoomDetail = () => {
 
                   <div className="flex items-center gap-2">
                     <CalendarCheck className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Bắt đầu:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.startDate")}:</span>
                     <span className="font-bold">
                       {(room?.startDate && new Date(room.startDate).toLocaleDateString(lang)) || NA}
                     </span>
@@ -233,7 +236,7 @@ const UserRoomDetail = () => {
 
                   <div className="flex items-center gap-2">
                     <CalendarX className="size-4 text-muted-foreground" />
-                    <span className="font-medium text-muted-foreground">Kết thúc:</span>
+                    <span className="font-medium text-muted-foreground">{t("userRoomDetail.endDate")}:</span>
                     <span className="font-bold">
                       {(room?.endDate && new Date(room.endDate).toLocaleDateString(lang)) || NA}
                     </span>

@@ -1423,5 +1423,66 @@
       "building": "Building",
       "buildingPlaceholder": "-- Building --"
     }
+  },
+  "userRoomDetail": {
+  "title": "Room Detail",
+  "buildingInfo": "Building Information",
+  "roomInfo": "Room Information",
+  "contractInfo": "Contract Information",
+  "buildingName": "Building Name",
+  "buildingAddress": "Building Address",
+  "ownerName": "Owner Name",
+  "ownerPhone": "Owner Phone",
+  "roomCode": "Room Code",
+  "acreage": "Acreage",
+  "maximumPeople": "Maximum People",
+  "roomType": "Room Type",
+  "status": "Status",
+  "description": "Description",
+  "contractCode": "Contract Code",
+  "numberOfPeople": "Number of People",
+  "representativeName": "Representative Name",
+  "representativePhone": "Representative Phone",
+  "dob": "Date of Birth",
+  "identityCardNumber": "Identity Card Number",
+  "deposit": "Deposit",
+  "roomPrice": "Room Price",
+  "contractStatus": "Contract Status",
+  "startDate": "Start Date",
+  "endDate": "End Date"
+},
+"roomServices": {
+  "title": "Room services: {{roomCode}}",
+  "loading": "Loading services...",
+  "empty": "No services in this room",
+  "noService": "No service",
+  "status": {
+    "DANG_SU_DUNG": "Active",
+    "TAM_DUNG": "Paused",
+    "NA": "Unknown"
+  },
+  "unitPrice": "{{price}} / {{unit}}",
+  "description": "Description"
+},
+"user_vehicle": {
+  "title": "Vehicle List",
+  "empty": "No vehicles available",
+  "errorLoad": "Unable to load vehicles. Please try again later.",
+  "type": "Type",
+  "licensePlate": "License Plate",
+  "registrationDate": "Registration Date",
+  "status": {
+    "SU_DUNG": "Active",
+    "KHONG_SU_DUNG": "Inactive",
+    "TAM_KHOA": "Temporarily Locked",
+    "NA": "Unknown"
+  },
+  "typeMap": {
+    "XE_MAY": "Motorbike",
+    "O_TO": "Car",
+    "XE_DAP": "Bicycle",
+    "KHAC": "Other"
   }
+}
+
 }

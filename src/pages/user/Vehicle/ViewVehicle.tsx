@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import { httpRequest } from "@/utils/httpRequest";
 import { ApiResponse, VehicleResponse } from "@/types";
@@ -15,26 +16,6 @@ const vehicleStatusColorMap: Record<VehicleStatus, string> = {
   SU_DUNG: "bg-green-500 text-white",
   KHONG_SU_DUNG: "bg-yellow-400 text-gray-900",
   TAM_KHOA: "bg-red-500 text-white",
-};
-const vehicleStatusLabelMap: Record<VehicleStatus, string> = {
-  SU_DUNG: "Đang sử dụng",
-  KHONG_SU_DUNG: "Tạm dừng",
-  TAM_KHOA: "Tạm khóa",
-};
-
-const vehicleTypeToString = (type: string) => {
-  switch (type) {
-    case "XE_MAY":
-      return "Xe máy";
-    case "O_TO":
-      return "Ô tô";
-    case "XE_DAP":
-      return "Xe đạp";
-    case "KHAC":
-      return "Khác";
-    default:
-      return "N/A";
-  }
 };
 
 const vehicleTypeToIcon = (type: string) => {
@@ -52,7 +33,9 @@ const vehicleTypeToIcon = (type: string) => {
 };
 
 const VehicleCards = () => {
+  const { t } = useTranslation();
   const { id: roomId } = useParams<{ id: string }>();
+
   const { data, isError, isLoading } = useQuery<ApiResponse<VehicleResponse[]>>({
     queryKey: ["room-vehicles-detail", roomId],
     queryFn: async () => {
@@ -64,8 +47,8 @@ const VehicleCards = () => {
   });
 
   useEffect(() => {
-    if (isError) toast.error("Không thể tải phương tiện. Vui lòng thử lại sau.");
-  }, [isError]);
+    if (isError) toast.error(t("user_vehicle.errorLoad"));
+  }, [isError, t]);
 
   const vehicles = data?.data ?? [];
 
@@ -81,7 +64,9 @@ const VehicleCards = () => {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <Car className="w-8 h-8 text-primary" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Danh sách phương tiện</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            {t("user_vehicle.title")}
+          </h2>
         </div>
       </div>
 
@@ -92,7 +77,9 @@ const VehicleCards = () => {
           ))}
         </div>
       ) : vehicles.length === 0 ? (
-        <div className="text-center py-10 text-gray-500 text-lg">Chưa có phương tiện nào</div>
+        <div className="text-center py-10 text-gray-500 text-lg">
+          {t("user_vehicle.empty")}
+        </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {vehicles.map((vehicle) => (
@@ -105,9 +92,12 @@ const VehicleCards = () => {
                   {vehicleTypeToIcon(vehicle.vehicleType)}
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-bold text-gray-900 dark:text-gray-100">{vehicle.fullName || NA}</span>
+                  <span className="font-bold text-gray-900 dark:text-gray-100">
+                    {vehicle.fullName || NA}
+                  </span>
                   <span className="text-sm text-gray-600 dark:text-gray-300">
-                    Loại: {vehicleTypeToString(vehicle.vehicleType)}
+                    {t("user_vehicle.type")}:{" "}
+                    {t(`user_vehicle.typeMap.${vehicle.vehicleType}`, { defaultValue: NA })}
                   </span>
                 </div>
                 <span
@@ -115,12 +105,16 @@ const VehicleCards = () => {
                     vehicleStatusColorMap[vehicle.vehicleStatus] || "bg-gray-400 text-white"
                   }`}
                 >
-                  {vehicleStatusLabelMap[vehicle.vehicleStatus] || NA}
+                  {t(`user_vehicle.status.${vehicle.vehicleStatus}`, { defaultValue: NA })}
                 </span>
               </div>
               <div className="flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-300">
-                <span>Biển số: {vehicle.licensePlate || NA}</span>
-                <span>Ngày đăng ký: {formatDate(vehicle.registrationDate)}</span>
+                <span>
+                  {t("user_vehicle.licensePlate")}: {vehicle.licensePlate || NA}
+                </span>
+                <span>
+                  {t("user_vehicle.registrationDate")}: {formatDate(vehicle.registrationDate)}
+                </span>
                 {vehicle.describe && (
                   <p className="flex items-start gap-1 text-gray-600 dark:text-gray-400">
                     <FileText className="w-4 h-4 mt-[2px]" />
@@ -135,4 +129,5 @@ const VehicleCards = () => {
     </div>
   );
 };
+
 export default VehicleCards;

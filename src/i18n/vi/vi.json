@@ -1014,7 +1014,6 @@
     }
   },
   "meterReading": {
-    "warning": "Cảnh báo: Vui lòng ghi chỉ số vào những ngày cuối tháng, sang tháng sau sẽ không thể ghi chỉ số tháng trước.",
     "title": "Chỉ số công tơ",
     "titleHistory": "Lịch sử chỉ số công tơ đã xóa",
     "statistic": "Thống kê chỉ số công tơ",
@@ -1061,7 +1060,6 @@
     }
   },
   "paymentReceipt": {
-    "myPaymentReceipt": "Phiếu thanh toán của tôi",
     "title": "Phiếu thanh toán",
     "titleHistory": "Lịch sử phiếu thanh toán đã xóa",
     "statistic": "Thống kê phiếu thanh toán",
@@ -1423,5 +1421,66 @@
       "building": "Tòa nhà",
       "buildingPlaceholder": "-- Tòa nhà --"
     }
+  },
+  "userRoomDetail": {
+  "title": "Chi tiết phòng",
+  "buildingInfo": "Thông tin tòa nhà",
+  "roomInfo": "Thông tin phòng",
+  "contractInfo": "Thông tin hợp đồng",
+  "buildingName": "Tên tòa nhà",
+  "buildingAddress": "Địa chỉ tòa nhà",
+  "ownerName": "Chủ sở hữu",
+  "ownerPhone": "Số điện thoại chủ sở hữu",
+  "roomCode": "Mã phòng",
+  "acreage": "Diện tích",
+  "maximumPeople": "Số người tối đa",
+  "roomType": "Loại phòng",
+  "status": "Trạng thái",
+  "description": "Mô tả",
+  "contractCode": "Mã hợp đồng",
+  "numberOfPeople": "Số người",
+  "representativeName": "Người đại diện",
+  "representativePhone": "Số điện thoại người đại diện",
+  "dob": "Ngày sinh",
+  "identityCardNumber": "CMND/CCCD",
+  "deposit": "Tiền cọc",
+  "roomPrice": "Giá phòng",
+  "contractStatus": "Trạng thái hợp đồng",
+  "startDate": "Ngày bắt đầu",
+  "endDate": "Ngày kết thúc"
+},
+"roomServices": {
+  "title": "Dịch vụ phòng: {{roomCode}}",
+  "loading": "Đang tải dịch vụ...",
+  "empty": "Chưa có dịch vụ nào trong phòng",
+  "noService": "Không có dịch vụ",
+  "status": {
+    "DANG_SU_DUNG": "Đang sử dụng",
+    "TAM_DUNG": "Tạm dừng",
+    "NA": "Không xác định"
+  },
+  "unitPrice": "{{price}} / {{unit}}",
+  "description": "Mô tả"
+},
+"user_vehicle": {
+  "title": "Danh sách phương tiện",
+  "empty": "Chưa có phương tiện nào",
+  "errorLoad": "Không thể tải phương tiện. Vui lòng thử lại sau.",
+  "type": "Loại",
+  "licensePlate": "Biển số",
+  "registrationDate": "Ngày đăng ký",
+  "status": {
+    "SU_DUNG": "Đang sử dụng",
+    "KHONG_SU_DUNG": "Tạm dừng",
+    "TAM_KHOA": "Tạm khóa",
+    "NA": "Không xác định"
+  },
+  "typeMap": {
+    "XE_MAY": "Xe máy",
+    "O_TO": "Ô tô",
+    "XE_DAP": "Xe đạp",
+    "KHAC": "Khác"
   }
+}
+
 }
