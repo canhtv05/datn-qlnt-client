@@ -178,12 +178,7 @@ const ViewInvoiceDetail = () => {
             cookieUtil.getStorage()?.statusInvoice !== PaymentStatus.TU_CHOI
           }
         >
-          <RenderIf
-            value={
-              paymentReceipt?.data?.paymentStatus !== PaymentStatus.TU_CHOI &&
-              paymentReceipt?.data?.paymentMethod !== PaymentMethod.CHON_PHUONG_THUC
-            }
-          >
+          <RenderIf value={paymentReceipt?.data?.paymentStatus !== PaymentStatus.TU_CHOI}>
             <Modal
               title={t("invoice.detail.modal.paymentTitle")}
               trigger={

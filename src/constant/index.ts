@@ -1001,32 +1001,32 @@ export const STATUS_BADGE = [
   /* DEPOSIT */
   {
     value: DepositStatus.CHO_XAC_NHAN,
-    label: "statusBadge.depositStatus.pending",
+    label: "depositStatus.pending",
     className: COLOR_CLASS.red,
   },
   {
     value: DepositStatus.CHUA_NHAN_COC,
-    label: "statusBadge.depositStatus.notReceived",
+    label: "depositStatus.notReceived",
     className: COLOR_CLASS.red,
   },
   {
     value: DepositStatus.DA_DAT_COC,
-    label: "statusBadge.depositStatus.common",
+    label: "depositStatus.common",
     className: COLOR_CLASS.red,
   },
   {
     value: DepositStatus.DA_HOAN_TRA,
-    label: "statusBadge.depositStatus.refunded",
+    label: "depositStatus.refunded",
     className: COLOR_CLASS.red,
   },
   {
     value: DepositStatus.KHONG_TRA_COC,
-    label: "statusBadge.depositStatus.nonRefund",
+    label: "depositStatus.nonRefund",
     className: COLOR_CLASS.red,
   },
   {
     value: DepositStatus.HUY,
-    label: "statusBadge.depositStatus.cancelled",
+    label: "depositStatus.cancelled",
     className: COLOR_CLASS.red,
   },
 ];
@@ -1250,10 +1250,7 @@ export const BTNS: IBtnType[] = [
 ];
 
 /* PAYMENT RECEIPT */
-export const ACTION_BUTTONS_FOR_PAYMENT_RECEIPT = (
-  type: PaymentMethod,
-  status: PaymentStatus
-): IBtnType[] => {
+export const ACTION_BUTTONS_FOR_PAYMENT_RECEIPT = (type: PaymentMethod, status: PaymentStatus): IBtnType[] => {
   const CASH: IBtnType[] = [
     {
       tooltipContent: "common.button.paymentConfirmed",

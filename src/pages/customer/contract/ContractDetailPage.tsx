@@ -171,7 +171,7 @@ const ContractDetailPage = () => {
         openDialog({ type });
         return await true;
       } else {
-        openDialog({ type }, { desc: t("contract.confirmCancel.desc") });
+        openDialog({ type }, { desc: t("contract.confirmCancel") });
         return await true;
       }
     },

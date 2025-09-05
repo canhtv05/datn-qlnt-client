@@ -12,14 +12,14 @@ import { AlertCircle, CheckCircle } from "lucide-react";
 
 const btns: IBtnType[] = [
   {
-    tooltipContent: "common.button.deposit2",
+    tooltipContent: "common.button.deposit3",
     icon: CheckCircle,
     arrowColor: "var(--color-purple-300)",
     type: "deposit2",
     hasConfirm: true,
   },
   {
-    tooltipContent: "common.button.deposit3",
+    tooltipContent: "common.button.deposit2",
     icon: AlertCircle,
     arrowColor: "var(--color-indigo-500)",
     type: "deposit3",

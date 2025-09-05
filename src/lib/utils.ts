@@ -421,7 +421,7 @@ export const depositStatusEnumToString = (status: DepositStatus, t: TFunction<"t
     CHO_XAC_NHAN: t("statusBadge.depositStatus.pending"),
     CHUA_NHAN_COC: t("statusBadge.depositStatus.notReceived"),
     DA_DAT_COC: t("statusBadge.depositStatus.common"),
-    DA_HOAN_TRA: t("statusBadge.depositStatus.refunded"),
+    DA_HOAN_TRA: t("depositStatus.refunded"),
     HUY: t("statusBadge.depositStatus.cancelled"),
     KHONG_TRA_COC: t("statusBadge.depositStatus.nonRefund"),
   };

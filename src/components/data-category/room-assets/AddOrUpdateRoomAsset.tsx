@@ -73,9 +73,7 @@ const AddOrUpdateRoomAsset = ({
     }
   };
 
-  const toSelectType = (
-    options: (AssetOption | FieldsSelectLabelType)[]
-  ): FieldsSelectLabelType[] =>
+  const toSelectType = (options: (AssetOption | FieldsSelectLabelType)[]): FieldsSelectLabelType[] =>
     options.map((o) => ({
       label: o.label,
       value: o.value,
@@ -193,16 +191,10 @@ const AddOrUpdateRoomAsset = ({
             id="assets"
             name="assets"
             value={toSelectType(assetOptions).filter((opt) =>
-              Array.isArray(bulkValue.assetId)
-                ? bulkValue.assetId.includes(String(opt.value))
-                : false
+              Array.isArray(bulkValue.assetId) ? bulkValue.assetId.includes(String(opt.value)) : false
             )}
             onChange={(selected) => {
-              if (
-                Array.isArray(bulkValue.roomId) &&
-                bulkValue.roomId.length > 1 &&
-                selected.length > 1
-              ) {
+              if (Array.isArray(bulkValue.roomId) && bulkValue.roomId.length > 1 && selected.length > 1) {
                 toast.error(t("roomAsset.onlyOneAsset"));
                 return;
               }
@@ -226,12 +218,8 @@ const AddOrUpdateRoomAsset = ({
               Array.isArray(bulkValue.roomId) ? bulkValue.roomId.includes(String(opt.value)) : false
             )}
             onChange={(selected) => {
-              if (
-                Array.isArray(bulkValue.assetId) &&
-                bulkValue.assetId.length > 1 &&
-                selected.length > 1
-              ) {
-                toast.error(t("roomAsset.error.onlyOneRoom"));
+              if (Array.isArray(bulkValue.assetId) && bulkValue.assetId.length > 1 && selected.length > 1) {
+                toast.error(t("roomAsset.onlyOneRoom"));
                 return;
               }
 
